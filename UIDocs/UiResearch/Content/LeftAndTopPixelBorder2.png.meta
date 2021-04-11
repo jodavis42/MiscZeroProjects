@@ -1,0 +1,21 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "LeftAndTopPixelBorder2"
+		var ResourceId = 0x5a53063a339a51c7
+		var AtlasId = 0x5274cf95e4a661fd
+		var FrameSizeX = 2
+		var FrameSizeY = 2
+		var FrameCount = 1
+		var FrameDelay = 0.0833333358
+		var OriginX = 0.5
+		var OriginY = 0.5
+		var PixelsPerUnit = 1
+		var Sampling = SpriteSampling.Nearest
+		var Looping = true
+		var Slices = Real4{1, 1, 0, 0}
+		var Fill = SpriteFill.NineSlice
+	}
+}

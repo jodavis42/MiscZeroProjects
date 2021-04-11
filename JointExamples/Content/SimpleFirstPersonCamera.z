@@ -1,0 +1,28 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Very simple first person camera. Only rotates the camera, not the player it may be attached to.
+class SimpleFirstPersonCamera : ZilchComponent
+{
+  [Property] var RotationSpeed : Real = 1.0;
+  [Property] var RotationLimits : Real2 = Real2(-45, 45);
+  var AccumulatedRotation : Real = 0;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.MouseMove, this.OnMouseMove);
+  }
+
+  function OnMouseMove(event : ViewportMouseEvent)
+  {
+    var rotationLimitsRads = Math.ToRadians(this.RotationLimits);
+    this.AccumulatedRotation -= event.Movement.Y * this.RotationSpeed;
+    this.AccumulatedRotation = Math.Clamp(this.AccumulatedRotation, rotationLimitsRads.X, rotationLimitsRads.Y);
+    
+    this.Owner.Transform.LocalRotation = Math.ToQuaternion(Real3.XAxis, this.AccumulatedRotation);
+  }
+}

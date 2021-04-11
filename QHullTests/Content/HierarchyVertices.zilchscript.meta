@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"QuickHull"
+		}
+	}
+	ZilchScriptBuilder 
+	{
+		var Name = "HierarchyVertices"
+		var ResourceId = 0x59822e70b27f1456
+	}
+}

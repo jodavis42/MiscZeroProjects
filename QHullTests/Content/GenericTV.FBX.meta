@@ -1,0 +1,49 @@
+[Version:1]
+GeometryContent 
+{
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x59817ca5d7a72b2a
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 1
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "GenericTV_GenericTVBase"
+				var ResourceId = 0x59817ca5d7a8c1f8
+			}
+			Object
+			{
+				var Name = "GenericTV_GenericTVStand"
+				var ResourceId = 0x59817ca5d7a8c235
+			}
+			Object
+			{
+				var Name = "GenericTV_GenericTVScreenGeneratedMeshNode0"
+				var ResourceId = 0x59817ca5d7a8c24a
+			}
+			Object
+			{
+				var Name = "GenericTV_GenericTVScreenGeneratedMeshNode1"
+				var ResourceId = 0x59817ca5d7a8c261
+			}
+		}
+	}
+}

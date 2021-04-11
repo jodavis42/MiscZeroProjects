@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Zinc"
+		var ResourceId = 0x522ffcb7f5d840b3
+		var LoaderType = "Cog"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

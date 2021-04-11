@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "QuickHullUnitTest"
+		var ResourceId = 0x598228cd4b37c162
+	}
+}

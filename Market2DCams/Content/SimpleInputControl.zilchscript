@@ -1,0 +1,38 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Makes this object take input control when clicked.
+class SimpleInputControl : ZilchComponent
+{
+  [Dependency] var Reactive : Reactive;
+  [Dependency] var SimpleMovement : SimpleMovement;
+  
+  sends ResetInputFocus : ZilchEvent;
+  
+  [Property] var Active : Boolean = true;
+  [Property] var StartActive : Boolean = false;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.LeftClick, this.OnLeftClick);
+    Zero.Connect(this.Space, Events.ResetInputFocus, this.OnResetInputFocus);
+    
+    this.SimpleMovement.Active = this.StartActive;
+    Console.WriteLine(this.StartActive);
+  }
+
+  function OnResetInputFocus(event : ZilchEvent)
+  {
+    this.SimpleMovement.Active = false;
+  }
+
+  function OnLeftClick(event : ViewportMouseEvent)
+  {
+    this.Space.DispatchEvent(Events.ResetInputFocus, ZilchEvent());
+    this.SimpleMovement.Active = true;
+  }
+}

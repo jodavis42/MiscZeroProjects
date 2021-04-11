@@ -1,0 +1,8 @@
+[Version:1]
+ContentLibrary 
+{
+	var Name = "JointExamples"
+	var LibraryId = 0x58d948540bde96e0
+	var SourceControlType = ""
+	var ReadOnly = false
+}

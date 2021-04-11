@@ -1,0 +1,84 @@
+Cog = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Archetyped = 
+	{
+		string Name = "52247a3f629e359a:Explosion",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [7.67966, -0.114663, 0],
+		Vec3 Scale = [1, 1, 1],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	Sprite = 
+	{
+		string SpriteSource = "52247b1d57f6a828:MushroomExplosion",
+		bool FlipX = false,
+		bool FlipY = false,
+		Vec4 Color = [1, 1, 1, 1],
+		bool Visible = true,
+		bool OnTop = true,
+		bool AnimationActive = true,
+		float AnimationSpeed = 1,
+		uint StartFrame = 0,
+		BlendMode BlendMode = Alpha,
+		SpriteGeometryMode GeometryMode = ZPlane,
+	},
+	TimedDeath = 
+	{
+		float Lifetime = 1,
+	},
+	Hierarchy = 
+	{
+		Cog = 
+		{
+			LinkId = 
+			{
+				uint Id = 2,
+			},
+			Transform = 
+			{
+				Vec3 Translation = [0, 0, 0],
+				Vec3 Scale = [1, 1, 1],
+				Quat Rotation = [0, 0, 0, 1],
+			},
+			TimedDeath = 
+			{
+				float Lifetime = 0.1,
+			},
+			SphereCollider = 
+			{
+				bool Ghost = true,
+				bool SendsMessages = true,
+				bool Seamless = false,
+				string MaterialName = "4de020863e872da8:DefaultPhysicsMaterial",
+				string SerializedGroupName = "522e52eabc7a4536:Explosion",
+				Vec3 Offset = [0, 0, 0],
+				float Radius = 2,
+			},
+			Region = 
+			{
+			},
+			PointForceEffect = 
+			{
+				bool Active = true,
+				bool WakeUpOnChange = false,
+				float MinDistance = 0.5,
+				float MaxDistance = 2,
+				float MinStrength = -2,
+				float MaxStrength = -1,
+				Vec3 LocalPositionOffset = [0, 0, 0],
+				bool UseMaxDistance = false,
+				bool LinearInterpolation = false,
+				bool QuadraticInterpolation = true,
+				bool ClampToMax = true,
+				bool ContinueFalloff = false,
+				bool NoEffect = false,
+			},
+		},
+	},
+},

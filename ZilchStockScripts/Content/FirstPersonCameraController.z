@@ -1,0 +1,53 @@
+class FirstPersonCameraController : ZilchComponent
+{
+    // Radians per pixel
+    [Property]
+    var LookSpeed : Real = 0.01;
+    
+    // If we hide and capture the mouse to the center of the screen
+    [Property]
+    var CapturesMouse : Boolean = true;
+    
+    // If we capture mouse movement
+    var MouseReady : Boolean = true;
+    // The cached mouse move delta
+    var RotationAngles : Real2 = Real2(0.0, 0.0);
+    // The player object that we rotate
+    var Player : Cog = null;
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        // This assumes we're on the camera, so we listen
+        // for mouse moves on the camera itself
+        Zero.Connect(this.Owner, Events.MouseMove, this.OnMouseMove);
+        
+        // This script assumes that the player is the
+        // root of the hierarchy we are currently in
+        this.Player = this.Owner.Parent;
+    }
+    
+    function OnLogicUpdate(updateEvent : UpdateEvent)
+    {
+        // We want to rotate our character about our y-axis so that when we
+        // look left/right then our character rotates, however we don't want
+        // to actually rotate our character up/down. Instead, we want the camera
+        // to rotate up/down independently of the character. So this script
+        // does left/right rotation on the character but indepene does up/down
+        // on the camera (assumed to be a child).
+        var playerRotation = Real3(0.0, this.RotationAngles.Y, 0.0);
+        this.Player.Transform.EulerAngles = playerRotation;
+        
+        var cameraRotation = Real3(this.RotationAngles.X, 0.0, 0.0);
+        this.Owner.Transform.EulerAngles = cameraRotation;
+    }
+    
+    function OnMouseMove(viewportMouseEvent : ViewportMouseEvent)
+    {
+        if(this.MouseReady)
+        {
+            this.RotationAngles.Y -= viewportMouseEvent.Movement.X * this.LookSpeed;
+            this.RotationAngles.X -= viewportMouseEvent.Movement.Y * this.LookSpeed;
+        }
+    }
+}

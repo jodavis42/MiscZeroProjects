@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Satllite"
+		var ResourceId = 0x58869b1656eb67e0
+		var LoaderType = "Cog"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "CoreLink",
+		uint64 ResourceId = 52554653ebdf7ff1,
+	},
+},

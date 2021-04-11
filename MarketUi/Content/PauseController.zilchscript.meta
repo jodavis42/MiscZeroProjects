@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "PauseController"
+		var ResourceId = 0x583b8de9a2b12c08
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"UI"
+		}
+	}
+}

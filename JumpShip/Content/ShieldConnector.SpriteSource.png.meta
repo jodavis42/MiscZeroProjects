@@ -1,0 +1,21 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "ShieldConnector"
+		var ResourceId = 0x524dc84db87b9edc
+		var AtlasId = 0x5274cf95e4a661fd
+		var FrameSizeX = 32
+		var FrameSizeY = 32
+		var FrameCount = 4
+		var FrameDelay = 0.0833332986
+		var OriginX = 16
+		var OriginY = 16
+		var PixelsPerUnit = 32
+		var Sampling = SpriteSampling.Nearest
+		var Looping = true
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+}

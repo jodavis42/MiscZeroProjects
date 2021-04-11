@@ -1,0 +1,31 @@
+class MusicEventTesting : ZilchComponent
+{
+  [Dependency]
+  var Transform : Transform = null;
+  
+  [Property]
+  var Music : SoundCue = null;
+  
+  function Initialize(init : CogInitializer)
+  {
+    if (this.Music != null)
+    {
+      var music = this.Space.SoundSpace.PlayCue(this.Music);
+      
+      Zero.Connect(music, Events.MusicBeat, this.OnMusicBeat);
+    }
+  }
+
+  function OnMusicBeat(event : SoundInstanceEvent)
+  {
+    var sequence = Action.Sequence(this.Owner.Actions);
+    var scaleProp = @this.Transform.WorldScale;
+    var scaleTo = Real3(2.0);
+    var scaleFrom = Real3(1.0);
+    var duration = 0.2;
+    var ease = Ease.QuadInOut;
+    
+    Action.Property(sequence, scaleProp, scaleTo, duration, ease);
+    Action.Property(sequence, scaleProp, scaleFrom, duration, ease);
+  }
+}

@@ -1,0 +1,19 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "OrbitCameraInstructions"
+		var ResourceId = 0x581b3551aaf76fb9
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"UI"
+		}
+	}
+}

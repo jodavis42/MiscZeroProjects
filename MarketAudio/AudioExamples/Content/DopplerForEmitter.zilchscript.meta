@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "DopplerForEmitter"
+		var ResourceId = 0x59459d84c74ef74c
+	}
+}

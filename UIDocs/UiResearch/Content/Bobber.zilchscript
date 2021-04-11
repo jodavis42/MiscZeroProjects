@@ -1,0 +1,40 @@
+class Bobber : ZilchComponent
+{
+  [Dependency] var Transform : Transform;
+  
+  
+  [Property] var DestinationOffset : Real3 = Real3(0, 5, 0);
+  [Property] var Period : Real = 1;
+  [Property] var InitialT : Real = 0;
+  
+  var StartingPosition : Real3;
+  var EndingPosition : Real3;
+  var T : Real;
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.T = this.InitialT;
+    this.StartingPosition = this.Transform.WorldTranslation;
+    this.EndingPosition = this.StartingPosition + this.DestinationOffset;
+    
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+  
+  
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    var start = this.StartingPosition;
+    var end = this.EndingPosition;
+    
+    var interpolant = (1 - Math.Cos(2 * Math.Pi * this.T / this.Period)) / 2;
+    var position = (end - start) * interpolant + start;
+    
+    this.Transform.WorldTranslation = position;
+    
+    this.T += event.Dt;
+    
+    if (this.T >= this.Period)
+      this.T -= this.Period;
+  }
+}

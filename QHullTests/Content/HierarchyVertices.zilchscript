@@ -1,0 +1,20 @@
+class HierarchyVertices : ZilchComponent
+{
+  [Property] var Active : Boolean = true;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.QueryQuickHullVertices, this.OnQueryQuickHullVertices);
+  }
+
+  function OnQueryQuickHullVertices(event : QuickHullVertexQueryEvent)
+  {
+    if(!this.Active)
+      return;
+    
+    event.Vertices = Array[Real3]();
+    foreach(var child in this.Owner.Children)
+      event.Vertices.Add(child.Transform.WorldTranslation);
+  }
+}
+

@@ -1,0 +1,13 @@
+ResourceTable = 
+{
+	string ResourceType = "Archetype",
+	Array EntryList = 
+	[
+		{
+			string Name = "Name1",
+			string Value = "522ffcb7f5d840b3:Zinc",
+			float Weight = 1,
+		},
+	],
+	float MaxWeight = 1,
+},

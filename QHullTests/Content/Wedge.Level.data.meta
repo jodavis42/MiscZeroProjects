@@ -1,0 +1,18 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "Wedge"
+		var ResourceId = 0x59822791c7a0709b
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

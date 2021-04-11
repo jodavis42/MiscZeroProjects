@@ -1,0 +1,79 @@
+class UiWindow : ZilchComponent
+{
+  [Dependency]
+  var UiWidget : UiWidget;
+  
+  
+  [Property]
+  var SizePath : CogPath = CogPath(".");
+  
+  
+  var OpenCloseDuration : Real = 0.1;
+  
+  var TargetSize : Real2;
+  
+  var T_ : Real;
+  var T : Real
+  {
+    get { return this.T_; }
+    
+    set
+    {
+      this.T_ = value;
+      
+      this.SizePath.UiWidget.Size = Math.Lerp(Real2.Zero, this.TargetSize, Math.SmoothStep(0, 1, value));
+    }
+  }
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.TargetSize = this.SizePath.UiWidget.Size;
+    
+    Zero.Connect(this.Owner, Events.UiWindowSetup, this.OnUiWindowSetup);
+    Zero.Connect(this.Owner, Events.UiWindowDestroyed, this.OnUiWindowDestroyed);
+  }
+  
+  
+  function OnUiWindowSetup(event : UiWindowEvent)
+  {
+    this.SizePath.UiWidget.Size = Real2.Zero;
+    
+    //var worldCenter = event.WorldCenter;
+    
+    //var rootSize = this.UiWidget.Root.Owner.UiWidget.Size;
+    //var thisSize = this.TargetSize;
+    
+    //var overhangX = worldCenter.X + thisSize.X - rootSize.X;
+    //var overhangY = worldCenter.Y - thisSize.Y;
+    
+    //if (overhangX > 0)
+      //worldCenter.X -= overhangX;
+    //if (overhangY < 0)
+      //worldCenter.Y -= overhangY;
+    
+    //this.TargetCenter = worldCenter;
+    
+    this.T = 0;
+    Action.Property(this.Owner.Actions, @this.T, 1, this.OpenCloseDuration, Ease.Linear);
+  }
+  
+  
+  function OnUiWindowDestroyed(event : UiWindowEvent)
+  {
+    event.Handled = true;
+    //this.T = 1;
+    var seq = Action.Sequence(this.Owner.Actions);
+    Action.Property(seq, @this.T, 0, this.OpenCloseDuration * this.T_, Ease.Linear);
+    Action.Call(seq, this.Owner.Destroy);
+  }
+}
+
+
+class UiWindowEvent : ZilchEvent
+{
+  var TitleText : String;
+  var BodyText : String;
+  var WorldCenter : Real2;
+  var Handled : Boolean;
+}

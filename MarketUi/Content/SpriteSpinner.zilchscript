@@ -1,0 +1,46 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Arend Danielek
+// Last update: 7/24/2016
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Rotates the sprite around the specified axis.
+class SpriteSpinner : ZilchComponent
+{
+  [Dependency]
+  var Transform : Transform;
+  
+  [Property]
+  var Axis : AxisDirection = AxisDirection.Z;
+  
+  [Property]
+  var Speed : Real = 45.0;
+  var SpeedRad : Real { get { return Math.ToRadians(this.Speed); } }
+  
+  [Property]
+  var RotateClockwise : Boolean = false;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    var angles = Real3();
+    var theta = this.SpeedRad * event.Dt;
+    
+    if(this.RotateClockwise)
+      theta *= -1.0;
+    
+    if(this.Axis == AxisDirection.X)
+      angles.X += theta;
+    else if(this.Axis == AxisDirection.Y)
+      angles.Y += theta;
+    else if(this.Axis == AxisDirection.Z)
+      angles.Z += theta;
+    
+    this.Transform.RotateAnglesWorld(angles);
+  }
+}

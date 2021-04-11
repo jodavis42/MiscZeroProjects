@@ -1,0 +1,41 @@
+class InventorySlot
+{
+    var UiCog : Cog = null;
+    var ItemCog : Cog = null;
+}
+
+class Inventory : ZilchComponent
+{
+    [Property]
+    var Width : Integer = 6;
+    
+    var Inventory : Array[Archetype] = new Array[Archetype]();
+    
+    var Height : Integer = 1;
+    
+    var ActiveInventory : Array[InventorySlot] = new Array[InventorySlot]();
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        //Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    }
+    
+    function OnLogicUpdate(updateEvent : UpdateEvent)
+    {
+    }
+    
+    function UpdateUi()
+    {
+        
+    }
+    
+    function AddItem(archetype : Archetype)
+    {
+        this.Inventory.Add(archetype);
+        this.Height = (this.Width - 1 + this.Inventory.Count) % this.Width;
+    }
+}

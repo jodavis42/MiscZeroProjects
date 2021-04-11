@@ -1,0 +1,194 @@
+[Version:1]
+GeometryContent 
+{
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x59817eaa624d23b4
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "MercedensBenzBody_BaseGeneratedMeshNode0"
+				var ResourceId = 0x59817eaa62578328
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BaseGeneratedMeshNode1"
+				var ResourceId = 0x59817eaa6257834e
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BaseGeneratedMeshNode2"
+				var ResourceId = 0x59817eaa62578355
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BaseGeneratedMeshNode3"
+				var ResourceId = 0x59817eaa62578360
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BaseGeneratedMeshNode4"
+				var ResourceId = 0x59817eaa62578369
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BaseGeneratedMeshNode5"
+				var ResourceId = 0x59817eaa62578374
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BLightL"
+				var ResourceId = 0x59817eaa6257837c
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BLightR"
+				var ResourceId = 0x59817eaa62578386
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BodyGeneratedMeshNode6"
+				var ResourceId = 0x59817eaa6257838e
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BodyGeneratedMeshNode7"
+				var ResourceId = 0x59817eaa62578394
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BodyGeneratedMeshNode8"
+				var ResourceId = 0x59817eaa625783a0
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BodyGeneratedMeshNode9"
+				var ResourceId = 0x59817eaa625783a7
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BodyGeneratedMeshNode10"
+				var ResourceId = 0x59817eaa625783ae
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BodyGeneratedMeshNode11"
+				var ResourceId = 0x59817eaa625783b4
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BodyGeneratedMeshNode12"
+				var ResourceId = 0x59817eaa625783c2
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BodyGeneratedMeshNode13"
+				var ResourceId = 0x59817eaa625783c9
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_BodyGeneratedMeshNode14"
+				var ResourceId = 0x59817eaa625783d0
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_HLightLGeneratedMeshNode15"
+				var ResourceId = 0x59817eaa625783d8
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_HLightLGeneratedMeshNode16"
+				var ResourceId = 0x59817eaa625783de
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_HLightRGeneratedMeshNode17"
+				var ResourceId = 0x59817eaa625783e6
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_HLightRGeneratedMeshNode18"
+				var ResourceId = 0x59817eaa625783f5
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_HoodCarbonGeneratedMeshNode19"
+				var ResourceId = 0x59817eaa625783fb
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_HoodCarbonGeneratedMeshNode20"
+				var ResourceId = 0x59817eaa62578403
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_HoodCarbonGeneratedMeshNode21"
+				var ResourceId = 0x59817eaa62578409
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_InteriorGeneratedMeshNode22"
+				var ResourceId = 0x59817eaa62578410
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_InteriorGeneratedMeshNode23"
+				var ResourceId = 0x59817eaa62578417
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_InteriorGeneratedMeshNode24"
+				var ResourceId = 0x59817eaa6257841e
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_MirrorLGeneratedMeshNode25"
+				var ResourceId = 0x59817eaa62578425
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_MirrorLGeneratedMeshNode26"
+				var ResourceId = 0x59817eaa6257842d
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_MirrorLGeneratedMeshNode27"
+				var ResourceId = 0x59817eaa6257843f
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_MirrorRGeneratedMeshNode28"
+				var ResourceId = 0x59817eaa62578445
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_MirrorRGeneratedMeshNode29"
+				var ResourceId = 0x59817eaa6257844e
+			}
+			Object
+			{
+				var Name = "MercedensBenzBody_MirrorRGeneratedMeshNode30"
+				var ResourceId = 0x59817eaa62578456
+			}
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 1
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+}

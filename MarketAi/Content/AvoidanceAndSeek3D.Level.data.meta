@@ -1,0 +1,21 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "AvoidanceAndSeek3D"
+		var ResourceId = 0x58982b1cb16098e6
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Steering"
+			"Avoidance"
+			"Seek"
+		}
+	}
+}

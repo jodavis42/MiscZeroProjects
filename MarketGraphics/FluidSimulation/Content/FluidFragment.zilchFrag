@@ -1,0 +1,40 @@
+[Pixel]
+struct FluidFragment
+{
+  [BuiltInInput] var FrameTime : Real;
+  
+  [FragmentInput][StageInput] var Height : Real;
+  [FragmentInput][StageInput] var Uv : Real2;
+  
+  [Input] var MovementSpeed : Real2 = Real2(0.1);
+  
+  [Input] var TopTexture : Sampler2d;
+  [Input] var BottomTexture : Sampler2d;
+  [Input] var SubtractiveNoiseTexture : Sampler2d;
+  [Input] var NoiseAmount : Real = 0.5;
+  
+  [Output] var Albedo : Real3;
+  
+  function Ease(t : Real) : Real
+  {
+    return t;
+  }
+  
+  function Main()
+  {
+    var textUv = this.Uv + this.FrameTime * this.MovementSpeed;
+    
+    var top = this.TopTexture.Sample(textUv).XYZ;
+    var bottom = this.BottomTexture.Sample(textUv).XYZ;
+    
+    var t = this.Ease(this.Height);
+    
+    this.Albedo = t * top + 
+                  (1.0 - t) * bottom;
+    
+    var noiseUv = this.Uv + this.FrameTime * this.MovementSpeed * 0.5;
+    var noise = this.SubtractiveNoiseTexture.Sample(noiseUv).XYZ;
+    
+    this.Albedo -= noise * this.NoiseAmount;
+  }
+}

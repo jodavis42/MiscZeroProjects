@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "ConfirmationSpace"
+		var ResourceId = 0x583b88e340d2d64a
+		var LoaderType = "Space"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

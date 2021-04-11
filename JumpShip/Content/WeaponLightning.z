@@ -1,0 +1,70 @@
+class WeaponLightning : ZilchComponent
+{
+    [Dependency]
+    var Upgradable : Upgradable = null;
+    
+    [Property]
+    var LightningEmitterName : String = "LightningEmitter";
+    
+    var LightningEmitterCog : Cog = null;
+    
+    var DamageRegionCog : Cog = null;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.BeginFire, this.OnBeginFire);
+        Zero.Connect(this.Owner, Events.EndFire, this.OnEndFire);
+        
+        this.LightningEmitterCog = this.Owner.FindChildByName(this.LightningEmitterName);
+        this.DamageRegionCog = this.Owner.FindChildByName("DamageRegion");
+        // Let the damage region know who to use for upgrade calculations
+        this.DamageRegionCog.DamageRegion.Upgradable = this.Upgradable;
+    }
+    
+    function OnBeginFire(coreEvent : CoreEvent)
+    {
+        if(this.LightningEmitterCog != null)
+        {
+            //var level = this.Upgradable.Level;
+            //
+            ////hardcoded numbers for now from last jump ship
+            //var maxDepth = level * 5.0 + 20.0;
+            //this.LightningEmitterCog.LightningParticleEmitter.MaxDepth = maxDepth as Integer;
+            //
+            //var beginSize = level * 0.01 + 0.25;
+            //var endSize = beginSize - 0.1;
+            //
+            //this.LightningEmitterCog.LightningParticleEmitter.BeginSize = beginSize;
+            //this.LightningEmitterCog.LightningParticleEmitter.EndSize = endSize;
+        }
+        
+        if(this.DamageRegionCog != null)
+        {
+            var damageRegion = this.DamageRegionCog.DamageRegion;
+            damageRegion.Enabled = true;
+            
+            var level = this.Upgradable.Level;
+            var colliderLength = (level * 5.0 + 20.0) * 0.065;
+            this.DamageRegionCog.BoxCollider.Size = local Real3(0.5, colliderLength, 0.5);
+            this.DamageRegionCog.Transform.Translation = local Real3(0.0, colliderLength + 0.3, 0.0);
+        }
+    }
+    
+    function OnEndFire(coreEvent : CoreEvent)
+    {
+        if(this.LightningEmitterCog != null)
+        {
+            //this.LightningEmitterCog.LightningParticleEmitter.MaxDepth = 0;
+        }
+        
+        if(this.DamageRegionCog != null)
+        {
+            var damageRegion = this.DamageRegionCog.DamageRegion;
+            damageRegion.Enabled = false;
+        }
+    }
+}

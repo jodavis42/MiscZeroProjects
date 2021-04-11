@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "BeamWeapon"
+		var ResourceId = 0x523c8e9054cadb11
+		var LoaderType = "Cog"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

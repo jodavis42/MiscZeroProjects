@@ -1,0 +1,49 @@
+[Version:1]
+Cog [InheritId:"59814236541c0002:GenericBedsideTable"]
+{
+	Transform 
+	{
+		var Translation = Real3{3, -4, 0}
+		var Rotation = Quaternion{0, 0, 0, 1}
+		var Scale = Real3{1, 1, 1}
+	}
+	HierarchyMeshToTextBlock [LocallyAdded]
+	{
+		var ApplyTransform = false
+		var FindUsedVertices = false
+	}
+	QuickHullTest [LocallyAdded]
+	{
+		var Active = true
+		var DebugDrawMode = QuickHullDebugDrawMode.None
+	}
+	QuickHullRenderSettings [LocallyAdded]
+	{
+		var RenderGraphics = true
+		var RenderHullFilled = true
+		var RenderHullEdges = true
+		var RenderHullTriangleEdges = false
+		var RenderHullNormals = false
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x598142c75be42e10][InheritId:"59806fa92d4eddb3:ConvexHullFilled"][LocallyAdded]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+		Cog [Id:0x598142c75be439d3][InheritId:"59806fb3123a38d8:ConvexHullWireFrame"][LocallyAdded]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+	}
+}

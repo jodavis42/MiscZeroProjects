@@ -1,0 +1,341 @@
+[Version:1]
+Level 
+{
+	Cog 
+	{
+		var Name = "LevelSettings"
+		var LinkId = 1
+		GravityEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var LocalSpaceDirection = true
+			var Strength = 10
+			var Direction = Vec3{0, -1, 0}
+		}
+		DragEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.100000001
+			var LinearDrag = 0
+			var AngularDrag = 0
+		}
+		GridDraw 
+		{
+			var Active = true
+			var HalfCellOffset = false
+			var CellSize = 1
+			var Axis = GridAxis.YAxis
+			var Lines = 100
+			var DrawAxisOrigins = true
+			var AlwaysDrawInEditor = true
+			var DrawInGame = false
+			var GridColor = Vec4{0.5, 0.5, 0.5, 0.400000006}
+			var GridHighlight = Vec4{0, 0, 0, 0.400000006}
+			var HighlightInterval = 10
+			var FollowEditorCamera = false
+		}
+	}
+	Cog 
+	{
+		var Name = "Renderer"
+		var LinkId = 2
+		DeferredRenderer 
+		{
+			var DrawDebug = true
+			var GeometryDebug = GeometryValue.None
+			var ShowDiffuse = true
+			var ShowSpecular = true
+			var Skybox = "5822dec85e380cf1:SimpleSkybox"
+			var DrawSkybox = true
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+		}
+		Ssao 
+		{
+			var Enabled = true
+			var Radius = 1
+			var Intensity = 2.20000005
+			var BlurDepthThreshold = 0.0500000007
+			var DebugBuffer = false
+		}
+		Bloom 
+		{
+			var Enabled = true
+			var Intensity = 0.100000001
+			var Threshold = 1
+			var Bloom1 = true
+			var Bloom2 = true
+			var Bloom3 = true
+			var Bloom4 = true
+			var Bloom5 = true
+		}
+	}
+	Cog 
+	{
+		var Name = "DirectionalLight"
+		var LinkId = 3
+		Transform 
+		{
+			var Translation = Vec3{0, 50, 50}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{-0.382683456, 0, 0, 0.923879504}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = true
+			var RenderToViewport = false
+			var ForwardViewportEvents = false
+			var RenderOrder = -1
+			var NormalizedSize = Vec2{1, 1}
+			var NormalizedOffset = Vec2{0, 0}
+			var Camera = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Renderer = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Vec2{1, 1}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Vec4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var Facing = Facing.NegativeZ
+			var NearPlane = 0.100000001
+			var FarPlane = 100
+			var PerspectiveMode = PerspectiveMode.Orthographic
+			var FieldOfView = 45
+			var Size = 64
+		}
+		ShadowRenderer 
+		{
+			var ResolutionValue = ShadowResolution.High
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = false
+			var VisibilityEvents = true
+			var Material = ""
+			var Mesh = ""
+		}
+		DirectionalLight 
+		{
+			var LightColorValue = Vec3{1, 1, 1}
+			var LightIntensityValue = 2
+			var CastShadowsValue = true
+			var NormalOffsetBias = 0.100000001
+		}
+		Hierarchy 
+		{
+		}
+	}
+	Cog 
+	{
+		var Name = "EditorCamera"
+		var LinkId = 4
+		Transform 
+		{
+			var Translation = Vec3{-4.78668976, 2.99442577, 4.20760918}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{-0.206362247, -0.38000986, -0.0873830095, 0.897424817}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Vec2{1, 1}
+			var NormalizedOffset = Vec2{0, 0}
+			var Camera = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Renderer = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Vec2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Vec4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var Facing = Facing.NegativeZ
+			var NearPlane = 0.100000001
+			var FarPlane = 200
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 60
+			var Size = 20
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.Orbit
+			var LookDistance = 6.70319939
+			var VerticalAngle = 0.452040583
+			var HorizontalAngle = 0.801105261
+			var LookTarget = Vec3{-0.456453443, 0.0664543808, 0.0113108736}
+			var MoveSensitivity = 1
+		}
+	}
+	Cog 
+	{
+		var Name = "GameCamera"
+		var LinkId = 5
+		Transform 
+		{
+			var Translation = Vec3{0, 2, 9}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{0, 0, 0, 1}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = false
+			var RenderInGame = true
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Vec2{1, 1}
+			var NormalizedOffset = Vec2{0, 0}
+			var Camera = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 5
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Renderer = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Vec2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Letterbox
+			var MarginColor = Vec4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var Facing = Facing.NegativeZ
+			var NearPlane = 0.100000001
+			var FarPlane = 200
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 60
+			var Size = 20
+		}
+		SoundListener 
+		{
+			var Active = true
+		}
+	}
+	Cog 
+	{
+		var Name = "Sphere"
+		var LinkId = 6
+		Transform 
+		{
+			var Translation = Vec3{0, 0, 0}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b376ae:Sphere"
+		}
+		SoundEmitter 
+		{
+			var Volume = 1
+			var Pitch = 0
+			var Attenuator = "58a7ae9845a36092:ButtonAttenuator"
+			var Directional = false
+			var EmitAngle = 90
+			var RearVolume = 0.200000003
+		}
+		SimpleSound 
+		{
+			var StartPlaying = false
+			var Positional = true
+			var Cue = "58a7a2e267ffcf07:Button"
+		}
+		AudioTesting 
+		{
+			var SoundCue = "58a7a2e267ffcf07:Button"
+			var SoundCue2 = "58a759349d6258ac:ElectronicActionAngry"
+		}
+	}
+}

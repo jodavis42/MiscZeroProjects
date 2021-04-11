@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "FloorTile"
+		var ResourceId = 0x5a5c09f89305d5d6
+		var LoaderType = "Cog"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

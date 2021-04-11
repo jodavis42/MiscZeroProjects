@@ -1,0 +1,176 @@
+[Version:1]
+RichAnimation 
+{
+	var SampleTolerance = 0.0500000007
+	var Duration = 0.200000003
+	var Root = Object
+	{
+		var Type = TrackType.Object
+		var Name = "Root"
+		var Path = ""
+		var Disabled = false
+		var PropertyTypeName = "Void"
+		var KeyFrames = Array
+		{
+		}
+		var Children = Array
+		{
+			Object
+			{
+				var Type = TrackType.Object
+				var Name = "/"
+				var Path = "/"
+				var Disabled = false
+				var PropertyTypeName = ""
+				var KeyFrames = Array
+				{
+				}
+				var Children = Array
+				{
+					Object
+					{
+						var Type = TrackType.Component
+						var Name = "Transform"
+						var Path = "Transform"
+						var Disabled = false
+						var PropertyTypeName = ""
+						var KeyFrames = Array
+						{
+						}
+						var Children = Array
+						{
+							Object
+							{
+								var Type = TrackType.Property
+								var Name = "Translation"
+								var Path = "Transform.Translation"
+								var Disabled = false
+								var PropertyTypeName = "Real3"
+								var KeyFrames = Array
+								{
+								}
+								var Children = Array
+								{
+									Object
+									{
+										var Type = TrackType.SubProperty
+										var Name = "X"
+										var Path = "Transform.Translation.X"
+										var Disabled = false
+										var PropertyTypeName = "Real"
+										var KeyFrames = Array
+										{
+											Object
+											{
+												var key = 0
+												var value = Object
+												{
+													var Time = 0
+													var Value = -28.8753624
+													var TangentIn = Real2{-0.0500000007, 0}
+													var TangentOut = Real2{0.0500000007, 0}
+													var EditorFlags = 0
+												}
+											}
+											Object
+											{
+												var key = 0.200000003
+												var value = Object
+												{
+													var Time = 0.200000003
+													var Value = -28.8753624
+													var TangentIn = Real2{-0.0500000007, 0}
+													var TangentOut = Real2{0.0500000007, 0}
+													var EditorFlags = 0
+												}
+											}
+										}
+										var Children = Array
+										{
+										}
+									}
+									Object
+									{
+										var Type = TrackType.SubProperty
+										var Name = "Y"
+										var Path = "Transform.Translation.Y"
+										var Disabled = false
+										var PropertyTypeName = "Real"
+										var KeyFrames = Array
+										{
+											Object
+											{
+												var key = 0
+												var value = Object
+												{
+													var Time = 0
+													var Value = 7.20838165
+													var TangentIn = Real2{-0.0500000007, 0}
+													var TangentOut = Real2{0.0500000007, 0}
+													var EditorFlags = 0
+												}
+											}
+											Object
+											{
+												var key = 0.200000003
+												var value = Object
+												{
+													var Time = 0.200000003
+													var Value = 12.5962
+													var TangentIn = Real2{-0.0500000007, 0}
+													var TangentOut = Real2{0.0500000007, 0}
+													var EditorFlags = 0
+												}
+											}
+										}
+										var Children = Array
+										{
+										}
+									}
+									Object
+									{
+										var Type = TrackType.SubProperty
+										var Name = "Z"
+										var Path = "Transform.Translation.Z"
+										var Disabled = false
+										var PropertyTypeName = "Real"
+										var KeyFrames = Array
+										{
+											Object
+											{
+												var key = 0
+												var value = Object
+												{
+													var Time = 0
+													var Value = 0.359003782
+													var TangentIn = Real2{-0.0500000007, 0}
+													var TangentOut = Real2{0.0500000007, 0}
+													var EditorFlags = 0
+												}
+											}
+											Object
+											{
+												var key = 0.200000003
+												var value = Object
+												{
+													var Time = 0.200000003
+													var Value = 0.359003782
+													var TangentIn = Real2{-0.0500000007, 0}
+													var TangentOut = Real2{0.0500000007, 0}
+													var EditorFlags = 0
+												}
+											}
+										}
+										var Children = Array
+										{
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

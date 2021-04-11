@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "QuickHullRenderSettings"
+		var ResourceId = 0x59804c02690ffab5
+	}
+}

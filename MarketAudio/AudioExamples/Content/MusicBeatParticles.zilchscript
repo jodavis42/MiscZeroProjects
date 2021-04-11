@@ -1,0 +1,36 @@
+//**********************************************************************************
+//
+// Emits particles on each occurrence of a specified type of music beat.
+//
+//**********************************************************************************
+class MusicBeatParticles : ZilchComponent
+{
+  // Requires a SphericalParticleEmitter component
+  [Dependency] var ParticleEmitter : SphericalParticleEmitter;
+  
+  // The type of beat to emit particles on
+  [Property] var WhichBeat : NoteTypes;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the appropriate music event according to beat type
+    if (this.WhichBeat == NoteTypes.EighthNote)
+      Zero.Connect(this.Space, Events.MusicEighthNote, this.OnBeat);
+    else if (this.WhichBeat == NoteTypes.QuarterNote)
+      Zero.Connect(this.Space, Events.MusicQuarterNote, this.OnBeat);
+    else if (this.WhichBeat == NoteTypes.HalfNote)
+      Zero.Connect(this.Space, Events.MusicHalfNote, this.OnBeat);
+    else if (this.WhichBeat == NoteTypes.WholeNote)
+      Zero.Connect(this.Space, Events.MusicWholeNote, this.OnBeat);
+    else if (this.WhichBeat == NoteTypes.Bar)
+      Zero.Connect(this.Space, Events.MusicBar, this.OnBeat);
+    else if (this.WhichBeat == NoteTypes.Beat)
+      Zero.Connect(this.Space, Events.MusicBeat, this.OnBeat);
+  }
+  
+  function OnBeat(event : SoundInstanceEvent)
+  {
+    // Reset the particle count so that particles will be emitted again
+    this.ParticleEmitter.ResetCount();
+  }
+}

@@ -1,0 +1,23 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Joshua Davis
+// Last updated: 1/4/2017
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Destroys this object when it goes offscreen
+class DestroyOffscreen : ZilchComponent
+{
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.ExitView, this.OnExitView);
+  }
+  
+  function OnExitView(event : GraphicalEvent)
+  {
+    if (this.Owner.MarkedForDestruction)
+      return;
+    
+    this.Owner.Destroy();
+  }
+}

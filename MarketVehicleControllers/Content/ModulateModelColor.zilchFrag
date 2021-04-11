@@ -1,0 +1,12 @@
+[Pixel]
+struct ModulateModelColor
+{
+    [Input] var InColor : Real4;
+
+    [Output] var Color : Real4;
+    
+    function Main()
+    {
+        this.Color = this.InColor;
+    }
+}

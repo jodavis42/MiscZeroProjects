@@ -1,0 +1,210 @@
+/************************************************************************************************************/
+/* Copyright 2016 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 1/3/2016                                                                                    */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Jordan Ellis                                                                            */
+/* Class: Wander                                                                                            */
+/* Brief: This steering behavior maintains the "wandering direction" which is calculated by finding a       */
+/*        vector from the object to a point on a circle offset from the object in the direction of its      */
+/*        velocity. At each time step a random offset is added to the wander direction. The modified wander */
+/*        direction is constrained to lie on a circle.                                                      */
+/************************************************************************************************************/
+
+enum WanderShapes
+{
+  Circle,
+  Sphere
+}
+
+class Wander : SteeringComponent
+{
+  [Dependency]
+  var Transform : Transform = null;
+  
+  [Dependency]
+  var Orientation : Orientation = null;
+  
+  // Should we wander in 2D or 3D
+  [Property]
+  var WanderShape : WanderShapes = WanderShapes.Circle;
+  
+  // The radius of the circle/sphere which the target point is constrained to
+  [Property]
+  var Radius : Real = 2.0;
+  
+  // The maximum angle of displacement on the circle/sphere
+  [Property]
+  var WanderAngle : Real = 45.0;
+  
+  // The offset distance the circle/sphere is from the object
+  [Property]
+  var WanderOffset : Real = 3.0;
+  
+  // Should wander move the object in addition to rotating it
+  [Property]
+  var Movement : Boolean = true;
+  
+  [Property]
+  var SparseUpdate : Boolean = true;
+  
+  [Property]
+  var SparseUpdateMaxTimeout : Integer = 5;
+  
+  var UpdateTimeout : Integer = 0;
+  
+  var RandomGenerator : Random = new Random();
+  
+  var Result : Real3 = Real3.Zero;
+  
+  var WanderAngleRad : Real
+  {
+    get { return Math.ToRadians(this.WanderAngle); }
+  }
+  
+  var DebugDrawEnabled : Boolean
+  {
+    get { return this.SteeringAccumulator.DebugDrawEnabled; }
+  }
+  
+  [Override]
+  function SteeringInitialize(init : CogInitializer)
+  {
+    var seed = this.Transform.WorldTranslation.X +
+               this.Transform.WorldTranslation.Y +
+               this.Transform.WorldTranslation.Z +
+               this.Space.TimeSpace.RealTimePassed;
+    
+    // Seed the random number generator
+    this.RandomGenerator.Seed = seed as Integer;
+  }
+
+  [Override]
+  function SteeringUpdate(event : UpdateEvent)
+  {
+    // If the component is not active do nothing
+    if(!this.Active || !this.SteeringAccumulator.Active)
+    {
+      return;
+    }
+    
+    // If we're currently timed out, just apply the same direction
+    if (this.UpdateTimeout > 0)
+    {
+      --this.UpdateTimeout;
+      this.AddLookDirection(this.Result);
+      
+      if (this.Movement)
+      {
+        this.AddLocalMovement(this.Orientation.LocalForward);
+      }
+      
+      return;
+    }
+    
+    // Determine whether we're using a circle or a sphere for our wander direction
+    if (this.WanderShape == WanderShapes.Circle)
+    {
+      this.WanderCircle();
+    }
+    else
+    {
+      this.WanderSphere();
+    }
+    
+    // Apply the calculated resulting direction
+    this.AddLookDirection(this.Result);
+    
+    if (this.Movement)
+    {
+      this.AddLocalMovement(this.Orientation.LocalForward);
+    }
+    
+    if (this.SparseUpdate)
+    {
+      this.UpdateTimeout += this.RandomGenerator.RangeInclusiveMax(
+        0, this.SparseUpdateMaxTimeout
+      );
+    }
+  }
+  
+  function WanderCircle()
+  {
+    // Calculate the rotation angle
+    var angle = this.RandomGenerator.Range(-this.WanderAngleRad, this.WanderAngleRad);
+    
+    // Calculate the rotated vector
+    var rotation = Math.AxisAngle(this.Orientation.WorldUp, angle);
+    var direction = Math.Multiply(rotation, this.Orientation.WorldForward);
+    
+    // Calculate the normalized new direction vector
+    this.Result = this.Orientation.WorldForward * this.WanderOffset + 
+                  direction * this.Radius;
+    this.Result = Math.Normalize(this.Result);
+    
+    if (this.DebugDrawEnabled)
+    {
+      this.DebugDrawWanderCircle(direction);
+    }
+  }
+  
+  function WanderSphere()
+  {
+    // Calculate the rotation angle
+    var angle = this.RandomGenerator.Range(-this.WanderAngleRad, this.WanderAngleRad);
+    
+    // Generate a random point on the sphere within a cone
+    var point = this.RandomGenerator.UnitReal3() * Math.Sin(angle);
+    point = Real3(point.X, point.Y, Math.Cos(angle));
+    
+    var direction = -Math.Multiply(this.Transform.WorldRotation, point);
+    
+    this.Result = this.Orientation.WorldForward * this.WanderOffset +
+                  direction * this.Radius;
+    this.Result = Math.Normalize(this.Result);
+    
+    if (this.DebugDrawEnabled)
+    {
+      this.DebugDrawWanderSphere(direction);
+    }
+  }
+  
+  function DebugDrawWanderCircle(wanderDirection : Real3)
+  {
+    var position = this.Transform.WorldTranslation + 
+                   this.Orientation.WorldForward * this.WanderOffset;
+    var axis = this.Orientation.WorldUp;
+    var radius = this.Radius;
+    var circle = DebugCircle(position, axis, radius);
+    
+    circle.Color = Real4(0.96, 0.26, 0.8, 0.2);
+    
+    DebugDraw.Add(circle);
+    
+    this.DebugDrawRay(circle.Position, wanderDirection);
+  }
+  
+  function DebugDrawWanderSphere(wanderDirection : Real3)
+  {
+    var position = this.Transform.WorldTranslation +
+                   this.Orientation.WorldForward * this.WanderOffset;
+    var radius = this.Radius;
+    var sphere = DebugSphere(position, radius);
+    
+    sphere.Color = Real4(0.96, 0.26, 0.8, 0.2);
+    
+    DebugDraw.Add(sphere);
+    
+    this.DebugDrawRay(sphere.Position, wanderDirection);
+  }
+  
+  function DebugDrawRay(start : Real3, direction : Real3)
+  {
+    var end = start + direction * this.Radius;
+    var ray = DebugLine(start, end);
+    
+    ray.HeadSize = 0.5;
+    ray.Color = Real4(0.96, 0.26, 0.8, 1.0);
+    
+    DebugDraw.Add(ray);
+  }
+}

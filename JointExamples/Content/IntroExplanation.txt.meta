@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	TextBuilder 
+	{
+		var Name = "IntroExplanation"
+		var ResourceId = 0x58c4908a188aebdd
+	}
+}

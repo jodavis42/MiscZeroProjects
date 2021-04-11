@@ -1,0 +1,105 @@
+class Chair : ZilchComponent
+{
+    [Property]
+    var PlayerPopUpAmount : Real = 2.0;
+    
+    var ActivePlayerCog : Cog = null;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, "TestInteract", this.OnTestInteract);
+        Zero.Connect(this.Owner, "Interact", this.OnInteract);
+    }
+
+    function OnTestInteract(e : InteractEvent)
+    {
+        if (this.ActivePlayerCog == null)
+        {
+            e.Message = "sit down in the chair";
+        }
+        else if (e.PlayerCog == this.ActivePlayerCog)
+        {
+            e.Message = "get out of the chair";
+        }
+    }
+
+    function OnInteract(e : InteractEvent)
+    {
+        // Are we trying to get in?
+        if (this.ActivePlayerCog == null)
+        {
+            // The player could already be sitting in a chair, notify anyone of this change
+            e.Player.SendPlayerEventTo("ChangeChairs", e.PlayerCog);
+            
+            e.Player.Deactivate();
+            e.Player.ResetRotationAngles();
+            e.PlayerCog.AttachTo(this.Owner);
+            e.PlayerCog.Transform.Translation = local Real3();
+            e.PlayerCog.Transform.Rotation = local Quaternion();
+            e.Player.FreezeMouseInput = true;
+            
+            this.ActivePlayerCog = e.PlayerCog;
+            
+            Zero.Connect(e.PlayerCog, "PlayerKeyDown", this.OnPlayerKeyDown);
+            Zero.Connect(e.PlayerCog, "PlayerKeyUp", this.OnPlayerKeyUp);
+            Zero.Connect(e.PlayerCog, "PlayerMouseMove", this.OnPlayerMouseMove);
+            
+            Zero.Connect(e.PlayerCog, "ChangeChairs", this.OnChangeChairs);
+        }
+        // Otherwise, we're trying to get out
+        else if (e.PlayerCog == this.ActivePlayerCog)
+        {
+            this.UnseatPlayer();
+        }
+    }
+    
+    function UnseatPlayer()
+    {
+        var playerCog = this.ActivePlayerCog;
+        this.ActivePlayerCog = null;
+        
+        playerCog.DetachRelative();
+        var worldUp = this.Owner.Transform.TransformNormal(local Real3(0.0, 1.0, 0.0));
+        playerCog.Transform.WorldTranslation += worldUp * this.PlayerPopUpAmount;
+        playerCog.Player.Activate();
+        playerCog.Player.FreezeMouseInput = false;
+        
+        Zero.Disconnect(playerCog, "PlayerKeyDown", this);
+        Zero.Disconnect(playerCog, "PlayerKeyUp", this);
+        Zero.Disconnect(playerCog, "PlayerMouseMove", this);
+        Zero.Disconnect(playerCog, "ChangeChairs", this);
+    }
+    
+    function OnPlayerKeyDown(e : PlayerKeyEvent)
+    {
+        if (e.Key == Keys.Back && this.ActivePlayerCog == e.PlayerCog)
+        {
+            this.UnseatPlayer();
+            return;
+        }
+        
+        var root = this.Owner.FindRoot();
+        root.DispatchEvent("PlayerKeyDown", e);
+    }
+    
+    function OnPlayerKeyUp(e : PlayerKeyEvent)
+    {
+        var root = this.Owner.FindRoot();
+        root.DispatchEvent("PlayerKeyUp", e);
+    }
+    
+    function OnPlayerMouseMove(e : PlayerMouseEvent)
+    {
+        var root = this.Owner.FindRoot();
+        root.DispatchEvent("PlayerMouseMove", e);
+    }
+    
+    function OnChangeChairs(e : PlayerEvent)
+    {
+        this.UnseatPlayer();
+    }
+}

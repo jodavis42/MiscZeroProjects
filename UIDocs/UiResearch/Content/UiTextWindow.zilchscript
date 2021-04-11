@@ -1,0 +1,22 @@
+class UiTextWindow : ZilchComponent
+{
+  [Dependency] var UiWidget : UiWidget;
+  [Dependency] var UiWindow : UiWindow;
+  
+  
+  [Property] var TextPath : CogPath = CogPath();
+  
+  var Instigator : Cog;
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.UiWindowSetup, this.OnUiWindowSetup);
+  }
+  
+  
+  function OnUiWindowSetup(event : UiWindowEvent)
+  {
+    this.TextPath.UiTextShadow.Text = event.BodyText;
+  }
+}

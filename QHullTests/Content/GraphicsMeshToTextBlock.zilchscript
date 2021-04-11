@@ -1,0 +1,51 @@
+[RunInEditor]
+class GraphicsMeshToTextBlock : ToTextBlockBase
+{
+  [Property] var ReplaceModel : Boolean = true;
+  [Property] var Input : Mesh
+  {
+    get
+    {
+      return this.InputMesh;
+    }
+    set
+    {
+      this.InputMesh = value;
+      if(this.ReplaceModel && this.Owner != null && this.Owner.Model != null)
+        this.Owner.Model.Mesh = this.InputMesh;
+    }
+  }
+  
+  var InputMesh : Mesh;
+  
+  [Property]
+  function Save()
+  {
+    if(this.Input == null)
+      return;
+    
+    var fileName = this.GenerateVertexFileName(this.Input.Name);
+    this.SaveVertices(fileName, this.GetVertices());
+  }
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.SaveVertices, this.OnSaveVertices);
+  }
+
+  function OnSaveVertices(event : ZilchEvent)
+  {
+    this.Save();
+  }
+  
+  function GetVertices() : Array[Real3]
+  {
+    var output = Array[Real3]();
+    for(var i = 0; i < this.Input.Vertices.VertexCount; ++i)
+    {
+      var pos = this.Input.Vertices.GetVertexData(i, VertexSemantic.Position);
+      output.Add(pos.XYZ);
+    }
+    return output;
+  }
+}

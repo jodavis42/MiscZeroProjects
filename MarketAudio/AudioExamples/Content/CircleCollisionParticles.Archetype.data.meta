@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "CircleCollisionParticles"
+		var ResourceId = 0x5908b326b0bbc70d
+		var LoaderType = "Cog"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

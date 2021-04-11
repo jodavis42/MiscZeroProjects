@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "PositionJointExamples"
+		var ResourceId = 0x58d9188616cf974b
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

@@ -1,0 +1,13 @@
+class SetWidgetColorOnInitialize : ZilchComponent
+{
+  [Dependency] var UiWidget : UiWidget;
+  
+  
+  [Property] var Color : Real4 = Real4(Colors.White.XYZ, 0);
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.UiWidget.LocalColor = this.Color;
+  }
+}

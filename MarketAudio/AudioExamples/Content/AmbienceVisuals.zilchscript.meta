@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "AmbienceVisuals"
+		var ResourceId = 0x593a2a5399cee294
+	}
+}

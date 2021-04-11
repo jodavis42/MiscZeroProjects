@@ -1,0 +1,71 @@
+class BoxGenerator : ToTextBlockBase
+{
+  [Dependency] var Transform : Transform;
+  [Property] var TestNamePrefix : String = "Box";
+  [Property] var Stacks : Integer = 3;
+  [Property] var Slices : Integer = 3;
+
+  var Vertices : Array[Real3] = Array[Real3]();
+  
+  [Property]
+  function Save()
+  {
+    var output = Array[Real3]();
+    this.GenerateVertices(output);
+    
+    var testName = "`this.TestNamePrefix``this.Stacks`x`this.Slices`";
+    var fileName = this.GenerateVertexFileName(testName);
+    this.SaveVertices(fileName, output);
+  }
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.SaveVertices, this.OnSaveVertices);
+  }
+
+  function OnSaveVertices(event : ZilchEvent)
+  {
+    this.Save();
+  }
+
+  function GenerateVertices(outVertices : Array[Real3])
+  {
+    var matrix = this.Transform.WorldMatrix;
+    this.GenerateFace(0, matrix, outVertices);
+    this.GenerateFace(1, matrix, outVertices);
+    this.GenerateFace(2, matrix, outVertices);
+  }
+
+  function GenerateFace(axis : Integer, matrix : Real4x4, outVertices : Array[Real3])
+  {
+    var stackEnd = this.Stacks - 1;
+    var sliceEnd = this.Slices - 1;
+
+    var localPoint = Real3();
+    localPoint[axis] = 0.5;
+  
+    for(var stackI = 0; stackI <= stackEnd; ++stackI)
+    {
+      // [0, 1]
+      var stackPos = (stackI as Real) / stackEnd;
+      // [-.5, .5]
+      stackPos = (stackPos - 0.5);
+      localPoint[(axis + 1) % 3] = stackPos;
+
+      for(var sliceI = 0; sliceI <= sliceEnd; ++sliceI)
+      {
+        // [0, 1]
+        var slicePos = (sliceI as Real) / sliceEnd;
+        // [-.5, .5]
+        slicePos = (slicePos - 0.5);
+        localPoint[(axis + 2) % 3] = slicePos;
+  
+        localPoint[axis] = 0.5;
+        outVertices.Add(Math.MultiplyPoint(matrix, localPoint));
+  
+        localPoint[axis] = -0.5;
+        outVertices.Add(Math.MultiplyPoint(matrix, localPoint));
+      }
+    }
+  }
+}

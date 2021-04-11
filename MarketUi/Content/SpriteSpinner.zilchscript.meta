@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "SpriteSpinner"
+		var ResourceId = 0x581cce9ce2103ce0
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"UI"
+		}
+	}
+}

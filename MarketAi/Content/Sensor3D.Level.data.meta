@@ -1,0 +1,19 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Sensor3D"
+		var ResourceId = 0x58927bd42a43cb55
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Sensing"
+		}
+	}
+}

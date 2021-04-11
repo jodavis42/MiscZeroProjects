@@ -1,0 +1,68 @@
+//**********************************************************************************
+//
+// Associates states (integers) with other SoundSwitchContainers. When GetSoundCue
+// is called, it will call GetSoundCue on the SoundSwitchContainer associated
+// with the current value of CurrentState.
+//
+//**********************************************************************************
+class SoundSwitchContainer
+{
+  // The current state of the switch container
+  var CurrentState : Integer;
+  // The list of other switches associated with a particular state value
+  var NestedSwitches : Array[SoundSwitchContainer] = Array[SoundSwitchContainer]();
+  
+  [Virtual]
+  function GetSoundCue() : SoundCue
+  {
+    // If the CurrentState value is within the array, calls GetSoundCue on the switch
+    if (this.CurrentState >= 0 && this.CurrentState < this.NestedSwitches.Count)
+      return this.NestedSwitches[this.CurrentState].GetSoundCue();
+    // Returns null for out-of-range values
+    else
+      return null;
+  }
+  
+  function SetStateToObject(state : Integer, object : SoundSwitchContainer)
+  {
+    // If the state value won't fit in the array, increase the array size
+    if (this.NestedSwitches.Count - 1 < state)
+      this.NestedSwitches.Resize(state + 1);
+      
+    // Set the state to the switch object
+    this.NestedSwitches[state] = object;
+  }
+}
+
+//**********************************************************************************
+//
+// Associates states (integers) with SoundCues. When GetSoundCue is called, it will 
+// return the SoundCue associated with the current value of CurrentState.
+//
+//**********************************************************************************
+class SoundSwitchCues : SoundSwitchContainer
+{
+  // The list of SoundCues associated with a particular state value
+  var SoundCues : Array[SoundCue] = Array[SoundCue]();
+  
+  [Override]
+  function GetSoundCue() : SoundCue
+  {
+    // If the CurrentState value is within the array, returns the SoundCue
+    if (this.CurrentState >= 0 && this.CurrentState < this.SoundCues.Count)
+      return this.SoundCues[this.CurrentState];
+    // Returns null for out-of-range values
+    else
+      return null;
+  }
+  
+  function SetStateToSoundCue(state : Integer, cue : SoundCue)
+  {
+    // If the state value won't fit in the array, increase the array size
+    if (this.SoundCues.Count - 1 < state)
+      this.SoundCues.Resize(state + 1);
+      
+    // Set the state to the SoundCue
+    this.SoundCues[state] = cue;
+  }
+}

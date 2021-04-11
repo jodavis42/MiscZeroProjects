@@ -1,0 +1,174 @@
+// Handles drag/attach/detach logic for any mountable item (mostly weapons).
+class ItemMountable : ZilchComponent
+{
+    // When we separate we need to create a new root for us,
+    // this is the archetype to create to do this.
+    [Property]
+    var RootArchetype : Archetype = Archetype.ObjectRoot;
+    
+    // We need a reactive to get mouse events, although we
+    // don't actually need the reactive component.
+    [Dependency]
+    var Reactive : Reactive = null;
+    
+    // The cog we are currently mounted to.
+    var MountCog : Cog = null;
+    // Did the mouse click on us? If so we have to handle drag logic.
+    var IsMoving : Boolean = false;
+    
+    //sends AttachToCore : AttachEvent;
+    //sends DetachFromCore : AttachEvent;
+    
+    sends ItemDragBegin : ZilchEvent;
+    sends ItemDragEnd : ZilchEvent;
+    sends TestItemMount : GridAttachEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.LeftMouseDown, this.OnLeftMouseDown);
+        Zero.Connect(this.Owner, Events.LeftMouseUp, this.OnLeftMouseUp);
+        
+        Zero.Connect(this.Space, Events.MouseMove, this.OnMouseMove);
+        Zero.Connect(this.Space, Events.MouseUpdate, this.OnMouseMove);
+        
+        // On creating, attach to our parent's mount if we didn't already have a mount
+        var mount = this.Owner.Parent;
+        if(mount != null)
+        {
+            if(mount.ItemMount != null)
+            {
+                this.Attach(mount, this.Owner.Transform.LocalTranslation);
+            }
+        }
+    }
+    
+    function Attach(root : Cog, localPosition : Real3)
+    {
+        // Save and attach to this new core
+        this.MountCog = root;
+        this.MountCog.ItemMount.AddItem(this.Owner);
+        // Don't attach to a parent we're already aattached to
+        if(this.Owner.Parent != this.MountCog)
+        {
+            this.Owner.AttachToPreserveLocal(this.MountCog);
+        }
+        this.Owner.Transform.Translation = localPosition;
+        
+        // Tell all of our components that we're attaching to another core
+        var attachEvent = new AttachEvent();
+        attachEvent.CoreCog = this.Owner.FindRoot().CoreLink.CoreCog;
+        this.Owner.DispatchEvent(Events.AttachToCore, attachEvent);
+    }
+    
+    function Detach()
+    {
+        // Remove our reference to the old mount
+        this.MountCog.ItemMount.RemoveItem(this.Owner);
+        this.MountCog = null;
+        
+        // Create a new root and attach to it
+        var newRoot = this.Space.CreateAtPosition(this.RootArchetype, this.Owner.Transform.WorldTranslation);
+        this.Owner.DetachPreserveLocal();
+        this.Owner.AttachToPreserveLocal(newRoot);
+        this.Owner.Transform.Translation = local Real3(0.0, 0.0, 0.0);
+        
+        // Tell all of our components that we're attaching to another core
+        var attachEvent = new AttachEvent();
+        attachEvent.CoreCog = null;
+        this.Owner.DispatchEvent(Events.DetachFromCore, attachEvent);
+    }
+    
+    function OnLeftMouseDown(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // If we already have a mount then we have to detach from it
+        if(this.MountCog != null)
+        {
+            this.Detach();
+        }
+        
+        // Tell our root to do drag logic
+        var root = this.Owner.FindRoot();
+        root.Attachable.OnLeftMouseDown(viewportMouseEvent);
+        
+        // Tell everyone that an item is being dragged
+        var toSend = new ZilchEvent();
+        this.Space.DispatchEvent(Events.ItemDragBegin, toSend);
+        
+        // Test all mounts for our current position
+        this.TestResults(viewportMouseEvent, false);
+        this.IsMoving = true;
+    }
+    
+    function OnMouseMove(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // The mouse wasn't clicked on us, we don't care that it was dragged.
+        if(this.IsMoving == false)
+        {
+            return;
+        }
+        
+        // Tell our root to handle drag logic
+        var root = this.Owner.FindRoot();
+        root.Attachable.OnMouseMove(viewportMouseEvent);
+        
+        // Test our current position against all mounts
+        // (we don't want results but we want sprites to properly highlight)
+        this.TestResults(viewportMouseEvent, false);
+    }
+    
+    function OnLeftMouseUp(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // Tell our root to handle mouse up logic
+        var root = this.Owner.FindRoot();
+        root.Attachable.OnLeftMouseUp(viewportMouseEvent);
+        
+        // Tell everyone we stopped dragging
+        var toSend = new ZilchEvent();
+        this.Space.DispatchEvent(Events.ItemDragEnd, toSend);
+        
+        // Test to see if there's a good attachment point (we want results)
+        var info = this.TestResults(viewportMouseEvent, true);
+        
+        // If we got back some results then attach to the mount (hardcoded offset for z fighting)
+        if(info != null)
+        {
+            this.Attach(info.Root, local Real3(0.0, 0.0, 0.1));
+        }
+        
+        this.IsMoving = false;
+    }
+    
+    function TestResults(viewportMouseEvent : ViewportMouseEvent, getResults : Boolean) : GridAttachInfo
+    {
+        // See if we are close enough to any mount to attach to it
+        var toSend = new GridAttachEvent();
+        toSend.TestPos = this.Owner.Transform.WorldTranslation;
+        toSend.TestRoot = this.Owner.FindRoot();
+        this.Space.DispatchEvent(Events.TestItemMount, toSend);
+        
+        // If the user wants results then find the closest attachment point
+        if(getResults == true)
+        {
+            var minDistance = 999.0;
+            var bestAttachment : GridAttachInfo = null;
+            
+            foreach(var info in toSend.PossibleAttachments)
+            {
+                var dist = Math.Length(toSend.TestPos - info.AttachPosition);
+                if(dist < minDistance)
+                {
+                    minDistance = dist;
+                    bestAttachment = info;
+                }
+            }
+            
+            return bestAttachment;
+        }
+        
+        return null;
+    }
+}

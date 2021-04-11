@@ -1,0 +1,8 @@
+[Version:1]
+ContentLibrary 
+{
+	var Name = "AudioExamples"
+	var LibraryId = 0x5912b0a98a6b36a6
+	var SourceControlType = ""
+	var ReadOnly = false
+}

@@ -1,0 +1,24 @@
+Cog = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Named = 
+	{
+		string Name = "Sprite",
+	},
+	Archetyped = 
+	{
+		string Name = "52e852f848594746:UiTextRoot",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [4.90508, 5.3589, -6.96811],
+		Vec3 Scale = [1, 1, 1],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	UiFollowObject = 
+	{
+	},
+},

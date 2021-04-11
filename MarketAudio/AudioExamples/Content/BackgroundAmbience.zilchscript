@@ -1,0 +1,196 @@
+//**********************************************************************************
+//
+// Plays two different version of random background ambience, one for day and one
+// for night. One constant background track is played for each and a selection of
+// other cues are played at random times and positions.
+//
+//**********************************************************************************
+class BackgroundAmbience : ZilchComponent
+{
+  // The position of ambience cues is based on this object's position
+  [Dependency] var Transform : Transform;
+  
+  // A looping background cue which will be constantly playing
+  [Property] var BackgroundDay : SoundCue;
+  [Property] var BackgroundNight : SoundCue;
+  // The first ambience cue
+  [Property] var Cue1Day : SoundCue;
+  [Property] var Cue1Night : SoundCue;
+  // The minimum and maximum seconds that will pass before this cue is played again
+  [Property] var Wait1MinMax : Real2 = Real2(3.0, 10.0);
+  // The second ambience cue
+  [Property] var Cue2Day : SoundCue;
+  [Property] var Cue2Night : SoundCue;
+  // The minimum and maximum seconds that will pass before this cue is played again
+  [Property] var Wait2MinMax : Real2 = Real2(3.0, 10.0);
+  // The third ambience cue
+  [Property] var Cue3Day : SoundCue;
+  [Property] var Cue3Night : SoundCue;
+  // The minimum and maximum seconds that will pass before this cue is played again
+  [Property] var Wait3MinMax : Real2 = Real2(3.0, 10.0);
+  
+  // An object with a SoundEmitter for the first ambience cue
+  var Emitter1 : Cog;
+  // An object with a SoundEmitter for the second ambience cue
+  var Emitter2 : Cog;
+  // An object with a SoundEmitter for the third ambience cue
+  var Emitter3 : Cog;
+  // The last angle used for the first ambience cue's position
+  var Cue1LastAngle : Real = 0.0;
+  // The last angle used for the second ambience cue's position
+  var Cue2LastAngle : Real = 0.0;
+  // The last angle used for the third ambience cue's position
+  var Cue3LastAngle : Real = 0.0;
+  // Whether to play the day or night SoundCues
+  var Day : Boolean = true;
+  // The SoundInstance created when playing the background SoundCue
+  var BackgroundInstance : SoundInstance;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the event to switch from day to night and vice versa
+    Zero.Connect(this.Space, Events.DayCycleEvent, this.SetDay);
+    
+    // Start playing the looping background cue
+    this.BackgroundInstance = this.Space.SoundSpace.PlayCue(this.BackgroundDay);
+    
+    // Create the first emitter object
+    this.Emitter1 = this.Space.Create(Archetype.BasicSoundEmitter);
+    // Create the second emitter object
+    this.Emitter2 = this.Space.Create(Archetype.BasicSoundEmitter);
+    // Create the third emitter object
+    this.Emitter3 = this.Space.Create(Archetype.BasicSoundEmitter);
+    
+    // Delay the first ambience cue
+    var sequence = Actions.Sequence(this.Owner.Actions);
+    Actions.Delay(sequence, this.LevelSettings.RandomContext.Range
+      (this.Wait1MinMax.X, this.Wait1MinMax.Y));
+    Actions.Call(sequence, this.PlayCue1);
+    // Delay the second ambience cue
+    var sequence2 = Actions.Sequence(this.Owner.Actions);
+    Actions.Delay(sequence2, this.LevelSettings.RandomContext.Range
+      (this.Wait2MinMax.X, this.Wait2MinMax.Y));
+    Actions.Call(sequence2, this.PlayCue2);
+    // Delay the third ambience cue
+    var sequence3 = Actions.Sequence(this.Owner.Actions);
+    Actions.Delay(sequence3, this.LevelSettings.RandomContext.Range
+      (this.Wait3MinMax.X, this.Wait3MinMax.Y));
+    Actions.Call(sequence3, this.PlayCue3);
+  }
+  
+  function SetDay(event : DayCycleEvent)
+  {
+    // If already set to this day value, don't do anything
+    if (this.Day == event.Day)
+      return;
+    
+    // Fade out the current background instance
+    this.BackgroundInstance.InterpolateVolume(0.0, 3.0);
+    // Delay stopping the instance
+    var stopSequence = Actions.Sequence(this.Owner.Actions);
+    Actions.Delay(stopSequence, 3.0);
+    Actions.Call(stopSequence, this.BackgroundInstance.Stop);
+      
+    // If switching from day to night, play the night background
+    if (this.Day == true && event.Day == false)
+      this.BackgroundInstance = this.Space.SoundSpace.PlayCuePaused(this.BackgroundNight);
+    // Otherwise play the day background
+    else
+      this.BackgroundInstance = this.Space.SoundSpace.PlayCuePaused(this.BackgroundDay);
+      
+    // Set the volume to 0
+    var previousVolume = this.BackgroundInstance.Volume;
+    this.BackgroundInstance.Volume = 0.0;
+    // Un-pause the instance
+    this.BackgroundInstance.Paused = false;
+    // Fade in the background instance
+    this.BackgroundInstance.InterpolateVolume(previousVolume, 3.0);
+    
+    // Set the variable for which one is playing now
+    this.Day = event.Day;
+  }
+  
+  function PlayCue1()
+  {
+    var cue = this.Cue1Day;
+    if (this.Day == false)
+      cue = this.Cue1Night;
+      
+    // If this SoundCue was not set, don't try to play it
+    if (cue == null)
+      return;
+    
+    // Pass in the values to play the first ambience cue
+    this.PlayAmbienceCue(1, this.Cue1LastAngle, this.Emitter1, cue);
+    
+    // Delay the next call of this function by a random time
+    var sequence = Actions.Sequence(this.Owner.Actions);
+    Actions.Delay(sequence, this.LevelSettings.RandomContext.Range(this.Wait1MinMax.X, this.Wait1MinMax.Y));
+    Actions.Call(sequence, this.PlayCue1);
+  }
+  
+  function PlayCue2()
+  {
+    var cue = this.Cue2Day;
+    if (this.Day == false)
+      cue = this.Cue2Night;
+      
+    // If this SoundCue was not set, don't try to play it
+    if (cue == null)
+      return;
+    
+    // Pass in the values to play the second ambience cue
+    this.PlayAmbienceCue(2, this.Cue2LastAngle, this.Emitter2, cue);
+    
+    // Delay the next call of this function by a random time
+    var sequence = Actions.Sequence(this.Owner.Actions);
+    Actions.Delay(sequence, this.LevelSettings.RandomContext.Range(this.Wait2MinMax.X, this.Wait2MinMax.Y));
+    Actions.Call(sequence, this.PlayCue2);
+  }
+  
+  function PlayCue3()
+  {
+    var cue = this.Cue3Day;
+    if (this.Day == false)
+      cue = this.Cue3Night;
+      
+    // If this SoundCue was not set, don't try to play it
+    if (cue == null)
+      return;
+    
+    // Pass in the values to play the third ambience cue
+    this.PlayAmbienceCue(3, this.Cue3LastAngle, this.Emitter3, cue);
+    
+    // Delay the next call of this function by a random time
+    var sequence = Actions.Sequence(this.Owner.Actions);
+    Actions.Delay(sequence, this.LevelSettings.RandomContext.Range(this.Wait3MinMax.X, this.Wait3MinMax.Y));
+    Actions.Call(sequence, this.PlayCue3);
+  }
+  
+  function PlayAmbienceCue(whichCue : Integer, lastAngle : Real, emitter : Cog, cue : SoundCue)
+  {
+    // Pick a random angle between 0 and 2 * pi
+    var angle = this.LevelSettings.RandomContext.Range(0.0, Math.Pi * 2.0);
+    // If that angle is too close to the last one, get another one
+    while (Math.Abs(angle - lastAngle) < Math.Pi / 6.0)
+      angle = this.LevelSettings.RandomContext.Range(0.0, Math.Pi * 2.0);
+      
+    // Update the last angle variable
+    if (whichCue == 1)
+      this.Cue1LastAngle = angle;
+    else if (whichCue == 2)
+      this.Cue2LastAngle = angle;
+    else 
+      this.Cue3LastAngle = angle;
+      
+    // Get a random radius vector within the min and max values
+    var radius = Real3(3.0, 0.0, 0.0);
+    // Rotate the radius vector by the angle and add it to this object's position
+    var emitPosition = this.Transform.WorldTranslation + 
+      Math.RotateVector(radius, Real3(0.0, 1.0, 0.0), angle);
+    // Move the emitter to that position
+    emitter.Transform.WorldTranslation = emitPosition;
+    // Play the SoundCue
+    emitter.SoundEmitter.PlayCue(cue);
+  }
+}

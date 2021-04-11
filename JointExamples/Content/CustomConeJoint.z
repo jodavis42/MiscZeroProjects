@@ -1,0 +1,174 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// A more complicated example that shows constructing a cone joint. A cone locks two 
+// positions together just like a position joint, but in addition it decomposes the two
+// delta rotation between the two object's orientations into a twist and a cone rotation.
+class CustomConeJoint : ZilchComponent
+{
+  [Dependency]  var ObjectLink : ObjectLink;
+  [Dependency]  var CustomJoint : CustomJoint;
+  
+  [Property] var ConeAngleLimit : Real = 45.0;
+  [Property] var DebugDrawFrameA : Boolean = true;
+  [Property] var PrimaryFrameColor : Real4 = Real4(1, 0, 0, 1);
+  [Property] var SecondaryFrameColor : Real4 = Real4(0, 0, 1, 1);
+  
+  var AxisXConstraint : CustomConstraintInfo;
+  var AxisYConstraint : CustomConstraintInfo;
+  var AxisZConstraint : CustomConstraintInfo;
+  
+  var TwistConstraint : CustomConstraintInfo;
+  var AngleLimit0Constraint : CustomConstraintInfo;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.ComputeCustomJointInfo, this.OnComputeCustomJointInfo);
+    Zero.Connect(this.Space, Events.FrameUpdate, this.OnFrameUpdate);
+    
+    this.AxisXConstraint = this.CustomJoint.CreateConstraint();
+    this.AxisYConstraint = this.CustomJoint.CreateConstraint();
+    this.AxisZConstraint = this.CustomJoint.CreateConstraint();
+    
+    this.TwistConstraint = this.CustomJoint.CreateConstraint();
+    this.AngleLimit0Constraint = this.CustomJoint.CreateConstraint();
+    
+    this.TwistConstraint.Baumgarte = 10.0;
+    this.AngleLimit0Constraint.Baumgarte = 10.0;
+  }
+  
+  // Temporary function to construct an axis angle from a quaternion since it isn't yet bound in script.
+  function ToAxisAngle(rotation : Quaternion) : Real4
+  {
+    var result = Real4();
+    result.W = 2 * Math.ACos(rotation.W);
+    var invSinAngle = Math.Sqrt(Math.Max(1.0 - rotation.W * rotation.W, 0));
+    if(Math.Abs(invSinAngle) > 0.001)
+      invSinAngle = 1.0 / invSinAngle;
+    result.XYZ = Math.Normalize(rotation.XYZ * invSinAngle);
+    if(Math.Length(result.XYZ) < 0.0000001)
+    {
+      result.W = 0;
+    }
+    return result;
+  }
+  
+  function ComputeRotation(cogA : Cog, cogB : Cog)
+  {
+    var basis0 = cogA.GetWorldBasis();
+    var basis1 = cogB.GetWorldBasis();
+    var cogAWorldTwistAxis = -cogA.Orientation.WorldForward;
+    var cogBWorldTwistAxis = -cogB.Orientation.WorldForward;
+    var localTwistAxis = Real3.ZAxis;
+    
+    // Convert the rotational difference between the two objects into cogB's space
+    var basis0InSpace1 = Math.Multiply(Math.Invert(basis1), basis0);
+    // Bring cogA's twist axis to cogB's space
+    var cogATwistInSpace1 = Math.Normalize(Math.Multiply(basis0InSpace1, localTwistAxis));
+    // Compute the rotation that will align cogA's twist axis with cogB's, this is the rotational error of the cone
+    var coneRotation = Math.Normalize(Math.RotationQuaternionBetween(cogATwistInSpace1, localTwistAxis));
+    // Remove the cone rotation from the rotational difference, the remaining rotation is just the twist difference of cogA
+    var twistRotation = Math.Normalize(Math.Multiply(coneRotation, basis0InSpace1));
+    
+    // Convert the quaternion to an axis angle and extract the rotation about the twist axis
+    var axisAngle = this.ToAxisAngle(twistRotation);
+    //Console.WriteLine(axisAngle, twistRotation);
+    var twistAxis = axisAngle.XYZ;
+    var twistAngle = axisAngle.W;
+    // If the axis is pointing the wrong direction then flip the angle
+    if(Math.Dot(twistAxis, localTwistAxis) < 0)
+        twistAngle = -twistAngle;
+    // Deal with the angle being outside [-pi, pi]
+    if(twistAngle > Math.Pi)
+      twistAngle = twistAngle - 2.0 * Math.Pi;
+    if(twistAngle < -Math.Pi)
+      twistAngle = twistAngle + 2.0 * Math.Pi;
+    
+    // Set the jacobian for the twist
+    this.TwistConstraint.SetJacobian(Real3.Zero, -cogAWorldTwistAxis, Real3.Zero, cogBWorldTwistAxis);
+    this.TwistConstraint.SetErrorAndBias(-twistAngle);
+    
+    // Compute the world space cone axis (the axis to rotate about to align the twist axes)
+    var coneWorldAxis = Math.Normalize(Math.Cross(cogBWorldTwistAxis, cogAWorldTwistAxis));
+    // Set the jacobian
+    this.AngleLimit0Constraint.SetJacobian(Real3.Zero, -coneWorldAxis, Real3.Zero, coneWorldAxis);
+    // The error is simply the dot-product between the two (as the sign doesn't matter)
+    var coneAngle = Math.Dot(cogBWorldTwistAxis, cogAWorldTwistAxis);
+    
+    // Compute the error (how much over the limited angle we are
+    var radLimit = Math.ToRadians(this.ConeAngleLimit);
+    var radError = Math.ACos(coneAngle) - radLimit;
+    this.AngleLimit0Constraint.SetLimitedError(-radError, 0, radLimit);
+  }
+
+  function OnComputeCustomJointInfo(event : CustomJointEvent)
+  {
+    var cogA = this.CustomJoint.GetCog(0);
+    var cogB = this.CustomJoint.GetCog(1);
+    var localPoint0 = this.ObjectLink.LocalPointA;
+    var localPoint1 = this.ObjectLink.LocalPointB;
+    
+    // Constrain the two local points to be equal on the x, y, and z axes (effectively locking the points together)
+    this.CustomJoint.ConstrainLinearPosition(this.AxisXConstraint, cogA, cogB, localPoint0, localPoint1, Real3.XAxis);
+    this.CustomJoint.ConstrainLinearPosition(this.AxisYConstraint, cogA, cogB, localPoint0, localPoint1, Real3.YAxis);
+    this.CustomJoint.ConstrainLinearPosition(this.AxisZConstraint, cogA, cogB, localPoint0, localPoint1, Real3.ZAxis);
+    
+    this.ComputeRotation(cogA, cogB);
+  }
+  
+  function OnFrameUpdate(event : UpdateEvent)
+  {
+    this.DebugDraw();
+  }
+  
+  function DebugDraw()
+  {
+    // Get the primary and secondary frames (so we know who draws the arc and who draws a forward)
+    var primaryCog = this.ObjectLink.ObjectA;
+    var secondaryCog = this.ObjectLink.ObjectB;
+    var worldPosition = this.ObjectLink.WorldPointA;
+    // Swap the primary and secondary if necessary
+    if(!this.DebugDrawFrameA)
+    {
+      primaryCog = this.ObjectLink.ObjectB;
+      secondaryCog = this.ObjectLink.ObjectA;
+      worldPosition = this.ObjectLink.WorldPointB;
+    }
+    // Draw the orientation bases
+    primaryCog.Orientation.DrawBases(1);
+    secondaryCog.Orientation.DrawBases(1);
+    
+    var coneRadius = 1;
+    var secondaryRadius = coneRadius * 1.5;
+    var radianLimit = Math.ToRadians(this.ConeAngleLimit);
+    // Get the frame data we need to debug draw
+    var primaryForward = primaryCog.Orientation.WorldForward;
+    var primaryAxis0 = primaryCog.Orientation.WorldUp;
+    var primaryAxis1 = primaryCog.Orientation.WorldRight;
+    var secondaryForward = Math.Normalize(secondaryCog.Orientation.WorldForward);
+    // Compute the world twist axis from
+    var cogAWorldTwistAxis = -primaryForward;
+    var cogBWorldTwistAxis = -secondaryForward;
+    var coneWorldAxis = Math.Normalize(Math.Cross(cogBWorldTwistAxis, cogAWorldTwistAxis));
+    
+    // Given the angle limit, solve for the center and radius of the circle that lies theta degrees
+    // away from the primary forward vector using some small trig identities
+    var offset = Math.Cos(radianLimit) * coneRadius;
+    var newCenter = worldPosition + Math.Normalize(primaryForward) * offset;
+    var newRadius = Math.Sqrt(coneRadius * coneRadius - offset * offset);
+    // Draw the circle that represents the cone's limit
+    var debugCircle = DebugCircle(newCenter, primaryForward, newRadius) {Color = this.PrimaryFrameColor};
+    DebugDraw.Add(debugCircle);
+    // Draw vectors from the cone start to the circle edge to help visualize the volume of the cone
+    DebugDraw.Add(DebugLine(worldPosition, newCenter + primaryAxis0 * newRadius) {Color = this.PrimaryFrameColor});
+    DebugDraw.Add(DebugLine(worldPosition, newCenter - primaryAxis0 * newRadius) {Color = this.PrimaryFrameColor});
+    DebugDraw.Add(DebugLine(worldPosition, newCenter + primaryAxis1 * newRadius) {Color = this.PrimaryFrameColor});
+    DebugDraw.Add(DebugLine(worldPosition, newCenter - primaryAxis1 * newRadius) {Color = this.PrimaryFrameColor});
+    // Draw the other object's forward so it's easy to see what the error is
+    DebugDraw.Add(DebugLine(worldPosition, worldPosition + secondaryForward * secondaryRadius) {Color = this.SecondaryFrameColor});
+  }
+}

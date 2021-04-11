@@ -1,0 +1,182 @@
+class ChainGun : ZilchComponent
+{
+    [Property]
+    var SpreadDegrees : Real = 10.0;
+    [Property]
+    var SpreadOffset : Real = 0.05;
+    
+    [Property]
+    var ShotsPerSecond : Real = 20.0;
+    [Property]
+    var DamagePerShot : Real = 2.0;
+    [Property]
+    var ForcePerShot : Real = 600.0;
+    
+    [Property]
+    var RevTime : Real = 2.0;
+    
+    [Property]
+    var RevUpSound : SoundCue = SoundCue.Find("ChainGunRevUp");
+    [Property]
+    var RevDownSound : SoundCue = SoundCue.Find("ChainGunRevDown");
+    [Property]
+    var LoopSound : SoundCue = SoundCue.Find("ChainGunShotLoop");
+    
+    [Property]
+    var TracerMaxDistance : Real = 80.0;
+    [Property]
+    var Tracer : Archetype = Archetype.Find("Tracer");
+    [Property]
+    var ImpactEffect : Archetype = Archetype.Find("BulletPuff");
+    
+    var Rev : Real = 0.0;
+    
+    var TimeAccumulator : Real = 0.0;
+    
+    var TriggerHeld : Boolean = false;
+    var Firing : Boolean = false;
+    
+    var Random : Random = new Random();
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, "Activate", this.OnActivate);
+        Zero.Connect(this.Owner, "Deactivate", this.OnDeactivate);
+        
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    }
+
+    function OnLogicUpdate(e : UpdateEvent)
+    {
+        var timePerShot = 1.0 / this.ShotsPerSecond;
+        
+        this.TimeAccumulator += e.Dt;
+        
+        if (this.TriggerHeld)
+        {
+            this.Rev += e.Dt;
+            
+            if (this.Rev > this.RevTime)
+            {
+                this.Rev = this.RevTime;
+                
+                if (this.Firing == false)
+                {
+                    if (this.TimeAccumulator > timePerShot)
+                    {
+                        this.TimeAccumulator = timePerShot;
+                    }
+                    
+                    this.Owner.SoundEmitter.PlayCue(this.LoopSound);
+                    this.Firing = true;
+                }
+            }
+        }
+        else
+        {
+            this.Rev -= e.Dt;
+            
+            if (this.Rev < 0.0)
+            {
+                this.Rev = 0.0;
+            }
+        }
+        
+        if (this.Firing)
+        {
+            while (this.TimeAccumulator >= timePerShot)
+            {
+                this.TimeAccumulator -= timePerShot;
+                
+                var ourTx = this.Owner.Transform;
+                var worldForward = this.Owner.Orientation.WorldForward;
+                var worldPosition = ourTx.WorldTranslation;
+                
+                worldPosition += this.Random.Real3(0.0, this.SpreadOffset);
+                
+                var worldRay = local Ray();
+                worldRay.Start = worldPosition;
+                worldRay.Direction = worldForward;
+                
+                var results = this.Space.PhysicsSpace.CastRayResults(worldRay, 10);
+                
+                
+                var tracerDistance = this.TracerMaxDistance;
+                var actualDistance = 100000.0;
+                
+                foreach (var result in results)
+                {
+                    // Don't damage the person we were created from
+                    if (Team.IsSameTeam(this.Owner, result.ObjectHit))
+                    {
+                        continue;
+                    }
+                    
+                    var health = result.ObjectHit.Health;
+                    
+                    // We only ignore ghosts if they don't have a Health component
+                    if (result.Collider.Ghost && health == null)
+                    {
+                        continue;
+                    }
+                    
+                    tracerDistance = Math.Min(tracerDistance, result.Distance);
+                    actualDistance = result.Distance;
+                    
+                    if (health != null)
+                    {
+                        health.Change(-this.DamagePerShot);
+                    }
+                    
+                    var body = result.ObjectHit.RigidBody;
+                    if (body != null)
+                    {
+                        body.ForceAwake();
+                        body.ApplyForceAtPoint(this.ForcePerShot * worldForward, result.WorldPosition);
+                    }
+                    break;
+                }
+                
+                var halfDistance = tracerDistance / 2.0;
+                var tracerEnd = halfDistance + this.Random.Range(0.0, halfDistance);
+                
+                var tracer = this.Space.Create(this.Tracer);
+                var tracerTx = tracer.Transform;
+                tracerTx.WorldTranslation = worldPosition + worldForward * tracerEnd;
+                tracerTx.WorldRotation = ourTx.WorldRotation;
+                
+                var scale = this.Random.Range(halfDistance, tracerEnd);
+                
+                tracerTx.Scale = local Real3(1.0, scale, 1.0);
+                
+                var impact = this.Space.Create(this.ImpactEffect);
+                var impactTx = impact.Transform;
+                impactTx.WorldTranslation = worldPosition + worldForward * actualDistance;
+                impactTx.WorldRotation = ourTx.WorldRotation;
+            }
+        }
+    }
+    
+    function OnDeactivate(e : PlayerEvent)
+    {
+        this.TriggerHeld = false;
+        this.Firing = false;
+        this.Owner.SoundEmitter.Stop();
+        
+        if (this.Rev >= this.RevTime * 0.5)
+        {
+            this.Owner.SoundEmitter.PlayCue(this.RevDownSound);
+        }
+    }
+
+    function OnActivate(e : PlayerEvent)
+    {
+        this.TriggerHeld = true;
+        this.Owner.SoundEmitter.Stop();
+        this.Owner.SoundEmitter.PlayCue(this.RevUpSound);
+    }
+}

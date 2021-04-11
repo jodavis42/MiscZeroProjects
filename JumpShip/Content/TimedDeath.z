@@ -1,0 +1,32 @@
+// Has this cog die after a certain amount of time. Also sends a Death event
+// when this happens so any other component can do death logic.
+class TimedDeath : ZilchComponent
+{
+    // The amount of time before this object will be destroyed
+    [Property]
+    var Lifetime : Real = 1.0;
+    
+    //sends Death : ZilchEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        // Queue up a delay for our lifetime, after that much
+        // time call the function that kills us
+        var sequence = Action.Sequence(this.Owner.Actions);
+        Action.Delay(sequence, this.Lifetime);
+        Action.Call(sequence, this.OnDeath);
+    }
+    
+    function OnDeath()
+    {
+        // Let anyone listening know we just died
+        var toSend = new ZilchEvent();
+        this.Owner.DispatchEvent(Events.Death, toSend);
+        
+        this.Owner.Destroy();
+    }
+}

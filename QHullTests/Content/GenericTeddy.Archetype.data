@@ -1,0 +1,101 @@
+[Version:1]
+Cog 
+{
+	var Name = "GenericTeddy"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59817cfaec206296]
+		{
+			var Name = "GenericTeddyPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817cfaec20629c]
+				{
+					var Name = "GenericTeddyRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 0.99999994, 1}
+						var Rotation = Quaternion{-0.701041818, -0.00219271635, 0.00374581851, 0.71310699}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817cfaec20629f]
+						{
+							var Name = "GenericTeddyScaling"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{0.0191128328, 0.0191128347, 0.0191128328}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59817cfaec2062a1]
+								{
+									var Name = "GenericTeddyGeometricTranslation"
+									Transform 
+									{
+										var Translation = Real3{-3.0012424, 2.16619396, 1.62596178}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x59817cfaec2062a3]
+										{
+											var Name = "GenericTeddyGeometricRotation"
+											Transform 
+											{
+												var Translation = Real3{0, 0, 0}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{0.00212466787, 0.999852061, -0.0170712154, -7.47588018e-08}
+											}
+											Hierarchy 
+											{
+												Cog [Id:0x59817cfaec2062a5]
+												{
+													var Name = "GenericTeddy"
+													Transform 
+													{
+														var Translation = Real3{0, 0, 0}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "59817cfaec5afc16:GenericTeddy"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

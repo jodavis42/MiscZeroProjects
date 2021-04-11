@@ -1,0 +1,66 @@
+class CreateTextWindowOnTalk : ZilchComponent
+{
+  [Dependency] var Root : UiRootWidget;
+  
+  
+  [Property] var WindowArchetype : Archetype;
+  [Property] var WorldCenter : Real2;
+  
+  var Windows : Array[Cog] = Array[Cog]();
+  var Talkers : Array[Cog] = Array[Cog]();
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.GameSession, Events.TalkingStarted, this.OnTalkingStarted);
+    Zero.Connect(this.GameSession, Events.TalkingEnded, this.OnTalkingEnded);
+    Zero.Connect(this.GameSession, Events.TalkingNeedsToStop, this.OnTalkingNeedsToStop);
+  }
+  
+  
+  function OnTalkingStarted(event : InteractionEvent)
+  {
+    this.StopAllTalking();
+    
+    this.Talkers.Add(event.Instigator);
+    
+    var window = this.Space.Create(this.WindowArchetype);
+    window.AttachToPreserveLocal(this.Owner);
+    window.UiWidget.WorldCenter = this.WorldCenter;
+    
+    var uwe = UiWindowEvent();
+    uwe.BodyText = event.Dialogue;
+    uwe.WorldCenter = this.WorldCenter;
+    window.DispatchEvent(Events.UiWindowSetup, uwe);
+    
+    this.Windows.Add(window);
+    event.Window = window;
+  }
+  
+  
+  function OnTalkingEnded(event : InteractionEvent)
+  {
+    var window = event.Window;
+    window.DispatchEvent(Events.UiWindowDestroyed, UiWindowEvent());
+    this.Windows.RemoveFirst(window);
+    this.Talkers.RemoveFirst(event.Instigator);
+  }
+  
+  
+  function OnTalkingNeedsToStop(event : InteractionEvent)
+  {
+    this.StopAllTalking();
+  }
+  
+  
+  function StopAllTalking()
+  {
+    while (this.Talkers.Count > 0)
+    {
+      var talker = this.Talkers[0];
+      var ie = InteractionEvent();
+      talker.DispatchEvent(Events.TalkingNeedsToStop, ie);
+      talker.DispatchDown(Events.TalkingNeedsToStop, ie);
+    }
+  }
+}

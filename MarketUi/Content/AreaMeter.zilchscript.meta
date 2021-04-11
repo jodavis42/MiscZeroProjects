@@ -1,0 +1,15 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "AreaMeter",
+		uint64 ResourceId = 5695f5d8bd9e6688,
+	},
+	ContentTags = 
+	{
+		Array Tags = 
+		[
+			"UI",
+		],
+	},
+},

@@ -1,0 +1,32 @@
+class SoundTagTesting : ZilchComponent
+{
+  [Property]
+  var Tag : SoundTag = null;
+  
+  [Property]
+  var ChangeRate : Real = 5.0;
+  
+  var ChangeAccum : Real = 0.0;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if (this.Tag == null)
+      return;
+    
+    this.ChangeAccum += event.Dt * this.ChangeRate;
+    this.Tag.Volume = Math.Abs(Math.Sin(this.ChangeAccum));
+    
+    Console.WriteLine("InstanceCount: `this.Tag.InstanceCount`");
+    Console.WriteLine("Volume: `this.Tag.Volume`");
+    
+    foreach (var instance : SoundInstance in this.Tag.Instances)
+    {
+      Console.WriteLine("InstanceName: `instance`");
+    }
+  }
+}

@@ -1,0 +1,48 @@
+class SoundNodeExampleScript : ZilchComponent
+{
+// This property lets you choose the SoundListener to use
+[Property]
+var ListenerCog : CogPath;
+
+// This property lets you choose the SoundCue to play
+[Property]
+var Cue : SoundCue;
+
+// This variable stores the ReverbNode that will be added to the SoundListener
+// so that its settings can be changed
+var Reverb : ReverbNode = Audio.ReverbNode();
+
+// This property gets the SoundListener component from the Listener cog
+var Listener : SoundListener
+{
+  get
+  {
+    return this.ListenerCog.Cog.SoundListener;
+  }
+}
+
+function Initialize(init : CogInitializer)
+{
+    // Insert the ReverbNode after the SoundListener so that everything the
+    // SoundListener hears has the reverb applied to it
+    this.Listener.SoundNode.InsertNodeAfter(this.Reverb);
+    
+    Zero.Connect(Zero.Keyboard, Events.KeyDown, this.OnKeyDown);
+}
+
+function OnKeyDown(event : KeyboardEvent)
+{
+    if (event.Key == Keys.P)
+    {
+        // Create a LowPassNode
+        // Not stored anywhere so its settings won't be able to be changed
+        var lowPass = Audio.LowPassNode();
+        
+        // Play the SoundCue and attach it to the LowPassNode
+        this.Cue.PlayCueOnNode(lowPass, false);
+        
+        // Attach the LowPassNode directly to the SoundSpace for output
+        this.Space.SoundSpace.SoundNode.AddInputNode(lowPass);
+    }
+}
+}

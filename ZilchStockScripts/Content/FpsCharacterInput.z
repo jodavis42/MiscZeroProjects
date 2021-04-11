@@ -1,0 +1,122 @@
+class FpsCharacterInput : ZilchComponent
+{
+    [Property]
+    var InputType : Boolean = true;
+    
+    [Property]
+    var GamepadIndex : Integer = 0;
+    
+    var Gamepad : Gamepad = null;
+    
+    function Initialize(init : CogInitializer)
+    {
+        // Attempt to get the gamepad at the given index
+        this.Gamepad = Zero.Gamepads.GetGamePad(this.GamepadIndex);
+        
+        // Listen for when the character wants input to be updated (to reduce lag)
+        Zero.Connect(this.Owner, "UpdateCharacterInput", this.OnUpdateCharacterInput);
+        
+        // Listen for jumping on up/down events
+        if(this.InputType == true)
+        {
+            Zero.Connect(Zero.Keyboard, Events.KeyDown, this.OnKeyDown);
+            Zero.Connect(Zero.Keyboard, Events.KeyUp, this.OnKeyUp);
+        }
+        else if(this.InputType == false && this.Gamepad != null)
+        {
+            Zero.Connect(this.Gamepad, Events.ButtonDown, this.OnButtonDown);
+            Zero.Connect(this.Gamepad, Events.ButtonUp, this.OnButtonUp);
+        }
+    }
+    
+    function OnUpdateCharacterInput(e : Event)
+    {
+        // Get our movement direction (zero out the y axis so we can't fly)
+        var movement = this.GetMovementDirection();
+        movement.Y = 0.0;
+        
+        // set the movement direction on the player
+        this.Owner.PlatformerCharacterController.MoveDirection = movement;
+    }
+    
+    function GetMovementDirection() : Real3
+    {
+        // Use orientation to determine what our current forward and right vectors are
+        var forward = this.Owner.Orientation.WorldForward;
+        var right = this.Owner.Orientation.WorldRight;
+        
+        // get our movement direction depending on whether
+        // we use keyboard or gamepad input
+        if(this.InputType)
+        {
+            return this.GetKeyboardMovement(forward, right);
+        }
+        else if(this.Gamepad != null)
+        {
+            return this.GetGamepadMovement(forward, right);
+        }
+        
+        return Real3(0.0, 0.0, 0.0);
+    }
+    
+    function OnKeyDown(keyboardEvent : KeyboardEvent)
+    {
+        if(keyboardEvent.Key == Keys.Space)
+        {
+            this.Owner.PlatformerCharacterController.BeginJump();
+        }
+    }
+    
+    function OnKeyUp(keyboardEvent : KeyboardEvent)
+    {
+        if(keyboardEvent.Key == Keys.Space)
+        {
+            this.Owner.PlatformerCharacterController.EndJump();
+        }
+    }
+    
+    function OnButtonDown(gamepadEvent : GamepadEvent)
+    {
+        if(gamepadEvent.Button == Buttons.A)
+        {
+            this.Owner.PlatformerCharacterController.BeginJump();
+        }
+    }
+    
+    function OnButtonUp(gamepadEvent : GamepadEvent)
+    {
+        if(gamepadEvent.Button == Buttons.A)
+        {
+            this.Owner.PlatformerCharacterController.EndJump();
+        }
+    }
+    
+    function GetKeyboardMovement(forward : Real3, right : Real3) : Real3
+    {
+        // Build up our movement direction based upon our
+        // world space forward and right directions
+        var dir = Real3(0.0, 0.0, 0.0);
+        if(Zero.Keyboard.KeyIsDown(Keys.A))
+        {
+            dir -= right;
+        }
+        if(Zero.Keyboard.KeyIsDown(Keys.D))
+        {
+            dir += right;
+        }
+        if(Zero.Keyboard.KeyIsDown(Keys.W))
+        {
+            dir += forward;
+        }
+        if(Zero.Keyboard.KeyIsDown(Keys.D))
+        {
+            dir -= forward;
+        }
+        return dir;
+    }
+    
+    function GetGamepadMovement(forward : Real3, right : Real3) : Real3
+    {
+        return this.Gamepad.LeftStick.Y * forward + this.Gamepad.LeftStick.X * right;
+    }
+}

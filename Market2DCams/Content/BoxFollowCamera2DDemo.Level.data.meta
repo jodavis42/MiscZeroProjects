@@ -1,0 +1,19 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "BoxFollowCamera2DDemo"
+		var ResourceId = 0x580baf1f9fd9b009
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Demo"
+		}
+	}
+}

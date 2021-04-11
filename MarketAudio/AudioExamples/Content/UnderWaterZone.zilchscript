@@ -1,0 +1,140 @@
+//**********************************************************************************
+//
+// Uses collision events to add several audio effect filters to a SoundListener,
+// simulating hearing audio under water.
+//
+//**********************************************************************************
+class UnderWaterZone : ZilchComponent
+{
+  // Requires a RandomContext component
+  [Dependency] var RandomValues : RandomContext;
+  
+  // How strong the reverb effect should be
+  [Property] var ReverbWetPercent : Real = 20.0;
+  // The low pass filter's cutoff frequency
+  [Property] var LowPassCutoff : Real = 3000.0;
+  // Volume for the first EQ band
+  [Property] var EQBand1Gain : Real = 0.5;
+  // Volume for the second EQ band
+  [Property] var EQBand2Gain : Real = 0.4;
+  // Volume for the third EQ band
+  [Property] var EQBand3Gain : Real = 0.5;
+  // Compressor filter threshold decibels
+  [Property] var CompressorThreshold : Real = -12;
+  // Chorus filter minimum delay time
+  [Property] var ChorusMinDelay : Real = 4;
+  // Chorus filter maximum delay time
+  [Property] var ChorusMaxDelay : Real = 5;
+  
+  // Keeps track of whether the effect nodes have been added to the SoundListener yet
+  var AddedToListener : Boolean = false;
+  // Keeps track of which way the EQ oscillation is going
+  var OscillateUp : Boolean = true;
+  // The ReverbNode to use for the under water effect
+  var Reverb : ReverbNode = Audio.ReverbNode();
+  // The LowPassNode to use for the under water effect
+  var LowPass : LowPassNode = Audio.LowPassNode();
+  // The ChorusNode to use for the under water effect
+  var Chorus : ChorusNode = Audio.ChorusNode();
+  // The EqualizerNode to use for the under water effect
+  var EQ : EqualizerNode = Audio.EqualizerNode();
+  // The DynamicsCompressionNode to use for the under water effect
+  var Compressor : CompressorNode = Audio.CompressorNode();
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the CollisionStarted events from this object
+    Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollisionStart);
+    // Connect to the CollisionEnded events from this object
+    Zero.Connect(this.Owner, Events.CollisionEnded, this.OnCollisionEnd);
+    
+    // Set the strength of the reverb effect
+    this.Reverb.WetPercent = this.ReverbWetPercent;
+    // Set the cutoff frequency of the low pass filter
+    this.LowPass.CutoffFrequency = this.LowPassCutoff;
+    // Set the EQ values
+    this.EQ.Band1Gain = this.EQBand1Gain;
+    this.EQ.Band2Gain = this.EQBand2Gain;
+    this.EQ.Band3Gain = this.EQBand3Gain;
+    // Set the compressor threshold
+    this.Compressor.ThresholdDecibels = this.CompressorThreshold;
+    // Set the chorus delay values
+    this.Chorus.MinDelayMillisec = this.ChorusMinDelay;
+    this.Chorus.MaxDelayMillisec = this.ChorusMaxDelay;
+  }
+    
+  function OnCollisionStart(event : CollisionEvent)
+  {
+    // Check if the other object has a SoundListener component
+    if (event.OtherObject.SoundListener != null)
+    {
+      // Check if the nodes need to be added
+      if (this.AddedToListener == false)
+      {
+        // Add the low pass after the SoundListener
+        event.OtherObject.SoundListener.SoundNode.InsertNodeAfter(this.LowPass);
+        // Add the reverb after the low pass
+        this.LowPass.InsertNodeAfter(this.Reverb);
+        // Add the chorus after the reverb
+        this.Reverb.InsertNodeAfter(this.Chorus);
+        // Add the EQ after the chorus
+        this.Chorus.InsertNodeAfter(this.EQ);
+        // Add the compressor after the EQ
+        this.EQ.InsertNodeAfter(this.Compressor);
+        
+        // Mark that the nodes have now been added
+        this.AddedToListener = true;
+        
+        // Start oscillating the EQ values
+        this.OscillateEQ();
+      }
+
+      // Turn all effects on
+      this.LowPass.BypassPercent = 0;
+      this.Reverb.BypassPercent = 0;
+      this.Chorus.BypassPercent = 0;
+      this.EQ.BypassPercent = 0;
+      this.Compressor.BypassPercent = 0;
+    }
+  }
+    
+  function OnCollisionEnd(event : CollisionEvent)
+  {
+    // Check if the other object has a SoundListener component
+    if (event.OtherObject.SoundListener != null)
+    {
+      // Turn all effects off
+      this.LowPass.BypassPercent = 100;
+      this.Reverb.BypassPercent = 100;
+      this.Chorus.BypassPercent = 100;
+      this.EQ.BypassPercent = 100;
+      this.Compressor.BypassPercent = 100;
+    }
+  }
+
+  function OscillateEQ()
+  {
+    // Get a random time
+    var time = this.RandomValues.Range(1.0, 5.0);
+    // Check if we are currently going up
+    if (this.OscillateUp == true)
+    {
+      // Change to going down
+      this.OscillateUp = false;
+      // Interpolate the EQ values over the time
+      this.EQ.InterpolateAllBands(1.0, 0.8, 0.7, 0.8, 1.0, time);
+    }
+    else
+    {
+      // Change to going up
+      this.OscillateUp = true;
+      // Interpolate the EQ values over the time
+      this.EQ.InterpolateAllBands(1.0, 0.5, 0.4, 0.5, 1.0, time);
+    }
+    
+    // Delay the next oscillation by the time
+    var sequence = Actions.Sequence(this.Owner.Actions);
+    Actions.Delay(sequence, time);
+    Actions.Call(sequence, this.OscillateEQ);
+  }
+}

@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "SplineJoint"
+		var ResourceId = 0x58dd6ffd3d69f784
+	}
+}

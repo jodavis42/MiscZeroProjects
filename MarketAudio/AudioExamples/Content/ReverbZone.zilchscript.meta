@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "ReverbZone"
+		var ResourceId = 0x5945a1e9fd506346
+	}
+}

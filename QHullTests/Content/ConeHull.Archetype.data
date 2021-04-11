@@ -1,0 +1,82 @@
+[Version:1]
+Cog 
+{
+	var Name = "ConeHull"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	HierarchyMeshToTextBlock 
+	{
+		var ApplyTransform = false
+		var FindUsedVertices = false
+	}
+	QuickHullTest 
+	{
+		var Active = false
+		var DebugDrawMode = QuickHullDebugDrawMode.None
+	}
+	QuickHullRenderSettings 
+	{
+		var RenderGraphics = true
+		var RenderHullFilled = true
+		var RenderHullEdges = true
+		var RenderHullTriangleEdges = false
+		var RenderHullNormals = false
+	}
+	BaseCogResultRecorder 
+	{
+	}
+	QuickHullMeshSaver 
+	{
+		var Active = false
+	}
+	QuickHullUnitTest 
+	{
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x5980ba15fde57de0]
+		{
+			var Name = "Cone"
+			Transform 
+			{
+				var Translation = Real3{0, -2.38418579e-07, 0.5}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "5980ba69fa4b048e:Cone"
+			}
+		}
+		Cog [Id:0x598146703b8973d5][InheritId:"59806fa92d4eddb3:ConvexHullFilled"]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+		Cog [Id:0x598146703b8982a2][InheritId:"59806fb3123a38d8:ConvexHullWireFrame"]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+	}
+}

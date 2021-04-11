@@ -1,0 +1,72 @@
+[Version:1]
+Cog 
+{
+	var Name = "Nebula"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	SpriteParticleSystem 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var Material = "582c50d330d372c3:AdditiveSprite"
+		var ChildSystem = false
+		var SystemSpace = SystemSpace.WorldSpace
+		var DrawOrder = 0
+		var Tint = Real4{1, 1, 1, 1}
+		var WarmUpTime = 0
+		var GeometryMode = ParticleGeometryMode.Billboarded
+		var SortMode = ParticleSortMode.Youngest
+		var ParticleAnimation = ParticleAnimationMode.Single
+		var SpriteSource = "595a4241b849b40c:Smoke2"
+		var VelocityScale = 1
+		var LengthScale = 0
+		var SystemSize = Real3{5, 5, 5}
+		var PreviewInEditor = false
+	}
+	LinearParticleAnimator 
+	{
+		var Force = Real3{0, 0, 0}
+		var RandomForce = Real3{0, 0, 0}
+		var Torque = 0
+		var Growth = 0
+		var Dampening = 0
+		var Twist = Real3{0, 0, 0}
+	}
+	SphericalParticleEmitter 
+	{
+		var Active = true
+		var EmitCount = 0
+		var EmitDelay = 0
+		var EmitRate = 35
+		var EmitVariance = 0
+		var EmitRateSoftStartTime = 0
+		var Size = 45
+		var SizeVariance = 4
+		var Lifetime = 10
+		var LifetimeVariance = 0
+		var Spin = 0
+		var SpinVariance = 15
+		var RandomSpin = false
+		var Fill = 0.300000012
+		var EmitterVelocityPercent = 0
+		var StartVelocity = Real3{0, 0, 0}
+		var RandomVelocity = Real3{1, 1, 1}
+		var TangentVelocity = Real3{0, 0, 0}
+		var EmitterSize = Real3{200, 200, 10}
+		var FastMovingEmitter = false
+	}
+	ParticleColorAnimator 
+	{
+		var Color0 = Real4{0.650979996, 0.0627451017, 1, 0}
+		var Color1 = Real4{0.5, 0.835294008, 1, 0.300000012}
+		var Color2 = Real4{0.300000012, 0.756862998, 1, 0.200000003}
+		var Color3 = Real4{0.650979996, 0.137254998, 1, 0.0500000007}
+		var Color4 = Real4{0.105881996, 1, 0, 0}
+	}
+}

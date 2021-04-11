@@ -1,0 +1,28 @@
+[Version:1]
+ImageContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Plasma"
+		}
+	}
+	SpriteSourceBuilder 
+	{
+		var Name = "PlasmaProjectile0"
+		var ResourceId = 0x5226e9b95f2c146e
+		var AtlasId = 0x5274cf95e4a661fd
+		var FrameSizeX = 7
+		var FrameSizeY = 14
+		var FrameCount = 1
+		var FrameDelay = 0.0833332986
+		var OriginX = 3
+		var OriginY = 7
+		var PixelsPerUnit = 32
+		var Sampling = SpriteSampling.Nearest
+		var Looping = true
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+}

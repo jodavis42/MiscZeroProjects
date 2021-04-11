@@ -1,0 +1,34 @@
+[Version:1]
+Cog 
+{
+	var Name = "Planet1"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Vec3{0, 0, 0}
+		var Scale = Vec3{1, 1, 1}
+		var Rotation = Quat{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x588746d660132f56]
+		{
+			var Name = "planet1"
+			var LinkId = 2
+			Transform 
+			{
+				var Translation = Vec3{0, 0, 0}
+				var Scale = Vec3{1, 1, 1}
+				var Rotation = Quat{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "58875451a48d3411:Planet1.planet1"
+			}
+		}
+	}
+}

@@ -1,0 +1,22 @@
+class CameraController : ZilchComponent
+{
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        //Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        Zero.Connect(this.Space, Events.MouseScroll, this.OnMouseScroll);
+    }
+    
+    function OnLogicUpdate(updateEvent : UpdateEvent)
+    {
+    }
+    
+    function OnMouseScroll(viewportMouseEvent : ViewportMouseEvent)
+    {
+        this.Owner.Camera.Size += -viewportMouseEvent.Scroll.Y;
+        this.Owner.Camera.Size = Math.Clamp(this.Owner.Camera.Size, 5.0, 50.0);
+    }
+}

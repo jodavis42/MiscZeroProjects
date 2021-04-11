@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "SimplePlayerTopDown"
+		var ResourceId = 0x58dd17006932c9c2
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

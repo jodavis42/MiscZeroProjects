@@ -1,0 +1,77 @@
+/************************************************************************************************************/
+/* Copyright 2016 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 1/3/2016                                                                                    */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Jordan Ellis                                                                            */
+/* Class: Seek                                                                                              */
+/* Brief: Will cause the object to "seek" the target object by moving towards the target object's           */
+/* current position                                                                                         */
+/************************************************************************************************************/
+
+class Seek : SteeringComponent
+{
+  [Dependency]
+  var Transform : Transform = null;
+  
+  [Dependency]
+  var Orientation : Orientation = null;
+  
+  // Target object to be seek towards
+  [Property]
+  var Target : CogPath = null;
+  
+  // Range from the object in which it is valid to seek the target object
+  // If the range is 0 the target object will always be seeked
+  [Property]
+  var SeekRange : Real = 0.0;
+  
+  // Distance from the goal we're trying to seek to
+  [Property]
+  var GoalDistance : Real = 0.0;
+  
+  var NoSeekRange : Boolean
+  {
+    get { return Math.ApproximatelyEqual(this.SeekRange, 0.0, 0.001); }
+  }
+  
+  [Override]
+  function SteeringUpdate(event : UpdateEvent)
+  {
+    // If this component is not active do nothing
+    if (!this.Active || !this.SteeringAccumulator.Active || this.Target.Cog == null)
+    {
+      return;
+    }
+    
+    // Calculate a vector to the target object
+    var targDir = this.Target.Cog.Transform.WorldTranslation - this.Transform.WorldTranslation;
+    var targDis = Math.Length(targDir);
+    
+    // Normalize the vector to the target object so it does not affect movement speed
+    targDir /= targDis;
+    
+    // early out if we have a seek range, and we're out of range
+    if (!this.NoSeekRange && targDis > this.SeekRange)
+    {
+      return;
+    }
+    
+    // Check if the target object is with in the range to seek it
+    if (this.NoSeekRange || targDis > this.GoalDistance)
+    {
+      // Look towards the object, and move forward
+      this.AddLookDirection(targDir);
+      this.AddLocalMovement(this.Orientation.LocalForward);
+    }
+    else
+    {
+      // Bring the object to a smooth stop, based on it's linear distance from the target
+      var ratio = targDis / this.GoalDistance;
+      
+      this.AddLookDirection(targDir);
+      this.SteeringAccumulator.AddLocalMovement(
+        this.Orientation.LocalForward, this.MovementWeight * ratio
+      );
+    }
+  }
+}

@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Starfall"
+		var ResourceId = 0x58e1d3713546c9b4
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 74.2978668
+		var AudioChannels = 2
+		var SampleRate = 44100
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

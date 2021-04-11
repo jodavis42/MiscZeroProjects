@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "OcclusionAttenuation"
+		var ResourceId = 0x593bca6923a3cc1c
+		var LoaderType = "SoundAttenuator"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "SpriteTextBlock"
+		var ResourceId = 0x58c4f5765bc34ae3
+	}
+}

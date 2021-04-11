@@ -1,0 +1,42 @@
+class HoverEventTest : ZilchComponent
+{
+  function Initialize(init : CogInitializer)
+  {
+    Print.TimeSpace = this.Space.TimeSpace;
+    
+    Zero.Connect(this.Owner, Events.MouseHover, this.OnMouseHover);
+    Zero.Connect(this.Owner, Events.HoverKeyDown, this.OnHoverKeyDown);
+    Zero.Connect(this.Owner, Events.HoverKeyRepeated, this.OnHoverKeyRepeated);
+    Zero.Connect(this.Owner, Events.HoverKeyPreview, this.OnHoverKeyPreview);
+    Zero.Connect(this.Owner, Events.MouseHold, this.OnMouseHold);
+  }
+  
+  
+  function OnMouseHold(event : ViewportMouseEvent)
+  {
+    Print("I AM HELD");
+  }
+
+  function OnHoverKeyRepeated(event : KeyboardEvent)
+  {
+    Print("here's the repeat");
+  }
+  
+  
+  function OnMouseHover(event : ViewportMouseEvent)
+  {
+    Print("Hello there");
+  }
+  
+  
+  function OnHoverKeyDown(event : KeyboardEvent)
+  {
+    Print("Key down: `event.Key`");
+  }
+  
+  
+  function OnHoverKeyPreview(event : KeyboardEvent)
+  {
+    Print("Yarrr I don't know what I'm doing");
+  }
+}

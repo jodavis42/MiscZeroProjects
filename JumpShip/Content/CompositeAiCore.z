@@ -1,0 +1,171 @@
+// Responsible for control an ai core. The ai core is made up of behavior components.
+// This manages switching between these behaviors and telling the active behavior to update.
+class CompositeAiCore : ZilchComponent
+{
+    // We need a core in order to function.
+    [Dependency]
+    var Core : Core = null;
+    
+    [Property]
+    var UiTextRoot : Archetype = Archetype.UiTextRoot;
+    
+    // The "player" core that owns this (could be an enemy in which case
+    // this is null). Used to transfer resources to the player.
+    var OwningCoreCog : Cog = null;
+    
+    // Which behvior is currently active.
+    var ActiveBehaviorIndex : Integer = -1;
+    // All of the behaviors we can choose from.
+    var Behaviors : Array[AiBehaviorBase] = new Array[AiBehaviorBase]();
+    // The cog that a behavior is currently targetting.
+    // Shared between all behaviors unless they need persistent data.
+    var TargetCog : Cog = null;
+    // A target position for the current behavior.
+    // Shared between all behaviors unless they need persistent data.
+    var TargetPos : Real3 = local Real3(0.0, 0.0, 0.0);
+    
+    // The cog that has all of our behavior ui for the user to choose from.
+    var DisplayCog : Cog = null;
+    // For the logic of not closing the first time we open due to event order issues.
+    var CanClose : Boolean = true;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        
+        // Listen for mouse events so we can open/close windows
+        Zero.Connect(this.Owner, Events.MiddleMouseDown, this.OnMiddleMouseDown);
+        Zero.Connect(this.Owner, Events.MiddleMouseUp, this.OnMiddleMouseUp);
+        Zero.Connect(this.Space, Events.MiddleMouseDown, this.OnGlobalMiddleMouseDown);
+        
+        Zero.Connect(this.Owner, Events.CollectPickup, this.CollectPickup);
+        Zero.Connect(this.Owner, Events.TextClicked, this.OnTextClicked);
+        Zero.Connect(this.Owner, "CloseText", this.OnCloseText);
+    }
+    
+    function FindPlayerCog()
+    {
+        this.OwningCoreCog = this.Space.FindObjectByName("Player");
+    }
+    
+    function OnLogicUpdate(updateEvent : UpdateEvent)
+    {
+        //HACK
+        // If we don't have an owning core then find the player
+        // (hack until there's an inventory so spawning the core will tell it who owns it)
+        if(this.OwningCoreCog == null)
+        {
+            this.FindPlayerCog();
+        }
+        
+        // If there's no active behavior then don't do anything
+        if(this.ActiveBehaviorIndex < 0 || this.ActiveBehaviorIndex >= this.Behaviors.Count)
+        {
+            return;
+        }
+        
+        // Otherwise tell the current behavior to update
+        var behavior = this.Behaviors.Get(this.ActiveBehaviorIndex);
+        behavior.Update(updateEvent.Dt);
+    }
+    
+    function OnMiddleMouseDown(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // Create the root cog for all of the ui and tell it to follow us
+        this.DisplayCog = this.Space.CreateAtPosition(this.UiTextRoot, this.Owner.Transform.WorldTranslation);
+        var uiFollowObject = this.DisplayCog.UiFollowObject;
+        if(uiFollowObject != null)
+        {
+            this.DisplayCog.UiFollowObject.TargetObj = this.Owner;
+        }
+        // We should not close this frame if we receive the global mouse down afterwards
+        this.CanClose = false;
+        
+        var offset = 0.0;
+        var index = 0;
+        // Spawn text for each behavior
+        foreach(var behavior in this.Behaviors)
+        {
+            var behaviorName = behavior.GetName();
+            
+            // Attach the text to our display cog at the correct position offset
+            var text = this.Space.Create(behavior.ContextMenu);
+            text.AttachToPreserveLocal(this.DisplayCog);
+            text.Transform.Translation = local Real3(0.0, -offset, 1.0);
+            // Setup the base info for this text (name, who owns it)
+            text.UiText.SetText(behaviorName);
+            text.UiText.OwningCog = this.Owner;
+            // The user data index lets us know which behavior was activated quickly
+            // (in most cases we just change the active index, some can get more complicated such as paths)
+            text.UiUserData.UserData = index;
+            
+            // Measure how big this text was so we can slide down the next item
+            offset += text.SpriteText.MeasureText().Y;
+            ++index;
+        }
+    }
+    
+    function CollectPickup(pickupEvent : PickupEvent)
+    {
+        // If we have a valid owning cog who has a valid pickup collector,
+        // have them collect the resource we just picked up
+        var owningCog = this.OwningCoreCog;
+        if(owningCog != null)
+        {
+            var owningPickupCollector = owningCog.PickupCollector;
+            if(owningPickupCollector != null)
+            {
+                owningPickupCollector.CollectPickup(pickupEvent.Pickup);
+            }
+        }
+    }
+    
+    function OnTextClicked(clickableTextEvent : ClickableTextEvent)
+    {
+        // Get the user data from the clicked text (this is the active behavior index)
+        var textCog = clickableTextEvent.Cog;
+        var index = textCog.UiUserData.UserData;
+        var behavior = this.Behaviors.Get(index);
+        
+        this.ActiveBehaviorIndex = index;
+        
+        // Destroy the ui
+        this.OnCloseText(null);
+    }
+    
+    function OnCloseText(e : ZilchEvent)
+    {
+        // Destroy the ui
+        if(this.DisplayCog != null)
+        {
+            this.DisplayCog.Destroy();
+            this.DisplayCog = null;
+        }
+    }
+    
+    function OnMiddleMouseUp(viewportMouseEvent : ViewportMouseEvent)
+    {
+        this.CanClose = true;
+    }
+    
+    function OnGlobalMiddleMouseDown(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // If we can close our ui (and have ui to close) then close it
+        if(this.CanClose == true && this.DisplayCog != null)
+        {
+            this.DisplayCog.Destroy();
+            this.DisplayCog = null;
+        }
+        this.CanClose = true;
+    }
+    
+    function AddBehavior(behavior : AiBehaviorBase)
+    {
+        // A behavior has requested addition to our list of available behaviors
+        this.Behaviors.Add(behavior);
+    }
+}

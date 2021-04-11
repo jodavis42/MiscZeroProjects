@@ -1,0 +1,1082 @@
+[Version:1]
+Level 
+{
+	Cog 
+	{
+		var Name = "LevelSettings"
+		var LinkId = 1
+		GravityEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = true
+			var LocalSpaceDirection = true
+			var Strength = 10
+			var Direction = Real3{0, -1, 0}
+		}
+		DragEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = true
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.100000001
+			var LinearDrag = 0
+			var AngularDrag = 0
+		}
+		GridDraw 
+		{
+			var Active = true
+			var HalfCellOffset = false
+			var CellSize = 1
+			var Axis = AxisDirection.Y
+			var Lines = 100
+			var DrawAxisOrigins = true
+			var AlwaysDrawInEditor = true
+			var DrawInGame = false
+			var GridColor = Real4{0.5, 0.5, 0.5, 0.400000006}
+			var GridHighlight = Real4{0, 0, 0, 0.400000006}
+			var HighlightInterval = 10
+			var FollowEditorCamera = false
+		}
+	}
+	Cog 
+	{
+		var Name = "DirectionalLight"
+		var LinkId = 2
+		Transform 
+		{
+			var Translation = Real3{0, 50, 50}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.382683456, 0, 0, 0.923879504}
+		}
+		Orientation 
+		{
+			var GlobalUp = Real3{0, 1, 0}
+			var LocalOrientationBasis = Quaternion{0, 0, 0, 1}
+			var DefaultBases = OrientationBases.ForwardNegativeZUpY
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = true
+			var RenderToViewport = false
+			var ForwardViewportEvents = false
+			var RenderOrder = -1
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 100
+			var PerspectiveMode = PerspectiveMode.Orthographic
+			var FieldOfView = 45
+			var Size = 64
+		}
+		ShadowRenderer 
+		{
+			var ResolutionValue = ShadowResolution.High
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = false
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = ""
+			var Mesh = ""
+		}
+		DirectionalLight 
+		{
+			var LightColorValue = Real3{1, 1, 1}
+			var LightIntensityValue = 2
+			var CastShadowsValue = true
+			var NormalOffsetBias = 0.100000001
+		}
+		Hierarchy 
+		{
+		}
+	}
+	Cog 
+	{
+		var Name = "EditorCamera"
+		var LinkId = 3
+		Transform 
+		{
+			var Translation = Real3{5.55033207, 13.3578339, -0.0584175736}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.409289122, 0.568311095, 0.388402432, 0.598872662}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 200
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 60
+			var Size = 20
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.Orbit
+			var Previous3DMode = ControlMode.Orbit
+			var LookDistance = 11.0517006
+			var VerticalAngle = 1.19904041
+			var HorizontalAngle = -1.51844037
+			var LookTarget = Real3{1.54128134, 3.0610652, -0.268507272}
+			var MoveSensitivity = 1
+		}
+	}
+	Cog 
+	{
+		var Name = "GameCamera"
+		var LinkId = 5
+		Transform 
+		{
+			var Translation = Real3{10.1501818, 5.99486208, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.143996477, 0.69228971, 0.143996477, 0.69228971}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = false
+			var RenderInGame = true
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 5
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 6
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Letterbox
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 200
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 60
+			var Size = 20
+		}
+		SoundListener 
+		{
+			var Active = true
+		}
+	}
+	Cog 
+	{
+		var Name = "Cube"
+		var LinkId = 7
+		Transform 
+		{
+			var Translation = Real3{0, 0, 0}
+			var Scale = Real3{20, 1, 20}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b345ae:Cube"
+		}
+		BoxCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var HalfSize = Real3{0.5, 0.5, 0.5}
+		}
+	}
+	Cog 
+	{
+		var Name = "Sphere"
+		var LinkId = 8
+		Transform 
+		{
+			var Translation = Real3{0, 1, 2}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b376ae:Sphere"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		SphereCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var Radius = 0.5
+		}
+		Orientation 
+		{
+			var GlobalUp = Real3{0, 1, 0}
+			var LocalOrientationBasis = Quaternion{0, 1, 0, -0}
+			var DefaultBases = OrientationBases.ForwardZUpY
+		}
+		Sensor 
+		{
+			var Active = true
+			var DebugDrawEnabled = true
+			var SensorEventTarget = CogPath
+			{
+				var Path = ""
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4294967293
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var SensorMode = SensorMode.PrimaryAndSideSensors
+			var SensorSpaceMode = Mode2DStates.Mode2D
+			var SideSensorAngle = 45
+			var SideSensorDistance = 2
+			var PrimarySensorDistance = 6
+			var PrimarySensorMaxAngle = 30
+			var LocalOffset = Real3{0, 0, 0}
+			var SparseUpdate = true
+			var SparseUpdateMaxTimeout = 5
+		}
+	}
+	Cog 
+	{
+		var Name = "Sphere"
+		var LinkId = 9
+		Transform 
+		{
+			var Translation = Real3{2, 1, 2}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b376ae:Sphere"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		SphereCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var Radius = 0.5
+		}
+		Orientation 
+		{
+			var GlobalUp = Real3{0, 1, 0}
+			var LocalOrientationBasis = Quaternion{0, 1, 0, -0}
+			var DefaultBases = OrientationBases.ForwardZUpY
+		}
+		Sensor 
+		{
+			var Active = true
+			var DebugDrawEnabled = true
+			var SensorEventTarget = CogPath
+			{
+				var Path = ""
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4294967293
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var SensorMode = SensorMode.SideSensors
+			var SensorSpaceMode = Mode2DStates.Mode2D
+			var SideSensorAngle = 45
+			var SideSensorDistance = 4
+			var PrimarySensorDistance = 6
+			var PrimarySensorMaxAngle = 30
+			var LocalOffset = Real3{0, 0, 0}
+			var SparseUpdate = true
+			var SparseUpdateMaxTimeout = 5
+		}
+	}
+	Cog 
+	{
+		var Name = "Sphere"
+		var LinkId = 10
+		Transform 
+		{
+			var Translation = Real3{-2, 1, 2}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b376ae:Sphere"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		SphereCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var Radius = 0.5
+		}
+		Orientation 
+		{
+			var GlobalUp = Real3{0, 1, 0}
+			var LocalOrientationBasis = Quaternion{0, 1, 0, -0}
+			var DefaultBases = OrientationBases.ForwardZUpY
+		}
+		Sensor 
+		{
+			var Active = true
+			var DebugDrawEnabled = true
+			var SensorEventTarget = CogPath
+			{
+				var Path = ""
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4294967293
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var SensorMode = SensorMode.RandomPrimarySensor
+			var SensorSpaceMode = Mode2DStates.Mode2D
+			var SideSensorAngle = 45
+			var SideSensorDistance = 4
+			var PrimarySensorDistance = 6
+			var PrimarySensorMaxAngle = 30
+			var LocalOffset = Real3{0, 0, 0}
+			var SparseUpdate = true
+			var SparseUpdateMaxTimeout = 5
+		}
+	}
+	Cog 
+	{
+		var Name = "Cube"
+		var LinkId = 11
+		Transform 
+		{
+			var Translation = Real3{-2.5, 1, 4.5}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b345ae:Cube"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		BoxCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var HalfSize = Real3{0.5, 0.5, 0.5}
+		}
+	}
+	Cog 
+	{
+		var Name = "Cube"
+		var LinkId = 12
+		Transform 
+		{
+			var Translation = Real3{0, 1, 4.5}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b345ae:Cube"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		BoxCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var HalfSize = Real3{0.5, 0.5, 0.5}
+		}
+	}
+	Cog 
+	{
+		var Name = "Cube"
+		var LinkId = 13
+		Transform 
+		{
+			var Translation = Real3{2.5, 1, 4.5}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b345ae:Cube"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		BoxCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var HalfSize = Real3{0.5, 0.5, 0.5}
+		}
+	}
+	Cog 
+	{
+		var Name = "Cube"
+		var LinkId = 14
+		Transform 
+		{
+			var Translation = Real3{-2.5, 1, -4.5}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-4.37113883e-08, 1, -4.37113883e-08, 1.91068547e-15}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b345ae:Cube"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		BoxCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var HalfSize = Real3{0.5, 0.5, 0.5}
+		}
+	}
+	Cog 
+	{
+		var Name = "Cube"
+		var LinkId = 15
+		Transform 
+		{
+			var Translation = Real3{2.5, 1, -4.5}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-4.37113883e-08, 1, -4.37113883e-08, 1.91068547e-15}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b345ae:Cube"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		BoxCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var HalfSize = Real3{0.5, 0.5, 0.5}
+		}
+	}
+	Cog 
+	{
+		var Name = "Sphere"
+		var LinkId = 16
+		Transform 
+		{
+			var Translation = Real3{2, 1, -2}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-4.37113883e-08, 1, -4.37113883e-08, 1.91068547e-15}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b376ae:Sphere"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		SphereCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var Radius = 0.5
+		}
+		Orientation 
+		{
+			var GlobalUp = Real3{0, 1, 0}
+			var LocalOrientationBasis = Quaternion{0, 1, 0, -0}
+			var DefaultBases = OrientationBases.ForwardZUpY
+		}
+		Sensor 
+		{
+			var Active = true
+			var DebugDrawEnabled = true
+			var SensorEventTarget = CogPath
+			{
+				var Path = ""
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4294967293
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var SensorMode = SensorMode.SideSensors
+			var SensorSpaceMode = Mode2DStates.Mode2D
+			var SideSensorAngle = 45
+			var SideSensorDistance = 4
+			var PrimarySensorDistance = 6
+			var PrimarySensorMaxAngle = 30
+			var LocalOffset = Real3{0, 0, 0}
+			var SparseUpdate = false
+			var SparseUpdateMaxTimeout = 5
+		}
+	}
+	Cog 
+	{
+		var Name = "Sphere"
+		var LinkId = 17
+		Transform 
+		{
+			var Translation = Real3{-2, 1, -2}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-4.37113883e-08, 1, -4.37113883e-08, 1.91068547e-15}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b376ae:Sphere"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		SphereCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var Radius = 0.5
+		}
+		Orientation 
+		{
+			var GlobalUp = Real3{0, 1, 0}
+			var LocalOrientationBasis = Quaternion{0, 1, 0, -0}
+			var DefaultBases = OrientationBases.ForwardZUpY
+		}
+		Sensor 
+		{
+			var Active = true
+			var DebugDrawEnabled = true
+			var SensorEventTarget = CogPath
+			{
+				var Path = ""
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4294967293
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var SensorMode = SensorMode.RandomPrimarySensor
+			var SensorSpaceMode = Mode2DStates.Mode2D
+			var SideSensorAngle = 45
+			var SideSensorDistance = 4
+			var PrimarySensorDistance = 6
+			var PrimarySensorMaxAngle = 30
+			var LocalOffset = Real3{0, 0, 0}
+			var SparseUpdate = false
+			var SparseUpdateMaxTimeout = 5
+		}
+	}
+	Cog 
+	{
+		var Name = "Sphere"
+		var LinkId = 18
+		Transform 
+		{
+			var Translation = Real3{0, 1, -2}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-4.37113883e-08, 1, -4.37113883e-08, 1.91068547e-15}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b376ae:Sphere"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		SphereCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var Radius = 0.5
+		}
+		Orientation 
+		{
+			var GlobalUp = Real3{0, 1, 0}
+			var LocalOrientationBasis = Quaternion{0, 1, 0, -0}
+			var DefaultBases = OrientationBases.ForwardZUpY
+		}
+		Sensor 
+		{
+			var Active = true
+			var DebugDrawEnabled = true
+			var SensorEventTarget = CogPath
+			{
+				var Path = ""
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4294967293
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var SensorMode = SensorMode.PrimaryAndSideSensors
+			var SensorSpaceMode = Mode2DStates.Mode2D
+			var SideSensorAngle = 45
+			var SideSensorDistance = 2
+			var PrimarySensorDistance = 6
+			var PrimarySensorMaxAngle = 30
+			var LocalOffset = Real3{0, 0, 0}
+			var SparseUpdate = false
+			var SparseUpdateMaxTimeout = 5
+		}
+	}
+	Cog 
+	{
+		var Name = "Cube"
+		var LinkId = 19
+		Transform 
+		{
+			var Translation = Real3{0, 1, -4.5}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-4.37113883e-08, 1, -4.37113883e-08, 1.91068547e-15}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b345ae:Cube"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		BoxCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var HalfSize = Real3{0.5, 0.5, 0.5}
+		}
+	}
+	Cog 
+	{
+		var Name = "SpriteText"
+		var LinkId = 20
+		Transform 
+		{
+			var Translation = Real3{-0.0631322861, 3.76814246, 4.33529425}
+			var Scale = Real3{2, 2, 2}
+			var Rotation = Quaternion{0, 0.707106829, 0, 0.707106829}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{1, 1, 1, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "Sparse Update"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 32
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+	}
+	Cog 
+	{
+		var Name = "SpriteText"
+		var LinkId = 21
+		Transform 
+		{
+			var Translation = Real3{-0.0631322861, 3.76814246, -4.05229568}
+			var Scale = Real3{2, 2, 2}
+			var Rotation = Quaternion{0, 0.707106829, 0, 0.707106829}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{1, 1, 1, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "PerFrame Update"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 32
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+	}
+	Cog [InheritId:"5884d0919ab60664:Renderer"]
+	{
+	}
+}

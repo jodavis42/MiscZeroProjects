@@ -1,0 +1,28 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 8/9/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Keeps the velocity of this object at a fixed speed.
+class MaintainVelocity : ZilchComponent
+{
+  [Dependency] var RigidBody : RigidBody;
+  
+  // The speed to maintain
+  [Property] var Speed : Real = 10.0;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+  
+  function OnLogicUpdate(updateEvent : UpdateEvent)
+  {
+    // Get our current (normalized) velocity direction and
+    // then scale it to have our desired speed
+    var velocityDirection = Math.Normalize(this.RigidBody.Velocity);
+    this.RigidBody.Velocity = velocityDirection * this.Speed;
+  }
+}

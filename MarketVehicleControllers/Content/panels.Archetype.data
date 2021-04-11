@@ -1,0 +1,90 @@
+[Version:1]
+Cog 
+{
+	var Name = "panels"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Vec3{0, 0, 0}
+		var Scale = Vec3{1, 1, 1}
+		var Rotation = Quat{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog 
+		{
+			var Name = "panelsAssimpFbxRotationPivot"
+			var LinkId = 2
+			Transform 
+			{
+				var Translation = Vec3{-0.0334606171, 2.76542997, 0.0116605759}
+				var Scale = Vec3{1, 1, 1}
+				var Rotation = Quat{0, 0, 0, 1}
+			}
+			Hierarchy 
+			{
+				Cog 
+				{
+					var Name = "panelsAssimpFbxRotationPivotInverse"
+					var LinkId = 3
+					Transform 
+					{
+						var Translation = Vec3{0.0334606171, -2.76542997, -0.0116605759}
+						var Scale = Vec3{1, 1, 1}
+						var Rotation = Quat{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog 
+						{
+							var Name = "panelsAssimpFbxScalingPivot"
+							var LinkId = 4
+							Transform 
+							{
+								var Translation = Vec3{-0.0334606171, 2.76542997, 0.0116605759}
+								var Scale = Vec3{1, 1, 1}
+								var Rotation = Quat{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog 
+								{
+									var Name = "panelsAssimpFbxScalingPivotInverse"
+									var LinkId = 5
+									Transform 
+									{
+										var Translation = Vec3{0.0334606171, -2.76542997, -0.0116605759}
+										var Scale = Vec3{1, 1, 1}
+										var Rotation = Quat{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog 
+										{
+											var Name = "panels"
+											var LinkId = 6
+											Transform 
+											{
+												var Translation = Vec3{0, 0, 0}
+												var Scale = Vec3{1, 1, 1}
+												var Rotation = Quat{0, 0, 0, 1}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "5886b1ff242732bb:panels.panels"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

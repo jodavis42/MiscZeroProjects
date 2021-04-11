@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "QuaternionCamera"
+		var ResourceId = 0x58dd436b6e77fd06
+	}
+}

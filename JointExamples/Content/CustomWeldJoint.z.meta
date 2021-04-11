@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "CustomWeldJoint"
+		var ResourceId = 0x58d9ba6f6d64f7f0
+	}
+}

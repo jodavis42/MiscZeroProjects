@@ -1,0 +1,18 @@
+ResourceTable = 
+{
+	string ResourceType = "Archetype",
+	Array EntryList = 
+	[
+		{
+			string Name = "CreatePath",
+			string Value = "52e018188731c7ea:ProxyText",
+			float Weight = 1,
+		},
+		{
+			string Name = "FollowPath",
+			string Value = "521f3a3a938ff591:ClickableText",
+			float Weight = 1,
+		},
+	],
+	float MaxWeight = 1,
+},

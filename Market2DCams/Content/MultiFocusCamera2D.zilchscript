@@ -1,0 +1,196 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Arend Danielek
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Used to request and object be added/removed to a MultiFocusCamera2D.
+class CameraFocusEvent : ZilchEvent
+{
+  var Object : Cog = null;
+}
+
+// A 2D camera that focus on a group of objects that have the "MultiFocusCamera2DTarget" component.
+class MultiFocusCamera2D : ZilchComponent
+{
+  sends AddToCameraFocus : CameraFocusEvent;
+  sends RemoveFromCameraFocus : CameraFocusEvent;
+  
+  [Dependency] var Transform : Transform;
+  [Dependency] var Camera : Camera;
+  [Dependency] var CameraViewport : CameraViewport;
+  [Dependency] var Orientation : Orientation;
+  
+  // Should the component be active?
+  [Property] var Active : Boolean = true;
+  // Should the weights of the focus objects be used to
+  // determine the camera's focus position?
+  [Property] var WeightedFocusing : Boolean = true;
+  
+  // Interpolation speed of the camera's translation.
+  [Property] var TrackingSpeed : Real = 5.0;
+  // Interpolation speed of the camera's zooming (size or z-axis depth)
+  [Property] var FocusSpeed : Real = 10.0;
+  
+  // Minimum camera size or z-axis depth of the camera.
+  [Property] var MinZoom : Real = 1.0;
+  // Maximum camera size or z-axis depth of the camera.
+  [Property] var MaxZoom : Real = 100.0;
+  // World-space padding to add to around the focus region.
+  [Property] var ScreenPadding : Real2 = Real2();
+  
+  // Turns console debug output on/off
+  [Property] var DebugPrint : Boolean = false;
+  //On error should an exception be thrown to stop the application
+  [Property] var BreakOnError : Boolean = true;
+  
+  // Current focus point for the camera.
+  var FocusPos : Real3 = Real3();
+  // List of all object's that should be focused in the camera view.
+  var FocusList : HashMap[Cog, Cog] = HashMap[Cog, Cog]();
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Compute the initial focus position from the camera's position
+    this.FocusPos = this.Transform.WorldTranslation;
+    this.Camera.PerspectiveMode = PerspectiveMode.Orthographic;
+    
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    Zero.Connect(this.Space, Events.AddToCameraFocus, this.OnAddToCameraFocus);
+    Zero.Connect(this.Space, Events.RemoveFromCameraFocus, this.OnRemoveFromCameraFocus);
+  }
+  
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // If the component is not active or there are no objects to focus on then do nothing
+    if(!this.Active || this.FocusList.Count == 0)
+      return;
+      
+    // Compute the aabb of all of the focus objects and the weighted center of all of the objects
+    var aabb = Aabb();
+    var weightedCenter = Real3();
+    foreach(var cog in this.FocusList.Values)
+    {
+      var cogAabb = this.GetAabb(cog);
+      aabb = Aabb.Expand(aabb, cogAabb);
+      weightedCenter += cog.MultiFocusCamera2DTarget.FocusWeight * cogAabb.Center;
+    }
+    weightedCenter /= this.FocusList.Count;
+    
+    // Compute the focus position based upon our tracking mode
+    var focusPos = aabb.Center;
+    if(this.WeightedFocusing)
+      focusPos = weightedCenter;
+    
+    // Compute the focus size that covers the entire focus aabb (plus some padding)
+    var focusSize = 2 * (aabb.HalfExtents.XY + this.ScreenPadding);
+    // Correct the focus size to match the aspect ratio
+    focusSize = this.FixSizeToAspectRatio(focusSize);
+    
+    // Update the camera position/size
+    this.FocusOrthographic(focusSize, focusPos, event.Dt);
+  }
+  
+  function GetAabb(cog : Cog) : Aabb
+  {
+    // Return the graphical's aabb if it exists
+    var graphical = cog.Graphical;
+    if(graphical != null)
+      return graphical.WorldAabb;
+      
+    // Otherwise, guess at the aabb from the transform
+    var result = Aabb();
+    var transform = cog.Transform;
+    result.Set(transform.WorldTranslation, transform.WorldScale / 2.0);
+    return result;
+  }
+  
+  function FixSizeToAspectRatio(focusSize : Real2) : Real2
+  {
+    // Get the camera's aspect ratio
+    var viewportResolution = this.CameraViewport.ViewportResolutionWithMargin;
+    var cameraAspectRatio = 1.0;
+    if(viewportResolution.Y != 0)
+      cameraAspectRatio = viewportResolution.X / viewportResolution.Y;
+      
+    // Get the aspect ratio of our focus region
+    var focusAspectRatio = 1.0;
+    if(focusSize.Y != 0)
+      focusAspectRatio = focusSize.X / focusSize.Y;
+    
+    // Update the focus size to be of the correct aspect ratio (always increasing, never decreasing)
+    var newFocusSize = focusSize;
+    if(focusAspectRatio > cameraAspectRatio)
+      newFocusSize.Y = focusSize.X / cameraAspectRatio;
+    else
+      newFocusSize.X = focusSize.Y * cameraAspectRatio;
+      
+    return newFocusSize;
+  }
+  
+  function FocusOrthographic(focusSize : Real2, focusPoint : Real3, dt : Real)
+  {
+    // The camera's size in orthographic always comes from the y-axis
+    var targetSize = focusSize.Y;
+    // Clamp the size to the min/max bounds
+    targetSize = Math.Clamp(targetSize, this.MinZoom, this.MaxZoom);
+    // Interpolate the current size to the target size
+    var newSize = Math.Lerp(this.Camera.Size, targetSize, this.FocusSpeed * dt);
+    this.Camera.Size = newSize;
+    
+    // Interpolate to the target pos while keeping the z-axis point the same
+    var transform = this.Transform;
+    var pos = transform.WorldTranslation;
+    var newPos = Math.Lerp(pos, focusPoint, this.TrackingSpeed * dt);
+    newPos.Z = pos.Z;
+    transform.WorldTranslation = newPos;
+  }
+  
+  // Handles event request to add an object to the focus list
+  function OnAddToCameraFocus(event : CameraFocusEvent)
+  {
+    this.AddFocusObject(event.Object);
+  }
+  
+  // Handles event request to remove an object to the focus list
+  function OnRemoveFromCameraFocus(event : CameraFocusEvent)
+  {
+    this.RemoveFocusObject(event.Object);
+  }
+  
+  // Confirms and then add an object to the focus list
+  function AddFocusObject(object : Cog)
+  {
+    // Confirm it is a valid object
+    if(object == null)
+    {
+      if(this.BreakOnError)
+        throw new Exception("Attempting to focus camera on null object");
+      return;
+    }
+    
+    this.DebugOutput("Object added to Focus: `object` Weight: `object.MultiFocusCamera2DTarget.FocusWeight`");
+    this.FocusList.Add(object, object);
+  }
+  
+  // Confirms and removes the given object from the focus list
+  function RemoveFocusObject(object : Cog)
+  {
+    // Check if the object is valid
+    if(object == null)
+    {
+      if(this.BreakOnError)
+        throw new Exception("Attempting to remove null from camera focus list");
+    }
+    
+    // Remove the object from the focus list (error if it's not there)
+    this.FocusList.RemoveOrError(object);
+  }
+  
+  function DebugOutput(str : String)
+  {
+    if (this.DebugPrint)
+      Console.WriteLine(str);
+  }
+}

@@ -1,0 +1,531 @@
+[Version:1]
+Level 
+{
+	Cog 
+	{
+		var Name = "LevelSettings"
+		var LinkId = 1
+		GravityEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = true
+			var DebugDrawEffect = false
+			var LocalSpaceDirection = true
+			var Strength = 10
+			var Direction = Real3{0, -1, 0}
+		}
+		DragEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = true
+			var DebugDrawEffect = false
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.100000001
+			var LinearDrag = 0
+			var AngularDrag = 0
+		}
+		GridDraw 
+		{
+			var Active = false
+			var HalfCellOffset = false
+			var CellSize = 1
+			var Axis = AxisDirection.X
+			var Lines = 100
+			var DrawAxisOrigins = true
+			var AlwaysDrawInEditor = true
+			var DrawInGame = false
+			var GridColor = Real4{0.5, 0.5, 0.5, 0.400000006}
+			var GridHighlight = Real4{0, 0, 0, 0.400000006}
+			var HighlightInterval = 10
+			var FollowEditorCamera = false
+		}
+		RandomContext 
+		{
+			var RandomSeed = true
+			var Seed = 2623764879
+		}
+	}
+	Cog 
+	{
+		var Name = "Renderer"
+		var LinkId = 2
+		DeferredRenderer 
+		{
+			var GeometryDebug = GeometryValue.None
+			var EditorDebugDraw = true
+			var GameDebugDraw = true
+			var RenderDiffuse = true
+			var RenderSpecular = true
+			var RenderSkybox = false
+			var Skybox = "5822dec85e380cf1:SimpleSkybox"
+			var ClearColor = Real4{0.36285001, 0.50909692, 0.61500001, 1}
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+		}
+		Ssao 
+		{
+			var Active = true
+			var Radius = 1
+			var Intensity = 2.20000005
+			var BlurDepthThreshold = 0.0500000007
+			var DebugBuffer = false
+		}
+		Bloom 
+		{
+			var Active = true
+			var Intensity = 0.100000001
+			var Threshold = 1
+			var Bloom1 = true
+			var Bloom2 = true
+			var Bloom3 = true
+			var Bloom4 = true
+			var Bloom5 = true
+			var DebugBuffer = false
+		}
+	}
+	Cog 
+	{
+		var Name = "DirectionalLight"
+		var LinkId = 3
+		Transform 
+		{
+			var Translation = Real3{0, 50, 50}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.382683456, 0, 0, 0.923879504}
+		}
+		SelectionIcon 
+		{
+			var Visible = true
+			var VisibilityEvents = true
+			var Material = "56581e2bb81777be:DebugDrawOnTop"
+			var SpriteSource = "58f8e4be736f5ea2:LightIcon"
+			var ViewScale = 1
+			var OverrideSelections = true
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = false
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b345ae:Cube"
+		}
+		DirectionalLight 
+		{
+			var LightColor = Real4{1, 1, 1, 1}
+			var LightIntensity = 1
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = true
+			var RenderToViewport = false
+			var ForwardViewportEvents = false
+			var RenderOrder = -1
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1, 1}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 100
+			var PerspectiveMode = PerspectiveMode.Orthographic
+			var FieldOfView = 45
+			var Size = 64
+		}
+		ShadowRenderer 
+		{
+			var ResolutionValue = ShadowResolution.High
+			var NormalOffsetBias = 0.100000001
+		}
+	}
+	Cog 
+	{
+		var Name = "EditorCamera"
+		var LinkId = 4
+		Transform 
+		{
+			var Translation = Real3{0, 3.91910887, 10.8838081}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.0871557519, -1.09695906e-08, -1.90484961e-09, 0.99619478}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 200
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 60
+			var Size = 20
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.Orbit
+			var Previous3DMode = ControlMode.Orbit
+			var LookDistance = 11.0517082
+			var VerticalAngle = 0.17453292
+			var HorizontalAngle = 0
+			var LookTarget = Real3{0, 2, 0}
+			var MoveSensitivity = 1
+		}
+	}
+	Cog 
+	{
+		var Name = "GameCamera"
+		var LinkId = 5
+		Transform 
+		{
+			var Translation = Real3{0, 2, 10}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SelectionIcon 
+		{
+			var Visible = true
+			var VisibilityEvents = true
+			var Material = "56581e2bb81777be:DebugDrawOnTop"
+			var SpriteSource = "58f8e4be7360cf7c:CameraIcon"
+			var ViewScale = 1
+			var OverrideSelections = true
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = false
+			var RenderInGame = true
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 5
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Letterbox
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 200
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 60
+			var Size = 20
+		}
+	}
+	Cog 
+	{
+		var Name = "AmbienceObject"
+		var LinkId = 6
+		Transform 
+		{
+			var Translation = Real3{0, 0, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		WindAmbience 
+		{
+			var VolumeDayNight = Real2{0.400000006, 0.600000024}
+			var AttackMinMax = Real2{3, 10}
+			var ReleaseMinMax = Real2{3, 10}
+			var PanTimeMinMax = Real2{4, 8}
+			var PannedVolMinMax = Real2{0.600000024, 0.899999976}
+			var WhiteNoiseVolume = 0.200000003
+		}
+		BackgroundAmbience 
+		{
+			var BackgroundDay = "5944f683d41f0470:Ambience_Loop_Day"
+			var BackgroundNight = "5944f683d4e1da0f:Ambience_Loop_Night"
+			var Cue1Day = "5944f6abd3ebb0fa:Crow"
+			var Cue1Night = "5944f0ce2e7e81f4:OwlScreech"
+			var Wait1MinMax = Real2{10, 25}
+			var Cue2Day = "5944f06d1d71ba74:Nightengale"
+			var Cue2Night = "5944f016264c9b9e:Owl"
+			var Wait2MinMax = Real2{3, 10}
+			var Cue3Day = "5944f09038e06e22:Starling"
+			var Cue3Night = "5944f016264c9b9e:Owl"
+			var Wait3MinMax = Real2{10, 20}
+		}
+		SoundListener 
+		{
+			var Active = true
+		}
+		AmbienceVisuals 
+		{
+			var DayIndicator = CogPath
+			{
+				var Path = ":/Sun"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 7
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var NightIndicator = CogPath
+			{
+				var Path = ":/Moon"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 8
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var DayColor = Real4{0.392156899, 0.56078434, 0.654901981, 1}
+			var NightColor = Real4{0.0891000032, 0.100917011, 0.180000007, 1}
+		}
+	}
+	Cog 
+	{
+		var Name = "PlayDay"
+		var LinkId = 9
+		Transform 
+		{
+			var Translation = Real3{-3, 3.27141404, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{1, 0.806200027, 0.430000007, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "Play Day Version"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 52
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+		Reactive 
+		{
+			var Active = true
+		}
+		AmbienceSetCycle 
+		{
+			var SetAmbienceToDay = true
+		}
+	}
+	Cog 
+	{
+		var Name = "PlayNight"
+		var LinkId = 10
+		Transform 
+		{
+			var Translation = Real3{3, 3.27141404, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0.675000012, 0.873250067, 1, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "Play Night Version"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 52
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+		Reactive 
+		{
+			var Active = true
+		}
+		AmbienceSetCycle 
+		{
+			var SetAmbienceToDay = false
+		}
+	}
+	Cog 
+	{
+		var Name = "Sun"
+		var LinkId = 7
+		Transform 
+		{
+			var Translation = Real3{-3, 4.5, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Sprite 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{1, 0.850199997, 0.464999974, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var SpriteSource = "5274db4c2e7c11f9:Circle"
+			var FlipX = false
+			var FlipY = false
+			var AnimationActive = true
+			var AnimationSpeed = 1
+			var StartFrame = 0
+		}
+	}
+	Cog 
+	{
+		var Name = "Moon"
+		var LinkId = 8
+		Transform 
+		{
+			var Translation = Real3{3, 4.5, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Sprite 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0.86500001, 0.995949984, 1, 0}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var SpriteSource = "5274db4c2e7c11f9:Circle"
+			var FlipX = false
+			var FlipY = false
+			var AnimationActive = true
+			var AnimationSpeed = 1
+			var StartFrame = 0
+		}
+	}
+}

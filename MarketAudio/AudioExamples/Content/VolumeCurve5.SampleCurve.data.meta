@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "VolumeCurve5"
+		var ResourceId = 0x5912abfec094d0b3
+		var LoaderType = "SampleCurve"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

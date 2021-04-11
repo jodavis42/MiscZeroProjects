@@ -1,0 +1,68 @@
+// Creates one item based upon the weight ration inside a resource table.
+class WeightedCreateOnDestroy : ZilchComponent
+{
+    // The table that has the ratios of how often we should create different archetypes.
+    [Property]
+    var DropTable : ResourceTable = null;
+    
+    // Should we apply a random velocity to what we created?
+    [Property]
+    var ApplyRandomVelocity : Boolean = true;
+    
+    [Property]
+    var MaxItemsToSpawn : Integer = 1;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        // Listen for an event on ourself that says we died
+        Zero.Connect(this.Owner, Events.Death, this.OnDeath);
+    }
+    
+    function OnDeath(e : ZilchEvent)
+    {
+        // Create an object at our position
+        var pos = this.Owner.Transform.WorldTranslation;
+        var randomContext = this.Space.FindObjectByName("LevelSettings").RandomContext;
+        
+        if(this.MaxItemsToSpawn == 1)
+        {
+            this.SpawnItem(pos, randomContext);
+        }
+        else
+        {
+            var itemsToSpawn = randomContext.DieRoll(this.MaxItemsToSpawn);
+            for(var i = 0; i < itemsToSpawn; ++i)
+            {
+                this.SpawnItem(pos, randomContext);
+            }
+        }
+    }
+    
+    function SpawnItem(pos : Real3, randomContext : RandomContext)
+    {
+        // Sample the resource table for the archetype to create
+        var resource = this.DropTable.Sample(randomContext.Float(), randomContext.Float()).Resource;
+        var archetype = resource as Archetype;
+        
+        var obj = this.Space.CreateAtPosition(archetype, pos);
+        if(obj == null)
+        {
+            throw new Exception("Resource table is empty, failed to create drop");
+        }
+        
+        // If we want to apply a random velocity to what we create
+        if(this.ApplyRandomVelocity == true)
+        {
+            var body = obj.RigidBody;
+            if(body != null)
+            {
+                var vel = randomContext.Vector3(0.1, 0.2);
+                body.Velocity = vel;
+            }
+        }
+    }
+}

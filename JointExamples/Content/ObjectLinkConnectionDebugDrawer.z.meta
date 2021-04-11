@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "ObjectLinkConnectionDebugDrawer"
+		var ResourceId = 0x58c4e6d5c67f92c1
+	}
+}

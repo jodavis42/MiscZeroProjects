@@ -1,0 +1,11 @@
+DataContent = 
+{
+	DataBuilder = 
+	{
+		string Name = "ShieldRechargeRate",
+		uint64 ResourceId = 522ee3f842b9833f,
+		string LoaderType = "SampleCurve",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

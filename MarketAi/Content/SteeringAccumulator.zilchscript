@@ -1,0 +1,209 @@
+/************************************************************************************************************/
+/* Copyright 2016 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 1/3/2016                                                                                    */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Jordan Ellis                                                                            */
+/* Class: SteeringAccumulator                                                                               */
+/* Brief: SteeringAccumulator handles updating all SteeringComponents, and accumulating their movement and  */
+/*        rotations for a final output. This final output is sent as an event, and can be used to move a    */
+/*        character controller or RigidBody or anything else.                                               */
+/************************************************************************************************************/
+
+class SteeringResultsEvent : ZilchEvent
+{
+  var Owner : SteeringAccumulator = null;
+  var Dt : Real = 0.0;
+  var WorldMovement : Real3 = Real3.Zero;
+  var LocalMovement : Real3 = Real3.Zero;
+  var LookDirection : Real3 = Real3.Zero;
+}
+
+enum SteeringConstraints
+{
+  None,
+  XZPlane,
+  XYPlane,
+  ZYPlane
+}
+
+class SteeringAccumulator : ZilchComponent
+{
+  // All SteeringComponents listen to this update
+  sends UpdateEvent : UpdateEvent;
+  
+  // All SteeringMovers listen to this event
+  sends SteeringResultsEvent : SteeringResultsEvent;
+  
+  [Dependency]
+  var Transform : Transform = null;
+  
+  [Dependency]
+  var Orientation : Orientation = null;
+  
+  // Determines if the component is active
+  [Property]
+  var Active : Boolean = true;
+  
+  [Property]
+  var EventHandler : CogPath = null;
+  
+  // Constrain the movements accumulated
+  [Property]
+  var MovementConstraint : SteeringConstraints = SteeringConstraints.None;
+  
+  // Constrain the look directions accumulated
+  [Property]
+  var LookDirectionConstraint : SteeringConstraints = SteeringConstraints.None;
+  
+  [Property]
+  var DebugDrawEnabled : Boolean = true;
+  
+  // Accumulate all movements / look directions and their weights
+  var LocalMoveAccum : Real3 = Real3.Zero;
+  var LocalMoveWeightAccum : Real = 0.0;
+  
+  var WorldMoveAccum : Real3 = Real3.Zero;
+  var WorldMoveWeightAccum : Real = 0.0;
+  
+  var LookDirectionAccum : Real3 = Real3.Zero;
+  var LookDirectionWeightAccum : Real = 0.0;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+  
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if (!this.Active)
+    {
+      return;
+    }
+    
+    // Reset all accumulators
+    this.LocalMoveAccum = Real3.Zero;
+    this.LocalMoveWeightAccum = 0.0;
+    this.WorldMoveAccum = Real3.Zero;
+    this.WorldMoveWeightAccum = 0.0;
+    this.LookDirectionAccum = Real3.Zero;
+    this.LookDirectionWeightAccum = 0.0;
+    
+    // Call the update on the steering
+    this.Owner.DispatchEvent(Events.LogicUpdate, event);
+    
+    // Average all movement and look directions
+    if (this.LocalMoveWeightAccum != 0.0)
+    {
+      this.LocalMoveAccum /= this.LocalMoveWeightAccum;
+    }
+    if (this.WorldMoveWeightAccum != 0.0)
+    {
+      this.WorldMoveAccum /= this.WorldMoveWeightAccum;
+    }
+    if (this.LookDirectionWeightAccum != 0.0)
+    {
+      this.LookDirectionAccum /= this.LookDirectionWeightAccum;
+    }
+    
+    this.LocalMoveAccum = this.ConstrainVector(this.LocalMoveAccum, this.MovementConstraint);
+    this.WorldMoveAccum = this.ConstrainVector(this.WorldMoveAccum, this.MovementConstraint);
+    this.LookDirectionAccum = this.ConstrainVector(this.LookDirectionAccum, this.LookDirectionConstraint);
+    
+    // Dispatch the results
+    var results = new SteeringResultsEvent();
+    
+    results.Owner = this;
+    results.Dt = event.Dt;
+    results.WorldMovement = this.WorldMoveAccum;
+    results.LocalMovement = this.LocalMoveAccum;
+    results.LookDirection = this.LookDirectionAccum;
+    
+    // Account for the edge case of a zero vector for our forward
+    if (results.LookDirection == Real3.Zero)
+    {
+      results.LookDirection = this.Orientation.WorldForward;
+    }
+    
+    if (this.EventHandler == null || this.EventHandler.Cog == null)
+    {
+      this.Owner.DispatchEvent(Events.SteeringResultsEvent, results);
+    }
+    else
+    {
+      this.EventHandler.Cog.DispatchEvent(Events.SteeringResultsEvent, results);
+    }
+  }
+  
+  // This function is used by the SteeringComponents to add their local movements
+  function AddLocalMovement(movement : Real3, weight : Real)
+  {
+    Math.Normalize(movement);
+    
+    this.LocalMoveAccum += movement * weight;
+    this.LocalMoveWeightAccum += weight;
+    
+    if (this.DebugDrawEnabled)
+    {
+      var worldMovement = Math.Multiply(this.Transform.WorldRotation, movement);
+      
+      this.DebugDrawVector(worldMovement, Real4(1, 0, 1, 1));
+    }
+  }
+  
+  function AddWorldMovement(movement : Real3, weight : Real)
+  {
+    Math.Normalize(movement);
+    
+    this.WorldMoveAccum += movement * weight;
+    this.WorldMoveWeightAccum += weight;
+    
+    this.DebugDrawVector(movement, Real4(1, 0, 0, 1));
+  }
+  
+  function AddLookDirection(direction : Real3, weight : Real)
+  {
+    Math.Normalize(direction);
+    
+    this.LookDirectionAccum += direction * weight;
+    this.LookDirectionWeightAccum += weight;
+  }
+  
+  function ConstrainVector(vector : Real3, constraint : SteeringConstraints) : Real3
+  {
+    if (constraint == SteeringConstraints.None)
+    {
+      return vector;
+    }
+    else if (constraint == SteeringConstraints.XYPlane)
+    {
+      return Math.ProjectOnPlane(vector, Real3(0, 0, 1));
+    }
+    else if (constraint == SteeringConstraints.XZPlane)
+    {
+      return Math.ProjectOnPlane(vector, Real3(0, 1, 0));
+    }
+    // SteeringConstraints.ZYPlane
+    else
+    {
+      return Math.ProjectOnPlane(vector, Real3(1, 0, 0));
+    }
+  }
+  
+  function DebugDrawVector(vector : Real3, color : Real4)
+  {
+    if (!this.DebugDrawEnabled)
+    {
+      return;
+    }
+    
+    var start = this.Transform.WorldTranslation;
+    var end = start + vector;
+    var line = DebugLine(start, end);
+    
+    line.HeadSize = 0.5;
+    line.Color = color;
+    line.OnTop = true;
+    
+    DebugDraw.Add(line);
+  }
+}

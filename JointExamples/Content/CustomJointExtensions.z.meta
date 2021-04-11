@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "CustomJointExtensions"
+		var ResourceId = 0x58dd718a6bb64c53
+	}
+}

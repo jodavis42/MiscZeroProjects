@@ -1,0 +1,54 @@
+[Version:1]
+GeometryContent 
+{
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "GenericDoorBody_GenericDoorKnob"
+				var ResourceId = 0x5981428c4ac43f48
+			}
+			Object
+			{
+				var Name = "GenericDoorBody_GenericDoorLock"
+				var ResourceId = 0x5981428c4ac43f78
+			}
+			Object
+			{
+				var Name = "GenericDoorBody_GenericDoorLock0"
+				var ResourceId = 0x5981428c4ac43f83
+			}
+			Object
+			{
+				var Name = "GenericDoorBody_GenericDoorKnob1"
+				var ResourceId = 0x5981428c4ac43f91
+			}
+			Object
+			{
+				var Name = "GenericDoorBody_GenericDoorBody"
+				var ResourceId = 0x5981428c4ac43f9e
+			}
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 1
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x5981428d4af0dc11
+	}
+}

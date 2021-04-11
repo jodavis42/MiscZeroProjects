@@ -1,0 +1,379 @@
+[Version:1]
+Cog 
+{
+	var Name = "Blimp"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59808598742726b7]
+		{
+			var Name = "Sphere001"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{2.7883811, 0.914185762, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808599744ad423:Blimp_Sphere001"
+			}
+		}
+		Cog [Id:0x59808598742726be]
+		{
+			var Name = "Box001"
+			Transform 
+			{
+				var Translation = Real3{0.481806755, -0.176806286, -0.00967513397}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, -0.192849323, 0.981228471}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808599744ad47a:Blimp_Box001"
+			}
+		}
+		Cog [Id:0x59808598742726c0]
+		{
+			var Name = "Box002"
+			Transform 
+			{
+				var Translation = Real3{0.481806755, 0.00752823474, -0.176806286}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.693833292, 0.136365056, -0.136365041, 0.693833232}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808599744ad491:Blimp_Box002"
+			}
+		}
+		Cog [Id:0x59808598742726c2]
+		{
+			var Name = "Cylinder001"
+			Transform 
+			{
+				var Translation = Real3{-0.00058618543, -0.000596546801, -0.334159583}
+				var Scale = Real3{2.90425849, 1.14512503, 1.14512503}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808599744ad4b2:Blimp_Cylinder001"
+			}
+		}
+		Cog [Id:0x59808598742726c4]
+		{
+			var Name = "Group001"
+			Transform 
+			{
+				var Translation = Real3{-0.192758635, -0.368864179, -0.0372973718}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59808598742726c6]
+				{
+					var Name = "Tube001"
+					Transform 
+					{
+						var Translation = Real3{-0.285054624, 0.0356137082, 0.0372973718}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{-0.5, 0.500000119, 0.5, -0.49999994}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "59808599744ad4d0:Blimp_Tube001"
+					}
+				}
+				Cog [Id:0x59808598742726c9]
+				{
+					var Name = "Cylinder003"
+					Transform 
+					{
+						var Translation = Real3{0.221210957, 0.0356137082, 0.0372973755}
+						var Scale = Real3{0.539372444, 0.539372444, 3.02163577}
+						var Rotation = Quaternion{-0.5, 0.500000119, 0.5, -0.49999994}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "59808599744ad4f2:Blimp_Cylinder003"
+					}
+				}
+				Cog [Id:0x59808598742726cb]
+				{
+					var Name = "Cylinder004"
+					Transform 
+					{
+						var Translation = Real3{0.075814344, -7.62939436e-08, 1.43051144e-08}
+						var Scale = Real3{2.05076146, 2.05076146, 0.517609775}
+						var Rotation = Quaternion{-0.5, 0.500000119, 0.5, -0.49999994}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "59808599744ad506:Blimp_Cylinder004"
+					}
+				}
+				Cog [Id:0x59808598742726cd]
+				{
+					var Name = "Cylinder002"
+					Transform 
+					{
+						var Translation = Real3{0.361354738, 0.0356137082, 0.0372973755}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{-0.5, 0.500000119, 0.5, -0.49999994}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "59808599744ad526:Blimp_Cylinder002"
+					}
+				}
+			}
+		}
+		Cog [Id:0x59808598742726cf]
+		{
+			var Name = "Cylinder005"
+			Transform 
+			{
+				var Translation = Real3{0.304239839, 0, 0.285242468}
+				var Scale = Real3{1.29992473, 1.29992485, 2.22838569}
+				var Rotation = Quaternion{-0.49999994, 0.500000179, 0.50000006, -0.5}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808599744ad53c:Blimp_Cylinder005"
+			}
+		}
+		Cog [Id:0x59808598742726d1]
+		{
+			var Name = "Cylinder006"
+			Transform 
+			{
+				var Translation = Real3{0.328828603, 0, 0.285242468}
+				var Scale = Real3{2.01748133, 2.01748133, 0.534209609}
+				var Rotation = Quaternion{-0.50000006, 0.500000119, 0.5, -0.5}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808599744ad550:Blimp_Cylinder006"
+			}
+		}
+		Cog [Id:0x59808598742726d3]
+		{
+			var Name = "Box003"
+			Transform 
+			{
+				var Translation = Real3{-0.53634125, 0.00626565935, 0.350876153}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808599744ad575:Blimp_Box003"
+			}
+		}
+		Cog [Id:0x59808598742726d5]
+		{
+			var Name = "Tube002"
+			Transform 
+			{
+				var Translation = Real3{-0.541350484, 0, 0.284999996}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.5, 0.500000119, 0.50000006, -0.5}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808599744ad589:Blimp_Tube002"
+			}
+		}
+		Cog [Id:0x59808598742726d7]
+		{
+			var Name = "Cylinder010"
+			Transform 
+			{
+				var Translation = Real3{0.930000007, -0.179999992, 0.099999994}
+				var Scale = Real3{1.57153499, 1.57153499, 1}
+				var Rotation = Quaternion{-0.5, 0.50000006, 0.5, -0.499999911}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808599744ad59f:Blimp_Cylinder010"
+			}
+		}
+		Cog [Id:0x59808598742726d9]
+		{
+			var Name = "Cylinder011"
+			Transform 
+			{
+				var Translation = Real3{0.930000007, 0.179999992, 0.099999994}
+				var Scale = Real3{1.57153499, 1.57153499, 1}
+				var Rotation = Quaternion{-0.5, 0.50000006, 0.5, -0.499999911}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808599744ad5b4:Blimp_Cylinder011"
+			}
+		}
+		Cog [Id:0x59808598742726db]
+		{
+			var Name = "Tube004"
+			Transform 
+			{
+				var Translation = Real3{0.902313352, -0.179999992, 0.0999999717}
+				var Scale = Real3{0.736544728, 0.736544728, 0.665309191}
+				var Rotation = Quaternion{-0.5, 0.500000119, 0.5, -0.49999994}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808599744ad5e1:Blimp_Tube004"
+			}
+		}
+		Cog [Id:0x59808598742726dd]
+		{
+			var Name = "Tube005"
+			Transform 
+			{
+				var Translation = Real3{0.902313352, 0.179999992, 0.0999999717}
+				var Scale = Real3{0.736544728, 0.736544728, 0.665309191}
+				var Rotation = Quaternion{-0.5, 0.500000119, 0.5, -0.49999994}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808599744ad5f6:Blimp_Tube005"
+			}
+		}
+	}
+}

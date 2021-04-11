@@ -1,0 +1,176 @@
+[Version:1]
+Cog 
+{
+	var Name = "GenericDoorBody"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x5981428c4ace117c]
+		{
+			var Name = "GenericDoorPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x5981428c4ace1183]
+				{
+					var Name = "GenericDoorScaling"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{0.0253999997, 0.0253999997, 0.0253999997}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x5981428c4ace1185]
+						{
+							var Name = "GenericDoorGeometricTranslation"
+							Transform 
+							{
+								var Translation = Real3{15.3227081, 0, 39.622963}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x5981428c4ace1188]
+								{
+									var Name = "GenericDoor"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x5981428c4ace118a]
+										{
+											var Name = "GenericDoorKnob"
+											Transform 
+											{
+												var Translation = Real3{20.0657253, 0.645492017, 17.5795898}
+												var Scale = Real3{0.635666788, 0.308898777, 2.44408822}
+												var Rotation = Quaternion{1.37678782e-07, 0.707106829, 0.707106769, 1.37678754e-07}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "5981428c4ac43f48:GenericDoorBody_GenericDoorKnob"
+											}
+										}
+										Cog [Id:0x5981428c4ace118d]
+										{
+											var Name = "GenericDoorLock"
+											Transform 
+											{
+												var Translation = Real3{37.4980812, -0.56485796, 17.5795898}
+												var Scale = Real3{0.635666788, 0.308898777, 2.44408822}
+												var Rotation = Quaternion{0.707106829, -2.30404638e-07, -2.30404595e-07, 0.707106709}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "5981428c4ac43f78:GenericDoorBody_GenericDoorLock"
+											}
+										}
+										Cog [Id:0x5981428c4ace118f]
+										{
+											var Name = "GenericDoorLock0"
+											Transform 
+											{
+												var Translation = Real3{20.0657196, 0.645527899, 17.5795898}
+												var Scale = Real3{0.635666788, 0.308898777, 2.44408822}
+												var Rotation = Quaternion{1.48637832e-06, 0.707106829, 0.707106769, 1.48637798e-06}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "5981428c4ac43f83:GenericDoorBody_GenericDoorLock0"
+											}
+										}
+										Cog [Id:0x5981428c4ace1192]
+										{
+											var Name = "GenericDoorKnob1"
+											Transform 
+											{
+												var Translation = Real3{37.4980812, -0.564855039, 17.5795918}
+												var Scale = Real3{0.635666788, 0.308898777, 2.44408822}
+												var Rotation = Quaternion{0.707106829, -1.06770173e-07, -1.06770152e-07, 0.707106709}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "5981428c4ac43f91:GenericDoorBody_GenericDoorKnob1"
+											}
+										}
+										Cog [Id:0x5981428c4ace1194]
+										{
+											var Name = "GenericDoorBody"
+											Transform 
+											{
+												var Translation = Real3{15.3227081, -0.0259860754, 0}
+												var Scale = Real3{0.973934054, 1, 1.00642323}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "5981428c4ac43f9e:GenericDoorBody_GenericDoorBody"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

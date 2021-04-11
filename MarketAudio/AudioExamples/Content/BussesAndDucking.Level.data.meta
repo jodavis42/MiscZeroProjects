@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "BussesAndDucking"
+		var ResourceId = 0x591a8f3f5652b85f
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

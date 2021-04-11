@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "Print"
+		var ResourceId = 0x5a7daefa0c4956db
+	}
+}

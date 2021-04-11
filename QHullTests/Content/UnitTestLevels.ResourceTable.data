@@ -1,0 +1,117 @@
+[Version:1]
+ResourceTable 
+{
+	var ResourceType = "Level"
+	var EntryList = Array
+	{
+		Object
+		{
+			var Name = "Name4"
+			var Value = "598171c24aab9970:Aircraft123321"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name5"
+			var Value = "598171715ada4da7:Cone"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name6"
+			var Value = "5981713247e300c8:Crystal"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name3"
+			var Value = "598227a2ca88ceed:Cube5x5"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name15"
+			var Value = "598ed47cc1a6eb39:F1Tire"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name1"
+			var Value = "5981710d5ec2e031:Fireball"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name2"
+			var Value = "59817127435c9609:FlagTest"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name7"
+			var Value = "598171456c6d2307:GenericBedsideTable"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name8"
+			var Value = "5981712d412a7ff1:GenericShelf"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name9"
+			var Value = "598171e54cf03b62:GenericTallLamp"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name10"
+			var Value = "598171ff317868d1:Helmet"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name11"
+			var Value = "598171155c084b4b:JeepWheel"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name12"
+			var Value = "5982280c5e01417d:SimpleCube"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name13"
+			var Value = "59822791c7a0709b:Wedge"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name14"
+			var Value = "59817181346a55fc:ZHouse1"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name16"
+			var Value = "598220b28232b3a1:MccartyVehicle"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name17"
+			var Value = "598916a403dd240c:armadillo"
+			var Weight = 1
+		}
+		Object
+		{
+			var Name = "Name18"
+			var Value = "598917670c406827:standfordBunny"
+			var Weight = 1
+		}
+	}
+	var MaxWeight = 1
+}

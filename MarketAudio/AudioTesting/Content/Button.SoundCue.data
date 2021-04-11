@@ -1,0 +1,38 @@
+[Version:1]
+SoundCue 
+{
+	var PlayMode = SoundPlayMode.Looping
+	var Volume = 1
+	var UseDecibelVariation = false
+	var VolumeVariation = 0
+	var DecibelVariation = 3.10000014
+	var Pitch = 0
+	var UseSemitoneVariation = false
+	var PitchVariation = 0
+	var SemitoneVariation = 1.80000007
+	var ShowMusicOptions = false
+	var BeatsPerMinute = 0
+	var TimeSigBeats = 0
+	var TimeSigValue = 0
+	var Sounds = Array
+	{
+		Object
+		{
+			var Sound = "58a7a2ce636fcef4:UiButton"
+			var Weight = 1
+			var StartTime = 0
+			var EndTime = 1
+			var LoopEndTime = 0.5
+			var LoopStartTime = 0
+			var LoopTailLength = 1
+		}
+	}
+	var SoundTags = Array
+	{
+		Object
+		{
+			var SoundTag = "551c2d5a29ce571d:DefaultSoundTag"
+		}
+	}
+	var Attenuator = "57ca8a6ad262efe5:DefaultNoAttenuation"
+}

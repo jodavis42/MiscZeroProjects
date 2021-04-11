@@ -1,0 +1,11 @@
+BinaryContent = 
+{
+	BinaryBuilder = 
+	{
+		string Name = "BigAsteroid",
+		uint64 ResourceId = 522ff26f19e2e4e5,
+		string LoaderType = "ConvexMesh",
+		uint Version = 0,
+		string FilterTag = "",
+	},
+},

@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "HierarchyMeshToTextBlock"
+		var ResourceId = 0x5983ca2a52190bad
+	}
+}

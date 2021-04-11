@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "DependencyTest"
+		var ResourceId = 0x5a5c16a8f758cb94
+	}
+}

@@ -1,0 +1,51 @@
+Cog = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Named = 
+	{
+		string Name = "Sprite",
+	},
+	Archetyped = 
+	{
+		string Name = "52e01bf977c3fb96:PathProxyCreator",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [9.46142, 2.97411, 0],
+		Vec3 Scale = [1, 1, 1],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	SpriteText = 
+	{
+		SpriteGeometryMode GeometryMode = ZPlane,
+		TextPositionMode Position = UpperLeft,
+		string FontName = "4e7bac697bec55c5:Verdana",
+		uint FontSize = 20,
+		Vec4 Color = [1, 1, 1, 1],
+		bool Visible = true,
+		string Text = "Click To Add Waypoints",
+		bool OnTop = false,
+		BlendMode BlendMode = Alpha,
+		Vec2 Size = [0, 0],
+		TextAlign Align = Left,
+		float PixelsPerUnit = 64,
+		bool Smoothing = true,
+	},
+	Reactive = 
+	{
+		bool Active = true,
+		bool CaptureMouse = false,
+	},
+	UiUserData = 
+	{
+	},
+	PathProxyCreator = 
+	{
+	},
+	UiText = 
+	{
+	},
+},

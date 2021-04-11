@@ -1,0 +1,28 @@
+// Used to make ui follow an object. Ui can't just parent to an object since we don't want rotation.
+class UiFollowObject : ZilchComponent
+{
+    // The object that requested this upgrade
+    var TargetObj : Cog = null;
+    
+    // The offset position from our target object that we should sit at.
+    var Offset : Real3 = local Real3(0.0, 0.0, 1.0);
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    }
+    
+    function OnLogicUpdate(updateEvent : UpdateEvent)
+    {
+        // If we have a target object then set our position to be right above the target
+        if(this.TargetObj != null)
+        {
+            var pos = this.TargetObj.Transform.WorldTranslation + this.Offset;
+            this.Owner.Transform.Translation = pos;
+        }
+    }
+}

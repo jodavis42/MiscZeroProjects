@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"QuickHull"
+		}
+	}
+	ZilchScriptBuilder 
+	{
+		var Name = "ToTextBlockBase"
+		var ResourceId = 0x5982392a5694d85c
+	}
+}

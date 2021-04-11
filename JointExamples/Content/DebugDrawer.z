@@ -1,0 +1,19 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class DebugDrawer : ZilchComponent
+{
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.FrameUpdate, this.OnFrameUpdate);
+  }
+
+  function OnFrameUpdate(event : UpdateEvent)
+  {
+    this.Owner.DebugDraw();
+  }
+}

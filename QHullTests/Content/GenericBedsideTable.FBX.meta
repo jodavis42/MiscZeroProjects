@@ -1,0 +1,64 @@
+[Version:1]
+GeometryContent 
+{
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x59814236541c0002
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "GenericBedsideTable_GenericBedsideTableBody"
+				var ResourceId = 0x5981423554e73238
+			}
+			Object
+			{
+				var Name = "GenericBedsideTable_GenericBedsideTableDrawerTop"
+				var ResourceId = 0x5981423554e7329b
+			}
+			Object
+			{
+				var Name = "GenericBedsideTable_GenericBedsideTableDrawerMiddle"
+				var ResourceId = 0x5981423554e732c1
+			}
+			Object
+			{
+				var Name = "GenericBedsideTable_GenericBedsideTableDrawerBottom"
+				var ResourceId = 0x5981423554e732e4
+			}
+			Object
+			{
+				var Name = "GenericBedsideTable_GenericHandleBottom"
+				var ResourceId = 0x5981423554e73304
+			}
+			Object
+			{
+				var Name = "GenericBedsideTable_GenericHandleMiddle"
+				var ResourceId = 0x5981423554e7332c
+			}
+			Object
+			{
+				var Name = "GenericBedsideTable_GenericHandleTop"
+				var ResourceId = 0x5981423554e73346
+			}
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 1
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+}

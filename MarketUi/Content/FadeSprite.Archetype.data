@@ -1,0 +1,44 @@
+[Version:1]
+Cog 
+{
+	var Name = "FadeSprite"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Vec3{0, 0, 2}
+		var Scale = Vec3{194.258377, 252.966278, 1}
+		var Rotation = Quat{0, 0, 0, 1}
+	}
+	Sprite 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
+		var VertexColor = Vec4{1, 1, 1, 1}
+		var GeometryMode = SpriteGeometryMode.ZPlane
+		var SpriteSource = "5275aa4d802dd6dc:Square"
+		var FlipX = false
+		var FlipY = false
+		var AnimationActive = true
+		var AnimationSpeed = 1
+		var StartFrame = 0
+	}
+	SpriteFader 
+	{
+		var FadeInDuration = 2
+		var FadeOutDuration = 2
+		var FadeInEase = Ease.Linear
+		var FadeOutEase = Ease.Linear
+		var FadeInOnLevelStarted = true
+		var FadeInTarget = Vec4{1, 1, 1, 0}
+		var FadeOutTarget = Vec4{1, 1, 1, 1}
+		var AutoFadeOut = false
+		var AutoFadeOutDelay = 2
+	}
+	LoadLevelOnEvent 
+	{
+		var EventString = "SpriteFadedOut"
+		var LevelToLoad = "5823bf04cdc49342:ZeroEngineLogo"
+	}
+}

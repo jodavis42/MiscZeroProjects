@@ -1,0 +1,78 @@
+/************************************************************************************************************/
+/* Copyright 2016 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 1/3/2016                                                                                    */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Jordan Ellis                                                                            */
+/* Class: Evade                                                                                             */
+/* Brief: Predicts the future position of the target object and flees from that predicted point.            */
+/************************************************************************************************************/
+
+class Evade : SteeringComponent
+{
+  [Dependency]
+  var Transform : Transform = null;
+  
+  // Evade requires an Orientation & OrientationHelper component
+  [Dependency]
+  var Orientation : Orientation = null;
+  
+  // Target object to be evading from
+  [Property]
+  var Target : CogPath = null;
+  
+  // Range from the object in which it is valid to evade the target object
+  // If the range is 0 the target object will always be fled
+  [Property]
+  var EvadeRange : Real = 0.0;
+  
+  // Magnitude of the velocity vector to be used when prediction target motion
+  // If the range is 0.0 Dt will be used to estimate the position of the object in the next frame
+  [Property]
+  var PredictionRange : Real = 0.0;
+  
+  var NoEvadeRange : Boolean
+  {
+    get { return Math.ApproximatelyEqual(this.EvadeRange, 0.0, 0.001); }
+  }
+  
+  var TargetTranslation : Real3
+  {
+    get { return this.Target.Cog.Transform.WorldTranslation; }
+  }
+  
+  var TargetPrevTranslation : Real3;
+  
+  [Override]
+  function SteeringInitialize(init : CogInitializer)
+  {
+    this.TargetPrevTranslation = this.TargetTranslation;
+  }
+  
+  [Override]
+  function SteeringUpdate(event : UpdateEvent)
+  {
+    // If this component is not active do nothing
+    if (!this.Active || !this.SteeringAccumulator.Active)
+    {
+      return;
+    }
+    
+    var prediction = Math.Max(this.PredictionRange, event.Dt);
+    var targVel = Math.Normalize(this.TargetTranslation - this.TargetPrevTranslation);
+    var predictedPos = this.TargetTranslation + (targVel * prediction);
+    var predictedDir = predictedPos - this.Transform.WorldTranslation;
+    var predictedDis = Math.LengthSq(predictedDir);
+    
+    if (this.NoEvadeRange || predictedDis < this.EvadeRange * this.EvadeRange)
+    {
+      predictedDir /= Math.Sqrt(predictedDis);
+      
+      // Apply a force to move the object towards the target object's position
+      this.AddLookDirection(-predictedDir);
+      this.AddLocalMovement(this.Orientation.LocalForward);
+    }
+    
+    // Store this for next update
+    this.TargetPrevTranslation = this.TargetTranslation;
+  }
+}

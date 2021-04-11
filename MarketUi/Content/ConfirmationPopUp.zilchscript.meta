@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "ConfirmationPopUp"
+		var ResourceId = 0x5806e33dd472ecb7
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"UI"
+		}
+	}
+}

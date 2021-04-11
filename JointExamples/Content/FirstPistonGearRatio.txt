@@ -1,0 +1,1 @@
+Two prismatic joints are connected with a gear joint. The gear joint uses a gear ratio to make it easier for a light object to push a heavy one. Additionally, a motor is used on the door to slow it down and require less force

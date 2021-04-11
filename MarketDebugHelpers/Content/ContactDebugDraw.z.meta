@@ -1,0 +1,16 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "ContactDebugDraw",
+		uint64 ResourceId = 532e2ab87b175781,
+	},
+	ContentTags = 
+	{
+		Array Tags = 
+		[
+			"DebugScripts",
+			"DebugHelpers",
+		],
+	},
+},

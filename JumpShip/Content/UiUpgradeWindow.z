@@ -1,0 +1,132 @@
+class UiUpgradeWindow : ZilchComponent
+{
+    // The object that requested this upgrade
+    var TargetObj : Cog = null;
+    
+    // Our child button that the user clicks to upgrade
+    var UpgradeButton : Cog = null;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        
+        this.UpgradeButton = this.Owner.FindChildByName("UpgradeText");
+        
+        Zero.Connect(this.UpgradeButton, Events.MouseEnter, this.OnMouseEnter);
+        Zero.Connect(this.UpgradeButton, Events.MouseExit, this.OnMouseExit);
+        Zero.Connect(this.UpgradeButton, Events.MouseDown, this.OnUpgrade);
+    }
+    
+    function Setup(targetObj : Cog)
+    {
+        this.TargetObj = targetObj;
+        
+        if(this.TargetObj == null)
+        {
+            return;
+        }
+        
+        var upgradable = this.TargetObj.Upgradable;
+        if(upgradable == null)
+        {
+            return;
+        }
+        
+        // Get our upgrade level and the amount of resources required to upgrade
+        var level = upgradable.Level;
+        var data = upgradable.GetUpgradeData();
+        
+        // Set the text to display our current level (display 1 based instead of 0 based levels)
+        var levelText = this.Owner.FindChildByName("LevelText");
+        levelText.SpriteText.Text = "Level: `(level + 1.0) as Integer`";
+        
+        this.UpdateDisplay(data.ExpRequired as Integer, "Exp");
+        this.UpdateDisplay(data.ZincRequired as Integer, "Zinc");
+        this.UpdateDisplay(data.SteelRequired as Integer, "Steel");
+        this.UpdateDisplay(data.PlatinumRequired as Integer, "Platinum");
+    }
+    
+    function UpdateDisplay(requiredAmount : Integer, resourceName : String)
+    {
+        // If some of this resource is actually required, find the visual icon
+        // and the text and make them visible, then set how many of this resource is required
+        if(requiredAmount != 0)
+        {
+            var visual = this.Owner.FindChildByName("`resourceName`Visual");
+            visual.Sprite.Visible = true;
+            var text = this.Owner.FindChildByName("`resourceName`Required");
+            text.SpriteText.Visible = true;
+            text.SpriteText.Text = "`requiredAmount`";
+        }
+    }
+    
+    function OnLogicUpdate(updateEvent : UpdateEvent)
+    {
+        // If we have a target object that set our position to be right above the target
+        if(this.TargetObj != null)
+        {
+            var pos = this.TargetObj.Transform.WorldTranslation + local Real3(0.0, 0.0, 1.0);
+            this.Owner.Transform.Translation = pos;
+        }
+    }
+    
+    function OnMouseEnter(viewportMouseEvent : ViewportMouseEvent)
+    {
+        if(this.TargetObj == null)
+        {
+            return;
+        }
+        
+        var upgradable = this.TargetObj.Upgradable;
+        if(upgradable == null)
+        {
+            return;
+        }
+        
+        // If we have enough resources to upgrade the highlight the upgrade button
+        var sprite = this.UpgradeButton.SpriteText;
+        if(upgradable.CanUpgrade() == true)
+        {
+            sprite.VertexColor = Real4(1.0);
+        }
+        // Otherwise turn it red since we don't have enough resources
+        else
+        {
+            sprite.VertexColor = Real4(1.0, 0.0, 0.0, 1.0);
+        }
+    }
+    
+    function OnMouseExit(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // Change back to a semi-transparent gray when the mouse is not over the upgrade button
+        var sprite = this.UpgradeButton.SpriteText;
+        sprite.VertexColor = local Real4(0.5);
+    }
+    
+    function OnUpgrade(viewportMouseEvent : ViewportMouseEvent)
+    {
+        if(this.TargetObj == null)
+        {
+            return;
+        }
+        
+        var upgradable = this.TargetObj.Upgradable;
+        if(upgradable == null)
+        {
+            return;
+        }
+        
+        // The user clicked to upgrade, make sure they had enough
+        // resources and if they did then actually upgrade
+        if(upgradable.CanUpgrade() == true)
+        {
+            upgradable.Upgrade();
+            // Re-setup (which refreshes our ui)
+            this.Setup(upgradable.Owner);
+        }
+    }
+}

@@ -1,0 +1,1 @@
+Similar to before, a prismatic is hooked up to a revolute joint using a gear ratio. By rotating the lever the door will slide open.

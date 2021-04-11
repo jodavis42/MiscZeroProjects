@@ -1,0 +1,28 @@
+class Extensions : ZilchComponent
+{
+  [Extension(typeid(PhysicsMeshVertexData))]
+  function ToArray() : Array[Real3]
+  {
+    var results = Array[Real3]();
+    foreach(var vertex in this)
+    {
+      results.Add(vertex);
+    }
+    return results;
+  }
+  
+  [Extension(typeid(Real4x4))]
+  function SetIdentity()
+  {
+    for(var y = 0; y < 4; ++y)
+    {
+      for(var x = 0; x < 4; ++x)
+      {
+        if(x == y)
+          this[y, x] = 1;
+        else
+          this[y, x] = 0;
+      }
+    }
+  }
+}

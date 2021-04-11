@@ -1,0 +1,336 @@
+/************************************************************************************************************/
+/* Copyright 2016 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 1/3/2016                                                                                    */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Jordan Ellis                                                                            */
+/* Class: Avoidance                                                                                         */
+/* Brief: The Avoidance steering behaviour uses a front facing cone and sensor results, to determine what   */
+/*        direction it should face in order to avoid the contact points. It can rotate in the yaw direction */
+/*        (around the up axis) and in the pitch direction (around the right axis). It also moves away from  */
+/*        contacts that are too close (within the move back distance).                                      */
+/************************************************************************************************************/
+
+class Avoidance : SteeringComponent
+{
+  [Dependency]
+  var Transform : Transform = null;
+  
+  [Dependency]
+  var Orientation : Orientation = null;
+  
+  [Dependency]
+  var Sensor : Sensor = null;
+  
+  // Allow yaw rotation (about the orientation's up vector)
+  [Property]
+  var YawRotation : Boolean = true;
+  
+  // Allow pitch rotation (about the orientation's right vector)
+  [Property]
+  var PitchRotation : Boolean = true;
+  
+  // The avoidance cone's distance
+  [Property]
+  var ConeDistance : Real = 5.0;
+  
+  // The avoidance cone's angle (degrees)
+  [Property]
+  var ConeAngle : Real = 45.0;
+  
+  [Property]
+  var MoveBackDistance : Real = 1.0;
+  
+  // Our cached sensor results
+  var SensorResults : Array[SensorResult] = null;
+  
+  // Keep track of our last rotation
+  var LastYawRotation : Real = 0.0;
+  
+  var LastPitchRotation : Real = 0.0;
+  
+  // Keep our last computed "world forward" for reuse
+  // (if sparse update is turned on)
+  var WorldForward : Real3 = Real3.Zero;
+  var ReuseWorldForward : Boolean = false;
+  
+  var ConeAngleRad : Real
+  {
+    get
+    {
+      return Math.ToRadians(this.ConeAngle);
+    }
+  }
+  
+  var DebugDrawEnabled : Boolean
+  {
+    get
+    {
+      return this.SteeringAccumulator.DebugDrawEnabled;
+    }
+  }
+  
+  [Override]
+  function SteeringInitialize(init : CogInitializer)
+  {
+    // Connect to this object's sensor results
+    Zero.Connect(this.Owner, Events.SensorEvent, this.OnSensorEvent);
+  }
+  
+  [Override]
+  function SteeringUpdate(event : UpdateEvent)
+  {
+    var worldForward = this.Orientation.WorldForward;
+    var worldRight = this.Orientation.WorldRight;
+    var worldUp = this.Orientation.WorldUp;
+    var rotated = false;
+    
+    // Debug draw
+    if (this.DebugDrawEnabled)
+    {
+      // Draw the avoidance cone
+      this.DebugDrawCone(worldForward);
+      
+      // Draw the contacts
+      this.DebugDrawContacts();
+    }
+    
+    // Determine if we need to move back from a contact
+    if (this.SensorResults != null && this.MoveBackDistance != 0.0)
+    {
+      var worldPos = this.Transform.WorldTranslation;
+      
+      // Iterate over all contacts
+      foreach (var result in this.SensorResults)
+      {
+        foreach (var contact in result.Contacts)
+        {
+          var distSq = Math.DistanceSq(worldPos, contact);
+          
+          // If this contact is too close
+          if (distSq <= this.MoveBackDistance * this.MoveBackDistance)
+          {
+            // Move away from this contact
+            var dir = Math.Normalize(worldPos - contact);
+              
+            this.AddWorldMovement(dir);
+          }
+        }
+      }
+    }
+    
+    // See if we need to reuse the world forward last calculated
+    // (if the sensor's sparse update is turned on)
+    if (this.ReuseWorldForward)
+    {
+      // If the sensor's sparse update counter is zero, flush our results
+      if (this.Sensor.UpdateTimeout <= 0)
+      {
+        this.SensorResults = null;
+        this.ReuseWorldForward = false;
+      }
+      
+      this.AddLookDirection(this.WorldForward);
+      return;
+    }
+    
+    // Solve for Yaw
+    if (this.YawRotation && this.SensorResults != null)
+    {
+      var angleChange = this.SolveForRotation(
+        worldForward, worldUp, this.LastYawRotation
+      );
+      
+      if (angleChange != 0.0)
+      {
+        // Apply our yaw rotation to the world forward
+        worldForward = Math.RotateVector(worldForward, worldUp, angleChange);
+        rotated = true;
+      }
+      
+      this.LastYawRotation = angleChange;
+    }
+    
+    // Solve for Pitch
+    if (this.PitchRotation && this.SensorResults != null)
+    {
+      var angleChange = this.SolveForRotation(
+        worldForward, worldRight, this.LastPitchRotation
+      );
+      
+      if (angleChange != 0.0)
+      {
+        // Apply our pitch rotation to the world forward
+        worldForward = Math.RotateVector(worldForward, worldRight, angleChange);
+        
+        rotated = true;
+      }
+      
+      this.LastPitchRotation = angleChange;
+    }
+    
+    if (rotated)
+    {
+      this.AddLookDirection(worldForward);
+    }
+    
+    // If the sensor's using Sparse Update
+    if (this.Sensor.SparseUpdate)
+    {
+      if (rotated)
+      {
+        // If we've computed a new world forward, save it and reuse it
+        this.WorldForward = worldForward;
+        this.ReuseWorldForward = true;
+      }
+    }
+    else
+    {
+      // Flush the contacts
+      this.SensorResults = null;
+    }
+  }
+  
+  // Callback for sensor results
+  function OnSensorEvent(event : SensorEvent)
+  {
+    // Store the results
+    this.SensorResults = event.Results;
+    this.ReuseWorldForward = false;
+  }
+  
+  function SolveForRotation(worldForward : Real3, rotAxis : Real3, lastRot : Real) : Real
+  {
+    var posAngleChange = 0.0;
+    var negAngleChange = 0.0;
+    var posClosestDistance = this.ConeDistance;
+    var negClosestDistance = this.ConeDistance;
+    var angleChange = 0.0;
+    
+    // Iterate over all contacts
+    foreach (var result in this.SensorResults)
+    {
+      for (var i = 0; i < result.Contacts.Count; ++i)
+      {
+        var normal = result.Normals[i];
+        
+        // Only process contacts with normals not perpendicular to our forward vector
+        var normDotForw = Math.Dot(normal, worldForward);
+        
+        if (Math.ApproximatelyEqual(normDotForw, 0.0, 0.0001))
+        {
+          continue;
+        }
+        
+        var contact = result.Contacts[i];
+        var contactDir = contact - this.Transform.WorldTranslation;
+        
+        // Project the contact direction onto the plane we're rotating on
+        contactDir = Math.ProjectOnPlane(contactDir, rotAxis);
+        
+        // Only process contacts inside of our cone
+        var forwardDistance = Math.Dot(contactDir, worldForward);
+        
+        // If (contact is behind cone OR out of the cone's distance)
+        if (forwardDistance < 0.0 || forwardDistance > this.ConeDistance)
+        {
+          continue;
+        }
+        
+        var contactNorm = Math.Normalize(contactDir);
+        var contactAngle = Math.SignedAngle(contactNorm, worldForward, rotAxis);
+        
+        // If (contact is outside of our cone angle)
+        if (Math.Abs(contactAngle) > this.ConeAngleRad)
+        {
+          continue;
+        }
+        
+        // Determine what side of the vector this projected point is on
+        var positiveDir = contactAngle >= 0.0;
+        
+        if (positiveDir)
+        {
+          // If (we've already processed a contact closer than this one)
+          if (forwardDistance > posClosestDistance)
+          {
+            continue;
+          }
+          
+          // Save the new closest distance, and new angle of correction
+          posClosestDistance = forwardDistance;
+          posAngleChange = this.ConeAngleRad - contactAngle;
+        }
+        else
+        {
+          // If (we've already processed a contact closer than this one)
+          if (forwardDistance > negClosestDistance)
+          {
+            continue;
+          }
+          
+          // Save the new closest distance, and new angle of correction
+          negClosestDistance = forwardDistance;
+          negAngleChange = -this.ConeAngleRad - contactAngle;
+        }
+      }
+    }
+    
+    // Move in the direction of the last rotation
+    // This avoids jittering back and forth (pos -> neg -> pos)
+    if (lastRot == 0.0)
+    {
+      if (posAngleChange != 0.0)
+      {
+        angleChange = posAngleChange;
+      }
+      else
+      {
+        angleChange = negAngleChange;
+      }
+    }
+    else if (lastRot > 0.0)
+    {
+      angleChange = posAngleChange;
+    }
+    else
+    {
+      angleChange = negAngleChange;
+    }
+    
+    return angleChange;
+  }
+  
+  function DebugDrawCone(direction : Real3)
+  {
+    var position = this.Transform.WorldTranslation;
+    var length = this.ConeDistance;
+    var radius = Math.Tan(this.ConeAngleRad) * this.ConeDistance;
+    var cone = DebugCone(position, direction, length, radius);
+    
+    cone.Color = Real4(1, 1, 1, 0.15);
+    
+    DebugDraw.Add(cone);
+  }
+  
+  function DebugDrawContacts()
+  {
+    if (this.SensorResults == null)
+    {
+      return;
+    }
+    
+    foreach (var result in this.SensorResults)
+    {
+      foreach (var contact in result.Contacts)
+      {
+        var position = contact;
+        var extents = Real3(0.5);
+        var cube = DebugObb(position, extents);
+        
+        cube.Color = Real4(1.0, 0.0, 0.0, 1.0);
+        
+        DebugDraw.Add(cube);
+      }
+    }
+  }
+}

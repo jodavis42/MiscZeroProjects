@@ -1,0 +1,145 @@
+// Info about where and in what direction to fire a weapon.
+class WeaponFireEvent : ZilchEvent
+{
+    var CoreCog : Cog = null;
+    var FireDirW : Real3 = local Real3();
+    var FirePosW : Real3 = local Real3();
+    // The rotation of the weapon that is firing.
+    var Rotation : Quaternion = local Quaternion();
+    
+    constructor() : base()
+    {
+    }
+}
+
+// Base logic for a weapon. Computes the transform of where to fire a bullet.
+// Another component actually fires so that different weapon firing
+// types can be easily made (spread shot, etc...)
+class Weapon : ZilchComponent
+{
+    // How much time until we can shoot again.
+    [Property]
+    var RefireTime : Real = 0.5;
+    // The direction in local space that we fire.
+    [Property]
+    var LocalFireDirection : Real3 = local Real3(0.0, 1.0, 0.0);
+    
+    // The core cog that is shooting. Used to only fire if we
+    // have a core (and to avoid hitting ourself).
+    var CoreCog : Cog = null;
+    
+    // Current elapsed time since we tried to fire.
+    var Timer : Real = 0.0;
+    // Are we currently firing? If so we need to increment our timer.
+    var IsFiring : Boolean = false;
+    
+    sends FireWeapon : WeaponFireEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.AttachToCore, this.OnAttachToCore);
+        Zero.Connect(this.Owner, Events.DetachFromCore, this.OnDetachFromCore);
+        Zero.Connect(this.Owner, Events.BeginFire, this.OnBeginFire);
+        Zero.Connect(this.Owner, Events.EndFire, this.OnEndFire);
+        
+        // Remove later and use actions, once chris fixes action leaks
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    }
+    
+    function OnLogicUpdate(updateEvent : UpdateEvent)
+    {
+        if(this.IsFiring)
+        {
+            this.Timer += updateEvent.Dt;
+            if(this.Timer > this.RefireTime)
+            {
+                this.Timer -= this.RefireTime;
+                this.FireWeapon();
+            }
+        }
+        else
+        {
+            if(this.Timer < this.RefireTime)
+            {
+                this.Timer += updateEvent.Dt;
+            }
+        }
+    }
+    
+    function GetFireInfo() : WeaponFireEvent
+    {
+        // Get our translation (but on the 0 z-plane) to fire from
+        var firePosW = this.Owner.Transform.WorldTranslation;
+        firePosW.Z = 0.0;
+        // Convert our local fire direction to a world fire direction
+        var fireDirW = this.Owner.Transform.TransformNormal(this.LocalFireDirection);
+        
+        // Send out the event to fire. Another component will take care of actually firing
+        var toSend = new WeaponFireEvent();
+        toSend.FirePosW = firePosW;
+        toSend.FireDirW = Math.Normalize(fireDirW);
+        toSend.Rotation = this.Owner.Transform.WorldRotation;
+        toSend.CoreCog = this.CoreCog;
+        return toSend;
+    }
+    
+    function FireWeapon()
+    {
+        var toSend = this.GetFireInfo();
+        this.Owner.DispatchEvent(Events.FireWeapon, toSend);
+    }
+    
+    function OnTargetMoved(targetEvent : AimTargetEvent)
+    {
+        // If we don't have a core then don't look at the aim target
+        if(this.CoreCog == null)
+        {
+            return;
+        }
+        
+        // Compute the look at direction
+        var mousePos = targetEvent.AimTarget;
+        var myPos = this.Owner.Transform.WorldTranslation;
+        
+        var lookDir = mousePos - myPos;
+        // The weapon might be at a higher z level, we don't want to look
+        // up so make sure the direction is zeroed out
+        lookDir.Z = 0.0;
+        
+        this.Owner.Orientation.LookAtDirection(lookDir);
+    }
+    
+    function OnAttachToCore(attachEvent : AttachEvent)
+    {
+        this.CoreCog = attachEvent.CoreCog;
+        // If we got an actual core then start listening for the aim target moving
+        if(this.CoreCog != null)
+        {
+            Zero.Connect(this.CoreCog, Events.TargetMoved, this.OnTargetMoved);
+        }
+    }
+    
+    function OnDetachFromCore(attachEvent : AttachEvent)
+    {
+        this.CoreCog = null;
+        // If we no longer have a core then stop listening for the aim target moving
+        if(this.CoreCog != null)
+        {
+            Zero.Disconnect(this.CoreCog, Events.TargetMoved, this);
+        }
+    }
+    
+    function OnBeginFire(coreEvent : CoreEvent)
+    {
+        this.IsFiring = true;
+    }
+    
+    function OnEndFire(coreEvent : CoreEvent)
+    {
+        this.IsFiring = false;
+    }
+}

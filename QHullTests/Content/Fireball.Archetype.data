@@ -1,0 +1,75 @@
+[Version:1]
+Cog 
+{
+	var Name = "Fireball"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x5980b24d506838c7]
+		{
+			var Name = "spherePreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x5980b24d506838d4]
+				{
+					var Name = "sphereRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x5980b24d506838d8]
+						{
+							var Name = "sphereScaling"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{0.393700778, 0.393700778, 0.393700778}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x5980b24d506838dc]
+								{
+									var Name = "sphere"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "5980b24e5060b7e2:Fireball"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

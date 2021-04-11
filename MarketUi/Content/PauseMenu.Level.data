@@ -1,0 +1,796 @@
+[Version:1]
+Level 
+{
+	Cog 
+	{
+		var Name = "LevelSettings"
+		var LinkId = 1
+		GravityEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = true
+			var LocalSpaceDirection = true
+			var Strength = 10
+			var Direction = Real3{0, -1, 0}
+		}
+		DragEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = true
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.100000001
+			var LinearDrag = 0
+			var AngularDrag = 0.100000001
+		}
+		GridDraw 
+		{
+			var Active = true
+			var HalfCellOffset = false
+			var CellSize = 1
+			var Axis = AxisDirection.Z
+			var Lines = 100
+			var DrawAxisOrigins = true
+			var AlwaysDrawInEditor = true
+			var DrawInGame = false
+			var GridColor = Real4{0.5, 0.5, 0.5, 0.400000006}
+			var GridHighlight = Real4{0, 0, 0, 0.400000006}
+			var HighlightInterval = 10
+			var FollowEditorCamera = false
+		}
+	}
+	Cog 
+	{
+		var Name = "EditorCamera"
+		var LinkId = 2
+		Transform 
+		{
+			var Translation = Real3{0, 0, 50}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0, -1.09278471e-08, 0, 1}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.5
+			var FarPlane = 500
+			var PerspectiveMode = PerspectiveMode.Orthographic
+			var FieldOfView = 45
+			var Size = 24.428051
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.ZPlane
+			var Previous3DMode = ControlMode.Orbit
+			var LookDistance = 50
+			var VerticalAngle = 0
+			var HorizontalAngle = 0
+			var LookTarget = Real3{0, 0, 0}
+			var MoveSensitivity = 1
+		}
+	}
+	Cog 
+	{
+		var Name = "GameCamera"
+		var LinkId = 4
+		Transform 
+		{
+			var Translation = Real3{0, 0, 50}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = false
+			var RenderInGame = true
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Letterbox
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.5
+			var FarPlane = 100
+			var PerspectiveMode = PerspectiveMode.Orthographic
+			var FieldOfView = 45
+			var Size = 20
+		}
+		SoundListener 
+		{
+			var Active = true
+		}
+	}
+	Cog 
+	{
+		var Name = "Renderer"
+		var LinkId = 3
+		ForwardRenderer 
+		{
+			var EditorDebugDraw = true
+			var GameDebugDraw = true
+			var RenderDiffuse = true
+			var RenderSpecular = true
+			var RenderSkybox = false
+			var Skybox = "5822dec85e380cf1:SimpleSkybox"
+			var ClearColor = Real4{0, 0, 0, 1}
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+			var DirectionalLight = CogPath
+			{
+				var Path = ""
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4294967293
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+		}
+	}
+	Cog 
+	{
+		var Name = "MenuBackgroundBack"
+		var LinkId = 5
+		Transform 
+		{
+			var Translation = Real3{0, 0, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Sprite 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0, 0.36500001, 0.135049969, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var SpriteSource = "5586f579ca73ecc2:SquareBordered"
+			var FlipX = false
+			var FlipY = false
+			var AnimationActive = true
+			var AnimationSpeed = 1
+			var StartFrame = 0
+		}
+		Area 
+		{
+			var Size = Real2{18, 19}
+			var Origin = Location.Center
+		}
+		Reactive 
+		{
+			var Active = true
+		}
+		Hierarchy 
+		{
+			Cog 
+			{
+				var Name = "MenuBackgroundFront"
+				var LinkId = 6
+				Transform 
+				{
+					var Translation = Real3{0, 0, 0.100000001}
+					var Scale = Real3{1, 1, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
+				}
+				Sprite 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var OverrideBoundingBox = false
+					var LocalAabbCenter = Real3{0, 0, 0}
+					var LocalAabbHalfExtents = Real3{1, 1, 1}
+					var GroupSortValue = 0
+					var Material = "582c575af53d18c9:AlphaSprite"
+					var VertexColor = Real4{0.0500000268, 0.625, 0, 1}
+					var GeometryMode = SpriteGeometryMode.ZPlane
+					var SpriteSource = "5586f579ca73ecc2:SquareBordered"
+					var FlipX = false
+					var FlipY = false
+					var AnimationActive = true
+					var AnimationSpeed = 1
+					var StartFrame = 0
+				}
+				Area 
+				{
+					var Size = Real2{16.5, 17.5}
+					var Origin = Location.Center
+				}
+				Hierarchy 
+				{
+					Cog 
+					{
+						var Name = "GameTitleBackground"
+						var LinkId = 7
+						Transform 
+						{
+							var Translation = Real3{0, 2.5, 0.100000001}
+							var Scale = Real3{1, 1, 1}
+							var Rotation = Quaternion{0, 0, 0, 1}
+						}
+						Sprite 
+						{
+							var Visible = true
+							var ViewCulling = true
+							var VisibilityEvents = true
+							var OverrideBoundingBox = false
+							var LocalAabbCenter = Real3{0, 0, 0}
+							var LocalAabbHalfExtents = Real3{1, 1, 1}
+							var GroupSortValue = 0
+							var Material = "582c575af53d18c9:AlphaSprite"
+							var VertexColor = Real4{0, 0.300000012, 0.17399998, 1}
+							var GeometryMode = SpriteGeometryMode.ZPlane
+							var SpriteSource = "5586f579ca73ecc2:SquareBordered"
+							var FlipX = false
+							var FlipY = false
+							var AnimationActive = true
+							var AnimationSpeed = 1
+							var StartFrame = 0
+						}
+						Area 
+						{
+							var Size = Real2{14, 3}
+							var Origin = Location.Center
+						}
+						Hierarchy 
+						{
+							Cog 
+							{
+								var Name = "GameTitleText"
+								var LinkId = 8
+								Transform 
+								{
+									var Translation = Real3{0, -0.861172199, 0.100000001}
+									var Scale = Real3{1, 1, 1}
+									var Rotation = Quaternion{0, 0, 0, 1}
+								}
+								SpriteText 
+								{
+									var Visible = true
+									var ViewCulling = true
+									var VisibilityEvents = true
+									var OverrideBoundingBox = false
+									var LocalAabbCenter = Real3{0, 0, 0}
+									var LocalAabbHalfExtents = Real3{1, 1, 1}
+									var GroupSortValue = 0
+									var Material = "582c575af53d18c9:AlphaSprite"
+									var VertexColor = Real4{1, 1, 1, 1}
+									var GeometryMode = SpriteGeometryMode.ZPlane
+									var Text = "The Paused Edition"
+									var Font = "583b98a70aa9ef15:upheavtt"
+									var FontSize = 60
+									var PixelsPerUnit = 64
+									var TextAlign = TextAlign.Center
+								}
+								Area 
+								{
+									var Size = Real2{14, 3}
+									var Origin = Location.Center
+								}
+							}
+						}
+					}
+					Cog 
+					{
+						var Name = "GameTitleBackground"
+						var LinkId = 9
+						Transform 
+						{
+							var Translation = Real3{0, 6, 0.100000001}
+							var Scale = Real3{1, 1, 1}
+							var Rotation = Quaternion{0, 0, 0, 1}
+						}
+						Sprite 
+						{
+							var Visible = true
+							var ViewCulling = true
+							var VisibilityEvents = true
+							var OverrideBoundingBox = false
+							var LocalAabbCenter = Real3{0, 0, 0}
+							var LocalAabbHalfExtents = Real3{1, 1, 1}
+							var GroupSortValue = 0
+							var Material = "582c575af53d18c9:AlphaSprite"
+							var VertexColor = Real4{0, 0.300000012, 0.17399998, 1}
+							var GeometryMode = SpriteGeometryMode.ZPlane
+							var SpriteSource = "5586f579ca73ecc2:SquareBordered"
+							var FlipX = false
+							var FlipY = false
+							var AnimationActive = true
+							var AnimationSpeed = 1
+							var StartFrame = 0
+						}
+						Area 
+						{
+							var Size = Real2{14, 3}
+							var Origin = Location.Center
+						}
+						Hierarchy 
+						{
+							Cog 
+							{
+								var Name = "GameTitleText"
+								var LinkId = 10
+								Transform 
+								{
+									var Translation = Real3{0, -0.197399139, 0.100000001}
+									var Scale = Real3{1, 1, 1}
+									var Rotation = Quaternion{0, 0, 0, 1}
+								}
+								SpriteText 
+								{
+									var Visible = true
+									var ViewCulling = true
+									var VisibilityEvents = true
+									var OverrideBoundingBox = false
+									var LocalAabbCenter = Real3{0, 0, 0}
+									var LocalAabbHalfExtents = Real3{1, 1, 1}
+									var GroupSortValue = 0
+									var Material = "582c575af53d18c9:AlphaSprite"
+									var VertexColor = Real4{1, 1, 1, 1}
+									var GeometryMode = SpriteGeometryMode.ZPlane
+									var Text = "Mighty Menu 7"
+									var Font = "583b98a70aa9ef15:upheavtt"
+									var FontSize = 110
+									var PixelsPerUnit = 64
+									var TextAlign = TextAlign.Center
+								}
+								Area 
+								{
+									var Size = Real2{14, 3}
+									var Origin = Location.Center
+								}
+							}
+						}
+					}
+					Cog 
+					{
+						var Name = "MenuButtons"
+						var LinkId = 11
+						Transform 
+						{
+							var Translation = Real3{0, -2, 0.100000001}
+							var Scale = Real3{1, 1, 1}
+							var Rotation = Quaternion{0, 0, 0, 1}
+						}
+						Hierarchy 
+						{
+							Cog 
+							{
+								var Name = "HowToPlayButton"
+								var LinkId = 12
+								Transform 
+								{
+									var Translation = Real3{0, 1.5, 0}
+									var Scale = Real3{1, 1, 1}
+									var Rotation = Quaternion{0, 0, 0, 1}
+								}
+								Sprite 
+								{
+									var Visible = true
+									var ViewCulling = true
+									var VisibilityEvents = true
+									var OverrideBoundingBox = false
+									var LocalAabbCenter = Real3{0, 0, 0}
+									var LocalAabbHalfExtents = Real3{1, 1, 1}
+									var GroupSortValue = 0
+									var Material = "582c575af53d18c9:AlphaSprite"
+									var VertexColor = Real4{0, 0.404999971, 0.259199917, 1}
+									var GeometryMode = SpriteGeometryMode.ZPlane
+									var SpriteSource = "5586f579ca73ecc2:SquareBordered"
+									var FlipX = false
+									var FlipY = false
+									var AnimationActive = true
+									var AnimationSpeed = 1
+									var StartFrame = 0
+								}
+								Area 
+								{
+									var Size = Real2{10, 1.75}
+									var Origin = Location.Center
+								}
+								Reactive 
+								{
+									var Active = true
+								}
+								UIButton 
+								{
+									var Active = true
+									var DefaultSprite = "5586f579ca73ecc2:SquareBordered"
+									var HoveredSprite = "5912c006db707dd7:SquareDoubleBordered"
+									var ClickedSprite = "5586f579ca73ecc2:SquareBordered"
+									var LevelToLoad = "583b931f2b18e49e:HowToPlay"
+								}
+								Hierarchy 
+								{
+									Cog 
+									{
+										var Name = "HowToPlayText"
+										var LinkId = 13
+										Transform 
+										{
+											var Translation = Real3{0, 0, 0.100000001}
+											var Scale = Real3{1, 1, 1}
+											var Rotation = Quaternion{0, 0, 0, 1}
+										}
+										SpriteText 
+										{
+											var Visible = true
+											var ViewCulling = true
+											var VisibilityEvents = true
+											var OverrideBoundingBox = false
+											var LocalAabbCenter = Real3{0, 0, 0}
+											var LocalAabbHalfExtents = Real3{1, 1, 1}
+											var GroupSortValue = 0
+											var Material = "582c575af53d18c9:AlphaSprite"
+											var VertexColor = Real4{1, 1, 1, 1}
+											var GeometryMode = SpriteGeometryMode.ZPlane
+											var Text = "How to Play"
+											var Font = "583b98a70aa9ef15:upheavtt"
+											var FontSize = 80
+											var PixelsPerUnit = 64
+											var TextAlign = TextAlign.Center
+										}
+										Area 
+										{
+											var Size = Real2{8, 1.75}
+											var Origin = Location.Center
+										}
+									}
+								}
+							}
+							Cog 
+							{
+								var Name = "CreditsButton"
+								var LinkId = 14
+								Transform 
+								{
+									var Translation = Real3{0, -0.453084469, 0}
+									var Scale = Real3{1, 1, 1}
+									var Rotation = Quaternion{0, 0, 0, 1}
+								}
+								Sprite 
+								{
+									var Visible = true
+									var ViewCulling = true
+									var VisibilityEvents = true
+									var OverrideBoundingBox = false
+									var LocalAabbCenter = Real3{0, 0, 0}
+									var LocalAabbHalfExtents = Real3{1, 1, 1}
+									var GroupSortValue = 0
+									var Material = "582c575af53d18c9:AlphaSprite"
+									var VertexColor = Real4{0, 0.404999971, 0.259199917, 1}
+									var GeometryMode = SpriteGeometryMode.ZPlane
+									var SpriteSource = "5586f579ca73ecc2:SquareBordered"
+									var FlipX = false
+									var FlipY = false
+									var AnimationActive = true
+									var AnimationSpeed = 1
+									var StartFrame = 0
+								}
+								Area 
+								{
+									var Size = Real2{10, 1.75}
+									var Origin = Location.Center
+								}
+								Reactive 
+								{
+									var Active = true
+								}
+								UIButton 
+								{
+									var Active = true
+									var DefaultSprite = "5586f579ca73ecc2:SquareBordered"
+									var HoveredSprite = "5912c006db707dd7:SquareDoubleBordered"
+									var ClickedSprite = "5586f579ca73ecc2:SquareBordered"
+									var LevelToLoad = "583b92b61926e9e7:Credits"
+								}
+								Hierarchy 
+								{
+									Cog 
+									{
+										var Name = "CreditsText"
+										var LinkId = 15
+										Transform 
+										{
+											var Translation = Real3{0, 0, 0.100000001}
+											var Scale = Real3{1, 1, 1}
+											var Rotation = Quaternion{0, 0, 0, 1}
+										}
+										SpriteText 
+										{
+											var Visible = true
+											var ViewCulling = true
+											var VisibilityEvents = true
+											var OverrideBoundingBox = false
+											var LocalAabbCenter = Real3{0, 0, 0}
+											var LocalAabbHalfExtents = Real3{1, 1, 1}
+											var GroupSortValue = 0
+											var Material = "582c575af53d18c9:AlphaSprite"
+											var VertexColor = Real4{1, 1, 1, 1}
+											var GeometryMode = SpriteGeometryMode.ZPlane
+											var Text = "Credits"
+											var Font = "583b98a70aa9ef15:upheavtt"
+											var FontSize = 80
+											var PixelsPerUnit = 64
+											var TextAlign = TextAlign.Center
+										}
+										Area 
+										{
+											var Size = Real2{8, 1.75}
+											var Origin = Location.Center
+										}
+									}
+								}
+							}
+							Cog 
+							{
+								var Name = "MainMenuButton"
+								var LinkId = 16
+								Transform 
+								{
+									var Translation = Real3{0, -2.4517436, 0}
+									var Scale = Real3{1, 1, 1}
+									var Rotation = Quaternion{0, 0, 0, 1}
+								}
+								Sprite 
+								{
+									var Visible = true
+									var ViewCulling = true
+									var VisibilityEvents = true
+									var OverrideBoundingBox = false
+									var LocalAabbCenter = Real3{0, 0, 0}
+									var LocalAabbHalfExtents = Real3{1, 1, 1}
+									var GroupSortValue = 0
+									var Material = "582c575af53d18c9:AlphaSprite"
+									var VertexColor = Real4{0, 0.404999971, 0.259199917, 1}
+									var GeometryMode = SpriteGeometryMode.ZPlane
+									var SpriteSource = "5586f579ca73ecc2:SquareBordered"
+									var FlipX = false
+									var FlipY = false
+									var AnimationActive = true
+									var AnimationSpeed = 1
+									var StartFrame = 0
+								}
+								Area 
+								{
+									var Size = Real2{10, 1.75}
+									var Origin = Location.Center
+								}
+								Reactive 
+								{
+									var Active = true
+								}
+								UIButton 
+								{
+									var Active = true
+									var DefaultSprite = "5586f579ca73ecc2:SquareBordered"
+									var HoveredSprite = "5912c006db707dd7:SquareDoubleBordered"
+									var ClickedSprite = "5586f579ca73ecc2:SquareBordered"
+									var LevelToLoad = "576f215c0825c3a8:MainMenu"
+								}
+								Hierarchy 
+								{
+									Cog 
+									{
+										var Name = "MainMenuText"
+										var LinkId = 17
+										Transform 
+										{
+											var Translation = Real3{0, 0, 0.100000001}
+											var Scale = Real3{1, 1, 1}
+											var Rotation = Quaternion{0, 0, 0, 1}
+										}
+										SpriteText 
+										{
+											var Visible = true
+											var ViewCulling = true
+											var VisibilityEvents = true
+											var OverrideBoundingBox = false
+											var LocalAabbCenter = Real3{0, 0, 0}
+											var LocalAabbHalfExtents = Real3{1, 1, 1}
+											var GroupSortValue = 0
+											var Material = "582c575af53d18c9:AlphaSprite"
+											var VertexColor = Real4{1, 1, 1, 1}
+											var GeometryMode = SpriteGeometryMode.ZPlane
+											var Text = "Main Menu"
+											var Font = "583b98a70aa9ef15:upheavtt"
+											var FontSize = 80
+											var PixelsPerUnit = 64
+											var TextAlign = TextAlign.Center
+										}
+										Area 
+										{
+											var Size = Real2{8, 1.75}
+											var Origin = Location.Center
+										}
+									}
+								}
+							}
+							Cog 
+							{
+								var Name = "QuitButton"
+								var LinkId = 18
+								Transform 
+								{
+									var Translation = Real3{0, -4.5, 0}
+									var Scale = Real3{1, 1, 1}
+									var Rotation = Quaternion{0, 0, 0, 1}
+								}
+								Sprite 
+								{
+									var Visible = true
+									var ViewCulling = true
+									var VisibilityEvents = true
+									var OverrideBoundingBox = false
+									var LocalAabbCenter = Real3{0, 0, 0}
+									var LocalAabbHalfExtents = Real3{1, 1, 1}
+									var GroupSortValue = 0
+									var Material = "582c575af53d18c9:AlphaSprite"
+									var VertexColor = Real4{0, 0.404999971, 0.259199917, 1}
+									var GeometryMode = SpriteGeometryMode.ZPlane
+									var SpriteSource = "5586f579ca73ecc2:SquareBordered"
+									var FlipX = false
+									var FlipY = false
+									var AnimationActive = true
+									var AnimationSpeed = 1
+									var StartFrame = 0
+								}
+								Area 
+								{
+									var Size = Real2{10, 1.75}
+									var Origin = Location.Center
+								}
+								Reactive 
+								{
+									var Active = true
+								}
+								UIButton 
+								{
+									var Active = true
+									var DefaultSprite = "5586f579ca73ecc2:SquareBordered"
+									var HoveredSprite = "5912c006db707dd7:SquareDoubleBordered"
+									var ClickedSprite = "5586f579ca73ecc2:SquareBordered"
+									var LevelToLoad = "577d126becbdd810:EmptyLevel"
+								}
+								Hierarchy 
+								{
+									Cog 
+									{
+										var Name = "QuitGameText"
+										var LinkId = 19
+										Transform 
+										{
+											var Translation = Real3{0, 0, 0.100000001}
+											var Scale = Real3{1, 1, 1}
+											var Rotation = Quaternion{0, 0, 0, 1}
+										}
+										SpriteText 
+										{
+											var Visible = true
+											var ViewCulling = true
+											var VisibilityEvents = true
+											var OverrideBoundingBox = false
+											var LocalAabbCenter = Real3{0, 0, 0}
+											var LocalAabbHalfExtents = Real3{1, 1, 1}
+											var GroupSortValue = 0
+											var Material = "582c575af53d18c9:AlphaSprite"
+											var VertexColor = Real4{1, 1, 1, 1}
+											var GeometryMode = SpriteGeometryMode.ZPlane
+											var Text = "Quit"
+											var Font = "583b98a70aa9ef15:upheavtt"
+											var FontSize = 80
+											var PixelsPerUnit = 64
+											var TextAlign = TextAlign.Center
+										}
+										Area 
+										{
+											var Size = Real2{8, 1.75}
+											var Origin = Location.Center
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	Cog [InheritId:"583b9ba5a98eb05d:SelectionArrow"]
+	{
+		Transform 
+		{
+			var Translation = Real3{-6.5, 2.5, 0}
+		}
+	}
+}

@@ -1,0 +1,142 @@
+class GameLogic : ZilchComponent
+{
+    // Used to spawn the initial player. Also spawns a new player after he dies.
+    [Property]
+    var PlayerArchetype : Archetype = Archetype.PlayerRoot;
+    
+    [Property]
+    var AsteroidArchetype : Archetype = Archetype.BigAsteroid;
+    
+    // The camera to find (so that we can make it look at the player on load)
+    [Property]
+    var CameraName : String = "Camera";
+    
+    // How many asteroids to spawn in the level.
+    [Property]
+    var NumberOfAsteroids : Integer = 100;
+    
+    // The range in which to spawn boxes
+    [Property]
+    var SampleBoxSize : Real = 100.0;
+    
+    // How many seconds to wait before spawning another enemy
+    [Property]
+    var EnemeySpawnRate : Real = 10.0;
+    
+    // A resource table that contains weighted averages of all types
+    // of pieces (shiled, turbine, hull, etc...)
+    [Property]
+    var PieceTypes : ResourceTable = ResourceTable.PieceTypes;
+    
+    // A resource table that contains weighted averages of all weapons
+    [Property]
+    var WeaponTypes : ResourceTable = ResourceTable.WeaponTypes;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+      Zero.Connect(init, Events.AllObjectsInitialized, this.OnAllObjectsInitialized);
+    }
+
+    function OnAllObjectsInitialized(event : CogInitializerEvent)
+    {
+      this.CreatePlayer();
+      this.CreateAsteroids();
+      this.SpawnEnemy();
+    }
+    
+    function CreateAsteroids()
+    {
+      for(var i = 0; i < this.NumberOfAsteroids; ++i)
+      {
+          // Sample a random vector within the sample box size
+          // (for now ignore the area right around the player)
+          var pos = local Real3(this.Owner.RandomContext.Vector2(2.0, this.SampleBoxSize), 0.0);
+              
+          // Attempt to not spawn asteroids on top of other objects.
+          // Have a max counter in-case we can't ever find a free spot.
+          for(var j = 0; j < 50; ++j)
+          {
+              // See if there's any object here
+              var filter = CastFilter();
+              var castSphere = Sphere() {Center = pos, Radius = 2.0};
+              var results = this.Space.PhysicsSpace.CastSphere(castSphere, 1, filter);
+              var safe = !results.IsNotEmpty;
+              
+              // If we found a free spot then we want to spawn the asteroid there
+              if(safe == true)
+              {
+                  break;
+              }
+              else
+              {
+                  // Otherwise do another random sample
+                  pos = local Real3(this.Owner.RandomContext.Vector2(2.0, this.SampleBoxSize), 0.0);
+              }
+          }
+          
+          var asteroid = this.Space.CreateAtPosition(this.AsteroidArchetype, pos);
+          // Force the asteroid asleep since it isn't moving anyways. This helps performance
+          asteroid.RigidBody.ForceAsleep();
+      }
+    }
+    
+    function SpawnEnemy()
+    {
+        // Create the enemy anywhere with a radius of 100
+        var pos = this.Owner.RandomContext.Vector2(0.0, 100.0);
+        var enemyCog = this.Space.CreateAtPosition(Archetype.EnemyRoot, local Real3(pos, 0.0));
+        
+        // Randomly create a piece cog (hull, shield, turbine, etc...)
+        var randomContext = this.Owner.RandomContext;
+        var random1 = randomContext.Float();
+        var random2 = randomContext.Float();
+        
+        var pieceArchetype = this.PieceTypes.Sample(random1, random2).Resource as Archetype;
+        var pieceCog = this.Space.Create(pieceArchetype);
+        // Attach the piece in-front of the enemy
+        pieceCog.AttachToPreserveLocal(enemyCog);
+        pieceCog.Transform.Translation = local Real3(0.0, 1.0, 0.0);
+        
+        // If this piece type has an item mount (so we can mount items on it)
+        //then randomly generate a weapon type and attach it to the enemy
+        if(pieceCog.ItemMount != null)
+        {
+            random1 = randomContext.Float();
+            random2 = randomContext.Float();
+            var weaponTable = ResourceTable.WeaponTypes;
+            var weaponResource = weaponTable.Sample(random1, random2).Resource as Archetype;
+            var weapon = this.Space.Create(weaponResource);
+            weapon.ItemMountable.Attach(pieceCog, local Real3(0.0, 0.0, 0.1));
+        }
+        
+        // Queue up an action to spawn another enemy
+        var seq = Actions.Sequence(this.Owner.Actions);
+        Actions.Delay(seq, this.EnemeySpawnRate);
+        Actions.Call(seq, this.SpawnEnemy);
+    }
+    
+    function CreatePlayer()
+    {
+        //Spawn the player at the origin
+        var playerRootCog = this.Space.Create(this.PlayerArchetype);
+        var playerCog = playerRootCog.FindChildByName("Player");
+        // Listen for when the player dies so that we can re-spawn them
+        Zero.Connect(playerCog, Events.Death, this.OnPlayerDeath);
+        
+        // Point the camera at the player
+        var cameraCog = this.Space.FindObjectByName(this.CameraName);
+        cameraCog.CameraGroupFocus.AddObject(playerCog);
+    }
+    
+    function OnPlayerDeath(e : ZilchEvent)
+    {
+        // Queue up an action to wait for 2 seconds and then re-spawn the player
+        var seq = Action.Sequence(this.Owner.Actions);
+        Action.Delay(seq, 2.0);
+        Action.Call(seq, this.CreatePlayer);
+    }
+}

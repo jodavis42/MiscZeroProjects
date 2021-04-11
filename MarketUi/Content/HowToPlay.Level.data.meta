@@ -1,0 +1,19 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "HowToPlay"
+		var ResourceId = 0x583b931f2b18e49e
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"UI"
+		}
+	}
+}

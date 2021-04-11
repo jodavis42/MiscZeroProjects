@@ -1,0 +1,93 @@
+[Version:1]
+Cog [InheritId:"5980bec2bb1583d3:F1Tire"][ChildOrderOverride]
+{
+	Transform 
+	{
+		var Translation = Real3{-6, 0, 0}
+		var Rotation = Quaternion{0, 0, 0, 1}
+		var Scale = Real3{1, 1, 1}
+	}
+	BaseCogResultRecorder [LocallyAdded]
+	{
+	}
+	HierarchyMeshToTextBlock [LocallyAdded]
+	{
+		var ApplyTransform = false
+		var FindUsedVertices = false
+	}
+	QuickHullTest [LocallyAdded]
+	{
+		var Active = true
+		var DebugDrawMode = QuickHullDebugDrawMode.None
+	}
+	QuickHullRenderSettings [LocallyAdded]
+	{
+		var RenderGraphics = true
+		var RenderHullFilled = true
+		var RenderHullEdges = true
+		var RenderHullTriangleEdges = false
+		var RenderHullNormals = false
+	}
+	QuickHullMeshSaver [LocallyAdded]
+	{
+		var Active = true
+	}
+	Hierarchy [ChildOrderOverride]
+	{
+		Cog [Id:0x5980be81a4cab23f][LocallyAdded]
+		{
+			var Name = "FrontTyre_L"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{39.370079, 39.370079, 39.370079}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "5980bec1bb19fd10:F1Tire"
+			}
+		}
+		Cog [Id:0x59817701b1c0ce22][InheritId:"59806fa92d4eddb3:ConvexHullFilled"][LocallyAdded]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+		Cog [Id:0x59817701b1c0dd4b][InheritId:"59806fb3123a38d8:ConvexHullWireFrame"][LocallyAdded]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+		Cog [Id:0x598146c829b5f9c0][LocallyRemoved]
+		{
+		}
+		Cog [Id:0x598146c829b5ed7f][LocallyRemoved]
+		{
+		}
+		Cog [Id:0x5980bec1bbee11c8][LocallyRemoved]
+		{
+		}
+	}
+	QuickHullUnitTest [LocallyRemoved]
+	{
+	}
+	HierarchyVertices [LocallyRemoved]
+	{
+	}
+}

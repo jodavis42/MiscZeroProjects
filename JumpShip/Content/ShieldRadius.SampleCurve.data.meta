@@ -1,0 +1,11 @@
+DataContent = 
+{
+	DataBuilder = 
+	{
+		string Name = "ShieldRadius",
+		uint64 ResourceId = 522edbdb92b4259a,
+		string LoaderType = "SampleCurve",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

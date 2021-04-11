@@ -1,0 +1,49 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 8/9/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Only for demo purposes
+[RunInEditor]
+class GraphDrawer : ZilchComponent
+{
+  [Property] var Scale : Real2 = Real2(20);
+  [Property] var TickSpacing : Real2 = Real2(2);
+  [Property] var TickLength : Real = 0.5;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.FrameUpdate, this.OnFrameUpdate);
+  }
+
+  function OnFrameUpdate(event : UpdateEvent)
+  {
+    var halfTickLength = this.TickLength / 2.0;
+    
+    // Draw the x-axis
+    var line = DebugLine(Real3(), Real3(this.Scale.X, 0, 0)) { Color = Real4(1)};
+    DebugDraw.Add(line);
+    // Draw tick-marks on the x-axis
+    for(var x = this.TickSpacing.X; x < this.Scale.X; x += this.TickSpacing.X)
+    {
+      line.Start = Real3(x, -halfTickLength, 0);
+      line.End = Real3(x, halfTickLength, 0);
+      DebugDraw.Add(line);
+    }
+    
+    
+    // Draw the y-axis
+    line = DebugLine(Real3(), Real3(0, this.Scale.Y, 0)) { Color = Real4(1)};
+    DebugDraw.Add(line);
+    // Draw tick-marks on the y-axis
+    for(var y = this.TickSpacing.Y; y < this.Scale.Y; y += this.TickSpacing.Y)
+    {
+      line.Start = Real3(-halfTickLength, y, 0);
+      line.End = Real3(halfTickLength, y, 0);
+      DebugDraw.Add(line);
+    }
+    
+  }
+}

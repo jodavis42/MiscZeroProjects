@@ -1,0 +1,45 @@
+[Version:1]
+GeometryContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "boat_fishing_02_null_GeneratedMeshNode0"
+				var ResourceId = 0x59808131b3edc198
+			}
+			Object
+			{
+				var Name = "boat_fishing_02_null_GeneratedMeshNode1"
+				var ResourceId = 0x59808131b3edc1d7
+			}
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 0.00999999978
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x59808131b31b318e
+	}
+}

@@ -1,0 +1,67 @@
+enum GameState
+{
+  WaitingToFire,
+  Fired,
+  Won,
+  Lost,
+}
+
+class GameLogic : ZilchComponent
+{
+  var State : GameState = GameState.WaitingToFire;
+  
+  constructor() : base()
+  {
+  }
+
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    Zero.Connect(Zero.Keyboard, Events.KeyDown, this.OnKeyDown);
+  }
+  
+  function OnKeyDown(e : KeyboardEvent)
+  {
+    if (e.Key == Keys.Space)
+    {
+      this.Space.LoadLevel(this.Space.CurrentLevel);
+    }
+  }
+  
+  function ShowText(message : String)
+  {
+    var spriteText = this.Space.FindObjectByName("YouWinText").SpriteText;
+    spriteText.Text = message;
+    spriteText.Visible = true;
+  }
+  
+  function OnLogicUpdate(e : UpdateEvent)
+  {
+    if (this.State == GameState.Fired)
+    {
+      if (this.Space.FindAllObjectsByName("Enemy").IsNotEmpty == false)
+      {
+        this.State = GameState.Won;
+        this.ShowText("You win!");
+        return;
+      }
+      
+      var allSleeping = true;
+      
+      foreach (var cog in this.Space.AllObjects)
+      {
+        if (cog.RigidBody != null && cog.RigidBody.Asleep == false)
+        {
+          allSleeping = false;
+        }
+      }
+      
+      if (allSleeping)
+      {
+        this.State = GameState.Lost;
+        this.ShowText("You lose!");
+        return;
+      }
+    }
+  }
+}

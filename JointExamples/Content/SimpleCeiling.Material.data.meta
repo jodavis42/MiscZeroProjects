@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "SimpleCeiling"
+		var ResourceId = 0x58c4c0efe9bf4e5b
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

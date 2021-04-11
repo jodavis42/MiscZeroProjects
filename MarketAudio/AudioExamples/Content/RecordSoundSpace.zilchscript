@@ -1,0 +1,62 @@
+//**********************************************************************************
+//
+// Records all audio from the object's SoundSpace to a WAV file.
+//
+//**********************************************************************************
+class RecordSoundSpace : ZilchComponent
+{
+  // Requires a Reactive component
+  [Dependency] var Reactive : Reactive;
+  // Requires a Sprite component
+  [Dependency] var Sprite : Sprite;
+  
+  // The color of the button when it says Start Recording
+  [Property] var StartColor : Real4;
+  // The color of the button when it says Stop Recording
+  [Property] var StopColor : Real4;
+  
+  // The name of the WAV file to create
+  var FileName : String = "RecordedAudio";
+  // Keeps track of when we are recording audio
+  var Recording : Boolean = false;
+  // The RecordingNode to use
+  var Recorder : RecordingNode = Audio.RecordingNode();
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the left mouse click event
+    Zero.Connect(this.Reactive, Events.LeftMouseDown, this.OnMouseDown);
+    
+    // Add the recording node after the SoundSpace nodes
+    this.Space.SoundSpace.OutputNode.InsertNodeAfter(this.Recorder);
+    // Set the file name for the WAV file
+    this.Recorder.FileName = FilePath.CombineDirectoriesAndFile(FilePath.UserDocumentsDirectory, "Zero\\", this.FileName);
+  }
+
+  function OnMouseDown(event : ViewportMouseEvent)
+  {
+    // If we're not recording, start recording
+    if (this.Recording == false)
+    {
+      // Change the text
+      this.Owner.FindChildByName("SpriteText").SpriteText.Text = "Stop Recording";
+      // Set the color of the sprite
+      this.Sprite.VertexColor = this.StopColor;
+      // Mark that we're now recording
+      this.Recording = true;
+      // Start recording
+      this.Recorder.StartRecording();
+    }
+    else
+    {
+      // Change the text
+      this.Owner.FindChildByName("SpriteText").SpriteText.Text = "Start Recording";
+      // Set the color of the sprite
+      this.Sprite.VertexColor = this.StartColor;
+      // Mark that we're not recording
+      this.Recording = false;
+      // Start recording
+      this.Recorder.StopRecording();
+    }
+  }
+}

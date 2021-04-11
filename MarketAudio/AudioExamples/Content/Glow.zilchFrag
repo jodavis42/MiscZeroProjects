@@ -1,0 +1,30 @@
+[Pixel]
+struct Glow
+{
+    // Utility inputs
+    [Input] var FrameTime : Real;
+    [Input] var LogicTime : Real;
+    [Input] var NearPlane : Real;
+    [Input] var FarPlane : Real;
+    [Input] var ViewportSize : Real2;
+    [Input] var InverseViewportSize : Real2;
+    [Input] var ObjectWorldPosition : Real3;
+
+    // Transformations
+    [Input] var LocalToWorld : Real4x4;
+    [Input] var WorldToLocal : Real4x4;
+    [Input] var WorldToView : Real4x4;
+    [Input] var ViewToWorld : Real4x4;
+    [Input] var LocalToView : Real4x4;
+    [Input] var ViewToLocal : Real4x4;
+    [Input] var LocalToWorldNormal : Real3x3;
+    [Input] var WorldToLocalNormal : Real3x3;
+    [Input] var LocalToViewNormal : Real3x3;
+    [Input] var ViewToLocalNormal : Real3x3;
+    [Input] var LocalToPerspective : Real4x4;
+    [Input] var ViewToPerspective : Real4x4;
+
+    function Main()
+    {
+    }
+}

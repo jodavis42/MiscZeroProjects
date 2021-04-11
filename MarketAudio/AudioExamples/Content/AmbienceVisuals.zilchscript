@@ -1,0 +1,72 @@
+//**********************************************************************************
+//
+// Changes level visuals in response to Day/Night state events
+//
+//**********************************************************************************
+class AmbienceVisuals : ZilchComponent
+{
+  // Sprite that is shown to indicate that day ambience is playing
+  [Property] var DayIndicator : CogPath = CogPath();
+  // Sprite that is shown to indicate that night ambience is playing
+  [Property] var NightIndicator : CogPath = CogPath();
+  // Background color for day ambience
+  [Property] var DayColor : Real4;
+  // Background color for night ambience
+  [Property] var NightColor : Real4;
+  
+  // Whether it is currently Day or not
+  var Day : Boolean = true;
+  // The Renderer property to modify
+  var RenderColor : Property[Real4];
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the event to switch from day to night and vice versa
+    Zero.Connect(this.Space, Events.DayCycleEvent, this.SetDay);
+    
+    // Set the property variable
+    this.RenderColor = @this.Space.FindObjectByName("Renderer").DeferredRenderer.ClearColor;
+  }
+
+  function SetDay(event : DayCycleEvent)
+  {
+    // If already set to this day value, don't do anything
+    if (this.Day == event.Day)
+      return;
+      
+    // If switching from day to night, play the night background
+    if (this.Day == true && event.Day == false)
+    {
+      // Hide the day indicator
+      var color = this.DayIndicator.Cog.Sprite.VertexColor;
+      color.W = 0;
+      this.DayIndicator.Cog.Sprite.VertexColor = color;
+      // Show the night indicator
+      color = this.NightIndicator.Cog.Sprite.VertexColor;
+      color.W = 1;
+      this.NightIndicator.Cog.Sprite.VertexColor = color;
+      
+      Action.Property(this.Owner.Actions, this.RenderColor, this.NightColor, 1, Ease.Linear);
+      
+    }
+    // Otherwise play the day background
+    else
+    {
+      
+      // Show the day indicator
+      var color = this.DayIndicator.Cog.Sprite.VertexColor;
+      color.W = 1;
+      this.DayIndicator.Cog.Sprite.VertexColor = color;
+      // Hide the night indicator
+      color = this.NightIndicator.Cog.Sprite.VertexColor;
+      color.W = 0;
+      this.NightIndicator.Cog.Sprite.VertexColor = color;
+      
+      Action.Property(this.Owner.Actions, this.RenderColor, this.DayColor, 1, Ease.Linear);
+      
+    }
+    
+    // Set the variable for which one is playing now
+    this.Day = event.Day;
+  }
+}

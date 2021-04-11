@@ -1,0 +1,78 @@
+class SwivelAxis
+{
+    [Static]
+    var Up : Integer { get { return 0; } }
+    
+    [Static]
+    var Right : Integer { get { return 1; } }
+    
+    //Not used
+    [Static]
+    var Forward : Integer { get { return 2; } }
+}
+
+class Swivel : ZilchComponent
+{
+    [Property]
+    var Axis : Integer = SwivelAxis.Up;
+    
+    [Property]
+    var MaxAngleRotation : Real = 0.03;
+    
+    [Property]
+    var XSensativity : Real = 0.01;
+    
+    [Property]
+    var YSensativity : Real = 0.003;
+    
+    
+    var Root : Cog = null;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.Attached, this.OnAttached);
+        this.Setup();
+    }
+    
+    function OnAttached(e : HierarchyEvent)
+    {
+        this.Setup();
+    }
+    
+    // Setup can be called multiple times, but it MUST be called any time our hierarchy is changed
+    function Setup()
+    {
+        var root = this.Owner.FindRoot();
+        
+        if (this.Root != null)
+        {
+            Zero.Disconnect(this.Root, "PlayerMouseMove", this);
+        }
+        
+        Zero.Connect(root, "PlayerMouseMove", this.OnUserMouseMove);
+        
+        this.Root = root;
+    }
+
+    function OnUserMouseMove(e : PlayerMouseEvent)
+    {
+        var objRot = this.Owner.Transform.WorldRotation;
+        var rot : Quaternion = local Quaternion();
+        if (this.Axis == SwivelAxis.Up)
+        {
+            var delta = Math.Clamp(-e.ScreenDelta.X * this.XSensativity, -this.MaxAngleRotation, this.MaxAngleRotation);
+            rot = Math.ToQuaternion(this.Owner.Orientation.WorldUp, delta);
+        }
+        else if (this.Axis == SwivelAxis.Right)
+        {
+            var delta = Math.Clamp(e.ScreenDelta.Y * this.YSensativity, -this.MaxAngleRotation, this.MaxAngleRotation);
+            rot = Math.ToQuaternion(this.Owner.Orientation.WorldRight, delta);
+        }
+        
+        this.Owner.Transform.WorldRotation = Math.Transform(the : objRot, by : rot);
+    }
+}

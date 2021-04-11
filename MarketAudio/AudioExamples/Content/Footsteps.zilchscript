@@ -1,0 +1,221 @@
+//**********************************************************************************
+//
+// Uses switch containers to track states for the ground time and the movement
+// speed and plays the appropriate SoundCues while the player is moving.
+//
+//**********************************************************************************
+class Footsteps : ZilchComponent
+{
+  // Requires a SoundEmitter component to play the footsteps
+  [Dependency] var Emitter : SoundEmitter;
+  // Requires a Transform component
+  [Dependency] var Transform : Transform;
+  
+  // The time (in seconds) between playing footsteps while walking
+  [Property] var WalkTime : Real = 0.5;
+  // The time (in seconds) between playing footsteps while running
+  [Property] var RunTime : Real = 0.25;
+  // The SoundCue to use when walking on grass
+  [Property] var GrassWalkCue : SoundCue;
+  // The SoundCue to use when running on grass
+  [Property] var GrassRunCue : SoundCue;
+  // The SoundCue to use when walking on wood
+  [Property] var WoodWalkCue : SoundCue;
+  // The SoundCue to use when running on wood
+  [Property] var WoodRunCue : SoundCue;
+  
+  // Keeps track of whether we are currently moving
+  var Moving : Boolean = false;
+  // Switches to other switch containers based on the ground type
+  var BaseSwitch : SoundSwitchContainer = SoundSwitchContainer();
+  // Switches to different SoundCues depending on the speed
+  var GrassSpeedSwitch : SoundSwitchCues = SoundSwitchCues();
+  // Switches to different SoundCues depending on the speed
+  var WoodSpeedSwitch : SoundSwitchCues = SoundSwitchCues();
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the event when this object starts colliding with another object
+    Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollisionStart);
+    // Connect to the event when this object stops colliding with another object
+    Zero.Connect(this.Owner, Events.CollisionEnded, this.OnCollisionEnd);
+    
+    // Set up the ground type switch container states
+    this.BaseSwitch.SetStateToObject(FootstepGroundType.Grass, this.GrassSpeedSwitch);
+    this.BaseSwitch.SetStateToObject(FootstepGroundType.Wood, this.WoodSpeedSwitch);
+    // Set the ground type current state
+    this.BaseSwitch.CurrentState = FootstepGroundType.Grass;
+    
+    // Set up the movement speed on grass switch container states
+    this.GrassSpeedSwitch.SetStateToSoundCue(FootstepSpeed.Walk, this.GrassWalkCue);
+    this.GrassSpeedSwitch.SetStateToSoundCue(FootstepSpeed.Run, this.GrassRunCue);
+    // Set the movement speed current state
+    this.GrassSpeedSwitch.CurrentState = FootstepSpeed.Walk;
+    
+    // Set up the movement speed on wood switch container states
+    this.WoodSpeedSwitch.SetStateToSoundCue(FootstepSpeed.Walk, this.WoodWalkCue);
+    this.WoodSpeedSwitch.SetStateToSoundCue(FootstepSpeed.Run, this.WoodRunCue);
+    // Set the movement speed current state
+    this.WoodSpeedSwitch.CurrentState = FootstepSpeed.Walk;
+  }
+  
+  function StartMoving(moveSpeed : FootstepSpeed)
+  {
+    // Mark that we are now moving
+    this.Moving = true;
+    // Set the movement speed on the switches
+    this.GrassSpeedSwitch.CurrentState = moveSpeed;
+    this.WoodSpeedSwitch.CurrentState = moveSpeed;
+    // Start playing footsteps
+    this.PlayFootstep();
+  }
+  
+  function StopMoving()
+  {
+    // Mark that we are not moving
+    this.Moving = false;
+    // Clear the current actions
+    this.Owner.Actions.Cancel();
+  }
+  
+  function PlayFootstep()
+  {
+    // If we're not moving any more stop the chain of footsteps
+    if (this.Moving == false)
+      return;
+    
+    // Play the appropriate SoundCue on the SoundEmitter
+    this.Emitter.PlayCue(this.BaseSwitch.GetSoundCue());
+    
+    // Delay the next footstep by the appropriate amount of time
+    var sequence = Action.Sequence(this.Owner.Actions);
+    if (this.GrassSpeedSwitch.CurrentState == FootstepSpeed.Walk)
+      Action.Delay(sequence, this.WalkTime);
+    else
+      Action.Delay(sequence, this.RunTime);
+    Action.Call(sequence, this.PlayFootstep);
+  }
+  
+  function OnCollisionStart(event : CollisionEvent)
+  {
+    // If the object we're colliding with is wood, set the ground type on the switch
+    if (event.OtherObject.Name == "Wood")
+    {
+      this.BaseSwitch.CurrentState = FootstepGroundType.Wood;
+    }
+  }
+  
+  function OnCollisionEnd(event : CollisionEvent)
+  {
+    // If the object we stopped colliding with is wood, set the type back to grass
+    if (event.OtherObject.Name == "Wood")
+    {
+      this.BaseSwitch.CurrentState = FootstepGroundType.Grass;
+    }
+  }
+}
+
+//**********************************************************************************
+//
+// Moves the object at two different speeds, and calls methods on the Footsteps
+// class to start and stop playing footsteps.
+//
+//**********************************************************************************
+class FootstepMovement : ZilchComponent
+{
+  // Requires the Footsteps component on the same object
+  [Dependency] var Footsteps : Footsteps;
+  // Requires a Transform component
+  [Dependency] var Transform : Transform;
+  
+  // Keeps track of whether the object is currently moving
+  var Moving : Boolean = false;
+  // The increment to move the object by on each frame
+  var Increment : Real = 0.0;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the LogicUpdate event
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    // Conenct to the KeyDown event
+    Zero.Connect(Zero.Keyboard, Events.KeyDown, this.OnKeyDown);
+    // Connect to the KeyUp event
+    Zero.Connect(Zero.Keyboard, Events.KeyUp, this.OnKeyUp);
+  }
+  
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // Check if the object should be moved
+    if (this.Moving)
+    {
+      // Get the current position
+      var position = this.Transform.WorldTranslation;
+      
+      // Make sure we haven't moved too far 
+      if ((this.Increment < 0 && position.X > -14) ||
+            (this.Increment > 0 && position.X < 14))
+      {
+        // Add the increment along the X axis
+        position.X += this.Increment;
+        // Set the object's new position
+        this.Transform.WorldTranslation = position;
+      }
+    }
+  }
+  
+  function OnKeyDown(event : KeyboardEvent)
+  {
+    // Check if the left or right arrow keys were pressed
+    if (event.Key == Keys.Left || event.Key == Keys.Right)
+    {
+      // Start moving at a run
+      this.Footsteps.StartMoving(FootstepSpeed.Run);
+      this.Moving = true;
+      // If moving left, the increment is negative
+      if (event.Key == Keys.Left)
+        this.Increment = -0.15;
+      // If right, it's positive
+      else
+        this.Increment = 0.15;
+    }
+    // Check if the A or D keys were pressed
+    else if (event.Key == Keys.A || event.Key == Keys.D)
+    {
+      // Start moving at a walk
+      this.Footsteps.StartMoving(FootstepSpeed.Walk);
+      this.Moving = true;
+      // If moving left, the increment is negative
+      if (event.Key == Keys.A)
+        this.Increment = -0.08;
+      // If right, it's positive
+      else
+        this.Increment = 0.08;
+    }
+  }
+  
+  function OnKeyUp(event : KeyboardEvent)
+  {
+    // Check if the key is one of the movement keys
+    if (event.Key == Keys.Left || event.Key == Keys.Right 
+      || event.Key == Keys.A || event.Key == Keys.D)
+    {
+      // Stop moving
+      this.Footsteps.StopMoving();
+      this.Moving = false;
+    }
+  }
+}
+
+//**********************************************************************************
+//
+// Types of ground that the player could walk on
+//
+//**********************************************************************************
+enum FootstepGroundType { Grass, Wood }
+
+//**********************************************************************************
+//
+// Speeds that the player could move
+//
+//**********************************************************************************
+enum FootstepSpeed { Walk, Run }

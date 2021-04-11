@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "SimpleWall"
+		var ResourceId = 0x58c4c7e414d50510
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

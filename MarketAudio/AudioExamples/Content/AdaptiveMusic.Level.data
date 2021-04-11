@@ -1,0 +1,518 @@
+[Version:1]
+Level 
+{
+	Cog 
+	{
+		var Name = "LevelSettings"
+		var LinkId = 1
+		GravityEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = true
+			var DebugDrawEffect = false
+			var LocalSpaceDirection = true
+			var Strength = 10
+			var Direction = Real3{0, -1, 0}
+		}
+		DragEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = true
+			var DebugDrawEffect = false
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.100000001
+			var LinearDrag = 0
+			var AngularDrag = 0
+		}
+		GridDraw 
+		{
+			var Active = false
+			var HalfCellOffset = false
+			var CellSize = 1
+			var Axis = AxisDirection.X
+			var Lines = 100
+			var DrawAxisOrigins = true
+			var AlwaysDrawInEditor = true
+			var DrawInGame = false
+			var GridColor = Real4{0.5, 0.5, 0.5, 0.400000006}
+			var GridHighlight = Real4{0, 0, 0, 0.400000006}
+			var HighlightInterval = 10
+			var FollowEditorCamera = false
+		}
+	}
+	Cog 
+	{
+		var Name = "Renderer"
+		var LinkId = 2
+		DeferredRenderer 
+		{
+			var GeometryDebug = GeometryValue.None
+			var EditorDebugDraw = true
+			var GameDebugDraw = true
+			var RenderDiffuse = true
+			var RenderSpecular = true
+			var RenderSkybox = false
+			var Skybox = "5822dec85e380cf1:SimpleSkybox"
+			var ClearColor = Real4{0.715000033, 0.905950069, 1, 1}
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+		}
+		Ssao 
+		{
+			var Active = true
+			var Radius = 1
+			var Intensity = 2.20000005
+			var BlurDepthThreshold = 0.0500000007
+			var DebugBuffer = false
+		}
+		Bloom 
+		{
+			var Active = true
+			var Intensity = 0.100000001
+			var Threshold = 1
+			var Bloom1 = true
+			var Bloom2 = true
+			var Bloom3 = true
+			var Bloom4 = true
+			var Bloom5 = true
+			var DebugBuffer = false
+		}
+	}
+	Cog 
+	{
+		var Name = "DirectionalLight"
+		var LinkId = 3
+		Transform 
+		{
+			var Translation = Real3{0, 50, 50}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.382683456, 0, 0, 0.923879504}
+		}
+		SelectionIcon 
+		{
+			var Visible = true
+			var VisibilityEvents = true
+			var Material = "56581e2bb81777be:DebugDrawOnTop"
+			var SpriteSource = "58f8e4be736f5ea2:LightIcon"
+			var ViewScale = 1
+			var OverrideSelections = true
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = false
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b345ae:Cube"
+		}
+		DirectionalLight 
+		{
+			var LightColor = Real4{1, 1, 1, 1}
+			var LightIntensity = 1
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = true
+			var RenderToViewport = false
+			var ForwardViewportEvents = false
+			var RenderOrder = -1
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1, 1}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 100
+			var PerspectiveMode = PerspectiveMode.Orthographic
+			var FieldOfView = 45
+			var Size = 64
+		}
+		ShadowRenderer 
+		{
+			var ResolutionValue = ShadowResolution.High
+			var NormalOffsetBias = 0.100000001
+		}
+	}
+	Cog 
+	{
+		var Name = "EditorCamera"
+		var LinkId = 4
+		Transform 
+		{
+			var Translation = Real3{0, 4.86297321, 16.2367268}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.0871557519, -1.09695906e-08, -1.90484961e-09, 0.99619478}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 200
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 60
+			var Size = 20
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.Orbit
+			var Previous3DMode = ControlMode.Orbit
+			var LookDistance = 16.4872055
+			var VerticalAngle = 0.17453292
+			var HorizontalAngle = 0
+			var LookTarget = Real3{0, 2, 0}
+			var MoveSensitivity = 1
+		}
+	}
+	Cog 
+	{
+		var Name = "GameCamera"
+		var LinkId = 5
+		Transform 
+		{
+			var Translation = Real3{0, 4, 15}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SelectionIcon 
+		{
+			var Visible = true
+			var VisibilityEvents = true
+			var Material = "56581e2bb81777be:DebugDrawOnTop"
+			var SpriteSource = "58f8e4be7360cf7c:CameraIcon"
+			var ViewScale = 1
+			var OverrideSelections = true
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = false
+			var RenderInGame = true
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 5
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Letterbox
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 200
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 60
+			var Size = 20
+		}
+		SoundListener 
+		{
+			var Active = true
+		}
+	}
+	Cog 
+	{
+		var Name = "Floor"
+		var LinkId = 6
+		Transform 
+		{
+			var Translation = Real3{0, 0, 0}
+			var Scale = Real3{20, 1, 10}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b345ae:Cube"
+		}
+		BoxCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var HalfSize = Real3{0.5, 0.5, 0.5}
+		}
+	}
+	Cog 
+	{
+		var Name = "Player"
+		var LinkId = 7
+		Transform 
+		{
+			var Translation = Real3{-7.77047396, 1, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "5828b036bd65b5d8:OpaqueFlat"
+			var Mesh = "4de0354322b3572e:Cylinder"
+		}
+		Movement 
+		{
+			var MoveIncrement = 0.200000003
+		}
+		MusicStems 
+		{
+			var OverallVolume = 0.600000024
+			var Cue1 = "5944d7376bf020b2:Stems_Drum_1"
+			var Cue1Curve = "5912a90c438f1823:VolumeCurve1"
+			var Cue2 = "5944d7cd75faff19:Stems_Drum_2"
+			var Cue2Curve = "5912ab56a060a984:VolumeCurve2"
+			var Cue3 = "5944d7dd7607bf11:Stems_Melody"
+			var Cue3Curve = "5912ab2ab66ec971:VolumeCurve3"
+			var Cue4 = "5944d7dd7605ba56:Stems_Harmony_1"
+			var Cue4Curve = "5912abc0b9ed46a8:VolumeCurve4"
+			var Cue5 = "5944d7dd7602ab7f:Stems_Harmony_2"
+			var Cue5Curve = "5912abfec094d0b3:VolumeCurve5"
+			var Cue6 = "5944d7dd7604cb45:Stems_Metal"
+			var Cue6Curve = "5912ab9ece391a9d:VolumeCurve6"
+		}
+		SetMusicStemParam 
+		{
+			var PositionObject = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 7
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var FloorObject = CogPath
+			{
+				var Path = ":/Floor"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 6
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+		}
+	}
+	Cog 
+	{
+		var Name = "SpriteText"
+		var LinkId = 8
+		Transform 
+		{
+			var Translation = Real3{0, 5.48603058, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0, 0, 0, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "Use Left and Right Arrow Keys to Move Back and Forth"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 52
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+	}
+	Cog 
+	{
+		var Name = "SpriteText"
+		var LinkId = 9
+		Transform 
+		{
+			var Translation = Real3{0, 4.81260347, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0, 0, 0, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "Music will change as X position changes, according to curves"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 42
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+	}
+	Cog 
+	{
+		var Name = "SpriteText"
+		var LinkId = 10
+		Transform 
+		{
+			var Translation = Real3{0, 4.416821, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0, 0, 0, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "specified in the MusicStems script on the Player object"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 42
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+	}
+}

@@ -1,0 +1,75 @@
+[Version:1]
+Cog 
+{
+	var Name = "GenericGameConsole"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x5981433029b06e34]
+		{
+			var Name = "GenericGameConsolePreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x5981433029b06e3d]
+				{
+					var Name = "GenericGameConsoleScaling"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{0.0446825139, 0.0329329818, 0.0755072981}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x5981433029b06e40]
+						{
+							var Name = "GenericGameConsoleGeometricTranslation"
+							Transform 
+							{
+								var Translation = Real3{0.0465719849, -0.707524896, 0.00938117504}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x5981433029b06e42]
+								{
+									var Name = "GenericGameConsole"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "5981433029ab1b89:GenericGameConsole"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,11 @@
+DataContent = 
+{
+	DataBuilder = 
+	{
+		string Name = "PauseSpace",
+		uint64 ResourceId = 583b88fc421013b2,
+		string LoaderType = "Space",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

@@ -1,0 +1,29 @@
+class SwitchMenuOnActivated : ZilchComponent
+{
+  sends UiActivated : MenuEvent;
+  
+  
+  [Dependency]
+  var UiWidget : UiWidget;
+  
+  
+  [Property]
+  var FromMenuPath = CogPath();
+  [Property]
+  var ToMenuPath = CogPath();
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.UiActivated, this.OnUiActivated);
+  }
+  
+  
+  function OnUiActivated(event : MenuEvent)
+  {
+    var me = MenuEvent();
+    me.FromMenu = this.FromMenuPath.Cog;
+    me.ToMenu = this.ToMenuPath.Cog;
+    this.Owner.DispatchUp(Events.RequestMenuSwitch, me);
+  }
+}

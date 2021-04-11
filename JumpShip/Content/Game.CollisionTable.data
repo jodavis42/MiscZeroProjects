@@ -1,0 +1,13 @@
+CollisionTable = 
+{
+	Array RegisteredGroups = 
+	[
+		"522e52f6be075ed1:Bullet",
+		"4e740859314e5515:DefaultGroup",
+		"522e52eabc7a4536:Explosion",
+	],
+	Array CollisionFilters = 
+	[
+	],
+	bool AutoRegister = true,
+},

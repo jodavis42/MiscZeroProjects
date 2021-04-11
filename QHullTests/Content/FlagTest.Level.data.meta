@@ -1,0 +1,18 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "FlagTest"
+		var ResourceId = 0x59817127435c9609
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

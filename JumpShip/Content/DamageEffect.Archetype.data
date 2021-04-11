@@ -1,0 +1,68 @@
+[Version:1]
+Cog 
+{
+	var Name = ""
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Real3{-0.545577347, 0.775132835, -0.575465202}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	SpriteParticleSystem 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var OverrideBoundingBox = false
+		var LocalAabbCenter = Real3{0, 0, 0}
+		var LocalAabbHalfExtents = Real3{1, 1, 1}
+		var GroupSortValue = 0
+		var Material = "582c575af53d18c9:AlphaSprite"
+		var BoundingBoxSize = 2
+		var ChildSystem = false
+		var SystemSpace = SystemSpace.WorldSpace
+		var WarmUpTime = 0
+		var PreviewInEditor = false
+		var VertexColor = Real4{1, 1, 1, 1}
+		var GeometryMode = SpriteParticleGeometryMode.Billboarded
+		var SpriteSource = "523c8f02edc0325c:Sparks"
+		var ParticleAnimation = SpriteParticleAnimationMode.Single
+		var ParticleSort = SpriteParticleSortMode.None
+		var BeamBaseScale = 1
+		var BeamVelocityScale = 1
+	}
+	SphericalParticleEmitter 
+	{
+		var Active = true
+		var EmitCount = 4
+		var EmitDelay = 0
+		var EmitRate = 100
+		var EmitVariance = 0
+		var EmitRateSoftStartTime = 0
+		var Size = 0.300000012
+		var SizeVariance = 0.100000001
+		var Lifetime = 0.200000003
+		var LifetimeVariance = 0.0500000007
+		var Spin = 0
+		var SpinVariance = 0
+		var RandomSpin = true
+		var Fill = 1
+		var EmitterVelocityPercent = 0
+		var StartVelocity = Real3{0, 1, 0}
+		var RandomVelocity = Real3{0, 0, 0}
+		var TangentVelocity = Real3{0, 0, 0}
+		var EmitterSize = Real3{0, 0, 0}
+		var FastMovingEmitter = false
+	}
+	ParticleColorAnimator 
+	{
+		var TimeGradient = "591abd225f232eaa:FadeInOut"
+		var VelocityGradient = "null"
+		var MaxParticleSpeed = 5
+	}
+	TimedDeath 
+	{
+		var Lifetime = 0.25
+	}
+}

@@ -1,0 +1,21 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "BeamProjectile2"
+		var ResourceId = 0x523e7d9627815329
+		var AtlasId = 0x5274cf95e4a661fd
+		var FrameSizeX = 14
+		var FrameSizeY = 9
+		var FrameCount = 1
+		var FrameDelay = 0.0833332986
+		var OriginX = 7
+		var OriginY = 4
+		var PixelsPerUnit = 32
+		var Sampling = SpriteSampling.Nearest
+		var Looping = true
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+}

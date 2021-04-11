@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Dialog"
+		var ResourceId = 0x5944f14042ad19bf
+		var LoaderType = "SoundCue"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

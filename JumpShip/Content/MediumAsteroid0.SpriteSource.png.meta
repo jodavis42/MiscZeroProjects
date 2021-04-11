@@ -1,0 +1,21 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "MediumAsteroid0"
+		var ResourceId = 0x522ff174e5b5abf9
+		var AtlasId = 0x5274cf95e4a661fd
+		var FrameSizeX = 40
+		var FrameSizeY = 50
+		var FrameCount = 1
+		var FrameDelay = 0.0833332986
+		var OriginX = 20
+		var OriginY = 25
+		var PixelsPerUnit = 32
+		var Sampling = SpriteSampling.Nearest
+		var Looping = true
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+}

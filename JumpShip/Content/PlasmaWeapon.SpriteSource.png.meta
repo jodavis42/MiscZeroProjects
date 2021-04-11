@@ -1,0 +1,21 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "PlasmaWeapon"
+		var ResourceId = 0x523a75fc91eed660
+		var AtlasId = 0x5274cf95e4a661fd
+		var FrameSizeX = 12
+		var FrameSizeY = 13
+		var FrameCount = 4
+		var FrameDelay = 0.0833332986
+		var OriginX = 6
+		var OriginY = 6
+		var PixelsPerUnit = 32
+		var Sampling = SpriteSampling.Nearest
+		var Looping = true
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+}

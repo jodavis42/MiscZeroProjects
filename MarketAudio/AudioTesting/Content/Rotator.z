@@ -1,0 +1,22 @@
+class Rotator : ZilchComponent
+{
+  [Dependency]
+  var Transform : Transform = null;
+  
+  [Property]
+  var Rate : Real = 5.0;
+  
+  var YRotation : Real = 0.0;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+  
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    this.YRotation += event.Dt * this.Rate;
+    
+    this.Transform.WorldRotation = Math.ToQuaternion(0.0, this.YRotation, 0.0);
+  }
+}

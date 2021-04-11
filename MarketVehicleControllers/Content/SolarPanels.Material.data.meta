@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "SolarPanels"
+		var ResourceId = 0x58869bb471ef84ed
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

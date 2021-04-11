@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "SoundTagTesting"
+		var ResourceId = 0x58b49e604ced9072
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

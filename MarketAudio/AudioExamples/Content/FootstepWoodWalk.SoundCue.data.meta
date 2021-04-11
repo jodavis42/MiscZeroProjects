@@ -1,0 +1,19 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"SoundEffects"
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "FootstepWoodWalk"
+		var ResourceId = 0x5944f20c822a78cc
+		var LoaderType = "SoundCue"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

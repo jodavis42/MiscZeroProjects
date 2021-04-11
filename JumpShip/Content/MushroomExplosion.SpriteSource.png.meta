@@ -1,0 +1,21 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "MushroomExplosion"
+		var ResourceId = 0x52247b1d57f6a828
+		var AtlasId = 0x5274cf95e4a661fd
+		var FrameSizeX = 24
+		var FrameSizeY = 31
+		var FrameCount = 18
+		var FrameDelay = 0.0416667014
+		var OriginX = 12
+		var OriginY = 15
+		var PixelsPerUnit = 32
+		var Sampling = SpriteSampling.Nearest
+		var Looping = false
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+}

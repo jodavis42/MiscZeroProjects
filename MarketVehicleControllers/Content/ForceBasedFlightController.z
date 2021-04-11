@@ -1,0 +1,72 @@
+class ForceBasedFlightController : ZilchComponent
+{
+    [Dependency]
+    var Transform : Transform;
+    [Dependency]
+    var Orientation : Orientation;
+    [Dependency]
+    var RigidBody : RigidBody;
+    
+    [Dependency]
+    var FlightInputInterpreter : FlightInputInterpreter;
+    
+    [Property]
+    var ApplyConstantThrust : Boolean = false;
+    
+    [Property]
+    var ThrustForce : Real = 10.0;
+    
+    [Property]
+    var ReverseForce : Real = 5.0;
+    
+    [Property]
+    var PitchYawForce : Real = 5.0;
+    
+    [Property]
+    var RollForce : Real = 5.0;
+    
+    [Property]
+    var BoostForce : Real = 100.0;
+    
+    function Initialize(init : CogInitializer)
+    {
+        if(this.ApplyConstantThrust)
+            Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        
+        Zero.Connect(this.Owner, Events.RollEvent, this.OnRollEvent);
+        Zero.Connect(this.Owner, Events.PitchYawEvent, this.OnPitchYawEvent);
+        Zero.Connect(this.Owner, Events.ThrustEvent, this.OnThrustEvent);
+        Zero.Connect(this.Owner, Events.BoostEvent, this.OnBoostEvent);
+    }
+
+    function OnLogicUpdate(event : UpdateEvent)
+    {
+        //Apply constant thrust force
+        this.RigidBody.ApplyForce(this.Orientation.WorldForward * this.ThrustForce);
+    }
+    
+    function OnRollEvent(event : RollEvent)
+    {
+        //Apply roll force
+        this.RigidBody.ApplyTorque(this.Orientation.WorldForward * event.Dir * this.RollForce);
+    }
+    
+    function OnPitchYawEvent(event : PitchYawEvent)
+    {
+        //Apply pitch and yaw forces
+        this.RigidBody.ApplyTorque(this.Orientation.WorldRight * event.Pitch * this.PitchYawForce);
+        this.RigidBody.ApplyTorque(this.Orientation.WorldUp * event.Yaw * this.PitchYawForce);
+    }
+    
+    function OnThrustEvent(event : ThrustEvent)
+    {
+        //Apply thrust force
+        this.RigidBody.ApplyForce(this.Orientation.WorldForward * this.ThrustForce * event.NormalizedMagnitude);
+    }
+    
+    function OnBoostEvent(event : BoostEvent)
+    {
+        //Apply boost force
+        this.RigidBody.ApplyForce(this.Orientation.WorldForward * this.BoostForce);
+    }
+}

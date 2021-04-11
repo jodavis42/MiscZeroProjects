@@ -1,0 +1,57 @@
+class GameStartup : ZilchComponent
+{
+    var Random : Random = new Random();
+    
+    var MainSpace : Space = null;
+    
+    [Dependency]
+    var NetPeer : NetPeer;
+    
+    [Property]
+    var Level : Level = Level.Environment;
+    
+    [Property]
+    var Player : Archetype = Archetype.Player;
+    
+    constructor() : base()
+    {
+        this.Random.Seed = 10239;
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.NetPeerReceivedConnectResponse, this.Client_OnNetPeerReceivedConnectResponse);
+        Zero.Connect(this.Owner, Events.NetPeerReceivedUserAddRequest, this.Server_OnNetPeerReceivedUserAddRequest);
+        
+        Zero.Connect(this.Owner, Events.Hosting, this.OnHosting);
+    }
+
+    function OnHosting(event : Event)
+    {
+        this.MainSpace = this.GameSession.CreateNamedSpace("Main", Archetype.NetSpace);
+        this.MainSpace.LoadLevel(this.Level);
+        
+        this.MainSpace.LevelSettings.CameraViewport.Camera = this.MainSpace.FindObjectByName("Camera");
+        
+        // Always clear the store so we can use it for duplicating, copy/paste, and undos
+        //Zero.ObjectStore.ClearStore();
+    }
+
+    function Server_OnNetPeerReceivedUserAddRequest(event : NetPeerReceivedUserAddRequest)
+    {
+        var position = this.Random.Real3(0.0, 200.0);
+        position.Y = 0.0;
+        var player = this.MainSpace.Create(this.Player);
+        player.Transform.WorldTranslation = position;
+        event.ReturnTheirNetUser = player;
+        
+        //var label = this.Main.Create(Archetype.Label);
+        //label.FollowingLabel.Target.Cog = player;
+        //label.FollowingLabel.Text = event.GetName();
+    }
+
+    function Client_OnNetPeerReceivedConnectResponse(event : NetPeerReceivedConnectResponse)
+    {
+        this.NetPeer.AddUserWithName();
+    }
+}

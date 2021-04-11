@@ -1,0 +1,103 @@
+class MenuItemClone : ZilchComponent
+{
+  sends MenuItemCloneSetup : MenuItemEvent;
+  
+  
+  [Dependency]
+  var Sprite : Sprite;
+  [Dependency]
+  var UiWidget : UiWidget;
+  [Dependency]
+  var UiLayout : UiLayout;
+  
+  
+  [Property]
+  var TextPath = CogPath("UiShadowedText");
+  
+  var TextCog : Cog { get { return this.TextPath.Cog; }}
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.MenuItemCloneSetup, this.OnMenuItemCloneSetup);
+  }
+
+  function OnMenuItemCloneSetup(event : MenuItemEvent)
+  {
+    var item       = event.MenuItemCog;
+    var text       = event.TextCog;
+    
+    var thisSprite = this.Sprite;
+    var thisUi     = this.UiWidget;
+    var thisLayout = this.UiLayout;
+    
+    var thatSprite = item.Sprite;
+    var thatUi     = item.UiWidget;
+    var thatLayout = item.UiLayout;
+    
+    var thisST     = this.TextCog.SpriteText;
+    var thisTextUi = this.TextCog.UiWidget;
+    var thisSh     = this.TextCog.UiTextShadow;
+    
+    var thatST     = text.SpriteText;
+    var thatTextUi = text.UiWidget;
+    var thatSh     = text.UiTextShadow;
+    
+    thisSprite.SpriteSource    = thatSprite.SpriteSource;
+    thisSprite.Material        = thatSprite.Material;
+    thisSprite.Visible         = thatSprite.Visible;
+    thisSprite.AnimationActive = thatSprite.AnimationActive;
+    thisSprite.AnimationSpeed  = thatSprite.AnimationSpeed;
+    thisSprite.CurrentFrame    = thatSprite.CurrentFrame;
+    thisSprite.FlipX           = thatSprite.FlipX;
+    thisSprite.FlipY           = thatSprite.FlipY;
+    
+    thisUi.InLayout            = false;
+    //thisUi.Interactive = false;
+    thisUi.WorldTranslation    = thatUi.WorldTranslation;
+    thisUi.Size                = thatUi.Size;
+    thisUi.LocalColor          = thatUi.LocalColor;
+    thisUi.ClipChildren        = thatUi.ClipChildren;
+    thisUi.HorizontalAlignment = thatUi.HorizontalAlignment;
+    thisUi.VerticalAlignment   = thatUi.VerticalAlignment;
+    
+    thisLayout.PaddingLeft     = thatLayout.PaddingLeft;
+    thisLayout.PaddingTop      = thatLayout.PaddingTop;
+    thisLayout.PaddingRight    = thatLayout.PaddingRight;
+    thisLayout.PaddingBottom   = thatLayout.PaddingBottom;
+    
+    thisST.Text                = thatST.Text;
+    thisST.Font                = thatST.Font;
+    thisST.FontSize            = thatST.FontSize;
+    thisST.Material            = thatST.Material;
+    thisST.PixelsPerUnit       = thatST.PixelsPerUnit;
+    thisST.TextAlign           = thatST.TextAlign;
+    thisST.Visible             = thatST.Visible;
+    
+    thisTextUi.InLayout            = thatTextUi.InLayout;
+    thisTextUi.LocalTranslation    = thatTextUi.LocalTranslation;
+    thisTextUi.Size                = thatTextUi.Size;
+    thisTextUi.LocalColor          = thatTextUi.LocalColor;
+    thisTextUi.ClipChildren        = thatTextUi.ClipChildren;
+    thisTextUi.HorizontalAlignment = thatTextUi.HorizontalAlignment;
+    thisTextUi.VerticalAlignment   = thatTextUi.VerticalAlignment;
+    
+    if (thisSh == null || thatSh == null)
+    {
+      thisSh.CopyAllProperties();
+    }
+    else if (thisSh != null && thatSh != null)
+    {
+      thisSh.Offset      = thatSh.Offset;
+      thisSh.ShadowColor = thatSh.ShadowColor;
+      thisSh.CopyAllProperties();
+    }
+  }
+}
+
+
+class MenuItemEvent : ZilchEvent
+{
+  var MenuItemCog : Cog;
+  var TextCog : Cog;
+}

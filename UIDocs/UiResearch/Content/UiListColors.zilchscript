@@ -1,0 +1,45 @@
+[RunInEditor]
+class UiListColors : ZilchComponent
+{
+  [Dependency] var UiWidget : UiWidget;
+  
+  
+  [Property] var ContentPath : CogPath = CogPath(".");
+  [Property] var EvenColor : Real4 = Color.FromHexString("3D3D3D");
+  [Property] var OddColor : Real4 = Color.FromHexString("424242");
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.ColorAllElements();
+    
+    Zero.Connect(this.ContentPath.Cog, Events.ChildAttached, this.OnChildrenChanged);
+    Zero.Connect(this.ContentPath.Cog, Events.ChildDetached, this.OnChildrenChanged);
+    Zero.Connect(this.ContentPath.Cog, Events.ChildrenOrderChanged, this.OnChildrenChanged);
+  }
+
+  function OnChildrenChanged(event : Event)
+  {
+    this.ColorAllElements();
+  }
+  
+  
+  function ColorAllElements()
+  {
+    var odd = false;
+    
+    foreach (var child in this.ContentPath.Cog.Children)
+    {
+      var widget = child.UiWidget;
+      
+      if (widget == null) continue;
+      
+      var color = this.EvenColor;
+      if (odd) color = this.OddColor;
+      
+      widget.LocalColor = color;
+      
+      odd = !odd;
+    }
+  }
+}

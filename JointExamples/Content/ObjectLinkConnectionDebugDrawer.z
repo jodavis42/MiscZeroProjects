@@ -1,0 +1,26 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Debug draws the connection of an object link.
+[RunInEditor]
+class ObjectLinkConnectionDebugDrawer : ZilchComponent
+{
+  [Dependency] var ObjectLink : ObjectLink;
+  [Property] var Color : Real4 = Real4(1, 0, 0, 1);
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.FrameUpdate, this.OnFrameUpdate);
+  }
+
+  function OnFrameUpdate(event : UpdateEvent)
+  {
+    var line = DebugLine(this.ObjectLink.WorldPointA, this.ObjectLink.WorldPointB);
+    line.Color = this.Color;
+    DebugDraw.Add(line);
+  }
+}

@@ -1,0 +1,21 @@
+class VertexTextBlockLoader : ZilchComponent
+{
+  [Property] var Active : Boolean = true;
+  [Property] var TextBlock : TextBlock;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.QueryQuickHullVertices, this.OnQueryQuickHullVertices);
+  }
+
+  function OnQueryQuickHullVertices(event : QuickHullVertexQueryEvent)
+  {
+    if(this.TextBlock == null || this.Active == false)
+      return;
+      
+    event.Vertices = Array[Real3]();
+    var parser = VertexDataFileParser();
+    parser.LoadText(event.Vertices, this.TextBlock.Text);
+    event.TestName = this.TextBlock.Name;
+  }
+}

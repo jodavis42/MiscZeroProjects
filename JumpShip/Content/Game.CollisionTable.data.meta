@@ -1,0 +1,11 @@
+DataContent = 
+{
+	DataBuilder = 
+	{
+		string Name = "Game",
+		uint64 ResourceId = 522e52e5bd796eb4,
+		string LoaderType = "CollisionTable",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

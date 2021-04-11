@@ -1,0 +1,88 @@
+[Version:1]
+Cog 
+{
+	var Name = "GenericDVDPlayer"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x5981430f205c3da0]
+		{
+			var Name = "GenericDVDPlayerPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x5981430f205c3da6]
+				{
+					var Name = "GenericDVDPlayerRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{1, 0, 0, -7.90753631e-07}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x5981430f205c3da9]
+						{
+							var Name = "GenericDVDPlayerScaling"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{0.0253999997, 0.0253999997, 0.0253999997}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x5981430f205c3dab]
+								{
+									var Name = "GenericDVDPlayerGeometricTranslation"
+									Transform 
+									{
+										var Translation = Real3{-10.3434658, 4.97034311, -0.824682832}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x5981430f205c3dad]
+										{
+											var Name = "GenericDVDPlayer"
+											Transform 
+											{
+												var Translation = Real3{0, 0, 0}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "5981430f20547b32:GenericDVDPlayer"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

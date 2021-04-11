@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "PlatformerCharacterController",
+		uint64 ResourceId = 532e2ab87b2a20cf,
+	},
+},

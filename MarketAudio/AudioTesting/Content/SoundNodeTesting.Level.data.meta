@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "SoundNodeTesting"
+		var ResourceId = 0x58b524c5a815514b
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

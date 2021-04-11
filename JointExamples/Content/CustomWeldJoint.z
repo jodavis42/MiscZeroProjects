@@ -1,0 +1,107 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// An example of creating a weld joint.
+class CustomWeldJoint : ZilchComponent
+{
+  [Dependency]  var ObjectLink : ObjectLink;
+  [Dependency]  var CustomJoint : CustomJoint;
+  
+  var AxisXConstraint : CustomConstraintInfo;
+  var AxisYConstraint : CustomConstraintInfo;
+  var AxisZConstraint : CustomConstraintInfo;
+  
+  var Rotation0Constraint : CustomConstraintInfo;
+  var Rotation1Constraint : CustomConstraintInfo;
+  var Rotation2Constraint : CustomConstraintInfo;
+    
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.ComputeCustomJointInfo, this.OnComputeCustomJointInfo);
+    Zero.Connect(this.Space, Events.FrameUpdate, this.OnFrameUpdate);
+    
+    this.AxisXConstraint = this.CustomJoint.CreateConstraint();
+    this.AxisYConstraint = this.CustomJoint.CreateConstraint();
+    this.AxisZConstraint = this.CustomJoint.CreateConstraint();
+    
+    this.Rotation0Constraint = this.CustomJoint.CreateConstraint();
+    this.Rotation1Constraint = this.CustomJoint.CreateConstraint();
+    this.Rotation2Constraint = this.CustomJoint.CreateConstraint();
+  }
+  
+  // This uses some extensive understanding of the underlying structure of quaternions
+  function ComputeRotationalConstraints(cogA : Cog, cogB : Cog)
+  {
+    // Get the world basis (with the orientation component) of each cog
+    var worldBasisA = cogA.GetWorldBasis();
+    var worldBasisB = cogB.GetWorldBasis();
+    
+    // If the rotations are on opposite hemispheres then force them to be
+    // on the same side (not quite correct, but close enough)
+    if(Math.Dot(worldBasisA.XYZW, worldBasisB.XYZW) < 0)
+        worldBasisA.XYZW = -worldBasisA.XYZW;
+    
+    // Constraint the rotational x, y, and z axes to all have equal angular velocities (don't affect linear velocity)
+    this.Rotation0Constraint.SetJacobian(Real3.Zero, -Real3.XAxis, Real3.Zero, Real3.XAxis);
+    this.Rotation1Constraint.SetJacobian(Real3.Zero, -Real3.YAxis, Real3.Zero, Real3.YAxis);
+    this.Rotation2Constraint.SetJacobian(Real3.Zero, -Real3.ZAxis, Real3.Zero, Real3.ZAxis);
+    
+    // Now we just have to compute the error terms. To do this, we compute the delta rotation between the two bases.
+    // That is the rotation that transform's basisA into basis B.
+    var deltaRotation = Math.Multiply(worldBasisB, Math.Invert(worldBasisA));
+    // Now we abuse the properties of a quaternion. A quaternion is defined as [axis * sin(0.5 * theta), cos(0.5 * theta)].
+    // Using the small angle approximation that sin(theta) ~= theta, we can approximate the error on the x, y,
+    // and z axes as two times (quaternions map 2-1) the x, y, and z values of the quaternion.
+    var xError = 2 * deltaRotation.X;
+    var yError = 2 * deltaRotation.Y;
+    var zError = 2 * deltaRotation.Z;
+    
+    this.Rotation0Constraint.SetErrorAndBias(xError);
+    this.Rotation1Constraint.SetErrorAndBias(yError);
+    this.Rotation2Constraint.SetErrorAndBias(zError);
+  }
+
+  function OnComputeCustomJointInfo(event : CustomJointEvent)
+  {
+    var cogA = this.ObjectLink.ObjectA;
+    var cogB = this.ObjectLink.ObjectB;
+    var localPointA = this.ObjectLink.LocalPointA;
+    var localPointB = this.ObjectLink.LocalPointB;
+    // Constrain the two local points to be equal on the x, y, and z axes (effectively locking the points together)
+    this.CustomJoint.ConstrainLinearPosition(this.AxisXConstraint, cogA, cogB, localPointA, localPointB, Real3.XAxis);
+    this.CustomJoint.ConstrainLinearPosition(this.AxisYConstraint, cogA, cogB, localPointA, localPointB, Real3.YAxis);
+    this.CustomJoint.ConstrainLinearPosition(this.AxisZConstraint, cogA, cogB, localPointA, localPointB, Real3.ZAxis);
+    
+    // Compute the rotational terms (by far, the hardest part)
+    this.ComputeRotationalConstraints(cogA, cogB);
+  }
+
+  function OnFrameUpdate(event : UpdateEvent)
+  {
+    this.DebugDraw();
+  }
+  
+  function DebugDraw()
+  {
+    var cogA = this.ObjectLink.ObjectA;
+    var cogB = this.ObjectLink.ObjectB;
+    var worldPointA = this.ObjectLink.WorldPointA;
+    var worldPointB = this.ObjectLink.WorldPointB;
+    
+    var line = DebugLine(worldPointA, worldPointB) {Color = Real4(1), OnTop = true};
+    DebugDraw.Add(line);
+    
+    // Draw each orientation basis
+    var scalar = 2;
+    var orientationA = cogA.Orientation;
+    if(orientationA != null)
+      orientationA.DrawBases(2);
+    var orientationB = cogB.Orientation;
+    if(orientationB != null)
+      orientationB.DrawBases(2);
+  }
+}

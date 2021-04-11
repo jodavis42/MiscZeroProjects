@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "Footsteps"
+		var ResourceId = 0x594589a1d8175b9c
+	}
+}

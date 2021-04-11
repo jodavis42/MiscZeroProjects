@@ -1,0 +1,73 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Arend Danielek
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Target object for a multi-focus camera. Automatically adds/removes itself from focus when
+// created/destroyed. Can optionally only add to focus when entering the viewport.
+class MultiFocusCamera2DTarget : ZilchComponent
+{
+  [Dependency] var Transform : Transform;
+  
+  [Property] var Active : Boolean = true;
+  // Weight used for computing the camera's target position.
+  [Property] var FocusWeight : Real = 1.0;
+  // Should we add ourself to the focus camera on initialize or only
+  // when we first enter the camera's viewport?
+  [Property] var AddOnEnterView : Boolean = false;
+  
+  // Have we already been added to a camera?
+  var Added : Boolean = false;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Delay connection logic until all other objects in the level have
+    // been created. This handles the camera being created after us.
+    Zero.Connect(init, Events.AllObjectsInitialized, this.OnAllObjectsInitialized);
+  }
+
+  function OnAllObjectsInitialized(event : CogInitializerEvent)
+  {
+    if(!this.Active)
+      return;
+    
+    // Listen for when we're destructed so we can remove ourself from the camera
+    Zero.Connect(this.Owner, Events.CogDestroy, this.OnCogDestroy);
+    
+    // If we only add on entering the camera's viewport then listen for the event
+    if(this.AddOnEnterView)
+      Zero.Connect(this.Owner, Events.EnterView, this.OnEnterView);
+    // Otherwise, immediately add ourself as a focus target
+    else
+      this.AddToFocus();
+  }
+  
+  function OnEnterView(event : GraphicalEvent)
+  {
+    this.AddToFocus();
+  }
+  
+  function AddToFocus()
+  {
+    // We were already added so don't do anything
+    if(this.Added)
+      return;
+    
+    this.Added = true;
+    
+    // Send an event to tell a camera to focus on us
+    var toSend = CameraFocusEvent();
+    toSend.Object = this.Owner;
+    this.Space.DispatchEvent(Events.AddToCameraFocus, toSend);
+  }
+
+  function OnCogDestroy(event : ObjectEvent)
+  {
+    // Send an event to stop focus on ourself
+    var toSend = CameraFocusEvent();
+    toSend.Object = this.Owner;
+    this.Space.DispatchEvent(Events.RemoveFromCameraFocus, toSend);
+  }
+}

@@ -1,0 +1,70 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// A sample implementation of a joint that constrains a point on an object along a spline.
+// A motor is also toggleable that can only push the object forward at a set power (can't slow down the object)
+class SplineJoint : ZilchComponent
+{
+  [Dependency]  var CustomJoint : CustomJoint;
+  [Dependency]  var SplineHelper : SplineHelper;
+  
+  [Property]  var Active : Boolean = true;
+  [Property]  var LocalPoint : Real3 = Real3(0, 0.5, 0);
+  [Property] var MotorActive : Boolean = false;
+  [Property] var TargetMotorSpeed : Real = 1.0;
+  [Property] var MotorDirection : Real = 1.0;
+  
+  var Axis0Constraint : CustomConstraintInfo;
+  var Axis1Constraint : CustomConstraintInfo;
+  var ForwardConstraint : CustomConstraintInfo;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.ComputeCustomJointInfo, this.OnComputedScriptJoint);
+    Zero.Connect(Zero.Keyboard, Events.KeyDown, this.OnKeyDown);
+    
+    this.Axis0Constraint = this.CustomJoint.CreateConstraint();
+    this.Axis1Constraint = this.CustomJoint.CreateConstraint();
+    this.ForwardConstraint = this.CustomJoint.CreateConstraint();
+    this.ForwardConstraint.Active = this.MotorActive;
+  }
+  
+  // As an example, toggle the motor when enter is pressed
+  function OnKeyDown(event : KeyboardEvent)
+  {
+    if(event.Key == Keys.Enter)
+    {
+      this.MotorActive = !this.MotorActive;
+      this.ForwardConstraint.Active = this.MotorActive;
+    }
+  }
+  
+  function OnComputedScriptJoint(event : Event)
+  {
+    if(this.Active == false)
+        return;
+    
+    // Get the cog and it's world point
+    var cog = this.CustomJoint.GetCog(1);
+    var worldPoint = cog.Transform.TransformPoint(this.LocalPoint);
+    // Find the point and tangents on the spline closest to our world point
+    var info = this.SplineHelper.FindClosestPoint(worldPoint);
+    if(info == null)
+      return;
+    
+    // Constrain the two directions perpendicular to the tangent on the curve
+    this.CustomJoint.ConstrainLinearPosition(this.Axis0Constraint, null, cog, info.SamplePoint, this.LocalPoint, info.Tangent1);
+    this.CustomJoint.ConstrainLinearPosition(this.Axis1Constraint, null, cog, info.SamplePoint, this.LocalPoint, info.Tangent2);
+    
+    // Compute the target forward direction (depending on the motor's direction)
+    var forwardDirection = this.MotorDirection * info.Tangent0;
+    // Constrain the velocity (no position correction) along the forward direction
+    this.CustomJoint.ConstrainLinearVelocity(this.ForwardConstraint, null, cog, info.SamplePoint, this.LocalPoint, forwardDirection);
+    // Add a motor than can only push us forward on this axis
+    this.ForwardConstraint.ComputeMotor(this.TargetMotorSpeed, 0, 1);
+  }
+}

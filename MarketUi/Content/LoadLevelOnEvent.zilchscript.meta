@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "LoadLevelOnEvent"
+		var ResourceId = 0x581cc8f94dcc9fef
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"GameFlow"
+		}
+	}
+}

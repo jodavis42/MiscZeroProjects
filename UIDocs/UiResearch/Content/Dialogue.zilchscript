@@ -1,0 +1,56 @@
+class Dialogue : ZilchComponent
+{
+  sends TalkingStarted : InteractionEvent;
+  sends TalkingEnded : InteractionEvent;
+  sends TalkingNeedsToStop : InteractionEvent;
+  
+  
+  [Dependency] var Transform : Transform;
+  
+  
+  [Property] var Text : String = "Hello";
+  
+  var CurrentWindow : Cog;
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.TalkRequest, this.OnTalkRequest);
+    Zero.Connect(this.Owner, Events.TalkingNeedsToStop, this.OnTalkingNeedsToStop);
+  }
+  
+  
+  function OnTalkRequest(event : InteractionEvent)
+  {
+    if (this.CurrentWindow == null)
+      this.Talk(event);
+    else
+      this.StopTalking(event);
+  }
+  
+  
+  function OnTalkingNeedsToStop(event : InteractionEvent)
+  {
+    this.StopTalking(event);
+  }
+  
+  
+  function Talk(event : InteractionEvent)
+  {
+    var ie = InteractionEvent();
+    ie.Instigator = this.Owner.FindRoot();
+    ie.Dialogue = this.Text;
+    this.GameSession.DispatchEvent(Events.TalkingStarted, ie);
+    this.CurrentWindow = ie.Window;
+  }
+  
+  
+  function StopTalking(event : InteractionEvent)
+  {
+    var ie = InteractionEvent();
+    ie.Instigator = this.Owner.FindRoot();
+    ie.Window = this.CurrentWindow;
+    this.GameSession.DispatchEvent(Events.TalkingEnded, ie);
+    this.CurrentWindow = null;
+  }
+}

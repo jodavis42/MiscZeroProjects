@@ -1,0 +1,1 @@
+To break the pristmatic, we can shoot a ball from this "ballista". The ballista is a prismatic joint with a max limit and a very powerful motor.

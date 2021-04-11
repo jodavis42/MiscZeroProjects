@@ -1,0 +1,72 @@
+//**********************************************************************************
+//
+// Sets the music stem parameter based on how far an object has moved to the right,
+// using another object for the total movement area
+//
+//**********************************************************************************
+class SetMusicStemParam : ZilchComponent
+{
+  // Requires a MusicStems component
+  [Dependency] var MusicStems : MusicStems;
+  
+  // An object with a Transform component whose position will be checked for music state
+  [Property] var PositionObject : CogPath = CogPath();
+  // The floor object to use for determining position percentage
+  [Property] var FloorObject : CogPath = CogPath();
+  
+  // The width of the floor object to use when calculating position percentage
+  var FloorWidth : Real;
+  // The last position of the object
+  var LastXPosition : Real;
+  // Easy way to access the object's Transform component
+  var ObjectTransform : Transform;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // If the objects aren't set, can't do anything more
+    if (this.PositionObject.Cog == null || this.FloorObject.Cog == null)
+    {
+      Console.WriteLine("** Objects are not set on SetMusicStemParam script **");
+      return;
+    }
+    
+    // Connect to the LogicUpdate event
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    
+    // Save a variable for the objec'ts Transform component
+    this.ObjectTransform = this.PositionObject.Cog.Transform;
+    // Get the object's current position
+    this.LastXPosition = this.ObjectTransform.WorldTranslation.X;
+    // Get the width of the floor object
+    this.FloorWidth = this.FloorObject.Cog.Transform.Scale.X;
+    
+    // Set the stems' volumes using the object's current position
+    // (the percentage of how far it's moved toward the right edge of the floor)
+    this.MusicStems.SetParameter((this.LastXPosition + (this.FloorWidth / 2.0)) / this.FloorWidth);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // Get the object's current X position
+    var xPosition = this.ObjectTransform.WorldTranslation.X;
+    
+    // Check if the object has moved
+    if (xPosition != this.LastXPosition)
+    {
+      // Save the current X position
+      this.LastXPosition = xPosition;
+      
+      // Get the current position percentage
+      var percent = (this.LastXPosition + (this.FloorWidth / 2.0)) / this.FloorWidth;
+      
+      // Keep the percent number in the range 0.0 - 1.0
+      if (percent < 0)
+        percent = 0;
+      else if (percent > 1.0)
+        percent = 1.0;
+      
+      // Set the music stem parameter
+      this.MusicStems.SetParameter(percent);
+    }
+  }
+}

@@ -1,0 +1,114 @@
+[Version:1]
+Cog 
+{
+	var Name = "Axe01"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x598089537e329fde]
+		{
+			var Name = "Axe01RotationPivot"
+			Transform 
+			{
+				var Translation = Real3{0.0345711522, 0.102580637, 6.39760474e-05}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x598089537e329fe4]
+				{
+					var Name = "Axe01RotationPivotInverse"
+					Transform 
+					{
+						var Translation = Real3{-0.0345711522, -0.102580637, -6.39760474e-05}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x598089537e329fe6]
+						{
+							var Name = "Axe01ScalingOffset"
+							Transform 
+							{
+								var Translation = Real3{-3.422544, -10.1554832, -0.00633362867}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x598089537e329fe8]
+								{
+									var Name = "Axe01ScalingPivot"
+									Transform 
+									{
+										var Translation = Real3{3.45711517, 10.2580643, 0.00639760494}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x598089537e329fea]
+										{
+											var Name = "Axe01Scaling"
+											Transform 
+											{
+												var Translation = Real3{0, 0, 0}
+												var Scale = Real3{0.00999999978, 0.00999999978, 0.00999999978}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Hierarchy 
+											{
+												Cog [Id:0x598089537e329fec]
+												{
+													var Name = "Axe01ScalingPivotInverse"
+													Transform 
+													{
+														var Translation = Real3{-3.45711517, -10.2580643, -0.00639760494}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Hierarchy 
+													{
+														Cog [Id:0x598089537e329fed]
+														{
+															var Name = "Axe01"
+															Transform 
+															{
+																var Translation = Real3{0, 0, 0}
+																var Scale = Real3{1, 1, 1}
+																var Rotation = Quaternion{0, 0, 0, 1}
+															}
+															Model 
+															{
+																var Visible = true
+																var ViewCulling = true
+																var VisibilityEvents = true
+																var OverrideBoundingBox = false
+																var LocalAabbCenter = Real3{0, 0, 0}
+																var LocalAabbHalfExtents = Real3{1, 1, 1}
+																var GroupSortValue = 0
+																var Material = "583afb5e7bf75e18:ZeroMaterial"
+																var Mesh = "598089537e35db0c:Axe01"
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,18 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "SmallCraneHull"
+		var ResourceId = 0x598178b70b783059
+		var LoaderType = "Cog"
+		var Version = 0
+		var ShowInEditor = true
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+}

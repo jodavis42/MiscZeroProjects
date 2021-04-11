@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Doppler"
+		var ResourceId = 0x5945e31546245163
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

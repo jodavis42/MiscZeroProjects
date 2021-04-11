@@ -1,0 +1,18 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "GenericTallLamp"
+		var ResourceId = 0x598171e54cf03b62
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

@@ -1,0 +1,221 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Arend Danielek
+// Last update: 1/5/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Implements a 3D camera which attempts to independently follow an object in
+// third person with out clipping through geometry.
+class ThirdPersonCamera : ZilchComponent
+{
+  [Dependency] var Transform : Transform;
+  [Dependency] var Orientation : Orientation;
+  
+  [Property] var FocusObjectCogPath : CogPath;
+  
+  [Property] var LocalOffsetFromFocusObj : Real3 = Real3(0, 1, -7);
+  
+  [Property] var BaseTranslationSpeed : Real = 3.0;
+  
+  [Property] var BaseRotationSpeed : Real = 240.0;
+  
+  [Property] var WorldUp : Real3 = Real3.YAxis;
+  
+  [Property] var ForwardSensorAngle : Real = 30.0;
+  
+  [Property] var BackwardSensorAngle : Real = 30.0;
+  
+  [Property] var MinInfluenceDist : Real = 5.0;
+  
+  [Property] var ForwardSensorInfluence : Real = 0.5;
+  
+  [Property] var PaddingRadius : Real = 0.5;
+  
+  [Property] var BackPadding : Real = 1.0;
+  
+  [Property] var CameraCollisionGroup : CollisionGroup;
+  
+  [Property] var DrawDebugRays : Boolean = true;
+  
+  var FocusObject : Cog
+  {
+    get { return this.FocusObjectCogPath.Cog; } 
+  }
+  
+  var FocusPos : Real3
+  {
+    get { return this.FocusObject.Transform.WorldTranslation; } 
+  }
+  
+  var TargetWorldTranslation : Real3
+  {
+    get { return this.FocusObject.Transform.TransformPoint(this.LocalOffsetFromFocusObj); }
+  }
+  
+  var TargetWorldRotation : Quaternion
+  {
+    get { return this.Orientation.GetLookAtPointWithUpRotation(this.FocusPos, this.WorldUp); }
+  }
+  
+  var BaseRotationSpeedRadians : Real
+  {
+    get { return Math.ToRadians(this.BaseRotationSpeed); }
+  }
+  
+  var ForwardSensorAngleRad : Real
+  {
+    get { return Math.ToRadians(this.ForwardSensorAngle); }
+  }
+  
+  var BackwardSensorAngleRad : Real
+  {
+    get { return Math.ToRadians(this.BackwardSensorAngle); }
+  }
+  
+  var ObstacleFilter : CastFilter = CastFilter();
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.ObstacleFilter.CollisionGroup = this.CameraCollisionGroup;
+    this.ObstacleFilter.IgnoreChildren = true;
+    this.ObstacleFilter.IgnoreDynamic = true;
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+  
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // Store the camera's current and target positions locally so they can be modified.
+    var curPos = this.Transform.WorldTranslation;
+    var newIntendedPos = this.TargetWorldTranslation;
+    
+    // Cast a ray back from the focus object's position
+    var focusToCam = newIntendedPos - this.FocusPos;
+    var focusToCamLen = Math.Length(focusToCam) - this.BackPadding;
+    var buCheckResult = this.CastRay(this.FocusPos, focusToCam / focusToCamLen);
+    
+    // Correct the current position of the camera, since there is something obstructing its view of the target
+    if (buCheckResult.ObjectHit != null)
+    {
+      var pos = buCheckResult.WorldPosition;
+      var dir = pos - this.FocusPos;
+      var len = Math.Length(dir);
+      
+      if (len < focusToCamLen)
+      {
+        newIntendedPos = pos + (dir / len) * -this.BackPadding;
+        curPos = newIntendedPos;
+      }
+    }
+    
+    // Construct vector that will shoot out forward and above of the camera for prediction
+    // of surfaces which the camera must interpolate under
+    var fuResult = this.CastRay(
+      curPos, Math.RotateVector(
+        this.Orientation.WorldForward, this.Orientation.WorldRight, this.ForwardSensorAngleRad
+      )
+    );
+    
+    // If the forward-up ray senses and object within MinInfluenceDist then the Y-Axis
+    // difference should be used to influence how much the camera is pushed down to go under the object
+    if (fuResult.ObjectHit != null  && fuResult.Distance < this.MinInfluenceDist)
+    {
+      var yDif = fuResult.WorldPosition.Y - curPos.Y;
+      var dif = -yDif * (this.ForwardSensorInfluence / fuResult.Distance);
+      newIntendedPos += Real3(0, dif, 0);
+    }
+    
+    // Cast a ray backwards from the camera
+    var bResult = this.CastRay(curPos, -this.Orientation.WorldForward);
+    
+    // Cast a ray backwards and above the camera
+    var buResult = this.CastRay(
+      curPos, Math.RotateVector(
+        -this.Orientation.WorldForward, this.Orientation.WorldRight, -this.BackwardSensorAngleRad
+      )
+    );
+    
+    // If there is an object above and behind the camera within MinInfluenceDist and
+    // the object does not extend to the ground then move the camera down under the object
+    // as the player moves backards under the object.
+    if (buResult.ObjectHit != null &&
+        buResult.Distance < this.MinInfluenceDist)
+    {
+      var yDif = buResult.WorldPosition.Y - curPos.Y;
+      var dif = -yDif * (this.ForwardSensorInfluence / buResult.Distance);
+      
+      newIntendedPos += Real3(0, dif, 0);
+    }
+    // If there is an object behind the camera that can not be spatially avoided and would 
+    // clip the camera zoom the camera in to avoid clipping into the object
+    else if (bResult.ObjectHit != null &&
+             bResult.Distance < this.BackPadding &&
+             Math.Length(this.LocalOffsetFromFocusObj) > Math.Distance(this.FocusPos, bResult.WorldPosition))
+    {
+      var camDistDif = this.BackPadding - (bResult.Distance * 1.1);
+      var focusDif = curPos - this.FocusPos;
+      var focusDifLen = Math.Length(focusDif);
+      var focusDifNorm = focusDif / focusDifLen;
+      
+      newIntendedPos = this.FocusPos + focusDifNorm * (focusDifLen - camDistDif);
+    }
+    
+    var rays = Array[Ray]()
+    {
+      Ray() {Start = curPos, Direction = this.Orientation.LocalUp},
+      Ray() {Start = curPos, Direction = -this.Orientation.LocalUp},
+      Ray() {Start = curPos, Direction = this.Orientation.LocalRight},
+      Ray() {Start = curPos, Direction = -this.Orientation.LocalRight},
+    };
+    
+    foreach(var ray in rays)
+    {
+      var result = this.CastRay(ray);
+      if(result.ObjectHit != null && result.Distance < this.PaddingRadius)
+      {
+        var dif = this.PaddingRadius - result.Distance;
+        newIntendedPos += -ray.Direction * dif;
+      }
+    }
+    
+    // Interpolate towards the new Translation/Rotation
+    var newPos = Math.Lerp(curPos, newIntendedPos, this.BaseTranslationSpeed * event.Dt);
+    this.Transform.WorldTranslation = newPos;
+    
+    var newRot = Math.Slerp(this.Transform.Rotation, this.TargetWorldRotation, this.BaseRotationSpeedRadians * event.Dt);
+    this.Transform.Rotation = newRot;
+  }
+  
+  function CastRay(ray : Ray) : CastResult
+  {
+    var result = this.Space.PhysicsSpace.CastRayFirst(ray, this.ObstacleFilter);
+    
+    if(this.DrawDebugRays)
+        this.DrawRay(ray, result.Distance);
+    
+    return result;
+  }
+  
+  function CastRay(start : Real3, direction : Real3) : CastResult
+  {
+    var ray = Ray();
+    ray.Start = start;
+    ray.Direction = direction;
+    return this.CastRay(ray);
+  }
+  
+  function DrawRay(ray : Ray, len : Real)
+  {
+    if(!this.DrawDebugRays)
+      return;
+    
+    var start = ray.Start;
+    var end = start + (ray.Direction * Math.Clamp(len, 1.0, 100.0));
+    var line = DebugLine(start, end);
+    
+    line.Color = Real4(1,1,1,1);
+    line.HeadSize = 0.25;
+    line.OnTop = true;
+    DebugDraw.Add(line);
+  }
+}

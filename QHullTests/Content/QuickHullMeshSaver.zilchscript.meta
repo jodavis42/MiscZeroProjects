@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"QuickHull"
+		}
+	}
+	ZilchScriptBuilder 
+	{
+		var Name = "QuickHullMeshSaver"
+		var ResourceId = 0x598236be342f93b1
+	}
+}

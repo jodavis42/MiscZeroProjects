@@ -1,0 +1,88 @@
+//**********************************************************************************
+//
+// Plays several different music stems at once, adjusting their volume based on
+// a parameter which can go from 0.0 to 1.0
+//
+//**********************************************************************************
+class MusicStems : ZilchComponent
+{
+  // The overall volume adjustment applied to the music
+  [Property] var OverallVolume : Real = 0.6;
+  // The first music stem 
+  [Property] var Cue1 : SoundCue;
+  // The volume curve to use for the first stem
+  [Property] var Cue1Curve : SampleCurve;
+  // The second music stem
+  [Property] var Cue2 : SoundCue;
+  // The volume curve to use for the second stem
+  [Property] var Cue2Curve : SampleCurve;
+  // The third music stem
+  [Property] var Cue3 : SoundCue;
+  // The volume curve to use for the third stem
+  [Property] var Cue3Curve : SampleCurve;
+  // The fourth music stem
+  [Property] var Cue4 : SoundCue;
+  // The volume curve to use for the fourth stem
+  [Property] var Cue4Curve : SampleCurve;
+  // The fifth music stem
+  [Property] var Cue5 : SoundCue;
+  // The volume curve to use for the fifth stem
+  [Property] var Cue5Curve : SampleCurve;
+  // The sixth music stem
+  [Property] var Cue6 : SoundCue;
+  // The volume curve to use for the sixth stem
+  [Property] var Cue6Curve : SampleCurve;
+  
+  // The SoundInstances created when the SoundCues are played
+  var Instance1 : SoundInstance;
+  var Instance2 : SoundInstance;
+  var Instance3 : SoundInstance;
+  var Instance4 : SoundInstance;
+  var Instance5 : SoundInstance;
+  var Instance6 : SoundInstance;
+  
+  // A VolumeNode which controls the overall volume of the music
+  var Volume : VolumeNode = Audio.VolumeNode();
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Set the overall music volume
+    this.Volume.Volume = this.OverallVolume;
+    
+    // Play the SoundCues on the VolumeNode and have them start out paused
+    // This lets us set their volumes instantly
+    this.Instance1 = this.Cue1.PlayCueOnNode(this.Volume, true);
+    this.Instance2 = this.Cue2.PlayCueOnNode(this.Volume, true);
+    this.Instance3 = this.Cue3.PlayCueOnNode(this.Volume, true);
+    this.Instance4 = this.Cue4.PlayCueOnNode(this.Volume, true);
+    this.Instance5 = this.Cue5.PlayCueOnNode(this.Volume, true);
+    this.Instance6 = this.Cue6.PlayCueOnNode(this.Volume, true);
+    
+    // Start the parameter at 0
+    this.SetParameter(0);
+    
+    // Resume playing the SoundInstances
+    this.Instance1.Paused = false;
+    this.Instance2.Paused = false;
+    this.Instance3.Paused = false;
+    this.Instance4.Paused = false;
+    this.Instance5.Paused = false;
+    this.Instance6.Paused = false;
+
+    // Add the VolumeNode to the input node of the SoundSpace
+    // This will make all the stems start playing simultaneously
+    this.Space.SoundSpace.InputNode.AddInputNode(this.Volume);
+  }
+  
+  // This function expects a value in the range 0.0 to 1.0
+  function SetParameter(value : Real)
+  {
+    // Set the SoundInstances' volumes using the value and each stem's volume curve
+    this.Instance1.Volume = this.Cue1Curve.Sample(value);
+    this.Instance2.Volume = this.Cue2Curve.Sample(value);
+    this.Instance3.Volume = this.Cue3Curve.Sample(value);
+    this.Instance4.Volume = this.Cue4Curve.Sample(value);
+    this.Instance5.Volume = this.Cue5Curve.Sample(value);
+    this.Instance6.Volume = this.Cue6Curve.Sample(value);    
+  }
+}

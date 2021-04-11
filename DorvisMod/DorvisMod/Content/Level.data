@@ -1,0 +1,90 @@
+Level = 
+{
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 1,
+		},
+		Named = 
+		{
+			string Name = "LevelSettings",
+		},
+		GravityEffect = 
+		{
+			bool Active = true,
+			bool WakeUpOnChange = false,
+			bool LocalSpaceDirection = true,
+			float Strength = 10,
+			Vec3 Direction = [0, -1, 0],
+		},
+		DragEffect = 
+		{
+			bool Active = true,
+			bool WakeUpOnChange = false,
+			float Drag = 0.699999988,
+		},
+	},
+	Cog = 
+	{
+		LinkId = 
+		{
+			uint Id = 2,
+		},
+		Named = 
+		{
+			string Name = "EditorCamera",
+		},
+		Archetyped = 
+		{
+			string Name = "4de020863e840530:EditorCamera",
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-3.06174564, 10.0529766, 11.210331],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [-0.153693646, -0.110088333, -0.0172332563, 0.981815577],
+		},
+		Camera = 
+		{
+			ProjectionMode ProjectionMode = Perspective,
+			Facing Facing = NegativeZ,
+			CameraTransparentSort TransparentSort = InheritFromSpace,
+			float FieldOfView = 45,
+			float NearPlane = 0.5,
+			float FarPlane = 500,
+			float Size = 20,
+		},
+		EditorCameraController = 
+		{
+			ControlMode ControlMode = Orbit,
+			float LookDistance = 10.6075001,
+			float VerticalAngle = 0.310560077,
+			float HorizontalAngle = 0.223321781,
+			Vec3 LookTarget = [-0.824882984, 6.81140995, 1.36108005],
+			float MoveSensitivity = 1,
+		},
+		EditorRenderer = 
+		{
+			Vec4 ClearColor = [0.278430998, 0.278430998, 0.278430998, 1],
+			bool DrawNonVisible = true,
+			bool DrawDebugObjects = true,
+			bool DrawEditorIcons = true,
+			bool Wireframe = false,
+		},
+	},
+	ArchetypeInstance = 
+	{
+		string Name = "519e4cbc821aa3bb:Chair",
+		LinkId = 
+		{
+			uint Id = 3,
+		},
+		Transform = 
+		{
+			Vec3 Translation = [-0.113903001, 8.23736954, 0.944317997],
+			Vec3 Scale = [1, 1, 1],
+			Quat Rotation = [0, 0, 0, 1],
+		},
+	},
+},

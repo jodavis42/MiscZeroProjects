@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "ButtonAttenuator"
+		var ResourceId = 0x58a7ae9845a36092
+		var LoaderType = "SoundAttenuator"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

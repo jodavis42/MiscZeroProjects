@@ -1,0 +1,34 @@
+[Version:1]
+SampleCurve 
+{
+	var WidthRange = Real2{0, 1}
+	var HeightRange = Real2{0, 1}
+	var Error = 0.00999999978
+	var ControlPoints = Array
+	{
+		Object
+		{
+			var Time = 0.095238097
+			var Value = -0
+			var TangentIn = Real2{0, 0}
+			var TangentOut = Real2{0.707099974, 0.707099974}
+			var EditorFlags = 0
+		}
+		Object
+		{
+			var Time = 0.538095236
+			var Value = 0.796774209
+			var TangentIn = Real2{-0.147619069, -0.0663717389}
+			var TangentOut = Real2{0.147619069, 0.0663717389}
+			var EditorFlags = 0
+		}
+		Object
+		{
+			var Time = 1
+			var Value = 0.719354868
+			var TangentIn = Real2{-0.147619069, 0.0946902633}
+			var TangentOut = Real2{0.147619069, -0.0946902633}
+			var EditorFlags = 0
+		}
+	}
+}

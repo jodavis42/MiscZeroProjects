@@ -1,0 +1,51 @@
+Cog = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Named = 
+	{
+		string Name = "Sprite",
+	},
+	Archetyped = 
+	{
+		string Name = "521f3a3a938ff591:ClickableText",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [0.240952, -2.95411, 0],
+		Vec3 Scale = [1, 1, 1],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	SpriteText = 
+	{
+		SpriteGeometryMode GeometryMode = ZPlane,
+		TextPositionMode Position = UpperLeft,
+		string FontName = "4e7bac697bec55c5:Verdana",
+		uint FontSize = 20,
+		Vec4 Color = [1, 1, 1, 1],
+		bool Visible = true,
+		string Text = "",
+		bool OnTop = false,
+		BlendMode BlendMode = Alpha,
+		Vec2 Size = [0, 0],
+		TextAlign Align = Left,
+		float PixelsPerUnit = 64,
+		bool Smoothing = true,
+	},
+	Reactive = 
+	{
+		bool Active = true,
+		bool CaptureMouse = false,
+	},
+	UiText = 
+	{
+	},
+	ClickableText = 
+	{
+	},
+	UiUserData = 
+	{
+	},
+},

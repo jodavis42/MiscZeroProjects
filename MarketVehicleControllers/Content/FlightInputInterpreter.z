@@ -1,0 +1,136 @@
+class FlightInputInterpreter : ZilchComponent
+{
+    //Gamepad to be used for player input
+    var GPad : Gamepad;
+    
+    //Deadzone on steering stick
+    [Property]
+    var StickDeadZone : Real = 0.1;
+    
+    //Acceleration trigger dead zone
+    [Property]
+    var TriggerDeadZone : Real = 0.1;
+    
+    [Property]
+    var MouseSensitivity : Real2 = Real2(1.0,1.0);
+    
+    //Keybaord input options
+    [Property]
+    var AccelerateKey : Keys = Keys.Space;
+    
+    [Property]
+    var PitchUpKey : Keys = Keys.W;
+    
+    [Property]
+    var PitchDownKey : Keys = Keys.S;
+    
+    [Property]
+    var YawLeftKey : Keys = Keys.A;
+    
+    [Property]
+    var YawRightKey : Keys = Keys.D;
+    
+    [Property]
+    var RollLeftKey : Keys = Keys.Q;
+    
+    [Property]
+    var RollRightKey : Keys = Keys.E;
+    
+    [Property]
+    var BoostKey : Keys = Keys.Shift;
+    
+    //Gamepad input options
+    [Property]
+    var BoostButton : Buttons = Buttons.A;
+    
+    function Initialize(init : CogInitializer)
+    {
+        //Get the gamepad
+        this.GPad = Zero.Gamepads.GetGamePad(0);
+        
+        //Event connections
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    }
+
+    function OnLogicUpdate(event : UpdateEvent)
+    {
+        //If boost input is given
+        if(Zero.Keyboard.KeyIsDown(this.BoostKey) || this.GPad.IsButtonHeld(this.BoostButton))
+            this.Owner.DispatchEvent(Events.BoostEvent, BoostEvent());
+        
+        //If pitch yaw input  is given
+        if(Math.Length(this.GPad.LeftStick) >= this.StickDeadZone)
+        {
+            var pitchYawEvent = PitchYawEvent();
+            pitchYawEvent.Pitch = this.GPad.LeftStick.Y;
+            pitchYawEvent.Yaw = -this.GPad.LeftStick.X;
+            this.Owner.DispatchEvent(Events.PitchYawEvent, pitchYawEvent);
+        }
+        else if(Zero.Keyboard.KeyIsDown(this.PitchUpKey) || 
+                Zero.Keyboard.KeyIsDown(this.PitchDownKey) || 
+                Zero.Keyboard.KeyIsDown(this.YawLeftKey) || 
+                Zero.Keyboard.KeyIsDown(this.YawRightKey))
+        {
+            var pitchYawEvent = PitchYawEvent();
+            pitchYawEvent.Pitch = (Zero.Keyboard.KeyIsDown(this.PitchUpKey) as Integer) - (Zero.Keyboard.KeyIsDown(this.PitchDownKey) as Integer);
+            pitchYawEvent.Yaw = (Zero.Keyboard.KeyIsDown(this.YawLeftKey) as Integer) - (Zero.Keyboard.KeyIsDown(this.YawRightKey) as Integer);
+            this.Owner.DispatchEvent(Events.PitchYawEvent, pitchYawEvent);
+        }
+        
+        //If the left OR right bumpers is down 
+        if(this.GPad.IsButtonHeld(Buttons.RightShoulder) || this.GPad.IsButtonHeld(Buttons.LeftShoulder))
+        {
+            //Determine roll direction
+            var rollEvent = RollEvent();
+            rollEvent.Dir = (this.GPad.IsButtonHeld(Buttons.RightShoulder) as Integer) - (this.GPad.IsButtonHeld(Buttons.LeftShoulder) as Integer);
+            
+            this.Owner.DispatchEvent(Events.RollEvent, rollEvent);
+        }
+        else if(Zero.Keyboard.KeyIsDown(this.RollLeftKey) || Zero.Keyboard.KeyIsDown(this.RollRightKey))
+        {
+            //Determine roll direction
+            var rollEvent = RollEvent();
+            rollEvent.Dir = (Zero.Keyboard.KeyIsDown(this.RollLeftKey) as Integer) - (Zero.Keyboard.KeyIsDown(this.RollRightKey) as Integer);
+            
+            this.Owner.DispatchEvent(Events.RollEvent, rollEvent);
+        }
+        
+        //If right trigger not in deadzone and not boosting
+        if(this.GPad.RightTrigger >= this.TriggerDeadZone)
+        {
+            var thrustEvent = ThrustEvent();
+            thrustEvent.NormalizedMagnitude = this.GPad.RightTrigger;
+            this.Owner.DispatchEvent(Events.ThrustEvent, thrustEvent);
+        }
+        else if(Zero.Keyboard.KeyIsDown(this.AccelerateKey))
+        {
+            var thrustEvent = ThrustEvent();
+            thrustEvent.NormalizedMagnitude = 1.0;
+            this.Owner.DispatchEvent(Events.ThrustEvent, thrustEvent);
+        }
+    }
+}
+
+class ThrustEvent : ZilchEvent
+{
+    sends ThrustEvent : ThrustEvent;
+    var NormalizedMagnitude : Real;
+}
+
+class BoostEvent : ZilchEvent
+{
+    sends BoostEvent : BoostEvent;
+}
+
+class RollEvent : ZilchEvent
+{
+    sends RollEvent : RollEvent;
+    var Dir : Real = 0.0;
+}
+
+class PitchYawEvent : ZilchEvent
+{
+    sends PitchYawEvent : PitchYawEvent;
+    var Pitch : Real;
+    var Yaw : Real;
+}

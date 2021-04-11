@@ -1,0 +1,33 @@
+class CreateOnCollide : ZilchComponent
+{
+    [Property]
+    var ToCreate : Archetype = Archetype.Find("Explosion");
+    
+    [Property]
+    var DestroySelf : Boolean = true;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollisionStarted);
+    }
+
+    function OnCollisionStarted(e : CollisionEvent)
+    {
+        if (Team.IsSameTeam(this.Owner, e.OtherObject))
+        {
+            return;
+        }
+        
+        var position = this.Owner.Transform.WorldTranslation;
+        this.Space.CreateAtPosition(this.ToCreate, position);
+        
+        if (this.DestroySelf)
+        {
+            this.Owner.Destroy();
+        }
+    }
+}

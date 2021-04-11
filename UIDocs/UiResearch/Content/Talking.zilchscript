@@ -1,0 +1,89 @@
+class Talking : ZilchComponent
+{
+  sends TalkRequest : InteractionEvent;
+  
+  
+  [Dependency] var Transform : Transform;
+  
+  
+  [Property] var Key : Keys = Keys.Space;
+  
+  var Stuff : Array[Cog] = Array[Cog]();
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(Zero.Keyboard, Events.KeyDown, this.OnKeyDown);
+    Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollisionStarted);
+    Zero.Connect(this.Owner, Events.CollisionEnded, this.OnCollisionEnded);
+  }
+  
+  
+  function OnCollisionStarted(event : CollisionEvent)
+  {
+    var thing = event.OtherObject;
+    if (thing.Dialogue != null)
+      this.Stuff.Add(thing);
+  }
+  
+  
+  function OnCollisionEnded(event : CollisionEvent)
+  {
+    this.Stuff.RemoveFirst(event.OtherObject);
+  }
+  
+  
+  function OnKeyDown(event : KeyboardEvent)
+  {
+    if (event.Key == this.Key)
+      this.AttemptTalk();
+  }
+  
+  
+  function AttemptTalk()
+  {
+    if (this.Stuff.Count > 0)
+      this.Talk();
+    else
+      this.StopTalking();
+  }
+  
+  
+  function Talk()
+  {
+    var closestCog : Cog = null;
+    var shortestDistSq = Real.PositiveMax;
+    var thisWorldPos = this.Transform.WorldTranslation;
+    
+    foreach (var thing in this.Stuff)
+    {
+      var thatWorldPos = thing.Transform.WorldTranslation;
+      var difference = thatWorldPos - thisWorldPos;
+      var distSq = Math.LengthSq(difference);
+      
+      if (distSq < shortestDistSq)
+      {
+        shortestDistSq = distSq;
+        closestCog = thing;
+      }
+    }
+    
+    var ie = InteractionEvent();
+    ie.Instigator = this.Owner;
+    closestCog.DispatchEvent(Events.TalkRequest, ie);
+  }
+  
+  
+  function StopTalking()
+  {
+    this.GameSession.DispatchEvent(Events.TalkingNeedsToStop, InteractionEvent());
+  }
+}
+
+
+class InteractionEvent : ZilchEvent
+{
+  var Instigator : Cog;
+  var Dialogue : String;
+  var Window : Cog;
+}

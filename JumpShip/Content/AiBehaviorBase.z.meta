@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "AiBehaviorBase",
+		uint64 ResourceId = 521f25bbabfce9ae,
+	},
+},

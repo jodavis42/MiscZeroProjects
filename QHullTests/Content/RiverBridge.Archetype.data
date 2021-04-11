@@ -1,0 +1,584 @@
+[Version:1]
+Cog 
+{
+	var Name = "RiverBridge"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59817fed44b77cb6]
+		{
+			var Name = "polySurface1442Translation"
+			Transform 
+			{
+				var Translation = Real3{50.4223595, -7.40458965, -36.339344}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817fed44b77cbc]
+				{
+					var Name = "polySurface1442RotationOffset"
+					Transform 
+					{
+						var Translation = Real3{-5.40841818, 0, -4.40463924}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817fed44b77cbe]
+						{
+							var Name = "polySurface1442RotationPivot"
+							Transform 
+							{
+								var Translation = Real3{5.40811539, 1.34477031, 4.46079636}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59817fed44b77cc0]
+								{
+									var Name = "polySurface1442Rotation"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0.627296746, 0, 0.778780341}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x59817fed44b77cc3]
+										{
+											var Name = "polySurface1442RotationPivotInverse"
+											Transform 
+											{
+												var Translation = Real3{-5.40811539, -1.34477031, -4.46079636}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Hierarchy 
+											{
+												Cog [Id:0x59817fed44b77cc5]
+												{
+													var Name = "polySurface1442ScalingOffset"
+													Transform 
+													{
+														var Translation = Real3{5.43835831, -133.132263, -1.15491867}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Hierarchy 
+													{
+														Cog [Id:0x59817fed44b77cc7]
+														{
+															var Name = "polySurface1442ScalingPivot"
+															Transform 
+															{
+																var Translation = Real3{-0.0302429199, 134.47702, 5.61571503}
+																var Scale = Real3{1, 1, 1}
+																var Rotation = Quaternion{0, 0, 0, 1}
+															}
+															Hierarchy 
+															{
+																Cog [Id:0x59817fed44b77cc9]
+																{
+																	var Name = "polySurface1442Scaling"
+																	Transform 
+																	{
+																		var Translation = Real3{0, 0, 0}
+																		var Scale = Real3{0.0148643078, 0.0148643078, 0.0148643078}
+																		var Rotation = Quaternion{0, 0, 0, 1}
+																	}
+																	Hierarchy 
+																	{
+																		Cog [Id:0x59817fed44b77ccb]
+																		{
+																			var Name = "polySurface1442ScalingPivotInverse"
+																			Transform 
+																			{
+																				var Translation = Real3{0.0302429199, -134.47702, -5.61571503}
+																				var Scale = Real3{1, 1, 1}
+																				var Rotation = Quaternion{0, 0, 0, 1}
+																			}
+																			Hierarchy 
+																			{
+																				Cog [Id:0x59817fed44b77ccd]
+																				{
+																					var Name = "polySurface1442"
+																					Transform 
+																					{
+																						var Translation = Real3{0, 0, 0}
+																						var Scale = Real3{1, 1, 1}
+																						var Rotation = Quaternion{0, 0, 0, 1}
+																					}
+																					Hierarchy 
+																					{
+																						Cog [Id:0x59817fed44b77cd0]
+																						{
+																							var Name = "polySurface1443RotationPivot"
+																							Transform 
+																							{
+																								var Translation = Real3{-255.374573, 71.1311264, 8.20688725}
+																								var Scale = Real3{1, 1, 1}
+																								var Rotation = Quaternion{0, 0, 0, 1}
+																							}
+																							Hierarchy 
+																							{
+																								Cog [Id:0x59817fed44b77cd2]
+																								{
+																									var Name = "polySurface1443RotationPivotInverse"
+																									Transform 
+																									{
+																										var Translation = Real3{255.374573, -71.1311264, -8.20688725}
+																										var Scale = Real3{1, 1, 1}
+																										var Rotation = Quaternion{0, 0, 0, 1}
+																									}
+																									Hierarchy 
+																									{
+																										Cog [Id:0x59817fed44b77cd4]
+																										{
+																											var Name = "polySurface1443ScalingPivot"
+																											Transform 
+																											{
+																												var Translation = Real3{-255.374573, 71.1311264, 8.20688725}
+																												var Scale = Real3{1, 1, 1}
+																												var Rotation = Quaternion{0, 0, 0, 1}
+																											}
+																											Hierarchy 
+																											{
+																												Cog [Id:0x59817fed44b77cd6]
+																												{
+																													var Name = "polySurface1443ScalingPivotInverse"
+																													Transform 
+																													{
+																														var Translation = Real3{255.374573, -71.1311264, -8.20688725}
+																														var Scale = Real3{1, 1, 1}
+																														var Rotation = Quaternion{0, 0, 0, 1}
+																													}
+																													Hierarchy 
+																													{
+																														Cog [Id:0x59817fed44b77cd8]
+																														{
+																															var Name = "polySurface1443"
+																															Transform 
+																															{
+																																var Translation = Real3{0, 0, 0}
+																																var Scale = Real3{1, 1, 1}
+																																var Rotation = Quaternion{0, 0, 0, 1}
+																															}
+																															Model 
+																															{
+																																var Visible = true
+																																var ViewCulling = true
+																																var VisibilityEvents = true
+																																var OverrideBoundingBox = false
+																																var LocalAabbCenter = Real3{0, 0, 0}
+																																var LocalAabbHalfExtents = Real3{1, 1, 1}
+																																var GroupSortValue = 0
+																																var Material = "583afb5e7bf75e18:ZeroMaterial"
+																																var Mesh = "59817fed44a07c77:RiverBridge_polySurface1443"
+																															}
+																														}
+																													}
+																												}
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																						Cog [Id:0x59817fed44b77cdb]
+																						{
+																							var Name = "polySurface1444RotationPivot"
+																							Transform 
+																							{
+																								var Translation = Real3{-279.283936, 189.407471, 188.200333}
+																								var Scale = Real3{1, 1, 1}
+																								var Rotation = Quaternion{0, 0, 0, 1}
+																							}
+																							Hierarchy 
+																							{
+																								Cog [Id:0x59817fed44b77cdd]
+																								{
+																									var Name = "polySurface1444RotationPivotInverse"
+																									Transform 
+																									{
+																										var Translation = Real3{279.283936, -189.407471, -188.200333}
+																										var Scale = Real3{1, 1, 1}
+																										var Rotation = Quaternion{0, 0, 0, 1}
+																									}
+																									Hierarchy 
+																									{
+																										Cog [Id:0x59817fed44b77cdf]
+																										{
+																											var Name = "polySurface1444ScalingPivot"
+																											Transform 
+																											{
+																												var Translation = Real3{-279.283936, 189.407471, 188.200333}
+																												var Scale = Real3{1, 1, 1}
+																												var Rotation = Quaternion{0, 0, 0, 1}
+																											}
+																											Hierarchy 
+																											{
+																												Cog [Id:0x59817fed44b77ce1]
+																												{
+																													var Name = "polySurface1444ScalingPivotInverse"
+																													Transform 
+																													{
+																														var Translation = Real3{279.283936, -189.407471, -188.200333}
+																														var Scale = Real3{1, 1, 1}
+																														var Rotation = Quaternion{0, 0, 0, 1}
+																													}
+																													Hierarchy 
+																													{
+																														Cog [Id:0x59817fed44b77ce3]
+																														{
+																															var Name = "polySurface1444"
+																															Transform 
+																															{
+																																var Translation = Real3{0, 0, 0}
+																																var Scale = Real3{1, 1, 1}
+																																var Rotation = Quaternion{0, 0, 0, 1}
+																															}
+																															Model 
+																															{
+																																var Visible = true
+																																var ViewCulling = true
+																																var VisibilityEvents = true
+																																var OverrideBoundingBox = false
+																																var LocalAabbCenter = Real3{0, 0, 0}
+																																var LocalAabbHalfExtents = Real3{1, 1, 1}
+																																var GroupSortValue = 0
+																																var Material = "583afb5e7bf75e18:ZeroMaterial"
+																																var Mesh = "59817fed44a07cab:RiverBridge_polySurface1444"
+																															}
+																														}
+																													}
+																												}
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																						Cog [Id:0x59817fed44b77ce6]
+																						{
+																							var Name = "polySurface1445RotationPivot"
+																							Transform 
+																							{
+																								var Translation = Real3{-300.604828, 204.67244, 205.771713}
+																								var Scale = Real3{1, 1, 1}
+																								var Rotation = Quaternion{0, 0, 0, 1}
+																							}
+																							Hierarchy 
+																							{
+																								Cog [Id:0x59817fed44b77ce8]
+																								{
+																									var Name = "polySurface1445RotationPivotInverse"
+																									Transform 
+																									{
+																										var Translation = Real3{300.604828, -204.67244, -205.771713}
+																										var Scale = Real3{1, 1, 1}
+																										var Rotation = Quaternion{0, 0, 0, 1}
+																									}
+																									Hierarchy 
+																									{
+																										Cog [Id:0x59817fed44b77cea]
+																										{
+																											var Name = "polySurface1445ScalingPivot"
+																											Transform 
+																											{
+																												var Translation = Real3{-300.604828, 204.67244, 205.771713}
+																												var Scale = Real3{1, 1, 1}
+																												var Rotation = Quaternion{0, 0, 0, 1}
+																											}
+																											Hierarchy 
+																											{
+																												Cog [Id:0x59817fed44b77cec]
+																												{
+																													var Name = "polySurface1445ScalingPivotInverse"
+																													Transform 
+																													{
+																														var Translation = Real3{300.604828, -204.67244, -205.771713}
+																														var Scale = Real3{1, 1, 1}
+																														var Rotation = Quaternion{0, 0, 0, 1}
+																													}
+																													Hierarchy 
+																													{
+																														Cog [Id:0x59817fed44b77cee]
+																														{
+																															var Name = "polySurface1445"
+																															Transform 
+																															{
+																																var Translation = Real3{0, 0, 0}
+																																var Scale = Real3{1, 1, 1}
+																																var Rotation = Quaternion{0, 0, 0, 1}
+																															}
+																															Hierarchy 
+																															{
+																																Cog [Id:0x59817fed44b77cf0]
+																																{
+																																	var Name = "polySurface1445GeneratedMeshNode0"
+																																	Transform 
+																																	{
+																																		var Translation = Real3{0, 0, 0}
+																																		var Scale = Real3{1, 1, 1}
+																																		var Rotation = Quaternion{0, 0, 0, 1}
+																																	}
+																																	Model 
+																																	{
+																																		var Visible = true
+																																		var ViewCulling = true
+																																		var VisibilityEvents = true
+																																		var OverrideBoundingBox = false
+																																		var LocalAabbCenter = Real3{0, 0, 0}
+																																		var LocalAabbHalfExtents = Real3{1, 1, 1}
+																																		var GroupSortValue = 0
+																																		var Material = "583afb5e7bf75e18:ZeroMaterial"
+																																		var Mesh = "59817fed44a07cb5:RiverBridge_polySurface1445GeneratedMeshNode0"
+																																	}
+																																}
+																																Cog [Id:0x59817fed44b77cf2]
+																																{
+																																	var Name = "polySurface1445GeneratedMeshNode1"
+																																	Transform 
+																																	{
+																																		var Translation = Real3{0, 0, 0}
+																																		var Scale = Real3{1, 1, 1}
+																																		var Rotation = Quaternion{0, 0, 0, 1}
+																																	}
+																																	Model 
+																																	{
+																																		var Visible = true
+																																		var ViewCulling = true
+																																		var VisibilityEvents = true
+																																		var OverrideBoundingBox = false
+																																		var LocalAabbCenter = Real3{0, 0, 0}
+																																		var LocalAabbHalfExtents = Real3{1, 1, 1}
+																																		var GroupSortValue = 0
+																																		var Material = "583afb5e7bf75e18:ZeroMaterial"
+																																		var Mesh = "59817fed44a07cd1:RiverBridge_polySurface1445GeneratedMeshNode1"
+																																	}
+																																}
+																															}
+																														}
+																													}
+																												}
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																						Cog [Id:0x59817fed44b77cf5]
+																						{
+																							var Name = "polySurface1446RotationPivot"
+																							Transform 
+																							{
+																								var Translation = Real3{-257.694611, 64.7978363, 0.37427178}
+																								var Scale = Real3{1, 1, 1}
+																								var Rotation = Quaternion{0, 0, 0, 1}
+																							}
+																							Hierarchy 
+																							{
+																								Cog [Id:0x59817fed44b77cf7]
+																								{
+																									var Name = "polySurface1446RotationPivotInverse"
+																									Transform 
+																									{
+																										var Translation = Real3{257.694611, -64.7978363, -0.37427178}
+																										var Scale = Real3{1, 1, 1}
+																										var Rotation = Quaternion{0, 0, 0, 1}
+																									}
+																									Hierarchy 
+																									{
+																										Cog [Id:0x59817fed44b77cf9]
+																										{
+																											var Name = "polySurface1446ScalingPivot"
+																											Transform 
+																											{
+																												var Translation = Real3{-257.694611, 64.7978363, 0.37427178}
+																												var Scale = Real3{1, 1, 1}
+																												var Rotation = Quaternion{0, 0, 0, 1}
+																											}
+																											Hierarchy 
+																											{
+																												Cog [Id:0x59817fed44b77cfb]
+																												{
+																													var Name = "polySurface1446ScalingPivotInverse"
+																													Transform 
+																													{
+																														var Translation = Real3{257.694611, -64.7978363, -0.37427178}
+																														var Scale = Real3{1, 1, 1}
+																														var Rotation = Quaternion{0, 0, 0, 1}
+																													}
+																													Hierarchy 
+																													{
+																														Cog [Id:0x59817fed44b77cfd]
+																														{
+																															var Name = "polySurface1446"
+																															Transform 
+																															{
+																																var Translation = Real3{0, 0, 0}
+																																var Scale = Real3{1, 1, 1}
+																																var Rotation = Quaternion{0, 0, 0, 1}
+																															}
+																															Model 
+																															{
+																																var Visible = true
+																																var ViewCulling = true
+																																var VisibilityEvents = true
+																																var OverrideBoundingBox = false
+																																var LocalAabbCenter = Real3{0, 0, 0}
+																																var LocalAabbHalfExtents = Real3{1, 1, 1}
+																																var GroupSortValue = 0
+																																var Material = "583afb5e7bf75e18:ZeroMaterial"
+																																var Mesh = "59817fed44a07cdf:RiverBridge_polySurface1446"
+																															}
+																														}
+																													}
+																												}
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																						Cog [Id:0x59817fed44b77cff]
+																						{
+																							var Name = "polySurface1447RotationPivot"
+																							Transform 
+																							{
+																								var Translation = Real3{-259.283112, 64.7978363, 16.5847797}
+																								var Scale = Real3{1, 1, 1}
+																								var Rotation = Quaternion{0, 0, 0, 1}
+																							}
+																							Hierarchy 
+																							{
+																								Cog [Id:0x59817fed44b77d01]
+																								{
+																									var Name = "polySurface1447RotationPivotInverse"
+																									Transform 
+																									{
+																										var Translation = Real3{259.283112, -64.7978363, -16.5847797}
+																										var Scale = Real3{1, 1, 1}
+																										var Rotation = Quaternion{0, 0, 0, 1}
+																									}
+																									Hierarchy 
+																									{
+																										Cog [Id:0x59817fed44b77d03]
+																										{
+																											var Name = "polySurface1447ScalingPivot"
+																											Transform 
+																											{
+																												var Translation = Real3{-259.283112, 64.7978363, 16.5847797}
+																												var Scale = Real3{1, 1, 1}
+																												var Rotation = Quaternion{0, 0, 0, 1}
+																											}
+																											Hierarchy 
+																											{
+																												Cog [Id:0x59817fed44b77d06]
+																												{
+																													var Name = "polySurface1447ScalingPivotInverse"
+																													Transform 
+																													{
+																														var Translation = Real3{259.283112, -64.7978363, -16.5847797}
+																														var Scale = Real3{1, 1, 1}
+																														var Rotation = Quaternion{0, 0, 0, 1}
+																													}
+																													Hierarchy 
+																													{
+																														Cog [Id:0x59817fed44b77d08]
+																														{
+																															var Name = "polySurface1447"
+																															Transform 
+																															{
+																																var Translation = Real3{0, 0, 0}
+																																var Scale = Real3{1, 1, 1}
+																																var Rotation = Quaternion{0, 0, 0, 1}
+																															}
+																															Hierarchy 
+																															{
+																																Cog [Id:0x59817fed44b77d0a]
+																																{
+																																	var Name = "polySurface1447GeneratedMeshNode2"
+																																	Transform 
+																																	{
+																																		var Translation = Real3{0, 0, 0}
+																																		var Scale = Real3{1, 1, 1}
+																																		var Rotation = Quaternion{0, 0, 0, 1}
+																																	}
+																																	Model 
+																																	{
+																																		var Visible = true
+																																		var ViewCulling = true
+																																		var VisibilityEvents = true
+																																		var OverrideBoundingBox = false
+																																		var LocalAabbCenter = Real3{0, 0, 0}
+																																		var LocalAabbHalfExtents = Real3{1, 1, 1}
+																																		var GroupSortValue = 0
+																																		var Material = "583afb5e7bf75e18:ZeroMaterial"
+																																		var Mesh = "59817fed44a07cec:RiverBridge_polySurface1447GeneratedMeshNode2"
+																																	}
+																																}
+																																Cog [Id:0x59817fed44b77d0c]
+																																{
+																																	var Name = "polySurface1447GeneratedMeshNode3"
+																																	Transform 
+																																	{
+																																		var Translation = Real3{0, 0, 0}
+																																		var Scale = Real3{1, 1, 1}
+																																		var Rotation = Quaternion{0, 0, 0, 1}
+																																	}
+																																	Model 
+																																	{
+																																		var Visible = true
+																																		var ViewCulling = true
+																																		var VisibilityEvents = true
+																																		var OverrideBoundingBox = false
+																																		var LocalAabbCenter = Real3{0, 0, 0}
+																																		var LocalAabbHalfExtents = Real3{1, 1, 1}
+																																		var GroupSortValue = 0
+																																		var Material = "583afb5e7bf75e18:ZeroMaterial"
+																																		var Mesh = "59817fed44a07cf5:RiverBridge_polySurface1447GeneratedMeshNode3"
+																																	}
+																																}
+																															}
+																														}
+																													}
+																												}
+																											}
+																										}
+																									}
+																								}
+																							}
+																						}
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

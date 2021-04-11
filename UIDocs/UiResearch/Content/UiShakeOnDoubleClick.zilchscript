@@ -1,0 +1,20 @@
+class UiShakeOnDoubleClick : ZilchComponent
+{
+  [Property] var Duration : Real = 0.3;
+  [Property] var Magnitude : Real = 4;
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.DoubleClick, this.OnDoubleClick);
+  }
+  
+  
+  function OnDoubleClick(event : ViewportMouseEvent)
+  {
+    var se = ShakeEvent();
+    se.Duration = this.Duration;
+    se.Magnitude = this.Magnitude;
+    this.Owner.DispatchEvent(Events.ShakeRequest, se);
+  }
+}

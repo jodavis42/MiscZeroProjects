@@ -1,0 +1,27 @@
+class DebugTargetSpawner : ZilchComponent
+{
+  [Dependency]
+  var Transform : Transform = null;
+  
+  var RandomGenerator : Random = new Random();
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.BeginActions();
+  }
+
+  function BeginActions()
+  {
+    var seq = Actions.Sequence(this.Owner.Actions);
+    var destination = this.RandomGenerator.Real3(4.0, 10.0);
+    var time = this.RandomGenerator.Range(0.5, 2.0);
+    
+    this.Transform.WorldTranslation = Real3.Zero;
+    
+    destination.Y = 0.0;
+    
+    Actions.Property(seq, @this.Transform.WorldTranslation, destination, time, Ease.Linear);
+    
+    Actions.Call(seq, this.BeginActions);
+  }
+}

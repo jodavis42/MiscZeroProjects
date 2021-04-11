@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "EffectsTag"
+		var ResourceId = 0x59086ce3001cd3a1
+		var LoaderType = "SoundTag"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

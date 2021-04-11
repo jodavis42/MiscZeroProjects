@@ -1,0 +1,46 @@
+class MovingPlatform : ZilchComponent
+{
+    [Property]
+    var Movement : Real3 = Real3();
+    
+    [Property]
+    var MovementTime : Real = 1.0;
+    
+    var StartPosition : Real3 = Real3();
+    var Velocity : Real3 = Real3();
+    var Direction : Real = 1.0;
+    
+    var FakeTranslation : Real3 = Real3();
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        this.StartPosition = this.Owner.Transform.Translation;
+        this.FakeTranslation = this.StartPosition;
+        
+        this.StartMovementAction();
+        
+        Zero.Connect(this.Space, Events.KinematicUpdate, this.OnKinematicUpdate);
+    }
+
+    function OnKinematicUpdate(event : UpdateEvent)
+    {
+        this.Velocity = (this.FakeTranslation - this.Owner.Transform.Translation) / event.Dt;
+        this.Owner.RigidBody.Velocity = this.Velocity;
+        this.Owner.Transform.Translation = this.FakeTranslation;
+    }
+    
+    function StartMovementAction()
+    {
+        var endPos = this.FakeTranslation + this.Movement * this.Direction;
+        
+        var seq = Action.Sequence(this.Owner.Actions);
+        Actions.Property(seq, @this.FakeTranslation, endPos, this.MovementTime, Ease.QuadInOut);
+        Actions.Call(seq, this.StartMovementAction);
+        
+        this.Direction *= -1.0;
+    }
+}

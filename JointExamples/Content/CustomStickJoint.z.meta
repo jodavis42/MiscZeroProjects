@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "CustomStickJoint"
+		var ResourceId = 0x58d982430402aeba
+	}
+}

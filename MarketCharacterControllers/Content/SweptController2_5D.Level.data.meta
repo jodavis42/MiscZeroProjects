@@ -1,0 +1,19 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Demo"
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "SweptController2_5D"
+		var ResourceId = 0x5ada74791e047249
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

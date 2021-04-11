@@ -1,0 +1,335 @@
+Cog = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Archetyped = 
+	{
+		string Name = "519e623f0e5efbef:Player",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [-84.4580536, 54.3158607, 42.6883011],
+		Vec3 Scale = [1, 1, 1],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	Model = 
+	{
+		bool Visible = false,
+		bool VisibilityCulling = true,
+		bool VisibilityEvents = false,
+		bool CastShadows = true,
+		string MaterialName = "4de020863e85bb61:DefaultMaterial",
+		string MeshName = "4de0354322b345ae:Cube",
+		Vec4 Color = [1, 1, 1, 1],
+	},
+	RigidBody = 
+	{
+		bool Static = false,
+		bool Asleep = false,
+		bool Kinematic = false,
+		bool RotationLocked = true,
+		bool Mode2D = false,
+		bool AllowSleep = true,
+		bool Inherit2DMode = true,
+		Vec3 Velocity = [0, 0, 0],
+		Vec3 AngularVelocity = [0, 0, 0],
+	},
+	NetObject = 
+	{
+		string AutomaticChannelName = "56f22bdc94800e65:DefaultChannel",
+		Array NetPropertyConfigs = 
+		[
+			{
+				string ComponentName = "Transform",
+				string PropertyName = "Translation",
+				string NetChannelConfigName = "56f22bdc957a8572:TransformChannel",
+			},
+			{
+				string ComponentName = "Transform",
+				string PropertyName = "Rotation",
+				string NetChannelConfigName = "56f22bdc957a8572:TransformChannel",
+			},
+		],
+	},
+	NetUser = 
+	{
+	},
+	CapsuleCollider = 
+	{
+		bool Ghost = false,
+		bool SendsMessages = true,
+		bool Seamless = false,
+		string MaterialName = "5155a62385c0e753:Player",
+		string SerializedGroupName = "4e740859314e5515:DefaultGroup",
+		Vec3 Offset = [0, 0, 0],
+		float Radius = 0.300000012,
+		float Height = 1.39999998,
+		uint Direction = 1,
+	},
+	DynamicMotor = 
+	{
+	},
+	Orientation = 
+	{
+		Vec3 GlobalUp = [0, 1, 0],
+		Vec3 UpVector = [0, 1, 0],
+		Vec3 ForwardVector = [0, 0, 1],
+		OrientationBases DefaultBases = ForwardZUpY,
+	},
+	Character = 
+	{
+		float Speed = 10,
+	},
+	CharacterInput = 
+	{
+	},
+	Hierarchy = 
+	{
+		Cog = 
+		{
+			LinkId = 
+			{
+				uint Id = 2,
+			},
+			Named = 
+			{
+				string Name = "Camera",
+			},
+			Transform = 
+			{
+				Vec3 Translation = [0, 0.800000012, 0],
+				Vec3 Scale = [1, 1, 1],
+				Quat Rotation = [0, 0, 0, 1],
+			},
+			Camera = 
+			{
+				ProjectionMode ProjectionMode = Perspective,
+				Facing Facing = PositiveZ,
+				CameraTransparentSort TransparentSort = InheritFromSpace,
+				float FieldOfView = 70,
+				float NearPlane = 0.200000003,
+				float FarPlane = 1000,
+				float Size = 20,
+			},
+			Orientation = 
+			{
+				Vec3 GlobalUp = [0, 1, 0],
+				Vec3 UpVector = [0, 1, 0],
+				Vec3 ForwardVector = [0, 0, -1],
+				OrientationBases DefaultBases = ForwardZUpY,
+			},
+			BoxCollider = 
+			{
+				bool Ghost = true,
+				bool SendsMessages = true,
+				bool Seamless = false,
+				string MaterialName = "4faa6050b8692851:HardMaterial",
+				string SerializedGroupName = "4e740859314e5515:DefaultGroup",
+				Vec3 Offset = [0, 0, 0],
+				Vec3 Size = [0.5, 0.5, 0.5],
+			},
+			RigidBody = 
+			{
+				bool Static = false,
+				bool Asleep = false,
+				bool Kinematic = true,
+				bool RotationLocked = false,
+				bool Mode2D = false,
+				bool AllowSleep = true,
+				bool Inherit2DMode = true,
+				Vec3 Velocity = [0, 0, 0],
+				Vec3 AngularVelocity = [0, 0, 0],
+			},
+			SoundListener = 
+			{
+				bool Active = true,
+			},
+			NetObject = 
+			{
+				string AutomaticChannelName = "56f22bdc94800e65:DefaultChannel",
+				Array NetPropertyConfigs = 
+				[
+					{
+						string ComponentName = "Transform",
+						string PropertyName = "Translation",
+						string NetChannelConfigName = "56f22bdc957a8572:TransformChannel",
+					},
+					{
+						string ComponentName = "Transform",
+						string PropertyName = "Rotation",
+						string NetChannelConfigName = "56f22bdc957a8572:TransformChannel",
+					},
+				],
+			},
+			LocalCamera = 
+			{
+			},
+			Hierarchy = 
+			{
+			},
+		},
+		Cog = 
+		{
+			LinkId = 
+			{
+				uint Id = 3,
+			},
+			Named = 
+			{
+				string Name = "Model",
+			},
+			Transform = 
+			{
+				Vec3 Translation = [0, 0, 0],
+				Vec3 Scale = [0.200000003, 2, 0.200000003],
+				Quat Rotation = [0, 0, 0, 1],
+			},
+			Model = 
+			{
+				bool Visible = true,
+				bool VisibilityCulling = true,
+				bool VisibilityEvents = true,
+				bool CastShadows = true,
+				string MaterialName = "4de020863e85bb61:DefaultMaterial",
+				string MeshName = "4de0354322b3572e:Cylinder",
+				Vec4 Color = [1, 1, 1, 1],
+			},
+			Hierarchy = 
+			{
+			},
+		},
+		Cog = 
+		{
+			LinkId = 
+			{
+				uint Id = 4,
+			},
+			Named = 
+			{
+				string Name = "ToolContainer",
+			},
+			Transform = 
+			{
+				Vec3 Translation = [0, 0, 0],
+				Vec3 Scale = [1, 1, 1],
+				Quat Rotation = [0, 0, 0, 1],
+			},
+			Hierarchy = 
+			{
+				Cog = 
+				{
+					LinkId = 
+					{
+						uint Id = 5,
+					},
+					Named = 
+					{
+						string Name = "Spawner",
+					},
+					Transform = 
+					{
+						Vec3 Translation = [0, 0, 0],
+						Vec3 Scale = [1, 1, 1],
+						Quat Rotation = [0, 0, 0, 1],
+					},
+				},
+				Cog = 
+				{
+					LinkId = 
+					{
+						uint Id = 6,
+					},
+					Named = 
+					{
+						string Name = "Grabber",
+					},
+					Transform = 
+					{
+						Vec3 Translation = [0, 0, 0],
+						Vec3 Scale = [1, 1, 1],
+						Quat Rotation = [0, 0, 0, 1],
+					},
+					Hierarchy = 
+					{
+					},
+				},
+				Cog = 
+				{
+					LinkId = 
+					{
+						uint Id = 7,
+					},
+					Named = 
+					{
+						string Name = "Key Setter",
+					},
+					Transform = 
+					{
+						Vec3 Translation = [0, 0, 0],
+						Vec3 Scale = [1, 1, 1],
+						Quat Rotation = [0, 0, 0, 1],
+					},
+				},
+				Cog = 
+				{
+					LinkId = 
+					{
+						uint Id = 8,
+					},
+					Named = 
+					{
+						string Name = "Lasso",
+					},
+					Transform = 
+					{
+						Vec3 Translation = [0, 0, 0],
+						Vec3 Scale = [1, 1, 1],
+						Quat Rotation = [0, 0, 0, 1],
+					},
+					Hierarchy = 
+					{
+					},
+				},
+				Cog = 
+				{
+					LinkId = 
+					{
+						uint Id = 9,
+					},
+					Named = 
+					{
+						string Name = "Command Router",
+					},
+					Transform = 
+					{
+						Vec3 Translation = [0, 0, 0],
+						Vec3 Scale = [1, 1, 1],
+						Quat Rotation = [0, 0, 0, 1],
+					},
+					Hierarchy = 
+					{
+					},
+				},
+				Cog = 
+				{
+					LinkId = 
+					{
+						uint Id = 10,
+					},
+					Named = 
+					{
+						string Name = "Duplicator",
+					},
+					Transform = 
+					{
+						Vec3 Translation = [0, 0, 0],
+						Vec3 Scale = [1, 1, 1],
+						Quat Rotation = [0, 0, 0, 1],
+					},
+				},
+			},
+		},
+	},
+},

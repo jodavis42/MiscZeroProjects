@@ -1,0 +1,58 @@
+class DamageOnCollide : ZilchComponent
+{
+    // How much damage to apply to what we hit when we collide with it.
+    [Property]
+    var Damage : Real = 10.0;
+    
+    // Whether or not we die when we collide with something.
+    [Property]
+    var DestroyOnCollide : Boolean = true;
+    
+    // The root cog we originated from (we ignore damage to this cog and its descendents)
+    // Set this to null to damage everything
+    var OriginRoot : Cog = null;
+    
+    [Property]
+    var DamageType : DamageTypes = DamageTypes.Energy;
+    //sends Death : ZilchEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollisionStarted);
+    }
+    
+    function OnCollisionStarted(collisionEvent : CollisionEvent)
+    {
+        // Get the other object we hit
+        var otherObject = collisionEvent.OtherObject;
+        // Also get the root in the hierarchy (used to make sure that
+        // the person who shot this doesn't get hit by his own shot)
+        var otherRoot = otherObject.FindRoot();
+        
+        // Don't damage the person we were created from
+        if(otherRoot == this.OriginRoot)
+        {
+            return;
+        }
+        
+        // If what we hit has a health component then damage it
+        var health = otherObject.Health;
+        if(health != null)
+        {
+            health.ApplyDamage(this.Damage, this.DamageType);
+        }
+        
+        if(this.DestroyOnCollide)
+        {
+            // Let anyone listening know we just died
+            var toSend = new ZilchEvent();
+            this.Owner.DispatchEvent(Events.Death, toSend);
+            
+            this.Owner.Destroy();
+        }
+    }
+}

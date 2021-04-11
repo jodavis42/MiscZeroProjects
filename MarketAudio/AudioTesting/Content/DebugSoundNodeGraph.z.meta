@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "DebugSoundNodeGraph"
+		var ResourceId = 0x58b63b5d1f35bd42
+	}
+}

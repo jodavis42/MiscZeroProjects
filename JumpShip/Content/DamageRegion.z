@@ -1,0 +1,83 @@
+// Applies a constant dps to any object in contact with it that doesn't belong to the same core.
+// Used for drills and lightning.+
+class DamageRegion : ZilchComponent
+{
+    // The amount of damage we'll do based upon our current level.
+    [Property]
+    var DamageCurve : SampleCurve = SampleCurve.DamageCurve;
+    
+    [Property]
+    var DamageEffect : Archetype = null;
+    
+    [Property]
+    var DamageType : DamageTypes = DamageTypes.Drill;
+    
+    // Quite often, this damage region is on a child or another object,
+    // hence it is not upgradable, what creates and owns it is. Therefore the
+    // actual object with upgradable will set this (the drill root for instance)
+    // so we can calculate our current level.
+    var Upgradable : Upgradable = null;
+    
+    [Property]
+    var Enabled : Boolean = false;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.CollisionPersisted, this.OnCollisionPersisted);
+    }
+    
+    function GetDamage() : Real
+    {
+        var level = 0.0;
+        if(this.Upgradable != null)
+        {
+            level = this.Upgradable.Level;
+        }
+        
+        // Calculate the amount of damage to do per frame
+        var dt = this.Space.TimeSpace.Dt;
+        var damagePerSecond = this.DamageCurve.Sample(level);
+        var damagePerFrame = damagePerSecond * dt;
+        return damagePerFrame;
+    }
+    
+    function OnCollisionPersisted(collisionEvent : CollisionEvent)
+    {
+        if(this.Enabled == false)
+        {
+            return;
+        }
+        
+        var root = this.Owner.FindRoot();
+        var coreCog = root.CoreLink.CoreCog;
+        
+        var hitObj = collisionEvent.OtherObject;
+        
+        if(Projectile.CanDamage(hitObj, coreCog) == false)
+        {
+            return;
+        }
+        
+        var firstPoint = collisionEvent.FirstPoint;
+        var worldNormal = firstPoint.WorldNormalTowardsOther;
+        var worldPoint = firstPoint.WorldPoint;
+        
+        var damagePerFrame = this.GetDamage();
+        // Create the event to damage what we hit
+        var toSend = DamageEvent();
+        toSend.Damage = damagePerFrame;
+        toSend.Normal = worldNormal;
+        toSend.WorldPoint = worldPoint;
+        toSend.DamageType = this.DamageType;
+        
+        // Tell the other object we dealt damage, also tell any of our other components
+        hitObj.DispatchEvent(Events.ApplyDamage, toSend);
+        this.Owner.DispatchEvent(Events.ApplyDamage, toSend);
+        
+        this.Space.CreateAtPosition(this.DamageEffect, worldPoint);
+    }
+}

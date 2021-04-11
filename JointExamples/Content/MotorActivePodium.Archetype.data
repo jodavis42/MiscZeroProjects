@@ -1,0 +1,137 @@
+[Version:1]
+Cog 
+{
+	var Name = "InteractionPodium"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x58c4ec3ad435adef]
+		{
+			var Name = "Panel"
+			var LinkId = 2
+			Transform 
+			{
+				var Translation = Real3{0, 0.273171782, 0}
+				var Scale = Real3{0.5, 0.100000001, 0.5}
+				var Rotation = Quaternion{0, 0, 0.241167068, 0.970483601}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var Material = "58c4c179c8e95033:StaticObject"
+				var Mesh = "4de0354322b345ae:Cube"
+			}
+			RigidBody 
+			{
+				var Velocity = Real3{0, 0, 0}
+				var AngularVelocity = Real3{0, 0, 0}
+				var DynamicState = RigidBodyDynamicState.Static
+				var AllowSleep = true
+				var Asleep = false
+				var RotationLocked = false
+				var Mode2D = Mode2DStates.InheritFromSpace
+			}
+			BoxCollider 
+			{
+				var Ghost = false
+				var SendsEvents = true
+				var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+				var CollisionGroup = "4e740859314e5515:DefaultGroup"
+				var Offset = Real3{0, 0, 0}
+				var HalfSize = Real3{0.5, 0.5, 0.5}
+			}
+			JointMotorActiveInteraction 
+			{
+				var MotorCogPath = CogPath
+				{
+					var Path = ""
+					var ErrorOnResolveToNull = false
+					var ErrorOnPathCantCompute = false
+					var ErrorOnDirectLinkFail = false
+					var UpdateCogOnPathChange = true
+					var UpdatePathOnCogChange = true
+					var UpdateCogOnInitialize = true
+					var ResolvedNullErrorOccurred = false
+					var ResolvedCog = 4294967293
+					var PathPreference0 = CogPathPreference.CogRelative
+					var PathPreference1 = CogPathPreference.SpaceRelative
+					var PathPreference2 = CogPathPreference.Absolute
+				}
+			}
+			Hierarchy 
+			{
+			}
+		}
+		Cog [Id:0x58c4ec3ad435adf7]
+		{
+			var Name = "Stand"
+			var LinkId = 3
+			Transform 
+			{
+				var Translation = Real3{0, -0.273171782, 0}
+				var Scale = Real3{0.100000001, 1, 0.100000001}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var Material = "58c4c179c8e95033:StaticObject"
+				var Mesh = "4de0354322b345ae:Cube"
+			}
+			RigidBody 
+			{
+				var Velocity = Real3{0, 0, 0}
+				var AngularVelocity = Real3{0, 0, 0}
+				var DynamicState = RigidBodyDynamicState.Static
+				var AllowSleep = true
+				var Asleep = false
+				var RotationLocked = false
+				var Mode2D = Mode2DStates.InheritFromSpace
+			}
+			BoxCollider 
+			{
+				var Ghost = false
+				var SendsEvents = true
+				var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+				var CollisionGroup = "4e740859314e5515:DefaultGroup"
+				var Offset = Real3{0, 0, 0}
+				var HalfSize = Real3{0.5, 0.5, 0.5}
+			}
+		}
+		Cog [Id:0x58c4ec3ad435adf9]
+		{
+			var Name = "SpriteText"
+			var LinkId = 4
+			Transform 
+			{
+				var Translation = Real3{-0.0352497287, 0.313413501, -0.00327730295}
+				var Scale = Real3{2, 2, 0.200000033}
+				var Rotation = Quaternion{0.364715695, 0.605790794, 0.364715695, -0.605790794}
+			}
+			SpriteText 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var Material = "582c575af53d18c9:AlphaSprite"
+				var VertexColor = Real4{1, 1, 1, 1}
+				var GeometryMode = SpriteGeometryMode.ZPlane
+				var Font = "57343753bb4eaaec:NotoSans-Regular"
+				var FontSize = 24
+				var Text = "E"
+				var Align = TextAlign.Center
+				var PixelsPerUnit = 256
+			}
+		}
+	}
+}

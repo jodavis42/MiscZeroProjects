@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "FluidShaderInputs"
+		var ResourceId = 0x5892687d0cdc9fb0
+	}
+}

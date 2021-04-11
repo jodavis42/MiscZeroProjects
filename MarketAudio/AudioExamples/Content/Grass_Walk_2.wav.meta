@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Grass_Walk_2"
+		var ResourceId = 0x5944f04914368d38
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 0.440895826
+		var AudioChannels = 1
+		var SampleRate = 48000
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

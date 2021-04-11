@@ -1,0 +1,249 @@
+// Sent out when text is clicked. Lets the user know who was clicked.
+class ClickableTextEvent : ZilchEvent
+{
+    // The text that was clicked.
+    var Cog : Cog = null;
+    
+    constructor() : base()
+    {
+    }
+}
+
+// Basic text for ui. Just wraps some common functionality and stores some common data.
+class UiText : ZilchComponent
+{
+    // Needs sprite text at the moment. Maybe change this later if we get actual art.
+    [Dependency]
+    var SpriteText : SpriteText = null;
+    
+    // The cog that created this. This is who we'll send events on when we're clicked.
+    var OwningCog : Cog = null;
+    
+    sends TextClicked : ClickableTextEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function SetText(text : String)
+    {
+        this.Owner.SpriteText.Text = text;
+    }
+    
+    function SendClickedEvent()
+    {
+        var toSend = new ClickableTextEvent();
+        toSend.Cog = this.Owner;
+        this.OwningCog.DispatchEvent("TextClicked", toSend);
+    }
+}
+
+// Basic clickable text. Sends an event to the owning cog when it's clicked.
+class ClickableText : ZilchComponent
+{
+    [Dependency]
+    var UiText : UiText = null;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.MouseUp, this.OnMouseUp);
+    }
+    
+    function OnMouseUp(viewportMouseEvent : ViewportMouseEvent)
+    {
+        this.UiText.SendClickedEvent();
+    }
+}
+
+// A more complicated clickable text. When it's clicked it will create
+// more text options off to the side that can also be clicked.
+class TextWithOptions : ZilchComponent
+{
+    // The Archetypes to create when we expand.
+    [Property]
+    var Options : ResourceTable = ResourceTable.PathTextOptions;
+    // Are we currently expanded? Used to destroy old options if we're already expanded.
+    var Expanded : Boolean = false;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.MouseUp, this.OnMouseUp);
+    }
+    
+    function OnMouseUp(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // If we're already expanded destroy all of the old options
+        if(this.Expanded == true)
+        {
+            foreach(var child in this.Owner.Children)
+            {
+                child.Destroy();
+            }
+            this.Expanded = false;
+            return;
+        }
+        
+        this.Expanded = true;
+        var offset = 0.0;
+        
+        var startPos = local Real3();
+        // For now, start at our current x position (needs to be expanded
+        // later to be the largest x of any of our siblings)
+        startPos.X = this.Owner.SpriteText.MeasureText().X;
+        
+        for(var index = 0; index < this.Options.Count; ++index)
+        {
+            var entry = this.Options[index];
+            var archetype = entry.Resource as Archetype;
+            
+            // Create the option archetype as a child at the appropriate offset down
+            var obj = this.Space.Create(archetype);
+            obj.Transform.Translation = local Real3(startPos.X, startPos.Y + offset, 0.0);
+            obj.AttachToPreserveLocal(this.Owner);
+            
+            // If there was a UiText component, then we can set parameters
+            var uiText = obj.UiText;
+            if(uiText != null)
+            {
+                // Set the text to the name in the resource table (change later?)
+                uiText.SetText(entry.Name);
+                // Also have this option have the same owning cog (who it sends events to)
+                uiText.OwningCog = this.Owner.UiText.OwningCog;
+            }
+            
+            // Pass down the same user data to this option (currently just the index, maybe expand later?)
+            var userData = obj.UiUserData;
+            if(userData != null)
+            {
+                userData.Copy(this.Owner.UiUserData);
+            }
+            
+            // Accumulate the size of all the current options to compute the new position
+            offset -= obj.SpriteText.MeasureText().Y;
+        }
+    }
+}
+
+// This is a text option that on click creates another archetype (and passes user data to that object).
+// Used to create the object that manages path creation.
+class UiProxyText : ZilchComponent
+{
+    // The archetype to create when clicked.
+    [Property]
+    var Archetype : Archetype = null;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.MouseUp, this.OnMouseUp);
+    }
+    
+    function OnMouseUp(viewportMouseEvent : ViewportMouseEvent)
+    {
+        var pos = this.Owner.Transform.WorldTranslation;
+        var obj = this.Space.CreateAtPosition(this.Archetype, pos);
+        var owningCog : Cog = null;
+        // Copy over the owning cog and the user data to the new object
+        if(obj != null)
+        {
+            var uiText = obj.UiText;
+            if(uiText != null)
+            {
+                uiText.OwningCog = this.Owner.UiText.OwningCog;
+                owningCog = uiText.OwningCog;
+            }
+            
+            var userData = obj.UiUserData;
+            if(userData != null)
+            {
+                userData.Copy(this.Owner.UiUserData);
+            }
+        }
+        
+        // Tell our owning cog to close this ui chain.
+        if(owningCog != null)
+        {
+            owningCog.DispatchEvent("CloseText", new ZilchEvent());
+        }
+    }
+}
+
+// Basic user data for text. Currently just an index, could be expanded later.
+class UiUserData : ZilchComponent
+{
+    var UserData : Integer = 0;
+    
+    constructor() : base()
+    {
+    }
+    
+    // When creating children, the user data is currently copied to those children.
+    // This function allows easier expanding of user data later (so we can add more variables).
+    function Copy(otherUserData : UiUserData)
+    {
+        this.UserData = otherUserData.UserData;
+    }
+}
+
+// A proxy object to create waypoints for an ai to follow.
+class PathProxyCreator : ZilchComponent
+{
+    // The current list of waypoints.
+    var WayPoints : Array[Real3] = new Array[Real3]();
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.MouseUp, this.OnMouseUp);
+        Zero.Connect(this.Space, Events.RightMouseUp, this.OnRightMouseUp);
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    }
+    
+    function OnMouseUp(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // When the mouse is clicked, add the current position to the waypoints.
+        var pos = viewportMouseEvent.ToWorldZPlane(0.0);
+        this.WayPoints.Add(pos);
+    }
+    
+    function OnRightMouseUp(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // When right click happens, that's currently the signal to stop adding points and choose this behavior.
+        // Copy over the waypoints
+        var pathBehavior = this.Owner.UiText.OwningCog.PathBehavior;
+        if(pathBehavior != null)
+        {
+            pathBehavior.WayPoints = this.WayPoints;
+        }
+        
+        // Tell the owning cog that we've been clicked
+        // (since we have a copied user data this should select the correct behavior)
+        this.Owner.UiText.SendClickedEvent();
+        // And destroy ourself (since we're currently a floating random object)
+        this.Owner.Destroy();
+    }
+    
+    function OnLogicUpdate(updateEvent : UpdateEvent)
+    {
+        // Debug draw all of the waypoints
+        foreach(var point in this.WayPoints)
+        {
+            var sphere = DebugSphere(point, 0.1) {Color = Real4(0.9)};
+            DebugDraw.Add(sphere);
+        }
+    }
+}

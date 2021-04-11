@@ -1,0 +1,104 @@
+/************************************************************************************************************/
+/* Copyright 2017 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 1/4/2017                                                                                    */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Arend Danielek                                                                          */
+/* Class: ViewportConfiguration                                                                             */
+/* Brief: Creates, and configures viewport(s) spatial configuration on the screen based of player count.    */
+/************************************************************************************************************/
+
+class ConfigureViewports : ZilchEvent
+{
+  sends ConfigureViewports : ConfigureViewports;
+  var PlayerCount : Integer;
+}
+
+class ViewportConfiguration : ZilchComponent
+{
+  [Property]
+  var FullScreenViewportArchetype : Archetype;
+  
+  [Property]
+  var HalfScreenViewportArchetype : Archetype;
+  
+  [Property]
+  var QuarterScreenViewportArchetype : Archetype;
+  
+  [Property]
+  var DefaultPlayerCount : Integer = 4;
+  
+  [Property]
+  var UseDefaultPlayerCount : Boolean = true;
+  
+  function Initialize(init : CogInitializer)
+  {
+    //If indicated use the default player count to configure viewports
+    if(this.UseDefaultPlayerCount)
+      this.ConfigureViewports(this.DefaultPlayerCount);
+    
+    //Connect the the ConfigureViewports event encase the default is not set or needs to be overidden.
+    Zero.Connect(this.Space, Events.ConfigureViewports, this.OnConfigureViewports);
+  }
+
+  function OnConfigureViewports(event : ConfigureViewports)
+  {
+    this.ConfigureViewports(event.PlayerCount);
+  }
+  
+  function ConfigureViewports(playerCount : Integer)
+  {
+    //If there is one player give them the entire screen.
+    if(playerCount == 1)
+    {
+      var viewObj = this.Space.Create(this.FullScreenViewportArchetype);
+      viewObj.Transform.Translation = Real3(25, 30, 25);
+    }
+    //If there are two players give them top and bottom half respectively.
+    else if(playerCount == 2)
+    {
+      var topViewObj = this.Space.Create(this.HalfScreenViewportArchetype);
+      topViewObj.Transform.Translation = Real3(25, 30, 25);
+      
+      var botViewObj = this.Space.Create(this.HalfScreenViewportArchetype);
+      botViewObj.CameraViewport.NormalizedOffset = Real2(0.0,0.5);
+      botViewObj.Transform.Translation = Real3(-25, 30, 25);
+    }
+    //If there are 3 players give players give the first the top half of the screen
+    //and split the bottom half between the second and third player.
+    else if(playerCount == 3)
+    {
+      var topViewObj = this.Space.Create(this.HalfScreenViewportArchetype);
+      topViewObj.Transform.Translation = Real3(25, 30, 25);
+      
+      var botLeftViewObj = this.Space.Create(this.QuarterScreenViewportArchetype);
+      botLeftViewObj.CameraViewport.NormalizedOffset = Real2(0.0,0.5);
+      botLeftViewObj.Transform.Translation = Real3(-25, 30, 25);
+      
+      var botRightViewObj = this.Space.Create(this.QuarterScreenViewportArchetype);
+      botRightViewObj.CameraViewport.NormalizedOffset = Real2(0.5,0.5);
+      botRightViewObj.Transform.Translation = Real3(-25, 30, -25);
+    }
+    //If there are four players give each a quadrent of the screen.
+    else if(playerCount == 4)
+    {
+      var topLeftViewObj = this.Space.Create(this.QuarterScreenViewportArchetype);
+      topLeftViewObj.CameraViewport.NormalizedOffset = Real2(0.0,0.0);
+      topLeftViewObj.Transform.Translation = Real3(25, 30, 25);
+      
+      var topRightViewObj = this.Space.Create(this.QuarterScreenViewportArchetype);
+      topRightViewObj.CameraViewport.NormalizedOffset = Real2(0.5,0.0);
+      topRightViewObj.Transform.Translation = Real3(-25, 30, 25);
+      
+      var botLeftViewObj = this.Space.Create(this.QuarterScreenViewportArchetype);
+      botLeftViewObj.CameraViewport.NormalizedOffset = Real2(0.0,0.5);
+      botLeftViewObj.Transform.Translation = Real3(25, 30, -25);
+      
+      var botRightViewObj = this.Space.Create(this.QuarterScreenViewportArchetype);
+      botRightViewObj.CameraViewport.NormalizedOffset = Real2(0.5,0.5);
+      botRightViewObj.Transform.Translation = Real3(-25, 30, -25);
+    }
+    //If there are more than four players throw and exception for the unsupported case.
+    else
+      throw new Exception("There are more than 4 players and this component supports a maximum of 4 viewports.");
+  }
+}

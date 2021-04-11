@@ -1,0 +1,159 @@
+[Version:1]
+Cog 
+{
+	var Name = "MissileProjectile"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Real3{-1.46781468, -0.291055441, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	RigidBody 
+	{
+		var Velocity = Real3{0, 0, 0}
+		var AngularVelocity = Real3{0, 0, 0}
+		var DynamicState = RigidBodyDynamicState.Dynamic
+		var AllowSleep = true
+		var Asleep = false
+		var RotationLocked = false
+		var Mode2D = Mode2DStates.Mode2D
+	}
+	BoxCollider 
+	{
+		var Ghost = true
+		var SendsEvents = true
+		var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+		var CollisionGroup = "4e740859314e5515:DefaultGroup"
+		var Offset = Real3{0.00999999978, 0, 0}
+		var HalfSize = Real3{0.150000006, 0.349999994, 0.0500000007}
+	}
+	Sprite 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var OverrideBoundingBox = false
+		var LocalAabbCenter = Real3{0, 0, 0}
+		var LocalAabbHalfExtents = Real3{1, 1, 1}
+		var GroupSortValue = 0
+		var Material = "582c575af53d18c9:AlphaSprite"
+		var VertexColor = Real4{1, 1, 1, 1}
+		var GeometryMode = SpriteGeometryMode.ZPlane
+		var SpriteSource = "523a7bb404f3fe74:MissileProjectile0"
+		var FlipX = false
+		var FlipY = false
+		var AnimationActive = true
+		var AnimationSpeed = 1
+		var StartFrame = 0
+	}
+	IgnoreSpaceEffects 
+	{
+		var IgnoreDrag = true
+		var IgnoreFlow = true
+		var IgnoreForce = true
+		var IgnoreGravity = true
+		var IgnorePointForce = true
+		var IgnorePointGravity = true
+		var IgnoreThrust = true
+		var IgnoreVortex = true
+		var IgnoreWind = true
+		var IgnoreTorque = true
+		var IgnoreBuoyancy = true
+		var IgnoreCustom = true
+	}
+	Projectile 
+	{
+	}
+	ProjectileBasic 
+	{
+		var CreateOnDamage = "523c8e0cbc053bc4:DamageEffect"
+		var DestroyOnDamage = true
+		var DamageCurve = "52289e04f7821205:DamageCurve"
+		var DamageType = DamageTypes.Energy
+	}
+	TimedDeath 
+	{
+		var Lifetime = 10
+	}
+	ProjectileHoming 
+	{
+	}
+	Orientation 
+	{
+		var GlobalUp = Real3{0, 0, 1}
+		var LocalOrientationBasis = Quaternion{0.707106769, -0, 0, 0.707106769}
+		var DefaultBases = OrientationBases.ForwardYUpZ
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x595d6e6bcfc78024]
+		{
+			var Name = ""
+			var LinkId = 2
+			EditorFlags 
+			{
+				var Locked = true
+				var Hidden = true
+			}
+			Transform 
+			{
+				var Translation = Real3{0.00439071981, -0.357407987, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			SpriteParticleSystem 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "582c575af53d18c9:AlphaSprite"
+				var BoundingBoxSize = 2
+				var ChildSystem = false
+				var SystemSpace = SystemSpace.WorldSpace
+				var WarmUpTime = 0
+				var PreviewInEditor = false
+				var VertexColor = Real4{1, 1, 1, 1}
+				var GeometryMode = SpriteParticleGeometryMode.Billboarded
+				var SpriteSource = "5586f579ca73ecc2:SquareBordered"
+				var ParticleAnimation = SpriteParticleAnimationMode.Single
+				var ParticleSort = SpriteParticleSortMode.None
+				var BeamBaseScale = 1
+				var BeamVelocityScale = 1
+			}
+			SphericalParticleEmitter 
+			{
+				var Active = true
+				var EmitCount = 0
+				var EmitDelay = 0
+				var EmitRate = 100
+				var EmitVariance = 0
+				var EmitRateSoftStartTime = 0
+				var Size = 0.300000012
+				var SizeVariance = 0.0500000007
+				var Lifetime = 0.800000012
+				var LifetimeVariance = 0.150000006
+				var Spin = 3
+				var SpinVariance = 1
+				var RandomSpin = true
+				var Fill = 1
+				var EmitterVelocityPercent = 0
+				var StartVelocity = Real3{0, 1, 0}
+				var RandomVelocity = Real3{0, 0, 0}
+				var TangentVelocity = Real3{0, 0, 0}
+				var EmitterSize = Real3{0.00999999978, 0.00999999978, 0.00999999978}
+				var FastMovingEmitter = true
+			}
+			ParticleColorAnimator 
+			{
+				var TimeGradient = "591abd225f232eaa:FadeInOut"
+				var VelocityGradient = "null"
+				var MaxParticleSpeed = 5
+			}
+		}
+	}
+}

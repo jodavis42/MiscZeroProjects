@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Gray"
+		var ResourceId = 0x591e8a66e2d519f1
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

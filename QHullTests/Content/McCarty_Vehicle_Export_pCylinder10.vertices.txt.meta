@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	TextBuilder 
+	{
+		var Name = "McCarty_Vehicle_Export_pCylinder10.vertices"
+		var ResourceId = 0x59823a8019e4cdf4
+	}
+}

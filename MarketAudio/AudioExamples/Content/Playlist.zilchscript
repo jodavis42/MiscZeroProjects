@@ -1,0 +1,133 @@
+//**********************************************************************************
+//
+// Plays a sequence of SoundCues, either selecting them randomly
+// or playing them in order. Allows you to set the cross-fade time
+// and how long to play each one.
+//
+//**********************************************************************************
+class Playlist : ZilchComponent
+{
+  // Requires a RandomContext component
+  [Dependency] var RandomNumbers : RandomContext;
+  
+  // How to play the music. If Emitter or AudioManager is chosen
+  // the appropriate component must be on this object
+  [Property] var WhereToPlay : WhereToPlay = WhereToPlay.Space;
+  // The time (in seconds) used to cross-fade between SoundCues.
+  [Property] var CrossFadeTime : Real = 0.5;
+  // The number of seconds to play each SoundCue. If zero, each SoundCue will play to its end.
+  [Property] var TimeToPlayEach : Real = 0.0;
+  // If true the cues will play randomly, if false they will be played sequentially.
+  [Property] var Randomized : Boolean = false;
+  // The first SoundCue to play.
+  [Property] var Cue1 : SoundCue;
+  // The second SoundCue to play.
+  [Property] var Cue2 : SoundCue;
+  // The third SoundCue to play.
+  [Property] var Cue3 : SoundCue;
+  // The fourth SoundCue to play.
+  [Property] var Cue4 : SoundCue;
+  
+  // An array to store all the SoundCues for easy access
+  var SoundCueList : Array[SoundCue] = Array[SoundCue]();
+  // The SoundInstance currently playing
+  var CurrentInstance : SoundInstance;
+  // The index of the current SoundCue
+  var CurrentCueIndex : Integer = 0;
+  // The index of the previous SoundCue
+  var PreviousCueIndex : Integer = -1;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Add the SoundCues to the array
+    // NOTE -- this has to be updated if you add more SoundCue properties
+    this.SoundCueList.Push(this.Cue1);
+    this.SoundCueList.Push(this.Cue2);
+    this.SoundCueList.Push(this.Cue3);
+    this.SoundCueList.Push(this.Cue4);
+    
+    // If randomized, pick a random cue index to start
+    if (this.Randomized)
+      this.CurrentCueIndex = this.RandomNumbers.RangeInclusiveMax(0, this.SoundCueList.LastIndex);
+      
+    // Play the SoundCue
+    if (this.WhereToPlay == WhereToPlay.Emitter)
+      this.CurrentInstance = this.Owner.SoundEmitter.PlayCue(this.SoundCueList[this.CurrentCueIndex]);
+    else if (this.WhereToPlay == WhereToPlay.Space)
+      this.CurrentInstance = this.Space.SoundSpace.PlayCue(this.SoundCueList[this.CurrentCueIndex]);
+    else if (this.WhereToPlay == WhereToPlay.AudioManager)
+      this.CurrentInstance = this.Owner.AudioManager.PlayMusic(this.SoundCueList[this.CurrentCueIndex], false);
+    
+    // If there is a set time to play each cue, set the CustomEventTime to that
+    if (this.TimeToPlayEach > 0)
+      this.CurrentInstance.CustomEventTime = this.TimeToPlayEach;
+    // Otherwise set the CustomEventTime to the point at which crossfading should start
+    else
+      this.CurrentInstance.CustomEventTime = this.CurrentInstance.EndTime - this.CrossFadeTime;
+    
+    // Connect to the custom time event for this SoundInstance
+    Zero.Connect(this.CurrentInstance, Events.MusicCustomTime, this.OnTimeEvent);
+  }
+  
+  function OnTimeEvent(event : SoundInstanceEvent)
+  {
+    // Are we randomly picking which SoundCue to play next?
+    if (this.Randomized)
+    {
+      // Randomly choose an array index
+      var nextCue = this.RandomNumbers.RangeInclusiveMax(0, this.SoundCueList.LastIndex);
+      
+      // Make sure it isn't the ones we just played
+      while (nextCue == this.CurrentCueIndex || nextCue == this.PreviousCueIndex)
+        nextCue = this.RandomNumbers.RangeInclusiveMax(0, this.SoundCueList.LastIndex);
+      // Update the index variables
+      this.PreviousCueIndex = this.CurrentCueIndex;
+      this.CurrentCueIndex = nextCue;
+    }
+    else
+    {
+      // Move to the next index
+      ++this.CurrentCueIndex;
+      // If this would be past the end of the array, go back to the beginning
+      if (this.CurrentCueIndex > this.SoundCueList.LastIndex)
+        this.CurrentCueIndex = 0;
+    }
+    
+    // Fade the current SoundInstance to silence over the cross-fade time
+    this.CurrentInstance.InterpolateVolume(0, this.CrossFadeTime);
+    // Stop the SoundInstance after it's faded to silence
+    var sequence = Actions.Sequence(this.Owner.Actions);
+    Actions.Delay(sequence, this.CrossFadeTime);
+    Actions.Call(sequence, this.CurrentInstance.Stop);
+    
+    // Play the SoundCue, starting it paused
+    if (this.WhereToPlay == WhereToPlay.Emitter)
+      this.CurrentInstance = this.Owner.SoundEmitter.PlayCuePaused(this.SoundCueList[this.CurrentCueIndex]);
+    else if (this.WhereToPlay == WhereToPlay.Space)
+      this.CurrentInstance = this.Space.SoundSpace.PlayCuePaused(this.SoundCueList[this.CurrentCueIndex]);
+    else if (this.WhereToPlay == WhereToPlay.AudioManager)
+      this.CurrentInstance = this.Owner.AudioManager.PlayMusic(this.SoundCueList[this.CurrentCueIndex], true);
+    
+    // Save the current volume of the SoundInstance
+    var volume = this.CurrentInstance.Volume;
+    // Set its volume to zero
+    this.CurrentInstance.Volume = 0;
+    // Un-pause it
+    this.CurrentInstance.Paused = false;
+    // Interpolate its volume back to its original value over the cross-fade time
+    this.CurrentInstance.InterpolateVolume(volume, this.CrossFadeTime);
+    
+    // If there is a set time to play each cue, set the CustomEventTime to that
+    if (this.TimeToPlayEach > 0)
+      this.CurrentInstance.CustomEventTime = this.TimeToPlayEach;
+    // Otherwise set the CustomEventTime to the point at which crossfading should start
+    else
+      this.CurrentInstance.CustomEventTime = this.CurrentInstance.EndTime - this.CrossFadeTime;
+    
+    // Connect to the custom time event for this SoundInstance
+    Zero.Connect(this.CurrentInstance, Events.MusicCustomTime, this.OnTimeEvent);
+  }
+}
+
+
+enum WhereToPlay { Space, Emitter, AudioManager }

@@ -1,0 +1,51 @@
+[Version:1]
+Cog 
+{
+	var Name = "ShieldBarrier"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Real3{-10.8962002, 4.34088993, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Sprite 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var OverrideBoundingBox = false
+		var LocalAabbCenter = Real3{0, 0, 0}
+		var LocalAabbHalfExtents = Real3{1, 1, 1}
+		var GroupSortValue = 0
+		var Material = "582c575af53d18c9:AlphaSprite"
+		var VertexColor = Real4{1, 1, 1, 1}
+		var GeometryMode = SpriteGeometryMode.ZPlane
+		var SpriteSource = "522ee77c60295462:ShieldBarrier"
+		var FlipX = false
+		var FlipY = false
+		var AnimationActive = true
+		var AnimationSpeed = 1
+		var StartFrame = 0
+	}
+	SphereCollider 
+	{
+		var Ghost = true
+		var SendsEvents = true
+		var Material = "522ed4616b15044d:Massless"
+		var CollisionGroup = "4e740859314e5515:DefaultGroup"
+		var Offset = Real3{0, 0, 0}
+		var Radius = 1.5
+	}
+	Orientation 
+	{
+		var GlobalUp = Real3{0, 0, 1}
+		var LocalOrientationBasis = Quaternion{0.65328151, 0.270598084, 0.270598084, 0.65328151}
+		var DefaultBases = OrientationBases.Custom
+	}
+	Health 
+	{
+		var MaxHealth = 50
+		var DestroyAtZeroHealth = false
+	}
+}

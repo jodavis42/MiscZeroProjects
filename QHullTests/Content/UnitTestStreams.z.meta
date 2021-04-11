@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"UnitTests"
+		}
+	}
+	ZilchScriptBuilder 
+	{
+		var Name = "UnitTestStreams"
+		var ResourceId = 0x589c1f026d22491f
+	}
+}

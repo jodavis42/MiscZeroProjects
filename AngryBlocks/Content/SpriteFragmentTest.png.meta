@@ -1,0 +1,21 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "SpriteFragmentTest"
+		var ResourceId = 0x595dbd5545ab190e
+		var AtlasId = 0x5274cf95e4a661fd
+		var FrameSizeX = 0
+		var FrameSizeY = 0
+		var FrameCount = 1
+		var FrameDelay = 0.0833333358
+		var OriginX = 11
+		var OriginY = 16
+		var PixelsPerUnit = 64
+		var Sampling = SpriteSampling.Linear
+		var Looping = true
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+}

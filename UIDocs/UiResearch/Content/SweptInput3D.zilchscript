@@ -1,0 +1,45 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Joshua Davis
+// Last update: 7/24/2017
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Simple input for a 3d swept character controller. Rotation is controlled by the child camera.
+class SweptInput3D : ZilchComponent
+{
+  [Dependency] var SweptController : SweptController;
+  [Dependency] var Orientation : Orientation;
+  
+  [Property] var LeftKey : Keys = Keys.A;
+  [Property] var RightKey : Keys = Keys.D;
+  [Property] var ForwardKey : Keys = Keys.W;
+  [Property] var BackKey : Keys = Keys.S;
+  [Property] var JumpKey : Keys = Keys.Space;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // Accumulate movement
+    var movement = Real3(0, 0, 0);
+    if(Zero.Keyboard.KeyIsDown(this.LeftKey))
+      movement -= this.Orientation.WorldRight;
+    else if(Zero.Keyboard.KeyIsDown(this.RightKey))
+      movement += this.Orientation.WorldRight;
+    if(Zero.Keyboard.KeyIsDown(this.ForwardKey))
+      movement += this.Orientation.WorldForward;
+    else if(Zero.Keyboard.KeyIsDown(this.BackKey))
+      movement -= this.Orientation.WorldForward;
+    
+    if(Zero.Keyboard.KeyIsPressed(this.JumpKey))
+    {
+      this.SweptController.Jump();
+    }
+    
+    this.SweptController.Update(movement, event.Dt);
+  }
+}

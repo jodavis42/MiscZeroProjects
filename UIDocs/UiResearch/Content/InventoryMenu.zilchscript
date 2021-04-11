@@ -1,0 +1,66 @@
+class InventoryMenu : ZilchComponent
+{
+  [Dependency]
+  var UiWidget : UiWidget;
+  
+  
+  [Property]
+  var MenuItemsPath = CogPath();
+  [Property]
+  var MenuItemArchetype : Archetype;
+  [Property]
+  var InventoryPath = CogPath();
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    //this.CreateMenuItemsFromList();
+    this.CreateMenuItemsFromChildren();
+    //this.MenuItemsPath.UiWidget.SizeToContents();
+    
+    this.FixMenuSize();
+  }
+  
+  
+  function CreateMenuItemsFromList()
+  {
+    var items = this.InventoryPath.Inventory.Items;
+    
+    foreach (var item in items)
+    {
+      var menuItem = this.Space.Create(this.MenuItemArchetype);
+      menuItem.AttachToPreserveLocal(this.MenuItemsPath.Cog);
+      
+      var me = MenuEvent();
+      me.Name     = item.Name;
+      me.Quantity = item.Quantity;
+      me.Type     = item.Type;
+      menuItem.DispatchEvent(Events.InventoryItemSetup, me);
+    }
+  }
+  
+  
+  function CreateMenuItemsFromChildren()
+  {
+    var children = this.InventoryPath.Cog.Children;
+    
+    foreach (var child in children)
+    {
+      var menuItem = this.Space.Create(this.MenuItemArchetype);
+      menuItem.AttachToPreserveLocal(this.MenuItemsPath.Cog);
+      
+      var me = MenuEvent();
+      me.Name     = child.InventoryItemInterface.Name;
+      me.Quantity = child.InventoryItemInterface.Quantity;
+      me.Type     = child.InventoryItemInterface.Type;
+      menuItem.DispatchEvent(Events.InventoryItemSetup, me);
+    }
+  }
+  
+  
+  function FixMenuSize()
+  {
+    this.MenuItemsPath.UiWidget.Size = Real2.PositiveMax;
+    this.MenuItemsPath.UiWidget.SizeToContents();
+  }
+}

@@ -1,0 +1,15 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "BasicRaycaster",
+		uint64 ResourceId = 532e2ab87b170423,
+	},
+	ContentTags = 
+	{
+		Array Tags = 
+		[
+			"BasicGameplay",
+		],
+	},
+},

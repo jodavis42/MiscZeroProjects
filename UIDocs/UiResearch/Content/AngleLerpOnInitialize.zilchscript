@@ -1,0 +1,18 @@
+class AngleLerpOnInitialize : ZilchComponent
+{
+  [Dependency] var Transform : Transform;
+  
+  
+  [Property] var StartingAngles : Real3 = Real3(-90, 0, 0); // degrees
+  [Property] var Duration : Real = 2; // seconds
+  
+  var TargetAngles : Real3;
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.TargetAngles = this.Transform.EulerAngles;
+    this.Transform.EulerAngles = Math.ToRadians(this.StartingAngles);
+    Action.Property(this.Owner.Actions, @this.Transform.EulerAngles, this.TargetAngles, this.Duration, Ease.QuadInOut);
+  }
+}

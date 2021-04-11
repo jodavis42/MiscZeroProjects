@@ -1,0 +1,696 @@
+[Version:1]
+Level 
+{
+	Cog 
+	{
+		var Name = "LevelSettings"
+		var LinkId = 1
+		GravityEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = false
+			var LocalSpaceDirection = true
+			var Strength = 10
+			var Direction = Real3{0, -1, 0}
+		}
+		DragEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = false
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.100000001
+			var LinearDrag = 0
+			var AngularDrag = 0
+		}
+		GridDraw 
+		{
+			var Active = true
+			var HalfCellOffset = false
+			var CellSize = 1
+			var Axis = AxisDirection.Z
+			var Lines = 100
+			var DrawAxisOrigins = true
+			var AlwaysDrawInEditor = true
+			var DrawInGame = false
+			var GridColor = Real4{0.5, 0.5, 0.5, 0.400000006}
+			var GridHighlight = Real4{0, 0, 0, 0.400000006}
+			var HighlightInterval = 10
+			var FollowEditorCamera = false
+		}
+	}
+	Cog 
+	{
+		var Name = "Renderer"
+		var LinkId = 2
+		DeferredRenderer 
+		{
+			var GeometryDebug = GeometryValue.None
+			var EditorDebugDraw = true
+			var GameDebugDraw = true
+			var RenderDiffuse = true
+			var RenderSpecular = true
+			var RenderSkybox = true
+			var Skybox = "5822dec85e380cf1:SimpleSkybox"
+			var ClearColor = Real4{0.629999995, 0.988900006, 1, 1}
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+		}
+		Ssao 
+		{
+			var Active = true
+			var Radius = 1
+			var Intensity = 2.20000005
+			var BlurDepthThreshold = 0.0500000007
+			var DebugBuffer = false
+		}
+		Bloom 
+		{
+			var Active = true
+			var Intensity = 0.100000001
+			var Threshold = 1
+			var Bloom1 = true
+			var Bloom2 = true
+			var Bloom3 = true
+			var Bloom4 = true
+			var Bloom5 = true
+			var DebugBuffer = false
+		}
+	}
+	Cog 
+	{
+		var Name = "EditorCamera"
+		var LinkId = 3
+		Transform 
+		{
+			var Translation = Real3{0, 0, 50}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0, -1.09278471e-08, 0, 1}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.5
+			var FarPlane = 500
+			var PerspectiveMode = PerspectiveMode.Orthographic
+			var FieldOfView = 45
+			var Size = 20
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.ZPlane
+			var Previous3DMode = ControlMode.Orbit
+			var LookDistance = 50
+			var VerticalAngle = 0
+			var HorizontalAngle = 0
+			var LookTarget = Real3{0, 0, 0}
+			var MoveSensitivity = 1
+		}
+		Hierarchy 
+		{
+		}
+	}
+	Cog 
+	{
+		var Name = "Camera"
+		var LinkId = 4
+		Transform 
+		{
+			var Translation = Real3{0, 0, 50}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = false
+			var RenderInGame = true
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Letterbox
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.5
+			var FarPlane = 100
+			var PerspectiveMode = PerspectiveMode.Orthographic
+			var FieldOfView = 45
+			var Size = 15
+		}
+		SoundListener 
+		{
+			var Active = true
+		}
+	}
+	Cog 
+	{
+		var Name = "DialogButton"
+		var LinkId = 5
+		Transform 
+		{
+			var Translation = Real3{0, 0, 0}
+			var Scale = Real3{3, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Sprite 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{1, 1, 1, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var SpriteSource = "5275aa4d802dd6dc:Square"
+			var FlipX = false
+			var FlipY = false
+			var AnimationActive = true
+			var AnimationSpeed = 1
+			var StartFrame = 0
+		}
+		Reactive 
+		{
+			var Active = true
+		}
+		AudioManager 
+		{
+			var TagForMusic = "59086cdf04c60296:MusicTag"
+			var MusicVolume = 1
+			var TagForEffects = "59086ce3001cd3a1:EffectsTag"
+			var EffectsVolume = 1
+			var TagForDialog = "591a8fb56a490d3a:DialogTag"
+			var DialogVolume = 1
+			var DuckedTag = "59086cdf04c60296:MusicTag"
+			var DuckedVolumeDB = -40
+			var AttackTimeMS = 50
+			var ReleaseTimeMS = 500
+		}
+		PlayDialogButton 
+		{
+			var DialogCue = "5944f14042ad19bf:Dialog"
+		}
+		Hierarchy 
+		{
+			Cog 
+			{
+				var Name = "Sprite"
+				var LinkId = 6
+				Transform 
+				{
+					var Translation = Real3{0, 0, -1}
+					var Scale = Real3{1.06666672, 1.20000005, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
+				}
+				Sprite 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var OverrideBoundingBox = false
+					var LocalAabbCenter = Real3{0, 0, 0}
+					var LocalAabbHalfExtents = Real3{1, 1, 1}
+					var GroupSortValue = 0
+					var Material = "582c575af53d18c9:AlphaSprite"
+					var VertexColor = Real4{0.072450012, 0.230000019, 0.19218798, 1}
+					var GeometryMode = SpriteGeometryMode.ZPlane
+					var SpriteSource = "5275aa4d802dd6dc:Square"
+					var FlipX = false
+					var FlipY = false
+					var AnimationActive = true
+					var AnimationSpeed = 1
+					var StartFrame = 0
+				}
+			}
+			Cog 
+			{
+				var Name = "SpriteText"
+				var LinkId = 7
+				Transform 
+				{
+					var Translation = Real3{0, 0, 1}
+					var Scale = Real3{0.333333343, 1, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
+				}
+				SpriteText 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var OverrideBoundingBox = false
+					var LocalAabbCenter = Real3{0, 0, 0}
+					var LocalAabbHalfExtents = Real3{1, 1, 1}
+					var GroupSortValue = 0
+					var Material = "582c575af53d18c9:AlphaSprite"
+					var VertexColor = Real4{0, 0, 0, 1}
+					var GeometryMode = SpriteGeometryMode.ZPlane
+					var Text = "Play Dialog"
+					var Font = "57343753bb4eaaec:NotoSans-Regular"
+					var FontSize = 59
+					var PixelsPerUnit = 128
+					var TextAlign = TextAlign.Center
+				}
+			}
+		}
+	}
+	Cog 
+	{
+		var Name = "SpriteText"
+		var LinkId = 8
+		Transform 
+		{
+			var Translation = Real3{0, -0.9375, 1}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0, 0, 0, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "(this will reduce the music's volume but not the volume of the footsteps)"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 38
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+	}
+	Cog 
+	{
+		var Name = "Sprite"
+		var LinkId = 9
+		Transform 
+		{
+			var Translation = Real3{-3.5, 3.12629414, 0}
+			var Scale = Real3{0.800000012, 0.800000012, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Sprite 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{1, 1, 1, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var SpriteSource = "5586f1922250b073:CircleBordered"
+			var FlipX = false
+			var FlipY = false
+			var AnimationActive = true
+			var AnimationSpeed = 1
+			var StartFrame = 0
+		}
+		Reactive 
+		{
+			var Active = true
+		}
+		ChangeTagVolume 
+		{
+			var Tag = "59086cdf04c60296:MusicTag"
+			var VolumeIncrement = -0.100000001
+		}
+	}
+	Cog 
+	{
+		var Name = "SpriteText"
+		var LinkId = 10
+		Transform 
+		{
+			var Translation = Real3{-3.5, 3.91304398, 1}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0, 0, 0, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "Music Volume"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 59
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+	}
+	Cog 
+	{
+		var Name = "SpriteText"
+		var LinkId = 11
+		Transform 
+		{
+			var Translation = Real3{-3.5, 3.14699841, 1}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0, 0, 0, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "-"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 79
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+	}
+	Cog 
+	{
+		var Name = "SpriteText"
+		var LinkId = 12
+		Transform 
+		{
+			var Translation = Real3{3.5, 3.91304398, 1}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0, 0, 0, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "Sound Effect Volume"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 59
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+	}
+	Cog 
+	{
+		var Name = "SpriteText"
+		var LinkId = 13
+		Transform 
+		{
+			var Translation = Real3{-3.5, 4.78260946, 1}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0, 0, 0, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "+"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 79
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+	}
+	Cog 
+	{
+		var Name = "Sprite"
+		var LinkId = 14
+		Transform 
+		{
+			var Translation = Real3{-3.5, 4.76190519, 0}
+			var Scale = Real3{0.800000012, 0.800000012, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Sprite 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{1, 1, 1, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var SpriteSource = "5586f1922250b073:CircleBordered"
+			var FlipX = false
+			var FlipY = false
+			var AnimationActive = true
+			var AnimationSpeed = 1
+			var StartFrame = 0
+		}
+		Reactive 
+		{
+			var Active = true
+		}
+		ChangeTagVolume 
+		{
+			var Tag = "59086cdf04c60296:MusicTag"
+			var VolumeIncrement = 0.100000001
+		}
+	}
+	Cog 
+	{
+		var Name = "SpriteText"
+		var LinkId = 15
+		Transform 
+		{
+			var Translation = Real3{3.5, 3.1677022, 1}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0, 0, 0, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "-"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 79
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+	}
+	Cog 
+	{
+		var Name = "Sprite"
+		var LinkId = 16
+		Transform 
+		{
+			var Translation = Real3{3.5, 3.14699793, 0}
+			var Scale = Real3{0.800000012, 0.800000012, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Sprite 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{1, 1, 1, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var SpriteSource = "5586f1922250b073:CircleBordered"
+			var FlipX = false
+			var FlipY = false
+			var AnimationActive = true
+			var AnimationSpeed = 1
+			var StartFrame = 0
+		}
+		Reactive 
+		{
+			var Active = true
+		}
+		ChangeTagVolume 
+		{
+			var Tag = "59086ce3001cd3a1:EffectsTag"
+			var VolumeIncrement = -0.100000001
+		}
+	}
+	Cog 
+	{
+		var Name = "Sprite"
+		var LinkId = 17
+		Transform 
+		{
+			var Translation = Real3{3.5, 4.78260899, 0}
+			var Scale = Real3{0.800000012, 0.800000012, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Sprite 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{1, 1, 1, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var SpriteSource = "5586f1922250b073:CircleBordered"
+			var FlipX = false
+			var FlipY = false
+			var AnimationActive = true
+			var AnimationSpeed = 1
+			var StartFrame = 0
+		}
+		Reactive 
+		{
+			var Active = true
+		}
+		ChangeTagVolume 
+		{
+			var Tag = "59086ce3001cd3a1:EffectsTag"
+			var VolumeIncrement = 0.100000001
+		}
+	}
+	Cog 
+	{
+		var Name = "SpriteText"
+		var LinkId = 18
+		Transform 
+		{
+			var Translation = Real3{3.5, 4.80331326, 1}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0, 0, 0, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "+"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 79
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+	}
+}

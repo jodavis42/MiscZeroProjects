@@ -1,0 +1,126 @@
+[Version:1]
+Cog 
+{
+	var Name = "ZeroEngineSpinningLogo"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Vec3{0, 0, 0}
+		var Scale = Vec3{1, 1, 1}
+		var Rotation = Quat{0, 0, 0, 1}
+	}
+	Sprite 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
+		var VertexColor = Vec4{0, 0, 0, 1}
+		var GeometryMode = SpriteGeometryMode.ZPlane
+		var SpriteSource = "5823bf51b82b054e:LogoLoadingInner"
+		var FlipX = false
+		var FlipY = false
+		var AnimationActive = true
+		var AnimationSpeed = 1
+		var StartFrame = 0
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x5823bfd7dda57fe2]
+		{
+			var Name = "OuterLogo"
+			var LinkId = 2
+			Transform 
+			{
+				var Translation = Vec3{0, 0, 0}
+				var Scale = Vec3{1, 1, 1}
+				var Rotation = Quat{0, 0, 0, 1}
+			}
+			Sprite 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
+				var VertexColor = Vec4{0, 0, 0, 1}
+				var GeometryMode = SpriteGeometryMode.ZPlane
+				var SpriteSource = "5823bf51b82b3b23:LogoLoadingOuter"
+				var FlipX = false
+				var FlipY = false
+				var AnimationActive = true
+				var AnimationSpeed = 1
+				var StartFrame = 0
+			}
+			SpriteSpinner 
+			{
+				var Axis = GridAxis.ZAxis
+				var Speed = 45
+				var RotateClockwise = false
+			}
+		}
+		Cog [Id:0x581cc979835f0bb8]
+		{
+			var Name = "OuterLogo"
+			var LinkId = 3
+			Transform 
+			{
+				var Translation = Vec3{-1.12285805, 1.24050391, 0}
+				var Scale = Vec3{1, 1, 1}
+				var Rotation = Quat{0, 0, -0.177241564, 0.984167397}
+			}
+			Sprite 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
+				var VertexColor = Vec4{0, 0, 0, 1}
+				var GeometryMode = SpriteGeometryMode.ZPlane
+				var SpriteSource = "5823bf51b82b3b23:LogoLoadingOuter"
+				var FlipX = false
+				var FlipY = false
+				var AnimationActive = true
+				var AnimationSpeed = 1
+				var StartFrame = 0
+			}
+			SpriteSpinner 
+			{
+				var Axis = GridAxis.ZAxis
+				var Speed = 45
+				var RotateClockwise = true
+			}
+		}
+		Cog [Id:0x581cc9b3b1d3b511]
+		{
+			var Name = "OuterLogo"
+			var LinkId = 4
+			Transform 
+			{
+				var Translation = Vec3{1.16327524, -1.25066721, 0}
+				var Scale = Vec3{1, 1, 1}
+				var Rotation = Quat{0, 0, 0.229083583, 0.973406792}
+			}
+			Sprite 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
+				var VertexColor = Vec4{0, 0, 0, 1}
+				var GeometryMode = SpriteGeometryMode.ZPlane
+				var SpriteSource = "5823bf51b82b3b23:LogoLoadingOuter"
+				var FlipX = false
+				var FlipY = false
+				var AnimationActive = true
+				var AnimationSpeed = 1
+				var StartFrame = 0
+			}
+			SpriteSpinner 
+			{
+				var Axis = GridAxis.ZAxis
+				var Speed = 45
+				var RotateClockwise = true
+			}
+		}
+	}
+}

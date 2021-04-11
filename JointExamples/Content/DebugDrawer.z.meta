@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "DebugDrawer"
+		var ResourceId = 0x58d91e149798b4ce
+	}
+}

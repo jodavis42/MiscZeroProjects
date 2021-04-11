@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchFragmentBuilder = 
+	{
+		string Name = "ModulateModelColor",
+		uint64 ResourceId = 583908c416c516bf,
+	},
+},

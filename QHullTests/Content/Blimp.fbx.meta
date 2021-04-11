@@ -1,0 +1,115 @@
+[Version:1]
+GeometryContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "Blimp_Sphere001"
+				var ResourceId = 0x59808599744ad423
+			}
+			Object
+			{
+				var Name = "Blimp_Box001"
+				var ResourceId = 0x59808599744ad47a
+			}
+			Object
+			{
+				var Name = "Blimp_Box002"
+				var ResourceId = 0x59808599744ad491
+			}
+			Object
+			{
+				var Name = "Blimp_Cylinder001"
+				var ResourceId = 0x59808599744ad4b2
+			}
+			Object
+			{
+				var Name = "Blimp_Tube001"
+				var ResourceId = 0x59808599744ad4d0
+			}
+			Object
+			{
+				var Name = "Blimp_Cylinder003"
+				var ResourceId = 0x59808599744ad4f2
+			}
+			Object
+			{
+				var Name = "Blimp_Cylinder004"
+				var ResourceId = 0x59808599744ad506
+			}
+			Object
+			{
+				var Name = "Blimp_Cylinder002"
+				var ResourceId = 0x59808599744ad526
+			}
+			Object
+			{
+				var Name = "Blimp_Cylinder005"
+				var ResourceId = 0x59808599744ad53c
+			}
+			Object
+			{
+				var Name = "Blimp_Cylinder006"
+				var ResourceId = 0x59808599744ad550
+			}
+			Object
+			{
+				var Name = "Blimp_Box003"
+				var ResourceId = 0x59808599744ad575
+			}
+			Object
+			{
+				var Name = "Blimp_Tube002"
+				var ResourceId = 0x59808599744ad589
+			}
+			Object
+			{
+				var Name = "Blimp_Cylinder010"
+				var ResourceId = 0x59808599744ad59f
+			}
+			Object
+			{
+				var Name = "Blimp_Cylinder011"
+				var ResourceId = 0x59808599744ad5b4
+			}
+			Object
+			{
+				var Name = "Blimp_Tube004"
+				var ResourceId = 0x59808599744ad5e1
+			}
+			Object
+			{
+				var Name = "Blimp_Tube005"
+				var ResourceId = 0x59808599744ad5f6
+			}
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 0.00999999978
+		var ChangeBasis = true
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x598085997440f70c
+	}
+}

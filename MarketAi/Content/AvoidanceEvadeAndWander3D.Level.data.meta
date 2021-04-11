@@ -1,0 +1,22 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "AvoidanceEvadeAndWander3D"
+		var ResourceId = 0x58fe8b1c00ae948c
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Wander"
+			"Steering"
+			"Avoidance"
+			"Evade"
+		}
+	}
+}

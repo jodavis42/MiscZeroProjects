@@ -1,0 +1,363 @@
+class GrabberTool : ZilchComponent
+{
+    //The minimum distance we can drag the object towards
+    //the camera during mouse scroll.
+    [Property]
+    var MinDistance : Real = 3.0;
+    
+    //The maximum distance we can drag the objet away from the camera.
+    [Property]
+    var MaxDistance : Real = 100.0;
+    
+    //The speed that we rotate an object.
+    [Property]
+    var RotationSpeed : Real = 0.05;
+    
+    //The object that we are currently grabbing
+    var SelectedObj : Cog = null;
+    //The current distance away from the camera that
+    //the object's grab point should be.
+    var Distance : Real = 0.0;
+    
+    var WeldJoint : WeldJoint = null;
+    var PhyGunJoint : PhyGunJoint = null;
+    
+    var Player : Player = null;
+    
+    var UpRotationAngle : Real = 0.0;
+    var RightRotationAngle : Real = 0.0;
+    
+    [Property]
+    var Effect : Archetype = Archetype.Find("MiscEffect");
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, "ActivateTool", this.OnActivateTool);
+        Zero.Connect(this.Owner, "DeactivateTool", this.OnDeactivateTool);
+    }
+    
+    function OnActivateTool(e : PlayerEvent)
+    {
+        this.Player = e.Player;
+        Zero.Connect(e.PlayerCog, "PlayerMouseMove", this.OnPlayerMouseMove);
+        Zero.Connect(e.PlayerCog, "PlayerMouseDown", this.OnPlayerMouseDown);
+        Zero.Connect(e.PlayerCog, "PlayerMouseUp", this.OnPlayerMouseUp);
+        Zero.Connect(e.PlayerCog, "PlayerMouseScroll", this.OnPlayerMouseScroll);
+        Zero.Connect(e.PlayerCog, "PlayerKeyDown", this.OnPlayerKeyDown);
+        Zero.Connect(e.PlayerCog, "PlayerKeyUp", this.OnPlayerKeyUp);
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    }
+    
+    function OnDeactivateTool(e : PlayerEvent)
+    {
+        this.Player = null;
+        this.DeselectObj();
+        Zero.Disconnect(e.PlayerCog, "PlayerMouseMove", this);
+        Zero.Disconnect(e.PlayerCog, "PlayerMouseDown", this);
+        Zero.Disconnect(e.PlayerCog, "PlayerMouseUp", this);
+        Zero.Disconnect(e.PlayerCog, "PlayerMouseScroll", this);
+        Zero.Disconnect(e.PlayerCog, "PlayerKeyDown", this);
+        Zero.Disconnect(e.PlayerCog, "PlayerKeyUp", this);
+        Zero.Disconnect(this.Space, Events.LogicUpdate, this);
+    }
+    
+    function OnLogicUpdate(e : UpdateEvent)
+    {
+        if (this.SelectedObj != null)
+        {
+            var rot = this.SelectedObj.Transform.WorldRotation;
+            var rotInv = Math.Invert(rot);
+            
+            var up = this.Player.WorldLookUp;
+            var right = this.Player.WorldLookRight;
+            
+            var rightRot = Math.ToQuaternion(right, this.RightRotationAngle);
+            var upRot = Math.ToQuaternion(up, this.UpRotationAngle);
+            var totalRot = Math.Transform(upRot, rightRot);
+            
+            if (this.WeldJoint != null)
+            {
+                //the weld only has body angles, so they have to brough to the world first
+                var newAngle = this.WeldJoint.LocalAngleB;
+                newAngle = Math.Transform(newAngle, rot);
+                
+                //now actually rotate by the world angle
+                newAngle = Math.Transform(newAngle, totalRot);
+                
+                //bring back into local space and set it
+                newAngle = Math.Transform(newAngle, rotInv);
+                this.WeldJoint.LocalAngleB = newAngle;
+            }
+            else if (this.PhyGunJoint != null)
+            {
+                //the PhyGunJoint is in world space, so no inverse is needed,
+                //however the rotation angle needs to be negated for some reason...
+                totalRot = Math.Invert(totalRot);
+                var newAngle = this.PhyGunJoint.TargetRotation;
+                
+                newAngle = Math.Transform(newAngle, totalRot);
+                
+                this.PhyGunJoint.TargetRotation = newAngle;
+            }
+        }
+    }
+    
+    function OnPlayerMouseMove(e : PlayerMouseEvent)
+    {
+        this.UpdateDraggedObject(e);
+    }
+    
+    function FreezeAndGrabFilter(hit : Cog) : Boolean
+    {
+        var root = hit.FindRoot();
+        return root.RigidBody != null;
+    }
+    
+    function FreezeObject(e : PlayerMouseEvent)
+    {
+        if (this.SelectedObj != null)
+        {
+            var selectedRoot = this.SelectedObj.FindRoot();
+            if (selectedRoot.RigidBody != null)
+            {
+                selectedRoot.RigidBody.Static = !selectedRoot.RigidBody.Static;
+                this.Space.CreateAtPosition(this.Effect, selectedRoot.Transform.WorldTranslation);
+            }
+        }
+        else
+        {
+        
+            var result = this.Player.RayCast(this.FreezeAndGrabFilter);
+            
+            if (result != null)
+            {
+                var root = result.Object.FindRoot();
+                root.RigidBody.Static = !root.RigidBody.Static;
+                this.Space.CreateAtPosition(this.Effect, root.Transform.WorldTranslation);
+            }
+        }
+    }
+    
+    function GrabObject(e : PlayerMouseEvent)
+    {
+        if (this.SelectedObj != null)
+        {
+            this.DeselectObj();
+        }
+        
+        var result = this.Player.RayCast(this.FreezeAndGrabFilter);
+        
+        if (result != null)
+        {
+            var root = result.Object.FindRoot();
+            this.SelectedObj = root;
+            
+            this.SelectedObj.RigidBody.ForceAwake();
+            this.SelectedObj.RigidBody.Static = false;
+            //find the point at which we clicked the object
+            var selectedPoint = result.Object.Transform.WorldTranslation;//result.WorldPosition;
+            //find how far away the pick point is (for keeping the object on a sphere around us)
+            this.Distance = Math.Length(selectedPoint - this.Player.WorldLookPosition);
+            
+            if (!e.ShiftPressed)
+            {
+                this.CreateWeld(this.SelectedObj,selectedPoint);
+            }
+            else
+            {
+                this.CreatePhyGun(this.SelectedObj,selectedPoint);
+            }
+        }
+    }
+    
+    function OnPlayerMouseDown(e : PlayerMouseEvent)
+    {
+        if (e.Button == MouseButtons.Right)
+        {
+            this.FreezeObject(e);
+        }
+        else if (e.Button == MouseButtons.Left)
+        {
+            this.GrabObject(e);
+        }
+    }
+    
+    function OnPlayerMouseUp(e : PlayerMouseEvent)
+    {
+        this.DeselectObj();
+    }
+    
+    function OnPlayerMouseScroll(e : PlayerMouseEvent)
+    {
+        //if we do not have a selected object, there is nothing to drag
+        if (this.SelectedObj == null)
+        {
+            return;
+        }
+        
+        //alter our grab distance but clamp between our min and max distance
+        this.Distance += e.ScrollDelta.Y;
+        this.Distance = Math.Clamp(this.Distance, this.MinDistance, this.MaxDistance);
+        
+        //now compute the new world position of the mouse
+        var newWorldPoint = this.ComputeWorldPoint(e);
+        if (this.WeldJoint != null)
+        {
+            this.UpdateWeldPoint(newWorldPoint);
+        }
+        else if (this.PhyGunJoint != null)
+        {
+            this.UpdatePhyGunPoint(newWorldPoint);
+        }
+    }
+    
+    function OnPlayerKeyDown(e : PlayerKeyEvent)
+    {
+        //rotation logic for the held object
+        if (e.Key == Keys.I)
+        {
+            this.RightRotationAngle += this.RotationSpeed;
+        }
+        if (e.Key == Keys.K)
+        {
+            this.RightRotationAngle -= this.RotationSpeed;
+        }
+        if (e.Key == Keys.J)
+        {
+            this.UpRotationAngle += this.RotationSpeed;
+        }
+        if (e.Key == Keys.L)
+        {
+            this.UpRotationAngle -= this.RotationSpeed;
+        }
+    }
+    
+    function OnPlayerKeyUp(e : PlayerKeyEvent)
+    {
+        //rotation logic for the held object
+        if (e.Key == Keys.I)
+        {
+            this.RightRotationAngle -= this.RotationSpeed;
+        }
+        if (e.Key == Keys.K)
+        {
+            this.RightRotationAngle += this.RotationSpeed;
+        }
+        if (e.Key == Keys.J)
+        {
+            this.UpRotationAngle -= this.RotationSpeed;
+        }
+        if (e.Key == Keys.L)
+        {
+            this.UpRotationAngle += this.RotationSpeed;
+        }
+    }
+    
+    function DeselectObj()
+    {
+        if (this.SelectedObj == null)
+        {
+            return;
+        }
+        
+        //mark that we have no selected object, and destroy the joint
+        this.SelectedObj = null;
+        
+        if (this.WeldJoint != null)
+        {
+            this.WeldJoint.Owner.Destroy();
+            this.WeldJoint = null;
+        }
+        else if (this.PhyGunJoint != null)
+        {
+            this.PhyGunJoint.Owner.Destroy();
+            this.PhyGunJoint = null;
+        }
+    }
+    
+    function CreateWeld(obj : Cog, point : Real3)
+    {
+        //build a new manipulator joint attached by the picked point and save it
+        var jointCreator = Zero.JointBuilder.CreateInstance();
+        //jointCreator.ConnectToWorld = true;
+        
+        obj = obj.FindRoot();
+        
+        if (obj.RigidBody == null)
+        {
+            return;
+        }
+        
+        var mass = obj.RigidBody.Mass;
+        //point = obj.RigidBody.WorldCenterOfMass;
+        var cog = jointCreator.AttachWorld(this.Player.CameraCog,obj,point,"WeldJoint");
+        this.WeldJoint = cog.WeldJoint;
+        this.WeldJoint.WorldPointA = point;
+        this.WeldJoint.WorldPointB = point;
+        this.WeldJoint.MaxForce = mass;
+    }
+    
+    function CreatePhyGun(obj : Cog, point : Real3)
+    {
+        //build a new manipulator joint attached by the picked point and save it
+        var jointCreator = Zero.JointBuilder.CreateInstance();
+        jointCreator.ConnectToWorld = true;
+        
+        obj = obj.FindRoot();
+        
+        if (obj.RigidBody == null)
+        {
+            return;
+        }
+        
+        var mass = obj.RigidBody.Mass;
+        //point = obj.RigidBody.WorldCenterOfMass;
+        var cog = jointCreator.AttachWorld(obj,obj,point,"PhyGunJoint");
+        this.PhyGunJoint = cog.PhyGunJoint;
+        this.PhyGunJoint.MaxForce = mass;
+    }
+        
+    function UpdateDraggedObject(e : PlayerMouseEvent)
+    {
+        //if we do not have a selected object, there is nothing to drag
+        if (this.SelectedObj == null)
+        {
+            return;
+        }
+        
+        var newWorldPoint = this.ComputeWorldPoint(e);
+        
+        if (this.WeldJoint != null)
+        {
+            this.UpdateWeldPoint(newWorldPoint);
+        }
+        else if (this.PhyGunJoint != null)
+        {
+            this.UpdatePhyGunPoint(newWorldPoint);
+        }
+    }
+    
+    function ComputeWorldPoint(e : PlayerMouseEvent) : Real3
+    {
+        //get the vector into the screen from where we clicked
+        var viewPlaneNormal = this.Player.WorldLookForward;
+        //we want to keep the point on the object we clicked at a fixed distance from us,
+        //so use the viewPlaneNormal to find the point on the sphere defined by the
+        //initial picking distance
+        return this.Player.WorldLookPosition + viewPlaneNormal * local Real3(this.Distance);
+    }
+    
+    function UpdateWeldPoint(worldPoint : Real3)
+    {
+        this.WeldJoint.WorldPointA = worldPoint;
+    }
+    
+    function UpdatePhyGunPoint(worldPoint : Real3)
+    {
+        this.PhyGunJoint.TargetPoint = worldPoint;
+    }
+}

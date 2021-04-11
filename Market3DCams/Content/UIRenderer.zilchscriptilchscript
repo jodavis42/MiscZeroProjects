@@ -1,0 +1,49 @@
+[RunInEditor]
+class UIRenderer : ZilchComponent
+{
+  [Property] var ClearColor : Real4 = Real4(0, 0, 0, 1);
+  [Property] var DrawDebug : Boolean = false;
+
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.RenderTasksUpdate, this.OnRenderTasksUpdate);
+  }
+
+  function OnRenderTasksUpdate(event : RenderTasksEvent)
+  {
+    var size = event.GetViewportSize();
+    var color = event.GetFinalTarget(size, TextureFormat.RGBA8);
+    var depth = event.GetRenderTarget(size, TextureFormat.Depth32);
+
+    var renderSettings = RenderSettings();
+    renderSettings.ColorTarget = color;
+    renderSettings.DepthTarget = depth;
+
+    var renderPass = DefaultRenderPass();
+
+    event.AddRenderTaskClearTarget(color, depth, this.ClearColor, 1.0);
+
+    renderSettings.DepthSettings.DepthMode = DepthMode.Write;
+    renderSettings.DepthSettings.DepthCompareFunc = TextureCompareFunc.LessEqual;
+    renderSettings.CullMode = CullMode.BackFace;
+
+    event.AddRenderTaskRenderPass(renderSettings, RenderGroup.DefaultRenderGroup, renderPass);
+
+    renderSettings.DepthSettings.DepthMode = DepthMode.Read;
+    renderSettings.BlendSettings.BlendMode = BlendMode.Separate;
+    renderSettings.BlendSettings.SourceFactor = BlendFactor.SourceAlpha;
+    renderSettings.BlendSettings.DestFactor = BlendFactor.InvSourceAlpha;
+    renderSettings.BlendSettings.SourceFactorAlpha = BlendFactor.One;
+    renderSettings.BlendSettings.DestFactorAlpha = BlendFactor.One;
+    renderSettings.CullMode = CullMode.Disabled;
+
+    event.AddRenderTaskRenderPass(renderSettings, RenderGroup.AlphaBlend, renderPass);
+
+    if (this.DrawDebug)
+    {
+      event.AddRenderTaskRenderPass(renderSettings, RenderGroup.DebugDraw, renderPass);
+      renderSettings.DepthTarget = null;
+      event.AddRenderTaskRenderPass(renderSettings, RenderGroup.DebugDrawOnTop, renderPass);
+    }
+  }
+}

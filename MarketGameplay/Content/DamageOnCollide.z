@@ -1,0 +1,79 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Arend Danielek
+// Last updated: 1/4/2017
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Event structure containing information used to apply damage to an object.
+class DamageEvent : ZilchEvent
+{
+  var Damage : Real = 0.0;
+  // The contact normal towards the object that is taking damage.
+  var Normal : Real3 = Real3.Zero;
+  // The point in world space where the damage is being applied.
+  // Can be used to spawn effects at the point of contact.
+  var WorldPoint : Real3 = Real3.Zero;
+}
+
+// Dispatches a DamageEvent on objects this object collides with.
+class DamageOnCollide : ZilchComponent
+{
+  // How much damage to apply to what we hit when we collide with it.
+  [Property] var Damage : Real = 10.0;
+  // Do we send the death event when we collide?
+  [Property] var SendsDeathEvent : Boolean = true;
+  // Whether or not we die when we collide with something.
+  [Property] var DieOnCollide : Boolean = true;
+  
+  // When colliding we tell an object that we're applying damage to it.
+  sends ApplyDamage : DamageEvent;
+  
+  // The root cog we originated from (we ignore damage to this cog and its descendents).
+  // Set this to null to damage everything.
+  var OriginRoot : Cog;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollisionStarted);
+  }
+  
+  function OnCollisionStarted(collisionEvent : CollisionEvent)
+  {
+    // Get the other object we hit.
+    var otherObject = collisionEvent.OtherObject;
+    var otherDamageOnCollide = otherObject.DamageOnCollide;
+    
+    // Also get the root in the hierarchy (used to make sure that
+    // the person who shot this doesn't get hit by his own shot).
+    var otherRoot = otherObject.FindRoot();
+    
+    // Don't damage the person we were created from.
+    if(otherRoot == this.OriginRoot)
+      return;
+    
+    // If what we hit has a health component then damage it.
+    var health = otherObject.Health;
+    if(health != null)
+    {
+      var firstPoint = collisionEvent.FirstPoint;
+      var damageEvent = DamageEvent();
+      damageEvent.Normal = firstPoint.WorldNormalTowardsOther;
+      damageEvent.Damage = this.Damage;
+      damageEvent.WorldPoint = firstPoint.WorldPoint;
+      otherObject.DispatchEvent(Events.ApplyDamage, damageEvent);
+    }
+    
+    if(this.SendsDeathEvent)
+    {
+      // Let anyone listening know we just died.
+      var toSend = ZilchEvent();
+      this.Owner.DispatchEvent(Events.Death, toSend);
+    }
+    
+    if(this.DieOnCollide)
+    {
+      this.Owner.Destroy();
+    }
+  }
+}

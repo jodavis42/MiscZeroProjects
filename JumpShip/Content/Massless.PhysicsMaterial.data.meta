@@ -1,0 +1,11 @@
+DataContent = 
+{
+	DataBuilder = 
+	{
+		string Name = "Massless",
+		uint64 ResourceId = 522ed4616b15044d,
+		string LoaderType = "PhysicsMaterial",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

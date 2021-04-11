@@ -1,0 +1,13 @@
+class LevelData : ZilchComponent
+{
+    var FromLevelName : String = "";
+    var PositionDifference : Real3 = local Real3(0.0, 0.0, 0.0);
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+    }
+}

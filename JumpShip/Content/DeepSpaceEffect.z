@@ -1,0 +1,24 @@
+// Get Josh to re-make this later!
+class DeepSpaceEffect : ZilchComponent
+{
+    [Property]
+    var Stars : Archetype = Archetype.Stars;
+    
+    [Property]
+    var Nebula : Archetype = Archetype.Nebula;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        var stars = this.Space.Create(this.Stars);
+        stars.AttachToPreserveLocal(this.Owner);
+        
+        var nebula = this.Space.Create(this.Nebula);
+        nebula.AttachToPreserveLocal(this.Owner);
+        nebula.Transform.Translation = local Real3(0.0, -10.0, 0.0);
+    }
+
+}

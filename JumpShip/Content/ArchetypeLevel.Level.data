@@ -1,0 +1,769 @@
+[Version:1]
+Level 
+{
+	Cog 
+	{
+		var Name = "LevelSettings"
+		var LinkId = 1
+		GravityEffect 
+		{
+			var Active = false
+			var WakeUpOnChange = false
+			var DebugDrawEffect = true
+			var LocalSpaceDirection = true
+			var Strength = 10
+			var Direction = Real3{0, -1, 0}
+		}
+		DragEffect 
+		{
+			var Active = false
+			var WakeUpOnChange = false
+			var DebugDrawEffect = true
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.100000001
+			var LinearDrag = 0
+			var AngularDrag = 0
+		}
+		RandomContext 
+		{
+			var RandomSeed = true
+			var Seed = 68429357
+		}
+	}
+	Cog 
+	{
+		var Name = "Renderer"
+		var LinkId = 2
+		DeferredRenderer 
+		{
+			var GeometryDebug = GeometryValue.None
+			var EditorDebugDraw = true
+			var GameDebugDraw = true
+			var RenderDiffuse = true
+			var RenderSpecular = true
+			var RenderSkybox = true
+			var Skybox = "5822dec85e380cf1:SimpleSkybox"
+			var ClearColor = Real4{0, 0, 0, 1}
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+		}
+	}
+	Cog 
+	{
+		var Name = "EditorCamera"
+		var LinkId = 3
+		Transform 
+		{
+			var Translation = Real3{-20.6255493, 10.1279469, 35.2423172}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.0832883939, -0.171313569, -0.01453616, 0.981582165}
+		}
+		Camera 
+		{
+			var NearPlane = 0.5
+			var FarPlane = 500
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 45
+			var Size = 18.2655048
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.Orbit
+			var Previous3DMode = ControlMode.Orbit
+			var LookDistance = 38
+			var VerticalAngle = 0.169296816
+			var HorizontalAngle = 0.345575303
+			var LookTarget = Real3{-7.93753052, 3.72535443, 1.13068737e-07}
+			var MoveSensitivity = 1
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1280, 720}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+	}
+	Cog 
+	{
+		var Name = "Camera"
+		var LinkId = 4
+		Transform 
+		{
+			var Translation = Real3{0, 0, 40}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.5
+			var FarPlane = 200
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 45
+			var Size = 20
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = false
+			var RenderInGame = true
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1280, 720}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+	}
+	Cog 
+	{
+		var Name = "Root"
+		var LinkId = 5
+		Transform 
+		{
+			var Translation = Real3{-6.21533012, 2.03564, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.Mode2D
+		}
+		ObjectGrid 
+		{
+			var DisplayArchetype = "5252e76acb5e3746:GridCellSprite"
+		}
+		CoreLink 
+		{
+		}
+		Attachable 
+		{
+		}
+		Hierarchy 
+		{
+			Cog [InheritId:"52244e49c1f35507:HullBasic"]
+			{
+			}
+		}
+	}
+	Cog [InheritId:"5226ea44cc3b5c37:PlasmaProjectile"]
+	{
+	}
+	Cog 
+	{
+		var Name = "Root"
+		var LinkId = 6
+		Transform 
+		{
+			var Translation = Real3{-6.65164995, 0.308396995, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.Mode2D
+		}
+		CoreLink 
+		{
+		}
+		Attachable 
+		{
+		}
+		Hierarchy 
+		{
+			Cog [InheritId:"522ee43aa74829c4:SonicWeapon"]
+			{
+			}
+		}
+	}
+	Cog [InheritId:"522e5467e2207931:SonicProjectile"]
+	{
+	}
+	Cog 
+	{
+		var Name = "Root"
+		var LinkId = 7
+		Transform 
+		{
+			var Translation = Real3{-7.66260004, 0.298388004, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.Mode2D
+		}
+		CoreLink 
+		{
+		}
+		Attachable 
+		{
+		}
+		Hierarchy 
+		{
+			Cog [InheritId:"522ee5c5a10b9f53:PlasmaWeapon"]
+			{
+			}
+		}
+	}
+	Cog 
+	{
+		var Name = "Root"
+		var LinkId = 8
+		Transform 
+		{
+			var Translation = Real3{-7.4780302, 2.04422998, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.Mode2D
+		}
+		ObjectGrid 
+		{
+			var DisplayArchetype = "5252e76acb5e3746:GridCellSprite"
+		}
+		CoreLink 
+		{
+		}
+		Attachable 
+		{
+		}
+		Hierarchy 
+		{
+			Cog [InheritId:"5252cbce47d0c501:Turbine"]
+			{
+			}
+		}
+	}
+	Cog 
+	{
+		var Name = "PlayerRoot"
+		var LinkId = 9
+		Transform 
+		{
+			var Translation = Real3{-2.36706996, 1.91584003, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.Mode2D
+		}
+		ObjectGrid 
+		{
+			var DisplayArchetype = "5252e76acb5e3746:GridCellSprite"
+		}
+		CoreLink 
+		{
+		}
+		Attachable 
+		{
+		}
+		Hierarchy 
+		{
+			Cog [InheritId:"5252cbcb47702c20:Player"]
+			{
+			}
+		}
+	}
+	Cog 
+	{
+		var Name = "Root"
+		var LinkId = 10
+		Transform 
+		{
+			var Translation = Real3{-4.66650009, 4.34088993, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.Mode2D
+		}
+		ObjectGrid 
+		{
+			var DisplayArchetype = "5252e76acb5e3746:GridCellSprite"
+		}
+		CoreLink 
+		{
+		}
+		Attachable 
+		{
+		}
+		Hierarchy 
+		{
+			Cog [InheritId:"522efcf6f14384fd:Shield"]
+			{
+			}
+		}
+	}
+	Cog [InheritId:"522efcb5c5064cfe:ShieldBarrier"]
+	{
+	}
+	Cog [InheritId:"522ffc42f787cfb7:Platinum"]
+	{
+	}
+	Cog [InheritId:"522ffcbcf4ca6d8b:Steel"]
+	{
+	}
+	Cog [InheritId:"522ffcb7f5d840b3:Zinc"]
+	{
+	}
+	Cog [InheritId:"522fce3953e69354:BigAsteroid"]
+	{
+	}
+	Cog [InheritId:"522fce32504d1ca5:MediumAsteroid0"]
+	{
+	}
+	Cog [InheritId:"522fce2b568778ab:MediumAsteroid1"]
+	{
+	}
+	Cog [InheritId:"522fce1a55e7c66d:SmallAsteroid1"]
+	{
+	}
+	Cog [InheritId:"522fce1e540eb98a:SmallAsteroid0"]
+	{
+	}
+	Cog [InheritId:"522fce275662a1a7:GlowAsteroid"]
+	{
+	}
+	Cog [InheritId:"522d0a148ca4407f:MediumExperience"]
+	{
+	}
+	Cog [InheritId:"522d0a318a3d2edf:SmallExperience"]
+	{
+	}
+	Cog [InheritId:"522d0a2389c5ff62:LargeExperience"]
+	{
+	}
+	Cog [InheritId:"5230b4fb7a12c599:UpgradeWindow"]
+	{
+	}
+	Cog [InheritId:"523a75b1ebb0860e:MissileProjectile"]
+	{
+	}
+	Cog 
+	{
+		var Name = "Root"
+		var LinkId = 11
+		Transform 
+		{
+			var Translation = Real3{-5.92129993, 0.308396995, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.Mode2D
+		}
+		CoreLink 
+		{
+		}
+		Attachable 
+		{
+		}
+		Hierarchy 
+		{
+			Cog [InheritId:"523a75c99faa64bd:MissileWeapon"]
+			{
+			}
+		}
+	}
+	Cog 
+	{
+		var Name = "Cube"
+		var LinkId = 12
+		Transform 
+		{
+			var Translation = Real3{-5.10230017, -0.182120994, 0}
+			var Scale = Real3{0.331979007, 0.331979007, 0.331979007}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b345ae:Cube"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.Mode2D
+		}
+		BoxCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var HalfSize = Real3{0.5, 0.5, 0.5}
+		}
+	}
+	Cog 
+	{
+		var Name = "Cube"
+		var LinkId = 13
+		Transform 
+		{
+			var Translation = Real3{-5.10230017, -0.975440025, 0}
+			var Scale = Real3{0.331979007, 0.331979007, 0.331979007}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b345ae:Cube"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.Mode2D
+		}
+		BoxCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var HalfSize = Real3{0.5, 0.5, 0.5}
+		}
+	}
+	Cog [InheritId:"523e7c32da96f2f1:BeamProjectile"]
+	{
+	}
+	Cog 
+	{
+		var Name = "Root"
+		var LinkId = 14
+		Transform 
+		{
+			var Translation = Real3{-5.10230017, 0.290836006, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.Mode2D
+		}
+		CoreLink 
+		{
+		}
+		Attachable 
+		{
+		}
+		Hierarchy 
+		{
+			Cog [InheritId:"523c8e9054cadb11:BeamWeapon"]
+			{
+			}
+		}
+	}
+	Cog [InheritId:"523c8e0cbc053bc4:DamageEffect"]
+	{
+	}
+	Cog 
+	{
+		var Name = "Root"
+		var LinkId = 15
+		Transform 
+		{
+			var Translation = Real3{-4.16231012, 0.290836006, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.Mode2D
+		}
+		CoreLink 
+		{
+		}
+		Attachable 
+		{
+		}
+		Hierarchy 
+		{
+			Cog [InheritId:"52ede9fcf1afb3d4:LightningWeapon"]
+			{
+			}
+		}
+	}
+	Cog 
+	{
+		var Name = "Root"
+		var LinkId = 16
+		Transform 
+		{
+			var Translation = Real3{-9.00481987, 0.298388004, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.Mode2D
+		}
+		CoreLink 
+		{
+		}
+		Attachable 
+		{
+		}
+		Hierarchy 
+		{
+			Cog 
+			{
+				var Name = "Weapon"
+				var LinkId = 17
+				Transform 
+				{
+					var Translation = Real3{0, 0, 0}
+					var Scale = Real3{1, 1, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
+				}
+				RigidBody 
+				{
+					var Velocity = Real3{0, 0, 0}
+					var AngularVelocity = Real3{0, 0, 0}
+					var DynamicState = RigidBodyDynamicState.Dynamic
+					var AllowSleep = true
+					var Asleep = false
+					var RotationLocked = false
+					var Mode2D = Mode2DStates.Mode2D
+				}
+				Sprite 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var OverrideBoundingBox = false
+					var LocalAabbCenter = Real3{0, 0, 0}
+					var LocalAabbHalfExtents = Real3{1, 1, 1}
+					var GroupSortValue = 0
+					var Material = "582c575af53d18c9:AlphaSprite"
+					var VertexColor = Real4{1, 1, 1, 1}
+					var GeometryMode = SpriteGeometryMode.ZPlane
+					var SpriteSource = "52026759d3313998:Drill"
+					var FlipX = false
+					var FlipY = false
+					var AnimationActive = true
+					var AnimationSpeed = 1
+					var StartFrame = 0
+				}
+				Orientation 
+				{
+					var GlobalUp = Real3{0, 0, 1}
+					var LocalOrientationBasis = Quaternion{0, 0, 0, 1}
+					var DefaultBases = OrientationBases.ForwardZUpY
+				}
+				BoxCollider 
+				{
+					var Ghost = false
+					var SendsEvents = true
+					var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+					var CollisionGroup = "4e740859314e5515:DefaultGroup"
+					var Offset = Real3{0, 0, 0}
+					var HalfSize = Real3{0.5, 0.5, 0.5}
+				}
+				Reactive 
+				{
+					var Active = true
+				}
+				ItemMountable 
+				{
+					var RootArchetype = "525b9b8a9d8d8062:ObjectRoot"
+				}
+				Upgradable 
+				{
+					var Level = 0
+					var UpgradeWindow = "5230b4fb7a12c599:UpgradeWindow"
+				}
+				Hierarchy 
+				{
+					Cog 
+					{
+						var Name = "Weapon"
+						var LinkId = 18
+						Transform 
+						{
+							var Translation = Real3{0, 0, 0}
+							var Scale = Real3{1, 1, 1}
+							var Rotation = Quaternion{0, 0, 0, 1}
+						}
+						ConvexMeshCollider 
+						{
+							var Ghost = false
+							var SendsEvents = true
+							var Material = "522ed4616b15044d:Massless"
+							var CollisionGroup = "4e740859314e5515:DefaultGroup"
+							var Offset = Real3{0, 0, 0}
+							var ConvexMesh = "4ee13192dc049505:Cube"
+						}
+						DamageRegion 
+						{
+							var DamageCurve = "52289e04f7821205:DamageCurve"
+							var DamageEffect = "523c8e0cbc053bc4:DamageEffect"
+							var DamageType = DamageTypes.Drill
+							var Enabled = false
+						}
+					}
+				}
+			}
+		}
+	}
+}

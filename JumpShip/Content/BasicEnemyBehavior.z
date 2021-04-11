@@ -1,0 +1,102 @@
+class BasicEnemyBehavior : AiBehaviorBase
+{
+    var Timer : Real = 0.0;
+    var WasTargetting : Boolean = false;
+    
+    constructor() : base()
+    {
+        // Setup our v-table
+        this.Update = this.OnUpdate;
+        this.GetName = this.OnGetName;
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        this.AddToComposite();
+        this.CompositeAiCore.ActiveBehaviorIndex = 0;
+    }
+    
+    function OnGetName() : String
+    {
+        return "EnemyAi";
+    }
+    
+    function FindTarget()
+    {
+        //Console.WriteLine("Find");
+        //var myPos = this.Owner.Transform.WorldTranslation;
+        //
+        //var closestDistance = 9999999.0;
+        //var closestObj : Cog = null;
+        //var castSphere = new Sphere();
+        //castSphere.Center = myPos;
+        //castSphere.Radius = 5.0;
+        //
+        //var filter = this.Space.PhysicsSpace.CreateDefaultCastFilter();
+        //var results = this.Space.PhysicsSpace.CastSphereWithCallback(castSphere, 1, this.CastCallback);
+        //foreach(var result in results)
+        //{
+        //    var hitObj = result.ObjectHit;
+        //    if(hitObj.Core == null)
+        //    {
+        //        continue;
+        //    }
+        //    
+        //    var hitPos = hitObj.Transform.WorldTranslation;
+        //    var distance = Math.Length(hitPos - myPos);
+        //    if(distance < closestDistance)
+        //    {
+        //        closestDistance = distance;
+        //        closestObj = hitObj;
+        //    }
+        //}
+        //
+        //this.CompositeAiCore.TargetCog = closestObj;
+    }
+    
+    //function CastCallback(physicsCastEvent : PhysicsCastEvent)
+    //{
+    //    //Console.WriteLine("Yes");
+    //    var obj = physicsCastEvent.Object;
+    //    if(obj.Core == null || obj == this.Owner)
+    //    {
+    //        //Console.WriteLine("Core");
+    //        physicsCastEvent.IsValid = false;
+    //    }
+    //}
+    
+    function OnUpdate(dt : Real)
+    {
+        if(this.WasTargetting == false && this.CompositeAiCore.TargetCog != null)
+        {
+            //Console.WriteLine("Fire");
+            this.WasTargetting = true;
+            var toSend = new ZilchEvent();
+            this.CompositeAiCore.Owner.DispatchEvent("OverrideBegin", toSend);
+        }
+        else if(this.WasTargetting == true && this.CompositeAiCore.TargetCog == null)
+        {
+            this.WasTargetting = false;
+            var toSend = new ZilchEvent();
+            this.CompositeAiCore.Owner.DispatchEvent("OverrideEnd", toSend);
+        }
+        
+        if(this.CompositeAiCore.TargetCog == null)
+        {
+            this.Timer += dt;
+            if(this.Timer > 1.0)
+            {
+                this.FindTarget();
+                this.Timer -= 1.0;
+            }
+            
+            this.Owner.WanderBehavior.Update(dt);
+        }
+        else
+        {
+            var pos = this.CompositeAiCore.TargetCog.Transform.WorldTranslation;
+            this.CompositeAiCore.Core.SetMoveTarget(pos);
+            this.CompositeAiCore.Core.SetAimTarget(pos);
+        }
+    }
+}

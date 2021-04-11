@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "ItemMount",
+		uint64 ResourceId = 522201e681803b26,
+	},
+},

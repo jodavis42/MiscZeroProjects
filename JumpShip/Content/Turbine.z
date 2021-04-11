@@ -1,0 +1,62 @@
+// Increase the max speed of a core as well as how fast it can accelerate (the linear scalar).
+class Turbine : ZilchComponent
+{
+    // Upgrade curve for how we effect the max speed of the core.
+    [Property]
+    var MaxSpeedCurve : SampleCurve = SampleCurve.TurbineMaxSpeed;
+    
+    // Upgrade curve for how we effect the linear scalar for the speed of the core.
+    [Property]
+    var LinearScalarCurve : SampleCurve = SampleCurve.TurbineLinearScalar;
+    
+    [Dependency]
+    var Upgradable : Upgradable = null;
+    
+    // The core that we add speed to.
+    var CoreCog : Cog = null;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.AttachToCore, this.OnAttachToCore);
+        Zero.Connect(this.Owner, Events.DetachFromCore, this.OnDetachFromCore);
+        Zero.Connect(this.Owner, Events.Upgrade, this.OnUpgrade);
+    }
+    
+    function OnAttachToCore(attachEvent : AttachEvent)
+    {
+        // Sample the curves and add those values to the core
+        this.CoreCog = attachEvent.CoreCog;
+        if(this.CoreCog != null)
+        {
+            var core = this.CoreCog.Core;
+            var level = this.Upgradable.Level;
+            core.MaxSpeed += this.MaxSpeedCurve.Sample(level);
+            core.LinearScalar += this.LinearScalarCurve.Sample(level);
+        }
+    }
+    
+    function OnDetachFromCore(attachEvent : AttachEvent)
+    {
+        // Sample the curves and subtract those values from the core's speed the core
+        this.CoreCog = attachEvent.CoreCog;
+        if(this.CoreCog != null)
+        {
+            var core = this.CoreCog.Core;
+            var level = this.Upgradable.Level;
+            core.MaxSpeed -= this.MaxSpeedCurve.Sample(level);
+            core.LinearScalar -= this.LinearScalarCurve.Sample(level);
+        }
+    }
+    
+    function OnUpgrade(e : ZilchEvent)
+    {
+        var attachEvent = new AttachEvent();
+        attachEvent.CoreCog = this.CoreCog;
+        this.OnDetachFromCore(attachEvent);
+        this.OnAttachToCore(attachEvent);
+    }
+}

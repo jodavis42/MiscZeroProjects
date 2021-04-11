@@ -1,0 +1,78 @@
+class Health : ZilchComponent
+{
+  [Property]
+  var Health : Real = 100.0;
+  
+  [Property]
+  var DamagedHealth : Real = 50.0;
+  
+  [Property]
+  var CollisionDamageScale : Real = 10.0;
+  
+  [Property]
+  var MinimumImpulseForDamage : Real = 1.0;
+  
+  [Property]
+  var DamagedSprite : SpriteSource = SpriteSource.HardBlockDamaged;
+  
+  [Property]
+  var DeathExplosion : Archetype = null;
+  
+  var Dead : Boolean = false;
+  
+  constructor() : base()
+  {
+  }
+
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollisionStarted);
+  }
+  
+  function DoDamage(amount : Real)
+  {
+    this.Health -= amount;
+    
+    if (this.Health <= 0.0)
+    {
+      if (this.Dead == false)
+      {
+        this.Owner.DispatchEvent("Death", new ZilchEvent());
+        this.Owner.Destroy();
+        
+        if (this.DeathExplosion != null && this.DeathExplosion != Archetype.DefaultArchetype)
+        {
+          var explosion = this.Space.Create(this.DeathExplosion);
+          explosion.Transform.WorldTranslation = this.Owner.Transform.WorldTranslation;
+          explosion.Transform.WorldRotation = this.Owner.Transform.WorldRotation;
+          
+          var emitter = explosion.SphericalParticleEmitter;
+          if(emitter != null)
+          {
+              emitter.StartVelocity += this.Owner.RigidBody.Velocity * 0.3;
+          }
+        }
+      }
+      this.Dead == true;
+    }
+    else if (this.Health < this.DamagedHealth)
+    {
+      this.Owner.Sprite.SpriteSource = this.DamagedSprite;
+    }
+  }
+
+  function OnCollisionStarted(e : CollisionEvent)
+  {
+    var invariantImpulse = e.FirstPoint.NormalImpulse / this.Owner.RigidBody.Mass;
+    
+    if (invariantImpulse < this.MinimumImpulseForDamage)
+    {
+      return;
+    }
+    
+    var damage = invariantImpulse - this.MinimumImpulseForDamage;
+    damage *= this.CollisionDamageScale;
+    
+    this.DoDamage(damage);
+  }
+}

@@ -1,0 +1,32 @@
+[Version:1]
+Cog 
+{
+	var Name = ""
+	ProjectSettings 
+	{
+		var ProjectName = "Gameplay"
+		var ProjectOwner = ""
+		var DefaultLevel = "Level"
+		var ProjectSpace = "Space"
+		var ProjectEngineRevision = 116
+		var AutoTakeProjectScreenshot = true
+		var Guid = 0x5806f028e95e3821
+	}
+	EditorSettings 
+	{
+		var ViewCube = true
+		var ViewCubeSize = 0.150000006
+		var ScriptReloadGame = ScriptReloadMethod.PatchObjects
+		var AutoUpdateContentChanges = true
+	}
+	LauncherProjectInfo 
+	{
+		var Tags = ""
+		var ExperimentalBranchName = ""
+		var MajorVersion = 1
+		var MinorVersion = 0
+		var PatchVersion = 0
+		var RevisionId = 116
+		var ShortChangeSet = "d11382dc5a97"
+	}
+}

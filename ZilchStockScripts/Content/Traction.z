@@ -1,0 +1,6 @@
+// Used to give surfaces different amounts of traction for the dynamic character controller.
+class Traction : ZilchComponent
+{
+    [Property]
+    var Traction : Real = 1.0;
+}

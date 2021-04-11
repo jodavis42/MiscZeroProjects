@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "SplineJoint"
+		var ResourceId = 0x58dd6e7f7238061d
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "SimpleInputControl"
+		var ResourceId = 0x592990519fe7beab
+	}
+}

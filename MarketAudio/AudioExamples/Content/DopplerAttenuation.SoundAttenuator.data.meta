@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "DopplerAttenuation"
+		var ResourceId = 0x59458c71b1e21884
+		var LoaderType = "SoundAttenuator"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "ManipulatorScript"
+		var ResourceId = 0x58dd73c201e99b81
+	}
+}

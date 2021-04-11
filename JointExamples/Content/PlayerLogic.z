@@ -1,0 +1,74 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Simple controller for a player that deals with interacting and grabbing objects
+class PlayerLogic : ZilchComponent
+{
+  // Where our grabber cog is
+  [Property] var GrabberCogPath : CogPath;
+  // Where to send dispatch events for interaction
+  [Property] var InteractionOffset : Real = 1;
+  [Property] var InteractionRadius : Real = 1;
+  
+  sends Interact : InteractEvent;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Auto-trap the mouse
+    Zero.Mouse.Trapped = true;
+    
+    Zero.Connect(Zero.Keyboard, Events.KeyDown, this.OnKeyDown);
+    Zero.Connect(Zero.Keyboard, Events.KeyUp, this.OnKeyUp);
+  }
+  
+  // Get the grabber component if it exists
+  function GetGrabber() : PlayerGrabber
+  {
+    var grabberCog = this.GrabberCogPath.Cog;
+    if(grabberCog != null)
+      return grabberCog.PlayerGrabber;
+    return null;
+  }
+  
+  // Try to find an object to interact with, otherwise apply the grabber logic
+  function TryInteract()
+  {
+    var forward = this.Owner.Orientation.WorldForward;
+    var position = this.Owner.Transform.WorldTranslation;
+    var center = position + forward * this.InteractionOffset;
+    
+    // Dispatch an interact event in front of us
+    var toSend = InteractEvent();
+    var sphere = Sphere() {Center = center, Radius = this.InteractionRadius};
+    this.Space.PhysicsSpace.DispatchWithinSphere(sphere, Events.Interact, toSend);
+    // If someone handled this then return
+    if(toSend.Handled)
+      return;
+    
+    // Otherwise, try performing the grabbing logic
+    var grabber = this.GetGrabber();
+    if(grabber != null)
+      grabber.TryGrab();
+  }
+
+  function OnKeyDown(event : KeyboardEvent)
+  {
+    if(event.Key == Keys.E)
+      this.TryInteract();
+  }
+  
+  function OnKeyUp(event : KeyboardEvent)
+  {
+    // Clear any grabbed object we had
+    if(event.Key == Keys.E)
+    {
+      var grabber = this.GetGrabber();
+      if(grabber != null)
+        grabber.ClearTarget();
+    }
+  }
+}

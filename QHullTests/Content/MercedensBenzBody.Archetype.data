@@ -1,0 +1,1104 @@
+[Version:1]
+Cog 
+{
+	var Name = "MercedensBenzBody"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59817ea962198883]
+		{
+			var Name = "BasePreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817ea96219888a]
+				{
+					var Name = "BaseRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0.707106829, 0.707106769}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817ea96219888e]
+						{
+							var Name = "Base"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59817ea962198890]
+								{
+									var Name = "BaseGeneratedMeshNode0"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa62578328:MercedensBenzBody_BaseGeneratedMeshNode0"
+									}
+								}
+								Cog [Id:0x59817ea962198892]
+								{
+									var Name = "BaseGeneratedMeshNode1"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa6257834e:MercedensBenzBody_BaseGeneratedMeshNode1"
+									}
+								}
+								Cog [Id:0x59817ea962198895]
+								{
+									var Name = "BaseGeneratedMeshNode2"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa62578355:MercedensBenzBody_BaseGeneratedMeshNode2"
+									}
+								}
+								Cog [Id:0x59817ea962198897]
+								{
+									var Name = "BaseGeneratedMeshNode3"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa62578360:MercedensBenzBody_BaseGeneratedMeshNode3"
+									}
+								}
+								Cog [Id:0x59817ea962198899]
+								{
+									var Name = "BaseGeneratedMeshNode4"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa62578369:MercedensBenzBody_BaseGeneratedMeshNode4"
+									}
+								}
+								Cog [Id:0x59817ea96219889e]
+								{
+									var Name = "BaseGeneratedMeshNode5"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa62578374:MercedensBenzBody_BaseGeneratedMeshNode5"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		Cog [Id:0x59817ea9621988a1]
+		{
+			var Name = "BLightLPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817ea9621988a5]
+				{
+					var Name = "BLightLRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0.707106829, 0.707106769}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817ea9621988a7]
+						{
+							var Name = "BLightL"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "59817eaa6257837c:MercedensBenzBody_BLightL"
+							}
+						}
+					}
+				}
+			}
+		}
+		Cog [Id:0x59817ea9621988a9]
+		{
+			var Name = "BLightRPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817ea9621988ae]
+				{
+					var Name = "BLightRRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0.707106829, 0.707106769}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817ea9621988b1]
+						{
+							var Name = "BLightR"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "59817eaa62578386:MercedensBenzBody_BLightR"
+							}
+						}
+					}
+				}
+			}
+		}
+		Cog [Id:0x59817ea9621988b4]
+		{
+			var Name = "BodyPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817ea9621988b7]
+				{
+					var Name = "BodyRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0.707106829, 0.707106769}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817ea9621988b9]
+						{
+							var Name = "Body"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59817ea9621988bb]
+								{
+									var Name = "BodyGeneratedMeshNode6"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa6257838e:MercedensBenzBody_BodyGeneratedMeshNode6"
+									}
+								}
+								Cog [Id:0x59817ea9621988be]
+								{
+									var Name = "BodyGeneratedMeshNode7"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa62578394:MercedensBenzBody_BodyGeneratedMeshNode7"
+									}
+								}
+								Cog [Id:0x59817ea9621988c0]
+								{
+									var Name = "BodyGeneratedMeshNode8"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa625783a0:MercedensBenzBody_BodyGeneratedMeshNode8"
+									}
+								}
+								Cog [Id:0x59817ea9621988c2]
+								{
+									var Name = "BodyGeneratedMeshNode9"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa625783a7:MercedensBenzBody_BodyGeneratedMeshNode9"
+									}
+								}
+								Cog [Id:0x59817ea9621988c6]
+								{
+									var Name = "BodyGeneratedMeshNode10"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa625783ae:MercedensBenzBody_BodyGeneratedMeshNode10"
+									}
+								}
+								Cog [Id:0x59817ea9621988c9]
+								{
+									var Name = "BodyGeneratedMeshNode11"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa625783b4:MercedensBenzBody_BodyGeneratedMeshNode11"
+									}
+								}
+								Cog [Id:0x59817ea9621988cb]
+								{
+									var Name = "BodyGeneratedMeshNode12"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa625783c2:MercedensBenzBody_BodyGeneratedMeshNode12"
+									}
+								}
+								Cog [Id:0x59817ea9621988cf]
+								{
+									var Name = "BodyGeneratedMeshNode13"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa625783c9:MercedensBenzBody_BodyGeneratedMeshNode13"
+									}
+								}
+								Cog [Id:0x59817ea9621988d1]
+								{
+									var Name = "BodyGeneratedMeshNode14"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa625783d0:MercedensBenzBody_BodyGeneratedMeshNode14"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		Cog [Id:0x59817ea9621988d4]
+		{
+			var Name = "HLightLPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817ea9621988d8]
+				{
+					var Name = "HLightLRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0.707106829, 0.707106769}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817ea9621988db]
+						{
+							var Name = "HLightL"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59817ea9621988de]
+								{
+									var Name = "HLightLGeneratedMeshNode15"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa625783d8:MercedensBenzBody_HLightLGeneratedMeshNode15"
+									}
+								}
+								Cog [Id:0x59817ea9621988e1]
+								{
+									var Name = "HLightLGeneratedMeshNode16"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa625783de:MercedensBenzBody_HLightLGeneratedMeshNode16"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		Cog [Id:0x59817ea9621988e4]
+		{
+			var Name = "HLightRPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817ea9621988e6]
+				{
+					var Name = "HLightRRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0.707106829, 0.707106769}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817ea9621988eb]
+						{
+							var Name = "HLightR"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59817ea9621988ee]
+								{
+									var Name = "HLightRGeneratedMeshNode17"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa625783e6:MercedensBenzBody_HLightRGeneratedMeshNode17"
+									}
+								}
+								Cog [Id:0x59817ea9621988f0]
+								{
+									var Name = "HLightRGeneratedMeshNode18"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa625783f5:MercedensBenzBody_HLightRGeneratedMeshNode18"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		Cog [Id:0x59817ea9621988f3]
+		{
+			var Name = "HoodCarbonPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817ea9621988f7]
+				{
+					var Name = "HoodCarbonRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0.707106829, 0.707106769}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817ea9621988f9]
+						{
+							var Name = "HoodCarbon"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59817ea9621988fb]
+								{
+									var Name = "HoodCarbonGeneratedMeshNode19"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa625783fb:MercedensBenzBody_HoodCarbonGeneratedMeshNode19"
+									}
+								}
+								Cog [Id:0x59817ea9621988fd]
+								{
+									var Name = "HoodCarbonGeneratedMeshNode20"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa62578403:MercedensBenzBody_HoodCarbonGeneratedMeshNode20"
+									}
+								}
+								Cog [Id:0x59817ea9621988ff]
+								{
+									var Name = "HoodCarbonGeneratedMeshNode21"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa62578409:MercedensBenzBody_HoodCarbonGeneratedMeshNode21"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		Cog [Id:0x59817ea962198903]
+		{
+			var Name = "InteriorPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817ea962198906]
+				{
+					var Name = "InteriorRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0.707106829, 0.707106769}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817ea962198909]
+						{
+							var Name = "Interior"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59817ea96219890d]
+								{
+									var Name = "InteriorGeneratedMeshNode22"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa62578410:MercedensBenzBody_InteriorGeneratedMeshNode22"
+									}
+								}
+								Cog [Id:0x59817ea96219890f]
+								{
+									var Name = "InteriorGeneratedMeshNode23"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa62578417:MercedensBenzBody_InteriorGeneratedMeshNode23"
+									}
+								}
+								Cog [Id:0x59817ea962198911]
+								{
+									var Name = "InteriorGeneratedMeshNode24"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa6257841e:MercedensBenzBody_InteriorGeneratedMeshNode24"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		Cog [Id:0x59817ea962198913]
+		{
+			var Name = "MirrorLPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817ea962198915]
+				{
+					var Name = "MirrorLRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0.707106829, 0.707106769}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817ea962198917]
+						{
+							var Name = "MirrorL"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59817ea96219891c]
+								{
+									var Name = "MirrorLGeneratedMeshNode25"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa62578425:MercedensBenzBody_MirrorLGeneratedMeshNode25"
+									}
+								}
+								Cog [Id:0x59817ea96219891f]
+								{
+									var Name = "MirrorLGeneratedMeshNode26"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa6257842d:MercedensBenzBody_MirrorLGeneratedMeshNode26"
+									}
+								}
+								Cog [Id:0x59817ea962198922]
+								{
+									var Name = "MirrorLGeneratedMeshNode27"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa6257843f:MercedensBenzBody_MirrorLGeneratedMeshNode27"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		Cog [Id:0x59817ea962198925]
+		{
+			var Name = "MirrorRPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817ea962198927]
+				{
+					var Name = "MirrorRRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0.707106829, 0.707106769}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817ea962198929]
+						{
+							var Name = "MirrorR"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59817ea96219892d]
+								{
+									var Name = "MirrorRGeneratedMeshNode28"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa62578445:MercedensBenzBody_MirrorRGeneratedMeshNode28"
+									}
+								}
+								Cog [Id:0x59817ea962198930]
+								{
+									var Name = "MirrorRGeneratedMeshNode29"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa6257844e:MercedensBenzBody_MirrorRGeneratedMeshNode29"
+									}
+								}
+								Cog [Id:0x59817ea962198933]
+								{
+									var Name = "MirrorRGeneratedMeshNode30"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Model 
+									{
+										var Visible = true
+										var ViewCulling = true
+										var VisibilityEvents = true
+										var OverrideBoundingBox = false
+										var LocalAabbCenter = Real3{0, 0, 0}
+										var LocalAabbHalfExtents = Real3{1, 1, 1}
+										var GroupSortValue = 0
+										var Material = "583afb5e7bf75e18:ZeroMaterial"
+										var Mesh = "59817eaa62578456:MercedensBenzBody_MirrorRGeneratedMeshNode30"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

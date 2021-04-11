@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "SimpleFloor"
+		var ResourceId = 0x58c4c025ffda83a0
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

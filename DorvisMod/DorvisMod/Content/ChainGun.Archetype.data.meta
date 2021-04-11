@@ -1,0 +1,18 @@
+DataContent = 
+{
+	ContentTags = 
+	{
+		object Tags = 
+		[
+			"Blocks",
+		],
+	},
+	DataBuilder = 
+	{
+		string Name = "ChainGun",
+		uint64 ResourceId = 522a5cd1617899b0,
+		string LoaderType = "Cog",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

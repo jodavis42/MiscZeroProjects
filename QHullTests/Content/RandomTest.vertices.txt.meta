@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	TextBuilder 
+	{
+		var Name = "RandomTest.vertices"
+		var ResourceId = 0x59822c7a2abce6ec
+	}
+}

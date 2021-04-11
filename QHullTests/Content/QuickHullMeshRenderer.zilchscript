@@ -1,0 +1,87 @@
+class QuickHullMeshRenderer : ZilchComponent
+{
+  [Dependency] var Model : Model;
+  
+  [Property][ShaderInput] var RenderEdges : Boolean = false;
+  [Property][ShaderInput] var RenderFilled : Boolean = true;
+  [Property][ShaderInput] var RenderNormals : Boolean = false;
+  
+  [Property][ShaderInput] var NormalBaseSize : Real = 0.0025;
+  [Property][ShaderInput] var NormalLength : Real = 0.1;
+  
+  var Mesh : Mesh = Mesh.CreateRuntime();
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Listen for state changes being forwarded for rendering purposes
+    Zero.Connect(this.Owner, Events.UpdateHullFilledStatus, this.OnUpdateHullFilledStatus);
+    Zero.Connect(this.Owner, Events.UpdateHullNormalStatus, this.OnUpdateHullNormalStatus);
+    Zero.Connect(this.Owner, Events.UpdateHullTriangleEdgeStatus, this.OnUpdateHullTriangleEdgeStatus);
+    // Listen for a quick hull being generated
+    Zero.Connect(this.Owner, Events.QuickHullFinished, this.OnQuickHullFinished);
+  }
+  
+  function OnUpdateHullFilledStatus(event : BooleanEvent)
+  {
+    this.RenderFilled = event.State;
+  }
+  
+  function OnUpdateHullNormalStatus(event : BooleanEvent)
+  {
+    this.RenderNormals = event.State;
+  }
+
+  function OnUpdateHullTriangleEdgeStatus(event : BooleanEvent)
+  {
+    this.RenderEdges = event.State;
+  }
+
+  function OnQuickHullFinished(event : QuickHullEvent)
+  {
+    var quickHullTest = event.Owner.QuickHullTest;
+    // Make sure we got a quick hull test back
+    if(quickHullTest == null)
+      return;
+      
+    // Reset the mesh
+    this.Mesh = Mesh.CreateRuntime();
+    this.Mesh.Indices.Clear();
+    this.Mesh.Vertices.ClearData();
+    this.Mesh.Vertices.ClearAttributes();
+    
+    // Setup the mesh attributes
+    this.Mesh.Vertices.AddAttribute(VertexSemantic.Position, VertexElementType.Real, 3);
+    this.Mesh.Vertices.AddAttribute(VertexSemantic.Normal, VertexElementType.Real, 3);
+    
+    // Add each vertex, keeping track of the aabb along the way
+    var aabb = Aabb();
+    foreach(var vertex in quickHullTest.Vertices)
+    {
+      this.Mesh.Vertices.AddReal(vertex);
+      this.Mesh.Vertices.AddReal(Real3.ZAxis);
+    }
+    
+    // Add each sub-triangle for each face
+    foreach(var face in quickHullTest.Faces)
+    {
+      for(var i = 2; i < face.Edges.Count; ++i)
+      {
+        var e0 = quickHullTest.Edges[face.Edges[0]];
+        var e1 = quickHullTest.Edges[face.Edges[i - 1]];
+        var e2 = quickHullTest.Edges[face.Edges[i]];
+        
+        this.Mesh.Indices {e0.Vertex, e1.Vertex, e2.Vertex};
+      }
+    }
+    
+    // Upload the mesh and make it visible
+    this.Mesh.Upload();
+    this.Model.Visible = true;
+    this.Model.Mesh = this.Mesh;
+    // Temporarily turn off view culling since the aabb is incorrect
+    this.Model.ViewCulling = false;
+    //this.Model.OverrideBoundingBox = true;
+    //this.Model.LocalAabbCenter = aabb.Center;
+    //this.Model.LocalAabbHalfExtents = aabb.HalfExtents;
+  }
+}

@@ -1,0 +1,29 @@
+//**********************************************************************************
+//
+// This script makes the object act like a microphone, using a SoundListener to hear 
+// nearby audio and outputing it to a SoundEmitter which acts as a speaker
+//
+//**********************************************************************************
+class MicrophoneAndSpeaker : ZilchComponent
+{
+  // Requires a SoundListener component on this object
+  [Dependency] var Listener : SoundListener;
+  
+  // The object to use as a speaker. It should have a SoundEmitter component.
+  [Property] var Speaker : CogPath = CogPath();
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Remove the output connections of the SoundListener's SoundNode
+    this.Listener.SoundNode.RemoveAllOutputs();
+    
+    // If the Speaker object has no SoundEmitter component, we can't do any more
+    if (this.Speaker.Cog == null || this.Speaker.Cog.SoundEmitter == null)
+      return;
+    
+    // Remove the Speaker object's SoundEmitter from the inputs of the SoundListener
+    this.Listener.SoundNode.RemoveInputNode(this.Speaker.Cog.SoundEmitter.OutputNode);
+    // Add the SoundListener as an input to the Speaker object's SoundEmitter
+    this.Speaker.Cog.SoundEmitter.InputNode.AddInputNode(this.Listener.SoundNode);
+  }
+}

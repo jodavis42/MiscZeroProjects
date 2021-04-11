@@ -1,0 +1,84 @@
+[Version:1]
+Cog 
+{
+	var Name = "boat_fishing_02"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59808131b3f8cb89]
+		{
+			var Name = "null_PreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59808131b3f8cb90]
+				{
+					var Name = "null_"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59808131b3f8cb92]
+						{
+							var Name = "null_GeneratedMeshNode0"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "59808131b3edc198:boat_fishing_02_null_GeneratedMeshNode0"
+							}
+						}
+						Cog [Id:0x59808131b3f8cb95]
+						{
+							var Name = "null_GeneratedMeshNode1"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "59808131b3edc1d7:boat_fishing_02_null_GeneratedMeshNode1"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

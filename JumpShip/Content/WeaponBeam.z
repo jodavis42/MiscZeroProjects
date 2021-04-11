@@ -1,0 +1,137 @@
+// A "lazer beam" weapon that raycasts to hit the first
+// object within the beam's max distance.
+class WeaponBeam : ZilchComponent
+{
+    [Dependency]
+    var Upgradable : Upgradable = null;
+    
+    [Dependency]
+    var Weapon : Weapon = null;
+    
+    [Property]
+    var BeamArchetype : Archetype = Archetype.BeamProjectile;
+    
+    // The amount of damage we'll do based upon our current level.
+    [Property]
+    var DamageCurve : SampleCurve = SampleCurve.DamageCurve;
+    
+    [Property]
+    var DamageType : DamageTypes = DamageTypes.Beam;
+    
+    [Property]
+    var DamageEffect : Archetype = null;
+    
+    // The object that visually represents the beam we are firing.
+    var BeamCog : Cog = null;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.BeginFire, this.OnBeginFire);
+        Zero.Connect(this.Owner, Events.EndFire, this.OnEndFire);
+        
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    }
+    
+    // Hardcoded for now, should use a curve later...
+    function GetBeamDistance() : Real
+    {
+        return 5.0;
+    }
+    
+    function DoRaycast()
+    {
+        var info = this.Weapon.GetFireInfo();
+        
+        var hitObj : Cog = null;
+        var closestDistance : Real = this.GetBeamDistance();
+        var hitNormal : Real3 = local Real3();
+        
+        var ray = local Ray();
+        ray.Start = info.FirePosW;
+        ray.Direction = info.FireDirW;
+        
+        var results = this.Space.PhysicsSpace.CastRay(ray, 20);
+        foreach(var result in results)
+        {
+            var obj = result.ObjectHit;
+            
+            // If we can't damage this object then we don't care about it, try the next one
+            if(Projectile.CanDamage(obj, info.CoreCog) == false)
+            {
+                continue;
+            }
+            
+            // Since our results are in t-first order, if this object is beyond the
+            // length of our beam then all subsequent objects will be too far away
+            var dir = result.WorldPosition - info.FirePosW;
+            var distance = Math.Length(dir);
+            if(distance > closestDistance)
+            {
+                break;
+            }
+            
+            // Cache who we hit and how far away they were
+            hitObj = obj;
+            closestDistance = distance;
+            hitNormal = result.Normal;
+            break;
+        }
+        
+        // Calculate the point at the end of the beam and spawn our damage effect there
+        var worldPoint = ray.Start + ray.Direction * closestDistance;
+        this.BeamCog.ObjectLink.WorldPointB = worldPoint;
+        this.Space.CreateAtPosition(this.DamageEffect, worldPoint);
+            
+        // We didn't hit anything, so don't apply any damage
+        if(hitObj == null)
+        {
+            return;
+        }
+        
+        // Calculate the amount of damage to do per frame
+        var dt = this.Space.TimeSpace.Dt;
+        var damagePerSecond = this.DamageCurve.Sample(this.Upgradable.Level);
+        var damagePerFrame = damagePerSecond * dt;
+        
+        // Create the event to damage what we hit
+        var toSend = new DamageEvent();
+        toSend.Damage = damagePerFrame;
+        toSend.Normal = hitNormal;
+        toSend.WorldPoint = worldPoint;
+        toSend.DamageType = this.DamageType;
+        // Tell the other object we dealt damage, also tell any of our other components
+        hitObj.DispatchEvent(Events.ApplyDamage, toSend);
+        this.Owner.DispatchEvent(Events.ApplyDamage, toSend);
+    }
+    
+    function OnBeginFire(coreEvent : CoreEvent)
+    {
+        var info = this.Weapon.GetFireInfo();
+        
+        // Create the beam
+        this.BeamCog = this.Space.CreateLink(this.BeamArchetype, this.Owner, this.Owner);
+        this.BeamCog.ObjectLink.WorldPointA = info.FirePosW + local Real3(0.0, 0.0, 0.1);
+        
+        this.DoRaycast();
+    }
+    
+    function OnEndFire(coreEvent : CoreEvent)
+    {
+        if(this.BeamCog != null)
+        {
+            this.BeamCog.Destroy();
+        }
+    }
+    
+    function OnLogicUpdate(updateEvent : UpdateEvent)
+    {
+        if(this.BeamCog != null)
+        {
+            this.DoRaycast();
+        }
+    }
+}

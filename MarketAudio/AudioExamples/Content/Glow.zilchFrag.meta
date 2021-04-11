@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchFragmentBuilder 
+	{
+		var Name = "Glow"
+		var ResourceId = 0x58f8982e69921fc7
+	}
+}

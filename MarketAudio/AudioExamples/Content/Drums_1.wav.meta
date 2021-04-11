@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Drums_1"
+		var ResourceId = 0x58a78ada801076d7
+		var Compressed = true
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 26.6653976
+		var AudioChannels = 2
+		var SampleRate = 44100
+		var SavedFormat = AudioFileFormats.OGG
+	}
+}

@@ -1,0 +1,73 @@
+[Version:1]
+Cog 
+{
+	var Name = "HullBasic"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	RigidBody 
+	{
+		var Velocity = Real3{0, 0, 0}
+		var AngularVelocity = Real3{0, 0, 0}
+		var DynamicState = RigidBodyDynamicState.Dynamic
+		var AllowSleep = true
+		var Asleep = false
+		var RotationLocked = false
+		var Mode2D = Mode2DStates.Mode2D
+	}
+	BoxCollider 
+	{
+		var Ghost = false
+		var SendsEvents = true
+		var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+		var CollisionGroup = "4e740859314e5515:DefaultGroup"
+		var Offset = Real3{0, 0, 0}
+		var HalfSize = Real3{0.5, 0.5, 0.0500000007}
+	}
+	Sprite 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var OverrideBoundingBox = false
+		var LocalAabbCenter = Real3{0, 0, 0}
+		var LocalAabbHalfExtents = Real3{1, 1, 1}
+		var GroupSortValue = 0
+		var Material = "582c575af53d18c9:AlphaSprite"
+		var VertexColor = Real4{1, 1, 1, 1}
+		var GeometryMode = SpriteGeometryMode.ZPlane
+		var SpriteSource = "522230c6abcdce55:Connector"
+		var FlipX = false
+		var FlipY = false
+		var AnimationActive = true
+		var AnimationSpeed = 1
+		var StartFrame = 0
+	}
+	Reactive 
+	{
+		var Active = true
+	}
+	GridAttachable 
+	{
+		var IsDraggable = true
+		var RootArchetype = "525b9b8a9d8d8062:ObjectRoot"
+	}
+	ItemMount 
+	{
+		var DisplayArchetype = "5252e76acb5e3746:GridCellSprite"
+		var DisplayCogScale = Real3{0.5, 0.5, 1}
+	}
+	Health 
+	{
+		var MaxHealth = 50
+		var DestroyAtZeroHealth = true
+	}
+	CreateOnDestroy 
+	{
+		var ArchetypeToCreate = "52247a3f629e359a:Explosion"
+	}
+}

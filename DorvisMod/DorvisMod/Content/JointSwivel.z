@@ -1,0 +1,138 @@
+class JointSwivel : ZilchComponent
+{
+    [Serialized][Editable]
+    var Axis : Integer = SwivelAxis.Up;
+    [Serialized][Editable]
+    var Motorized : Boolean = true;
+    
+    var MaxAngleRotation : Real = 0.03;
+    var Root : Cog = null;
+    var Joint : Cog = null;
+
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.Attached, this.OnAttached);
+        Zero.Connect(this.Owner, "Activate", this.OnActivate);
+        Zero.Connect(this.Owner, "Deactivate", this.OnDeactivate);
+        this.Setup();
+        
+        //Debugging
+        //Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    }
+    
+    //function OnLogicUpdate(e : UpdateEvent)
+    //{
+    //    if (this.Joint != null)
+    //    {
+    //        this.Joint.DebugDraw();
+    //    }
+    //}
+    
+    function OnAttached(e : HierarchyEvent)
+    {
+        this.Setup();
+        this.CreateJoint();
+    }
+    
+    function OnActivate(e : Event)
+    {
+        var motor = this.Joint.JointMotor;
+        
+        motor.Speed -= 5.0;
+        if (motor.Speed < -5.0)
+        {
+            motor.Speed = 5.0;
+        }
+    }
+
+    function OnDeactivate(e : Event)
+    {
+        
+    }
+    
+    function CreateJoint()
+    {
+        this.Owner.RigidBody.Static = false;
+        var parent = this.Owner.Parent;
+        
+        var axis = local Real3();
+        if (this.Axis == SwivelAxis.Up)
+        {
+            axis = this.Owner.Orientation.WorldUp;
+        }
+        else if (this.Axis == SwivelAxis.Right)
+        {
+            axis = this.Owner.Orientation.WorldRight;
+        }
+        
+        var jointCreator = Zero.JointBuilder.CreateInstance();
+        var worldPoint = this.Owner.Transform.WorldTranslation;
+        this.Joint = jointCreator.AttachWorld(parent, this.Owner, worldPoint, "RevoluteJoint");
+        if(this.Joint == null)
+        {
+            return;
+        }
+        
+        var revoluteJoint = this.Joint.RevoluteJoint;
+        revoluteJoint.CollideConnected = false;
+        
+        revoluteJoint.WorldAxis = axis;
+        revoluteJoint.LocalPointA *= 1.02;
+        revoluteJoint.LocalPointB *= 1.02;
+        
+        if (this.Motorized == true)
+        {
+            jointCreator.AttachMotor(this.Joint);
+            var jointMotor = this.Joint.JointMotor;
+            jointMotor.MaxForce = 50.0;
+            jointMotor.Speed = 0.0;
+        }
+    }
+    
+    // Setup can be called multiple times, but it MUST be called any time our hierarchy is changed
+    function Setup()
+    {
+        var root = this.Owner.FindRoot();
+        
+        if (this.Root != null)
+        {
+            Zero.Disconnect(this.Root, Events.LockStepMouseMove, this);
+        }
+        
+        Zero.Connect(root, Events.LockStepMouseMove, this.OnUserMouseMove);
+        
+        this.Root = root;
+    }
+
+    function OnUserMouseMove(e : LockStepMouseEvent)
+    {
+        var delta = 0.0;
+        
+        if (this.Axis == SwivelAxis.Up)
+        {
+            delta = -e.ScreenDelta.X;
+        }
+        else if (this.Axis == SwivelAxis.Right)
+        {
+            delta = e.ScreenDelta.Y;
+        }
+        
+        
+        if (delta < 0.0)
+        {
+            this.Joint.JointMotor.Speed = delta;
+        }
+        else if (delta > 0.0)
+        {
+            this.Joint.JointMotor.Speed = delta;
+        }
+        else
+        {
+            this.Joint.JointMotor.Speed = 0.0;
+        }
+    }
+}

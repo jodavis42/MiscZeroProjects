@@ -1,0 +1,157 @@
+//**********************************************************************************
+//
+// Responds to MIDI events from the SoundSpace to play synthesized notes
+// using an AdditiveSynthNode and various audio effect SoundNodes.
+// It will change pitch and modulation when the appropriate messages are received.
+//
+//**********************************************************************************
+class MIDI : ZilchComponent
+{
+  // Requires a Synthesizer component
+  [Dependency] var Synthesizer : Synthesizer;
+  
+  // Create the LowPassNode 
+  var LowPass : LowPassNode = Audio.LowPassNode();
+  // Create the HighPassNode
+  var HighPass : HighPassNode = Audio.HighPassNode();
+  // Create the ModulationNode
+  var Mod : ModulationNode = Audio.ModulationNode();
+  // Create the FlangerNode
+  var Flanger : FlangerNode = Audio.FlangerNode();
+  // Create the PitchNode
+  var Pitch : PitchNode = Audio.PitchNode();
+  // The base frequency for the modulation node
+  var ModFrequency : Real = 5.0;
+    
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the MIDI events sent by the SoundSpace
+    Zero.Connect(this.Space.SoundSpace, Events.MIDINoteOn, this.OnNoteOn);
+    Zero.Connect(this.Space.SoundSpace, Events.MIDINoteOff, this.OnNoteOff);
+    Zero.Connect(this.Space.SoundSpace, Events.MIDIPitchWheel, this.OnPitch);
+    Zero.Connect(this.Space.SoundSpace, Events.MIDIModWheel, this.OnMod);
+        
+    // Set the LowPassNode's cutoff frequency
+    this.LowPass.CutoffFrequency = 2000.0;
+    // Set the HighPassNode's cutoff frequency
+    this.HighPass.CutoffFrequency = 200.0;
+    // Set the values on the ModulationNode
+    this.Mod.UseAmplitudeModulation = true;
+    this.Mod.Frequency = this.ModFrequency;
+    this.Mod.BypassPercent = 50;
+    
+    // Connect the AdditiveSynthNode to the ModulationNode
+    this.Mod.AddInputNode(this.Synthesizer.SynthNode);
+    // Connect the ModulationNode to the FlangerNode
+    this.Flanger.AddInputNode(this.Mod);
+    // Connect the FlangerNode to the HighPassNode
+    this.HighPass.AddInputNode(this.Flanger);
+    // Connect the HighPassNode to the LowPassNode
+    this.LowPass.AddInputNode(this.HighPass);
+    // Connect the LowPassNode to the PitchNode
+    this.Pitch.AddInputNode(this.LowPass);
+    // Connect the PitchNode to the SoundSpace
+    this.Space.SoundSpace.InputNode.AddInputNode(this.Pitch);
+    
+  }
+  
+  function OnNoteOn(event : MidiEvent)
+  {
+    //Console.WriteLine("Note on `event.MIDINumber` `event.Value`");
+    this.Synthesizer.NoteOn(event.MIDINumber as Integer, event.Value / 127.0);
+  }
+  
+  function OnNoteOff(event : MidiEvent)
+  {
+    //Console.WriteLine("Note off `event.MIDINumber`");
+    this.Synthesizer.NoteOff(event.MIDINumber as Integer);
+  }
+  
+  function OnPitch(event : MidiEvent)
+  {
+    //Console.WriteLine(event.Value);
+    this.Pitch.InterpolatePitch(event.Value, 0.1);
+  }
+  
+  function OnMod(event : MidiEvent)
+  {
+    //Console.WriteLine(event.Value);
+    this.Mod.Frequency = this.ModFrequency + (this.ModFrequency * (event.Value / 127.0));
+  }
+}
+
+//**********************************************************************************
+//
+// Contains an AdditiveSynthNode and functions for playing and stopping notes.
+// Harmonics are added by using SynthHarmonic components on child objects.
+//
+//**********************************************************************************
+class Synthesizer : ZilchComponent
+{
+  // The AdditiveSynthNode to use for this synthesizer
+  var SynthNode : AdditiveSynthNode = Audio.AdditiveSynthNode();
+  
+  function Initialize(init : CogInitializer)
+  {
+    
+  }
+  
+  function NoteOn(midiNumber : Integer, volume : Real)
+  {
+    // Call the NoteOn method on the AdditiveSynthNode
+    this.SynthNode.NoteOn(midiNumber, volume);
+  }
+  
+  function NoteOff(midiNumber : Integer)
+  {
+    // Call the NoteOff method on the AdditiveSynthNode
+    this.SynthNode.NoteOff(midiNumber);
+  }
+}
+
+//**********************************************************************************
+//
+// Adds a harmonic to a Synthesizer component on this object's parent
+//
+//**********************************************************************************
+class SynthHarmonic : ZilchComponent
+{
+  // The multiplier applied to the base frequency of the note
+  [Property] var FreqMultiplier : Real;
+  // The volume of this harmonic
+  [Property] var Volume : Real;
+  // The type of wave to use for this harmonic
+  [Property] var WaveType : SynthWaveType;
+  // Attack time for the AdsrEnvelope object
+  [Property] var AttackTime : Real;
+  // Decay time for the AdsrEnvelope object
+  [Property] var DecayTime : Real;
+  // Sustain time for the AdsrEnvelope object
+  [Property] var SustainTime : Real;
+  // Sustain level for the AdsrEnvelope object
+  [Property] var SustainLevel : Real;
+  // Release time for the AdsrEnvelope object
+  [Property] var ReleaseTime : Real;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Make sure the Synthesizer component exists
+    if (this.Owner.Parent == null || this.Owner.Parent.Synthesizer == null)
+    {
+      Console.WriteLine("No Synthesizer on parent object for SynthHarmonic");
+      return;
+    }
+    
+    // Create the AdsrEnvelope object and set its values
+    var envelope = AdsrEnvelope();
+    envelope.AttackTime = this.AttackTime;
+    envelope.DecayTime = this.DecayTime;
+    envelope.SustainTime = this.SustainTime;
+    envelope.SustainLevel = this.SustainLevel;
+    envelope.ReleaseTime = this.ReleaseTime;
+    
+    // Add the harmonic to the AdditiveSynthNode
+    this.Owner.Parent.Synthesizer.SynthNode.AddHarmonic(this.FreqMultiplier, 
+      this.Volume, envelope, this.WaveType);
+  }
+}

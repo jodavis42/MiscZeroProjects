@@ -1,0 +1,1 @@
+By holding 'E', dynamic objects can be picked up. This is implented as a custom joint in script (PlayerGrabber) that is basically a weld joint.

@@ -1,0 +1,114 @@
+// A Projectile that homes on a target
+class ProjectileHoming : ZilchComponent
+{
+    [Dependency]
+    var Projectile : Projectile = null;
+    
+    // The current cog we are targetting.
+    var Target : Cog = null;
+    
+    // The maximum results we can get from the sphere cast.
+    // Just a property so it doesn't take memory and whatnot.
+    var MaxResults : Integer { get { return 10; } }
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        Zero.Connect(this.Owner, Events.ProjectileSetup, this.OnSetup);
+    }
+    
+    function OnSetup(e : ZilchEvent)
+    {
+        // Find our first target and then queue up the next set of searches
+        this.FindTarget();
+        this.QueueActions();
+    }
+    
+    function QueueActions()
+    {
+        // Do a search for a new target at fixed intervals
+        var searchInterval = 0.5;
+        var seq = Actions.Sequence(this.Owner.Actions);
+        Actions.Delay(seq, searchInterval);
+        Actions.Call(seq, this.FindTarget);
+        Actions.Call(seq, this.QueueActions);
+    }
+    
+    function OnLogicUpdate(updateEvent : UpdateEvent)
+    {
+        if(this.Target == null)
+        {
+            return;
+        }
+        
+        this.AimTowardsTarget();
+    }
+    
+    function AimTowardsTarget()
+    {
+        var body = this.Owner.RigidBody;
+        var orientation = this.Owner.Orientation;
+        // Keep the old magnitude of the velocity so we preserve our speed
+        var oldSpeed = Math.Length(body.Velocity);
+        
+        var forward = orientation.WorldForward;
+        var desiredForward = this.Target.Transform.WorldTranslation - this.Owner.Transform.WorldTranslation;
+        // Compute the new forward by interpolating slowly towards the desired forward
+        var interpolationFraction = 0.1;
+        var newForward = Math.RotateTowards(forward, desiredForward, interpolationFraction);
+        // Make sure we have no z-component (just because)
+        newForward.Z = 0.0;
+        
+        orientation.LookAtDirection(newForward);
+        body.Velocity = newForward * oldSpeed;
+    }
+    
+    function GetSearchRadius() : Real
+    {
+        // Hardcoded for now, use a curve later?
+        return 3.0;
+    }
+    
+    function FindTarget()
+    {
+        var pos = this.Owner.Transform.WorldTranslation;
+        
+        var radius = this.GetSearchRadius();
+        var physicsSpace = this.Space.PhysicsSpace;
+        // Cast a sphere and find the object in that sphere closest to our current position
+        var filter = CastFilter();
+        var castSphere = Sphere() {Center = pos, Radius = radius};
+        var results = physicsSpace.CastSphere(castSphere, this.MaxResults, filter);
+        
+        var minDistance = 999.0;
+        var closestObj : Cog = null;
+        foreach(var result in results)
+        {
+            // Get the object we hit and how close it is to our current position
+            var hitObj = result.ObjectHit;
+            var objPos = hitObj.Transform.WorldTranslation;
+            var distance = Math.Length(objPos - pos);
+            
+            // If it's further away than our closest result, we don't care
+            if(distance > minDistance)
+            {
+                continue;
+            }
+            
+            // If we can't damage this cog then ignore it
+            if(Projectile.CanDamage(hitObj, this.Projectile.CoreCog) == false)
+            {
+                continue;
+            }
+            
+            minDistance = distance;
+            closestObj = result.ObjectHit;
+        }
+        
+        this.Target = closestObj;
+    }
+}

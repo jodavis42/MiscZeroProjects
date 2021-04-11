@@ -1,0 +1,22 @@
+class HudMaker : ZilchComponent
+{
+  [Property] var HudLevel : Level;
+  
+  var HudSpace : Space;
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.HudSpace = this.GameSession.CreateNamedSpace("HudSpace", Archetype.DefaultSpace);
+    this.HudSpace.LoadLevel(this.HudLevel);
+    
+    Zero.Connect(this.Owner, Events.CogDestroy, this.OnCogDestroy);
+  }
+  
+  
+  function OnCogDestroy(event : ObjectEvent)
+  {
+    if (this.HudSpace != null)
+      this.HudSpace.Destroy();
+  }
+}

@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Game"
+		var ResourceId = 0x5376aef0bab83cbb
+		var LoaderType = "GameSession"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

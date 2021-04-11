@@ -1,0 +1,65 @@
+class InventoryMenuItem : ZilchComponent
+{
+  sends InventoryItemSetup : MenuEvent;
+  
+  
+  [Static]
+  var ItemTypeStrings = HashMap[ItemType, String]()
+  {
+    { ItemType.Consumable, "" },
+    { ItemType.Weapon,     "Weapon" },
+    { ItemType.Armor,      "Armor" },
+    { ItemType.Accessory,  "Accessory" },
+  }; 
+  
+  
+  [Dependency]
+  var UiWidget : UiWidget;
+  
+  
+  [Property]
+  var NamePath = CogPath();
+  [Property]
+  var QuantityPath = CogPath();
+  [Property]
+  var TypePath = CogPath();
+  
+  var NameCog     : Cog { get { return this.NamePath.Cog; }}
+  var QuantityCog : Cog { get { return this.QuantityPath.Cog; }}
+  var TypeCog     : Cog { get { return this.TypePath.Cog; }}
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.InventoryItemSetup, this.OnInventoryItemSetup);
+  }
+  
+  
+  function OnInventoryItemSetup(event : MenuEvent)
+  {
+    this.NameCog.UiTextShadow.Text = event.Name;
+    this.QuantityCog.UiTextShadow.Text = "`event.Quantity`";
+    this.TypePath.UiTextShadow.Text = InventoryMenuItem.ItemTypeStrings[event.Type];
+    
+    if (event.Type != ItemType.Consumable)
+    {
+      //var menuItem = this.Owner.MenuItem;
+      
+      //if (menuItem != null)
+      //{
+      //  menuItem.Disable();
+      //}
+      
+      this.Owner.DispatchDown(Events.UiDisable, event);
+    }
+  }
+}
+
+
+enum ItemType
+{
+  Consumable,
+  Weapon,
+  Armor,
+  Accessory,
+}

@@ -1,0 +1,10 @@
+[Version:1]
+DataContent 
+{
+	RichAnimationBuilder 
+	{
+		var Name = "Elevator"
+		var ResourceId = 0x58c440c1f75e4e22
+		var PreviewArchetype = ""
+	}
+}

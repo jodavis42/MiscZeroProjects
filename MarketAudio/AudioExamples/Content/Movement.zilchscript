@@ -1,0 +1,38 @@
+//**********************************************************************************
+//
+// Simple movement using arrow keys.
+//
+//**********************************************************************************
+class Movement : ZilchComponent
+{
+  // Requires a Transform component
+  [Dependency] var Transform : Transform;
+  // The increment added to the object's position when moving
+  [Property] var MoveIncrement : Real = 0.2;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the LogicUpdate event
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+  
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // Get the current position
+    var position = this.Transform.WorldTranslation;
+    
+    // If the appropriate keys are pressed, change the position
+    if (Zero.Keyboard.KeyIsDown(Keys.Up))
+        position.Z -= this.MoveIncrement;
+    if (Zero.Keyboard.KeyIsDown(Keys.Down))
+        position.Z += this.MoveIncrement;
+    if (Zero.Keyboard.KeyIsDown(Keys.Right))
+        position.X += this.MoveIncrement;
+    if (Zero.Keyboard.KeyIsDown(Keys.Left))
+        position.X -= this.MoveIncrement;
+    
+    // Set the new position for the object
+    this.Transform.WorldTranslation = position;
+  
+  }
+}

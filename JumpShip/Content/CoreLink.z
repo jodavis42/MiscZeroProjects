@@ -1,0 +1,36 @@
+// Used to tell any root if there is a core in this hierarchy and if so where.
+class CoreLink : ZilchComponent
+{
+    // The cog that contains the core.
+    var CoreCog : Cog = null;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.AttachToCore, this.OnAttachToCore);
+        Zero.Connect(this.Owner, Events.DetachFromCore, this.OnDetachFromCore);
+        
+        if(this.Owner.Core != null)
+        {
+            this.SetCore(this.Owner);
+        }
+    }
+    
+    function OnAttachToCore(e : AttachEvent)
+    {
+        this.SetCore(e.CoreCog);
+    }
+    
+    function OnDetachFromCore(e : AttachEvent)
+    {
+        this.SetCore(e.CoreCog);
+    }
+    
+    function SetCore(core : Cog)
+    {
+        this.CoreCog = core;
+    }
+}

@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "TopDownPlayerJoint"
+		var ResourceId = 0x58dd1187ee432cef
+	}
+}

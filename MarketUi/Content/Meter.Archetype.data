@@ -1,0 +1,122 @@
+[Version:1]
+Cog 
+{
+	var Name = "Meter"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Vec3{-12.9580259, 6.70129871, 0}
+		var Scale = Vec3{1, 1, 1}
+		var Rotation = Quat{0, 0, 0, 1}
+	}
+	Sprite 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
+		var VertexColor = Vec4{1, 1, 1, 1}
+		var GeometryMode = SpriteGeometryMode.ZPlane
+		var SpriteSource = "583b9859e72c79d4:Button3"
+		var FlipX = false
+		var FlipY = false
+		var AnimationActive = true
+		var AnimationSpeed = 1
+		var StartFrame = 0
+	}
+	Area 
+	{
+		var Size = Vec2{5, 1}
+		var Origin = Location.Center
+	}
+	AreaMeter 
+	{
+		var InitMaxVal = 1
+		var InitMinVal = 0
+		var InitStartVal = 1
+		var ScaleX = true
+		var ScaleY = false
+	}
+	MeterTest 
+	{
+		var IncrementVal = 0.100000001
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x581cda3e38619ea3]
+		{
+			var Name = "HealthBar"
+			var LinkId = 2
+			Transform 
+			{
+				var Translation = Vec3{0, -1.1124568, -5.728715e-07}
+				var Scale = Vec3{1.25, 1.25, 1.25}
+				var Rotation = Quat{0, 0, 0, 1}
+			}
+			SpriteText 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
+				var VertexColor = Vec4{1, 1, 1, 1}
+				var GeometryMode = SpriteGeometryMode.ZPlane
+				var Font = "57343753bb4eaaec:NotoSans-Regular"
+				var FontSize = 30
+				var Text = "Health Bar"
+				var Align = TextAlign.Center
+				var PixelsPerUnit = 64
+			}
+		}
+		Cog [Id:0x581cda78268e4ff9]
+		{
+			var Name = "HealthBar"
+			var LinkId = 3
+			Transform 
+			{
+				var Translation = Vec3{0, -1.72183943, -5.728715e-07}
+				var Scale = Vec3{1.25, 1.25, 1.25}
+				var Rotation = Quat{0, 0, 0, 1}
+			}
+			SpriteText 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
+				var VertexColor = Vec4{1, 1, 1, 1}
+				var GeometryMode = SpriteGeometryMode.ZPlane
+				var Font = "57343753bb4eaaec:NotoSans-Regular"
+				var FontSize = 30
+				var Text = "[Arrow Keys] Change Health"
+				var Align = TextAlign.Center
+				var PixelsPerUnit = 64
+			}
+		}
+		Cog [Id:0x581cda4e2ed52a1b]
+		{
+			var Name = "HealthBar"
+			var LinkId = 4
+			Transform 
+			{
+				var Translation = Vec3{0, -2.4395566, -5.728715e-07}
+				var Scale = Vec3{1.25, 1.25, 1.25}
+				var Rotation = Quat{0, 0, 0, 1}
+			}
+			SpriteText 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
+				var VertexColor = Vec4{1, 1, 1, 1}
+				var GeometryMode = SpriteGeometryMode.ZPlane
+				var Font = "57343753bb4eaaec:NotoSans-Regular"
+				var FontSize = 30
+				var Text = "[F9] View Multiple Spaces"
+				var Align = TextAlign.Center
+				var PixelsPerUnit = 64
+			}
+		}
+	}
+}

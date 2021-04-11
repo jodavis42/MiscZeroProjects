@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "CustomSettings"
+		var ResourceId = 0x536dba39b3e7165f
+		var LoaderType = "LevelSettings"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

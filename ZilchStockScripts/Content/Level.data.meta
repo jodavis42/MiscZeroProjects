@@ -1,0 +1,17 @@
+DataContent = 
+{
+	DataBuilder = 
+	{
+		string Name = "Level",
+		uint64 ResourceId = 532e2a5971d1e24d,
+		string LoaderType = "Level",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+	ContentTags = 
+	{
+		Array Tags = 
+		[
+		],
+	},
+},

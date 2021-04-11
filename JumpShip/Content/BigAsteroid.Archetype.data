@@ -1,0 +1,71 @@
+[Version:1]
+Cog 
+{
+	var Name = ""
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Real3{-7.46478987, -4.39839983, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Sprite 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var OverrideBoundingBox = false
+		var LocalAabbCenter = Real3{0, 0, 0}
+		var LocalAabbHalfExtents = Real3{1, 1, 1}
+		var GroupSortValue = 0
+		var Material = "582c575af53d18c9:AlphaSprite"
+		var VertexColor = Real4{1, 1, 1, 1}
+		var GeometryMode = SpriteGeometryMode.ZPlane
+		var SpriteSource = "524dce7f2db914b8:BigAsteroid"
+		var FlipX = false
+		var FlipY = false
+		var AnimationActive = true
+		var AnimationSpeed = 1
+		var StartFrame = 0
+	}
+	RigidBody 
+	{
+		var Velocity = Real3{0, 0, 0}
+		var AngularVelocity = Real3{0, 0, 0}
+		var DynamicState = RigidBodyDynamicState.Dynamic
+		var AllowSleep = true
+		var Asleep = false
+		var RotationLocked = false
+		var Mode2D = Mode2DStates.Mode2D
+	}
+	ConvexMeshCollider 
+	{
+		var Ghost = false
+		var SendsEvents = true
+		var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+		var CollisionGroup = "4e740859314e5515:DefaultGroup"
+		var Offset = Real3{0, 0, 0}
+		var ConvexMesh = "522ff26f19e2e4e5:BigAsteroid"
+	}
+	WeightedCreateOnDestroy 
+	{
+		var DropTable = "522fcfcaac9e699f:BigAsteroidDrop"
+		var ApplyRandomVelocity = true
+		var MaxItemsToSpawn = 3
+	}
+	Health 
+	{
+		var MaxHealth = 50
+		var DestroyAtZeroHealth = true
+	}
+	DamageResistance 
+	{
+		var EnergyResistance = 1
+		var BeamResistance = 2
+		var DrillResistance = 0.25
+		var LightningResistance = 5
+	}
+	AsteroidTag 
+	{
+	}
+}

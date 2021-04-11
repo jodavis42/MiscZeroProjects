@@ -1,0 +1,66 @@
+class QuickHullEdgeRenderer : ZilchComponent
+{
+  [Dependency] var Model : Model;
+  [Property] var Active : Boolean = true;
+  
+  var Mesh : Mesh = Mesh.CreateRuntime();
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.QuickHullFinished, this.OnQuickHullFinished);
+    Zero.Connect(this.Owner, Events.UpdateHullEdgeStatus, this.OnUpdateHullEdgeStatus);
+  }
+
+  function OnUpdateHullEdgeStatus(event : BooleanEvent)
+  {
+    this.Active = event.State;
+    this.Model.Visible = this.Active;
+  }
+
+  function OnQuickHullFinished(event : QuickHullEvent)
+  {
+    var quickHullTest = event.Owner.QuickHullTest;
+    // Make sure we got a quick hull test back
+    if(quickHullTest == null)
+      return;
+    
+    // Reset the mesh
+    this.Mesh = Mesh.CreateRuntime();
+    this.Mesh.Indices.Clear();
+    this.Mesh.Vertices.ClearData();
+    this.Mesh.Vertices.ClearAttributes();
+    
+    // Setup the attributes and mesh type
+    this.Mesh.PrimitiveType = PrimitiveType.Lines;
+    this.Mesh.Vertices.AddAttribute(VertexSemantic.Position, VertexElementType.Real, 3);
+    
+    // Add each vertex, keeping track of the aabb along the way
+    var aabb = Aabb();
+    foreach(var vertex in quickHullTest.Vertices)
+    {
+      aabb.Expand(vertex);
+      this.Mesh.Vertices.AddReal(vertex);
+    }
+    
+    // Add each face as a line (note: this is not the same as triangles)
+    foreach(var face in quickHullTest.Faces)
+    {
+      for(var i = 0; i < face.Edges.Count; ++i)
+      {
+        var e0 = quickHullTest.Edges[face.Edges[i]];
+        var e1 = quickHullTest.Edges[face.Edges[(i + 1) % face.Edges.Count]];
+        
+        this.Mesh.Indices {e0.Vertex, e1.Vertex};
+      }
+    }
+    
+    // Upload the mesh and make it visible
+    this.Mesh.Upload();
+    this.Model.Visible = true;
+    this.Model.Mesh = this.Mesh;
+    // Temporarily turn off view culling since the aabb is incorrect
+    this.Model.ViewCulling = false;
+    //this.Model.LocalAabbCenter = aabb.Center;
+    //this.Model.LocalAabbHalfExtents = aabb.HalfExtents;
+  }
+}

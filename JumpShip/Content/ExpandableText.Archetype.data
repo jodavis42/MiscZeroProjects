@@ -1,0 +1,52 @@
+Cog = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Named = 
+	{
+		string Name = "Sprite",
+	},
+	Archetyped = 
+	{
+		string Name = "52e00362da17d68c:ExpandableText",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [0.240952, -2.95411, 0],
+		Vec3 Scale = [1, 1, 1],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	SpriteText = 
+	{
+		SpriteGeometryMode GeometryMode = ZPlane,
+		TextPositionMode Position = UpperLeft,
+		string FontName = "4e7bac697bec55c5:Verdana",
+		uint FontSize = 20,
+		Vec4 Color = [1, 1, 1, 1],
+		bool Visible = true,
+		string Text = "",
+		bool OnTop = false,
+		BlendMode BlendMode = Alpha,
+		Vec2 Size = [0, 0],
+		TextAlign Align = Left,
+		float PixelsPerUnit = 64,
+		bool Smoothing = true,
+	},
+	Reactive = 
+	{
+		bool Active = true,
+		bool CaptureMouse = false,
+	},
+	UiText = 
+	{
+	},
+	UiUserData = 
+	{
+	},
+	TextWithOptions = 
+	{
+		string Options = "52e01c6d4b38aba7:PathTextOptions",
+	},
+},

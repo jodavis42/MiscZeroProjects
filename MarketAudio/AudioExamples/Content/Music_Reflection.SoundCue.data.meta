@@ -1,0 +1,19 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Music"
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "Music_Reflection"
+		var ResourceId = 0x5940db0f89378d38
+		var LoaderType = "SoundCue"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Owl_Screech_1"
+		var ResourceId = 0x5944f0ce2e4125ff
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 1.32602084
+		var AudioChannels = 1
+		var SampleRate = 48000
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

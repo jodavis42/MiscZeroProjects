@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "UnderWaterZone"
+		var ResourceId = 0x5903abb83a1dcb7a
+	}
+}

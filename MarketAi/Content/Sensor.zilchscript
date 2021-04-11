@@ -1,0 +1,386 @@
+/************************************************************************************************************/
+/* Copyright 2016 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 1/3/2016                                                                                    */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Arend Danielek                                                                          */
+/* Class: Sensor                                                                                            */
+/* Brief: Detects contacts with raycasts starting at this object's position. The contacts are sorted by     */
+/*        which object they belong to.                                                                      */
+/************************************************************************************************************/
+
+enum SensorMode
+{
+  PrimaryAndSideSensors,
+  SideSensors,
+  RandomPrimarySensor
+}
+
+class SensorRay
+{
+  var Direction : Real3 = Real3(0.0, 0.0, 0.0);
+  var Distance : Real = 0.0;
+}
+
+class SensorResult
+{
+  // The object, and its contacts sensed
+  var Object : Cog;
+  var Contacts : Array[Real3] = new Array[Real3]();
+  var Normals : Array[Real3] = new Array[Real3]();
+}
+
+// Listen to this event to hear of this Sensor's results
+class SensorEvent : ZilchEvent
+{
+  sends SensorEvent : SensorEvent;
+  
+  var Results : Array[SensorResult] = new Array[SensorResult]();
+}
+
+class Sensor : ZilchComponent
+{
+  [Dependency]
+  var Transform : Transform;
+  
+  // This Component uses the orientation component
+  [Dependency]
+  var Orientation : Orientation = null;
+  
+  // Is the component active
+  [Property]
+  var Active : Boolean = true;
+  
+  // Do we draw the debug information?
+  [Property]
+  var DebugDrawEnabled : Boolean = false;
+  
+  // Do we want to send events containing sensor data to this object
+  [Property]
+  var SensorEventTarget : CogPath = null;
+  
+  // What kind of mode are we in with the sensors
+  [Property]
+  var SensorMode : SensorMode = SensorMode.PrimaryAndSideSensors;
+  
+  // Should we sense in 2D or 3D
+  [Property]
+  var SensorSpaceMode : Mode2DStates = Mode2DStates.Mode2D;
+  
+  // The angle of the side sensors
+  [Property]
+  var SideSensorAngle : Real = 45.0;
+  
+  // The max distance of the side sensors
+  [Property]
+  var SideSensorDistance : Real = 2.0;
+  
+  // The max distance of the primary sensor
+  [Property]
+  var PrimarySensorDistance : Real = 6.0;
+  
+  // The maximum angle used for random primary sesors
+  [Property]
+  var PrimarySensorMaxAngle : Real = 30.0;
+  
+  // The offset in local space of the ray casting
+  [Property]
+  var LocalOffset : Real3 = Real3(0.0, 0.0, 0.0);
+  
+  // Sparse update is for performance improvements, changing the frequency
+  // of the Sensor's update from every frame, to Rand.Range(0, SparseUpdateMaxTimeOut)
+  [Property]
+  var SparseUpdate : Boolean = true;
+  
+  [Property]
+  var SparseUpdateMaxTimeout : Integer = 5;
+  
+  var UpdateTimeout : Integer = 0;
+  
+  var Random : Random = Random();
+  
+  var SideSensorAngleRad : Real
+  {
+    get { return Math.ToRadians(this.SideSensorAngle); }
+  }
+  
+  var PrimarySensorMaxAngleRad : Real
+  {
+    get { return Math.ToRadians(this.PrimarySensorMaxAngle); }
+  }
+  
+  var Mode2D : Boolean
+  {
+    get
+    {
+      if (this.SensorSpaceMode == Mode2DStates.Mode2D)
+      {
+        return true;
+      }
+      if (this.SensorSpaceMode == Mode2DStates.Mode3D)
+      {
+        return false;
+      }
+      else
+      {
+        return this.Space.PhysicsSpace.Mode2D;
+      }
+    }
+  }
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+  
+  function OnLogicUpdate(updateEvent : UpdateEvent)
+  {
+    if (this.UpdateTimeout > 0)
+    {
+      --this.UpdateTimeout;
+      return;
+    }
+    
+    var sensors = new Array[SensorRay]();
+    var event = new SensorEvent();
+    var position = this.Transform.TransformPoint(this.LocalOffset);
+    
+    // Construct the array of sensors
+    this.SetupSensors(sensors, position);
+    
+    // Raycast using the sensors we've constructed
+    this.CastRays(sensors, position, event);
+    
+    // Dispatch the results of those raycasts
+    this.DispatchEvent(event);
+    
+    if (this.SparseUpdate)
+    {
+      this.UpdateTimeout += this.Random.RangeInclusiveMax(
+        0, this.SparseUpdateMaxTimeout
+      );
+    }
+  }
+  
+  // Construct our SensorRay array based on our SensorMode
+  function SetupSensors(sensors : Array[SensorRay], position : Real3)
+  {
+    // Create the side sensors...
+    if (this.SensorMode == SensorMode.PrimaryAndSideSensors ||
+        this.SensorMode == SensorMode.SideSensors)
+    {
+      // Add the right and left side sensors
+      this.AddSideSensor(
+        sensors, this.Orientation.WorldForward, 
+        this.Orientation.WorldUp, this.SideSensorAngleRad * 0.5
+      );
+      
+      this.AddSideSensor(
+        sensors, this.Orientation.WorldForward, 
+        this.Orientation.WorldUp, -this.SideSensorAngleRad * 0.5
+      );
+      
+      if (!this.Mode2D)
+      {
+        // Set the direction and distance of the up and down sensors
+        this.AddSideSensor(
+          sensors, this.Orientation.WorldForward,
+          this.Orientation.WorldRight, this.SideSensorAngleRad * 0.5
+        );
+        
+        this.AddSideSensor(
+          sensors, this.Orientation.WorldForward,
+          -this.Orientation.WorldRight, this.SideSensorAngleRad * 0.5
+        );
+      }
+    }
+    
+    // Create the primary sensor...
+    if (this.SensorMode == SensorMode.PrimaryAndSideSensors)
+    {
+      // Setup the primary sensor's start, direction, and distance
+      var primarySensor = new SensorRay();
+      
+      primarySensor.Distance = this.PrimarySensorDistance;
+      primarySensor.Direction = this.Orientation.WorldForward;
+      
+      sensors.Add(primarySensor);
+    }
+    else if (this.SensorMode == SensorMode.RandomPrimarySensor)
+    {
+      // Get the primary angle from a random function
+      var primaryAngle = this.Random.Range(
+        -this.PrimarySensorMaxAngleRad * 0.5, 
+        this.PrimarySensorMaxAngleRad * 0.5
+      );
+      
+      var primaryRotation = Math.ToQuaternion(
+        this.Orientation.WorldUp, primaryAngle
+      );
+      
+      if (!this.Mode2D)
+      {
+        var primaryAngle3D = this.Random.Range(
+          -this.PrimarySensorMaxAngleRad * 0.5, 
+          this.PrimarySensorMaxAngleRad * 0.5
+        );
+        
+        var primaryRotation3D = Math.ToQuaternion(
+          this.Orientation.WorldRight, primaryAngle3D
+        );
+        
+        primaryRotation = Math.Multiply(
+          primaryRotation3D, primaryRotation
+        );
+      }
+      
+      var primarySensor = new SensorRay();
+      
+      primarySensor.Distance = this.PrimarySensorDistance;
+      primarySensor.Direction = Math.Multiply(
+        primaryRotation, this.Orientation.WorldForward
+      );
+      
+      sensors.Add(primarySensor);
+    }
+    
+    // If debug draw is enabled...
+    if (this.DebugDrawEnabled)
+    {
+      // Loop through all the sensors
+      foreach (var sensor in sensors)
+      {
+        // Draw the primary sensor...
+        this.DebugDrawLine(
+          position, position + sensor.Direction * sensor.Distance, 
+          0.3, Real4(0.0, 0.0, 1.0, 1.0)
+        );
+      }
+    }
+  }
+  
+  function CastRays(sensors : Array[SensorRay], position : Real3, event : SensorEvent)
+  {
+    // If we have a physics space, do the ray casts
+    var physics = this.Space.PhysicsSpace;
+    
+    if (physics == null)
+    {
+      return;
+    }
+    
+    // Loop through all the sensors
+    foreach (var sensor in sensors)
+    {
+      // Do the ray cast
+      var castResultsMax = 3;
+      
+      var ray = local Ray();
+      ray.Start = position;
+      ray.Direction = sensor.Direction;
+      
+      var castResults = physics.CastRay(ray, castResultsMax);
+      
+      // Loop through all the results
+      foreach (var castResult in castResults)
+      {
+        // Get the hit distance
+        var distance = castResult.Distance;
+        
+        // As long as the object hit wasn't us and it's within the maximum distance...
+        if (castResult.ObjectHit != this.Owner && distance < sensor.Distance)
+        {
+          // Look for the hit object in our results
+          var result : SensorResult = null;
+          
+          foreach (var eventResult in event.Results)
+          {
+            if (castResult.ObjectHit == eventResult.Object)
+            {
+              result = eventResult;
+            }
+          }
+          
+          // If we can't find one for this object
+          if (result == null)
+          {
+            // create it
+            result = new SensorResult();
+            
+            event.Results.Add(result);
+          }
+          
+          result.Object = castResult.ObjectHit;
+          result.Contacts.Add(castResult.WorldPosition);
+          result.Normals.Add(castResult.Normal);
+          
+          // If debug draw is on, draw the intersection point and the normal
+          if (this.DebugDrawEnabled)
+          {
+            this.DebugDrawSphere(
+              0.5, castResult.WorldPosition, Real4(0.0, 1.0, 0.0, 1.0)
+            );
+            
+            this.DebugDrawLine(
+              castResult.WorldPosition, castResult.WorldPosition + castResult.Normal, 
+              0.2, Real4(1.0, 0.0, 0.0, 1.0)
+            );
+          }
+          
+          break;
+        }
+      }
+    }
+  }
+  
+  function DispatchEvent(event : SensorEvent)
+  {
+    // Send out the sendor event so other components can use the sensor data
+    if (event.Results.Count <= 0)
+    {
+      return;
+    }
+    
+    // If there is no target defined dispatch the event on this.Owner
+    if(this.SensorEventTarget != null && this.SensorEventTarget.Cog != null)
+    {
+      this.SensorEventTarget.Cog.DispatchEvent(Events.SensorEvent, event);
+    }
+    else
+    {
+      this.Owner.DispatchEvent(Events.SensorEvent, event);
+    }
+  }
+  
+  function AddSideSensor(sensors : Array[SensorRay], rotateVector : Real3, axisVector : Real3, angle : Real)
+  {
+    var sensor = new SensorRay();
+        
+    sensor.Distance = this.SideSensorDistance;
+    sensor.Direction = Math.RotateVector(
+      rotateVector, axisVector, angle
+    );
+    
+    sensors.Add(sensor);
+  }
+  
+  function DebugDrawSphere(radius : Real, position : Real3, color : Real4)
+  {
+    var sphere = DebugSphere(position, radius);
+    
+    sphere.Color = color;
+    sphere.OnTop = true;
+    
+    DebugDraw.Add(sphere);
+  }
+  
+  function DebugDrawLine(start : Real3, end : Real3, size : Real, color : Real4)
+  {
+    var line = DebugLine(start, end);
+    
+    line.HeadSize = size;
+    line.Color = color;
+    line.OnTop = true;
+    
+    DebugDraw.Add(line);
+  }
+}

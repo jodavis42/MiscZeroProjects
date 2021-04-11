@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	TextBuilder 
+	{
+		var Name = "BreakingDoorCoreExplanation"
+		var ResourceId = 0x58c4e45846072efe
+	}
+}

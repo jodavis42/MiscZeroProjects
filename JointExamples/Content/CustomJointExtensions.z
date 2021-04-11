@@ -1,0 +1,159 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Data class to contain necessary information for constraints
+struct ConstraintTransformInfo
+{
+  var WorldPoint : Real3;
+  var WorldR : Real3;
+}
+
+// Extensions on the CustomConstraintInfo class. These are help with common operations with building constraints,
+// but are exposed in script so that it's possible to see how values are setup.
+class CustomConstraintInfoExtensions
+{
+  [Extension(typeid(CustomConstraintInfo))]
+  function SetLimitedError(value : Real, lowerLimit : Real, upperLimit : Real)
+  {
+    var error = 0.0;
+    this.Active = true;
+    this.MinImpulse = Real.NegativeMin;
+    this.MaxImpulse = Real.PositiveMax;
+    if(value < lowerLimit)
+    {
+        error = value - lowerLimit;
+        this.MinImpulse = 0.0;
+    }
+    else if(value > upperLimit)
+    {
+        error = value - upperLimit;
+        this.MaxImpulse = 0.0;
+    }
+    else
+        this.Active = false;
+    
+    this.Error = error;
+    this.Bias = this.Error * this.Baumgarte;
+  }
+}
+  
+// Extensions on the CustomJoint class. These are help with common operations with building constraints,
+// but are exposed in script so that it's possible to see how values are setup.
+class CustomJointExtensions
+{
+  // Helper to get the world point and r vector of a cog. The 'r' vector is the vector from the cog's center of
+  // mass to the world point. If no rigid body exists then the center of mass is assumed to be the object's center.
+  [Static]
+  function GetTransformInfo(cog : Cog, localPoint : Real3) : ConstraintTransformInfo
+  {
+    var result = ConstraintTransformInfo();
+    result.WorldPoint = localPoint;
+    result.WorldR = localPoint;
+    if(cog != null)
+    {
+      var transform = cog.Transform;
+      if(transform != null)
+      {
+        result.WorldPoint = transform.TransformPoint(localPoint);
+        // If a rigid body exists then compute the WorldR from the center of mass
+        var rigidBody = cog.RigidBody;
+        // Compute the WorldR as the vector from the "center of mass" to the world point.
+        // If there's no actual center of mass then just use the object's position.
+        var centerOfMass = transform.WorldTranslation;
+        if(rigidBody != null)
+          centerOfMass = rigidBody.WorldCenterOfMass;
+        result.WorldR = result.WorldPoint - centerOfMass;
+      }
+    }
+    return result;
+  }
+  
+  [Extension(typeid(CustomJoint))]
+  // Constrains linear velocity on a world axis about two points to be zero.
+  // This is typically used to add a motor to an axis to drive movement (possibly to zero).
+  // No position correction will be applied.
+  function ConstrainLinearVelocity(constraintInfo : CustomConstraintInfo, cog0 : Cog, cog1 : Cog, localPoint0 : Real3, localPoint1 : Real3, worldAxis : Real3)
+  {
+    // See ConstraintLinearPosition for a derivation of the Jacobian. This is the same jacobian just no error correction is applied
+    var transformInfo0 = CustomJointExtensions.GetTransformInfo(cog0, localPoint0);
+    var transformInfo1 = CustomJointExtensions.GetTransformInfo(cog1, localPoint1);
+    
+    var r0 = transformInfo0.WorldR;
+    var r1 = transformInfo1.WorldR;
+    
+    constraintInfo.SetJacobian(-worldAxis, -Math.Cross(r0, worldAxis),
+                                worldAxis,  Math.Cross(r1, worldAxis));
+  }
+  
+  [Extension(typeid(CustomJoint))]
+  // Constrains two positions on two objects to be equal along a certain axis.
+  function ConstrainLinearPosition(constraintInfo : CustomConstraintInfo, cog0 : Cog, cog1 : Cog, localPoint0 : Real3, localPoint1 : Real3, worldAxis : Real3)
+  {
+    // Given two points on the objects the constraint is:
+    //    C: Dot(p1 - p0, axis) = 0
+    //    C: Dot(c1 + r1 - c0 - r0, axis) = 0
+    // CDot: Dot(v1, axis) + Dot(Cross(w1,r1), axis)  - Dot(v0, axis) - Dot(Cross(w0,r0), axis)  = 0
+    // CDot: Dot(v1, axis) + Dot(w1, Cross(r1, axis)) - Dot(v0, axis) - Dot(w0, Cross(r0, axis)) = 0
+    //    J: [-axis, -Cross(r0, axis), axis, Cross(r1, axis)]
+    var transformInfo0 = CustomJointExtensions.GetTransformInfo(cog0, localPoint0);
+    var transformInfo1 = CustomJointExtensions.GetTransformInfo(cog1, localPoint1);
+    
+    var r0 = transformInfo0.WorldR;
+    var r1 = transformInfo1.WorldR;
+    
+    // The error term is how far apart the points are on the  world axis
+    var pointDifference = transformInfo1.WorldPoint - transformInfo0.WorldPoint;
+    var error = Math.Dot(worldAxis, pointDifference);
+    
+    constraintInfo.SetJacobian(-worldAxis, -Math.Cross(r0, worldAxis),
+                                worldAxis,  Math.Cross(r1, worldAxis));
+    constraintInfo.Error = error;
+    // The actual bias to apply (applies extra velocity to solve error) is based upon the actual error and the baumgarte term.
+    constraintInfo.Bias = constraintInfo.Error * constraintInfo.Baumgarte;
+  }
+  
+  [Extension(typeid(CustomJoint))]
+  // Constrains angular velocity on a world axis.
+  // This is typically used to add a motor to an axis to drive movement (possibly to zero).
+  // No position correction will be applied.
+  function ConstrainAngularVelocity(constraintInfo : CustomConstraintInfo, cog0 : Cog, cog1 : Cog, worldAxis : Real3)
+  {
+    // CDot: Dot(w1 - w0, axis) = 0
+    //    J: [0, -axis, 0, axis]
+    constraintInfo.SetJacobian(Real3.Zero, -worldAxis,
+                               Real3.Zero,  worldAxis);
+  }
+  
+  [Extension(typeid(CustomJoint))]
+  // Constrains the distance between two points on two objects to be between a min and max length.
+  // This is typically used to construct a stick or "distance" constraint. Note: it is assumed that minLength <= maxLength.
+  function ConstrainDistance(constraintInfo : CustomConstraintInfo, cog0 : Cog, cog1 : Cog, localPoint0 : Real3, localPoint1 : Real3, minLength : Real, maxLength : Real)
+  {
+    // Given two points on the objects the constraint is:
+    //     C: 0.5*[(p1 - p0)^2 - L^2] = 0
+    //  CDot: (p1 - p0) * (d/dt * p1 - d/dt * p0)
+    //  CDot: (p1 - p0) * (v1 + Cross(w1, r1) - v0 - Cross(w0, r0))
+    // Let d: p1 - p0
+    //  CDot: Dot(d, v1 + Cross(w1, r1) - v0 - Cross(w0, r0))
+    //  CDot: Dot(d, v1) + Dot(d, Cross(w1, r1)) - Dot(d, v0) - Dot(d, Cross(w0, r0))
+    //  CDot: Dot(d, v1) + Dot(w1, Cross(r1, d)) - Dot(d, v0) - Dot(w0, Cross(r0, d))
+    //     J: [-d, -Cross(r0, d), d, Cross(r1, d)]
+    var transformInfo0 = CustomJointExtensions.GetTransformInfo(cog0, localPoint0);
+    var transformInfo1 = CustomJointExtensions.GetTransformInfo(cog1, localPoint1);
+    
+    var r0 = transformInfo0.WorldR;
+    var r1 = transformInfo1.WorldR;
+    
+    var pointDifference = transformInfo1.WorldPoint - transformInfo0.WorldPoint;
+    var worldAxis = Math.Normalize(pointDifference);
+    var distance = Math.Length(pointDifference);
+    
+    constraintInfo.SetJacobian(-worldAxis, -Math.Cross(r0, worldAxis), worldAxis, Math.Cross(r1, worldAxis));
+    // The set the error based upon the min and max length
+    constraintInfo.SetLimitedError(distance, minLength, maxLength);
+  }
+}

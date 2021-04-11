@@ -1,0 +1,38 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/24/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Simple helper to move an object.
+class SimpleMovement : ZilchComponent
+{
+  // Do we responde to input?
+  [Property] var Active : Boolean = true;
+  
+  [Property] var Speed : Real = 5.0;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if(!this.Active)
+      return;
+      
+    var movement : Real3 = Real3();
+    if(Zero.Keyboard.KeyIsDown(Keys.Up) || Zero.Keyboard.KeyIsDown(Keys.W))
+      movement.Y = 1.0;
+    else if(Zero.Keyboard.KeyIsDown(Keys.Down) || Zero.Keyboard.KeyIsDown(Keys.S))
+      movement.Y = -1.0;
+    if(Zero.Keyboard.KeyIsDown(Keys.Right) || Zero.Keyboard.KeyIsDown(Keys.D))
+      movement.X = 1.0;
+    else if(Zero.Keyboard.KeyIsDown(Keys.Left) || Zero.Keyboard.KeyIsDown(Keys.A))
+      movement.X = -1.0;
+    
+    this.Owner.Transform.Translation += movement * this.Speed * event.Dt;
+  }
+}

@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "ObjectGrid",
+		uint64 ResourceId = 5252e75cced3687d,
+	},
+},

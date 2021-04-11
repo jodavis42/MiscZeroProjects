@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "CustomPositionJoint"
+		var ResourceId = 0x58d9bf540c3f8cbb
+	}
+}

@@ -1,0 +1,27 @@
+[Version:1]
+Cog 
+{
+	var Name = ""
+	ProjectSettings 
+	{
+		var ProjectName = "AngryBlocks"
+		var ProjectOwner = ""
+		var DefaultLevel = "Level"
+		var ProjectSpace = "Space"
+		var ProjectEngineRevision = 16598
+		var AutoTakeProjectScreenshot = true
+		var Guid = 0x595e4422748070c0
+	}
+	EditorSettings 
+	{
+		var ViewCube = true
+		var ViewCubeSize = 0.150000006
+		var ScriptReloadEditor = ScriptReloadMethod.ReInitializeObjects
+		var ScriptReloadGame = ScriptReloadMethod.PatchObjects
+		var AutoUpdateContentChanges = true
+	}
+	ProjectConfig 
+	{
+		var EditorMode = EditorMode.Mode3D
+	}
+}

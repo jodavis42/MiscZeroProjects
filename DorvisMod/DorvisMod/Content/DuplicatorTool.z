@@ -1,0 +1,127 @@
+/*
+class DuplicatorTool : ZilchComponent
+{
+    [Property]
+    var FallbackSpawnDistance : Real = 20.0;
+    
+    var Player : Player = null;
+    var HudText : ShadowText = null;
+    
+    var ToDuplicate : Cog = null;
+    
+    var LastCopyId : String = null;
+    
+    var IdCounter : Integer = 0;
+    
+    [Property]
+    var CopyEffect : Archetype = Archetype.Find("MiscEffect");
+    
+    [Property]
+    var SpawnEffect : Archetype = Archetype.Find("SpawnEffect");
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, "ActivateTool", this.OnActivateTool);
+        Zero.Connect(this.Owner, "DeactivateTool", this.OnDeactivateTool);
+    }
+    
+    function OnActivateTool(e : PlayerEvent)
+    {
+        this.Player = e.Player;
+        this.HudText = e.HudText;
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        Zero.Connect(e.PlayerCog, "PlayerMouseDown", this.OnPlayerMouseDown);
+    }
+    
+    function OnDeactivateTool(e : PlayerEvent)
+    {
+        this.Player = null;
+        this.HudText = null;
+        Zero.Disconnect(this.Space, Events.LogicUpdate, this);
+        Zero.Disconnect(e.PlayerCog, "PlayerMouseDown", this);
+    }
+    
+    function BlockFilter(hit : Cog) : Boolean
+    {
+        return hit.BlockTag != null;
+    }
+    
+    function OnLogicUpdate(e : UpdateEvent)
+    {
+        var result = this.Player.RayCast(this.BlockFilter);
+        
+        if (result != null)
+        {
+            this.ToDuplicate = result.Object.FindRoot();
+            this.HudText.Text = String.Concatenate("Press [Right Mouse] to copy the ", this.ToDuplicate.ArchetypeName);
+        }
+        else
+        {
+            this.ToDuplicate = null;
+            
+            if (this.LastCopyId != null)
+            {
+                this.HudText.Text = "Press [Left Mouse] to paste";
+            }
+            else
+            {
+                this.HudText.Text = "Find an object to copy";
+            }
+        }
+    }
+    
+    function AllFilter(hit : Cog) : Boolean
+    {
+        return true;
+    }
+    
+    function OnPlayerMouseDown(e : PlayerMouseEvent)
+    {
+        if (e.Button == MouseButtons.Right)
+        {
+            if (this.ToDuplicate != null)
+            {
+                var builder = new StringBuilder();
+                builder.Write("_Duplicator_");
+                builder.Write(this.IdCounter);
+                
+                this.LastCopyId = builder.ToString();
+                Zero.ObjectStore.Store(this.LastCopyId, this.ToDuplicate);
+                
+                this.Space.CreateAtPosition(this.CopyEffect, this.ToDuplicate.Transform.WorldTranslation);
+                
+                ++this.IdCounter;
+            }
+        }
+        else if (e.Button == MouseButtons.Left)
+        {
+            var worldPosition = e.Player.WorldLookPosition + e.Player.WorldLookForward * local Real3(this.FallbackSpawnDistance);
+            
+            var result = this.Player.RayCast(this.AllFilter);
+            if (result != null)
+            {
+                worldPosition = result.WorldPosition;
+            }
+            
+            worldPosition.Y += 1.0;
+            
+            var object = Zero.ObjectStore.Restore(this.LastCopyId, this.Space);
+            
+            if (object != null)
+            {
+                object.Transform.WorldTranslation = worldPosition;
+                
+                this.Space.CreateAtPosition(this.SpawnEffect, object.Transform.WorldTranslation);
+                
+                var undo = new SpawnUndo();
+                undo.Object = object;
+                this.Player.Server_QueueUndo("duplication", undo.Action);
+            }
+        }
+    }
+}
+*/

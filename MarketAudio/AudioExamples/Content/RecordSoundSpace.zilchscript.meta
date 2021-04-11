@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "RecordSoundSpace"
+		var ResourceId = 0x591af5f0caefdb82
+	}
+}

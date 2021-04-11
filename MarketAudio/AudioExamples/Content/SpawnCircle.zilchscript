@@ -1,0 +1,25 @@
+//**********************************************************************************
+//
+// Creates circle objects when the left mouse button is pressed.
+//
+//**********************************************************************************
+class SpawnCircle : ZilchComponent
+{
+  // Requires a NoteEffects component
+  [Dependency] var NoteEffects : NoteEffects;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to all left mouse button clicks
+    Zero.Connect(this.Space, Events.LeftMouseDown, this.OnClick);
+  }
+  
+  function OnClick(event : ViewportMouseEvent)
+  {
+    // Create a circle at the click position
+    this.Space.CreateAtPosition(Archetype.Circle, event.ToWorldZPlane(0));
+    
+    // Play a note
+    this.NoteEffects.PlayNote1();
+  }
+}

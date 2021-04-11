@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "MusicVolumeParticles"
+		var ResourceId = 0x591c654697f1e0ec
+	}
+}

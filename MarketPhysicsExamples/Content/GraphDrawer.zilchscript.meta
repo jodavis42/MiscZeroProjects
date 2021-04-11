@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "GraphDrawer"
+		var ResourceId = 0x591c54aa8b7b5480
+	}
+}

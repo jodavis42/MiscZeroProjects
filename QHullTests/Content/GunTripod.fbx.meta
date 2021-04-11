@@ -1,0 +1,40 @@
+[Version:1]
+GeometryContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 0.100000001
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x59817d03cbfdeb6a
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "GunTripod"
+				var ResourceId = 0x59817d03cbc11f40
+			}
+		}
+	}
+}

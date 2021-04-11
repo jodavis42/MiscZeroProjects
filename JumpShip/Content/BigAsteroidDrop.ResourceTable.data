@@ -1,0 +1,23 @@
+ResourceTable = 
+{
+	string ResourceType = "Archetype",
+	Array EntryList = 
+	[
+		{
+			string Name = "Name1",
+			string Value = "522ffcb7f5d840b3:Zinc",
+			float Weight = 0.25,
+		},
+		{
+			string Name = "Name2",
+			string Value = "522fce2b568778ab:MediumAsteroid1",
+			float Weight = 1,
+		},
+		{
+			string Name = "Name3",
+			string Value = "522fce32504d1ca5:MediumAsteroid0",
+			float Weight = 1,
+		},
+	],
+	float MaxWeight = 1,
+},

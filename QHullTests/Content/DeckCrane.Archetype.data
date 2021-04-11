@@ -1,0 +1,118 @@
+[Version:1]
+Cog 
+{
+	var Name = "DeckCrane"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x5980bb6fc92182d0]
+		{
+			var Name = "Base"
+			Transform 
+			{
+				var Translation = Real3{-0.0970430374, 0.0446386598, 0.481288433}
+				var Scale = Real3{0.141904742, 0.141904742, 0.166989073}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x5980bb6fc92182d6]
+				{
+					var Name = "BaseGeneratedMeshNode0"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "5980bb60c9668ef1:DeckCrane_BaseGeneratedMeshNode0"
+					}
+				}
+				Cog [Id:0x5980bb6fc92182d9]
+				{
+					var Name = "BaseGeneratedMeshNode1"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "5980bb60c9668f1d:DeckCrane_BaseGeneratedMeshNode1"
+					}
+				}
+				Cog [Id:0x5980bb6fc92182db]
+				{
+					var Name = "Main"
+					Transform 
+					{
+						var Translation = Real3{-0.000639343285, -1.06811522e-05, 2.164814}
+						var Scale = Real3{0.990508974, 0.990508974, 0.990508854}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "5980bb60c9668f27:DeckCrane_Main"
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x5980bb6fc92182de]
+						{
+							var Name = "WireC01"
+							Transform 
+							{
+								var Translation = Real3{0.57686919, -12.8238935, 35.5672264}
+								var Scale = Real3{3.56829214, 3.03228045, 3.56829214}
+								var Rotation = Quaternion{0.5, 0.50000006, 0.5, 0.5}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "5980bb60c9668f35:DeckCrane_WireC01"
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,158 @@
+[Version:1]
+Cog 
+{
+	var Name = "GenericSofa"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59817c500e2bb98c]
+		{
+			var Name = "GenericSofaPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817c500e2bb992]
+				{
+					var Name = "GenericSofaRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, -0.707106829, 0.707106829}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817c500e2bb994]
+						{
+							var Name = "GenericSofaScaling"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{0.0253999997, 0.0253999997, 0.0253999997}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59817c500e2bb996]
+								{
+									var Name = "GenericSofaGeometricTranslation"
+									Transform 
+									{
+										var Translation = Real3{4.11372685e-06, -5.7220459e-06, 17.7930698}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x59817c500e2bb998]
+										{
+											var Name = "GenericSofa"
+											Transform 
+											{
+												var Translation = Real3{0, 0, 0}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Hierarchy 
+											{
+												Cog [Id:0x59817c500e2bb99a]
+												{
+													var Name = "GenericSofaBottomPad"
+													Transform 
+													{
+														var Translation = Real3{-6.15773773, -0.237502098, 16.8767242}
+														var Scale = Real3{1, 0.851351857, 1}
+														var Rotation = Quaternion{-0.707106829, -1.37678796e-07, 0.707106829, -1.37678782e-07}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "59817c500e2d883e:GenericSofa_GenericSofaBottomPad"
+													}
+												}
+												Cog [Id:0x59817c500e2bb99c]
+												{
+													var Name = "GenericSofaBody"
+													Transform 
+													{
+														var Translation = Real3{-6.15774107, 0.153525591, 16.8767223}
+														var Scale = Real3{1, 0.851351857, 1}
+														var Rotation = Quaternion{-0.707106829, -2.21972485e-07, 0.707106829, -2.21972485e-07}
+													}
+													Hierarchy 
+													{
+														Cog [Id:0x59817c500e2bb99e]
+														{
+															var Name = "GenericSofaBodyGeneratedMeshNode0"
+															Transform 
+															{
+																var Translation = Real3{0, 0, 0}
+																var Scale = Real3{1, 1, 1}
+																var Rotation = Quaternion{0, 0, 0, 1}
+															}
+															Model 
+															{
+																var Visible = true
+																var ViewCulling = true
+																var VisibilityEvents = true
+																var OverrideBoundingBox = false
+																var LocalAabbCenter = Real3{0, 0, 0}
+																var LocalAabbHalfExtents = Real3{1, 1, 1}
+																var GroupSortValue = 0
+																var Material = "583afb5e7bf75e18:ZeroMaterial"
+																var Mesh = "59817c500e2d888c:GenericSofa_GenericSofaBodyGeneratedMeshNode0"
+															}
+														}
+														Cog [Id:0x59817c500e2bb9a0]
+														{
+															var Name = "GenericSofaBodyGeneratedMeshNode1"
+															Transform 
+															{
+																var Translation = Real3{0, 0, 0}
+																var Scale = Real3{1, 1, 1}
+																var Rotation = Quaternion{0, 0, 0, 1}
+															}
+															Model 
+															{
+																var Visible = true
+																var ViewCulling = true
+																var VisibilityEvents = true
+																var OverrideBoundingBox = false
+																var LocalAabbCenter = Real3{0, 0, 0}
+																var LocalAabbHalfExtents = Real3{1, 1, 1}
+																var GroupSortValue = 0
+																var Material = "583afb5e7bf75e18:ZeroMaterial"
+																var Mesh = "59817c500e2d88a2:GenericSofa_GenericSofaBodyGeneratedMeshNode1"
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

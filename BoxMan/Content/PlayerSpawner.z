@@ -1,0 +1,58 @@
+class PlayerSpawner : ZilchComponent
+{
+    [Property]
+    var PlayerArchetype : Archetype = null;
+    
+    [Property]
+    var DistanceOffset : Real = 2.0;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.LevelStarted, this.OnLevelStarted);
+    }
+
+    function OnLevelStarted(gameEvent : GameEvent)
+    {
+        var player = Zero.ObjectStore.RestoreOrArchetype("Player", Archetype.Player, this.Space);
+        Zero.ObjectStore.Erase("Player");
+        
+        var fromLevel = this.GameSession.LevelData.FromLevelName;
+        if (fromLevel == "")
+        {
+            // Default to origin for now if no location was set
+            player.Transform.Translation = local Real3(0.0, 0.0, 0.0);
+            return;
+        }
+        
+        foreach (var cog in this.Space.AllObjects)
+        {
+            // Find door object that connects to where player came from
+            if (cog.Door != null)
+            {
+                if (cog.Door.ToLevel.Name == fromLevel)
+                {
+                    var pos = cog.Transform.Translation;
+                    
+                    if (cog.Door.FromDirection == Direction.Left)
+                    {
+                        pos += local Real3(-this.DistanceOffset, this.GameSession.LevelData.PositionDifference.Y, 0.0);
+                    }
+                    else if (cog.Door.FromDirection == Direction.Right)
+                    {
+                        pos += local Real3(this.DistanceOffset, this.GameSession.LevelData.PositionDifference.Y, 0.0);
+                    }
+                    // TODO
+                    // Make cases for vertical door entrances
+                    player.Transform.Translation = pos;
+                    
+                    this.GameSession.LevelData.FromLevelName = "";
+                    return;
+                }
+            }
+        }
+    }
+}

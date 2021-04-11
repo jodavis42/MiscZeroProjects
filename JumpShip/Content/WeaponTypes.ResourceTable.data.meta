@@ -1,0 +1,11 @@
+DataContent = 
+{
+	DataBuilder = 
+	{
+		string Name = "WeaponTypes",
+		uint64 ResourceId = 52ed957c975996cd,
+		string LoaderType = "ResourceTable",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

@@ -1,0 +1,214 @@
+[Version:1]
+Cog 
+{
+	var Name = "FlagTest"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x598141e58e41a317]
+		{
+			var Name = "FlagRotationPivot"
+			Transform 
+			{
+				var Translation = Real3{0.776632607, 1.41792178, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x598141e58e41a31d]
+				{
+					var Name = "FlagRotationPivotInverse"
+					Transform 
+					{
+						var Translation = Real3{-0.776632607, -1.41792178, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x598141e58e41a31f]
+						{
+							var Name = "FlagScalingOffset"
+							Transform 
+							{
+								var Translation = Real3{-76.8866272, -140.374252, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x598141e58e41a321]
+								{
+									var Name = "FlagScalingPivot"
+									Transform 
+									{
+										var Translation = Real3{77.6632614, 141.792175, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x598141e58e41a323]
+										{
+											var Name = "FlagScaling"
+											Transform 
+											{
+												var Translation = Real3{0, 0, 0}
+												var Scale = Real3{0.00999999978, 0.00999999978, 0.00999999978}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Hierarchy 
+											{
+												Cog [Id:0x598141e58e41a326]
+												{
+													var Name = "FlagScalingPivotInverse"
+													Transform 
+													{
+														var Translation = Real3{-77.6632614, -141.792175, 0}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Hierarchy 
+													{
+														Cog [Id:0x598141e58e41a328]
+														{
+															var Name = "Flag"
+															Transform 
+															{
+																var Translation = Real3{0, 0, 0}
+																var Scale = Real3{1, 1, 1}
+																var Rotation = Quaternion{0, 0, 0, 1}
+															}
+															Model 
+															{
+																var Visible = true
+																var ViewCulling = true
+																var VisibilityEvents = true
+																var OverrideBoundingBox = false
+																var LocalAabbCenter = Real3{0, 0, 0}
+																var LocalAabbHalfExtents = Real3{1, 1, 1}
+																var GroupSortValue = 0
+																var Material = "583afb5e7bf75e18:ZeroMaterial"
+																var Mesh = "598141e58e4401e1:FlagTest_Flag"
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		Cog [Id:0x598141e58e41a32b]
+		{
+			var Name = "FlagPoleRotationPivot"
+			Transform 
+			{
+				var Translation = Real3{0.738099933, 0.967701674, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x598141e58e41a32d]
+				{
+					var Name = "FlagPoleRotationPivotInverse"
+					Transform 
+					{
+						var Translation = Real3{-0.738099933, -0.967701674, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x598141e58e41a32f]
+						{
+							var Name = "FlagPoleScalingOffset"
+							Transform 
+							{
+								var Translation = Real3{-73.0718918, -95.8024673, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x598141e58e41a331]
+								{
+									var Name = "FlagPoleScalingPivot"
+									Transform 
+									{
+										var Translation = Real3{73.8099976, 96.7701645, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x598141e58e41a333]
+										{
+											var Name = "FlagPoleScaling"
+											Transform 
+											{
+												var Translation = Real3{0, 0, 0}
+												var Scale = Real3{0.00999999978, 0.00999999978, 0.00999999978}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Hierarchy 
+											{
+												Cog [Id:0x598141e58e41a335]
+												{
+													var Name = "FlagPoleScalingPivotInverse"
+													Transform 
+													{
+														var Translation = Real3{-73.8099976, -96.7701645, 0}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Hierarchy 
+													{
+														Cog [Id:0x598141e58e41a337]
+														{
+															var Name = "FlagPole"
+															Transform 
+															{
+																var Translation = Real3{0, 0, 0}
+																var Scale = Real3{1, 1, 1}
+																var Rotation = Quaternion{0, 0, 0, 1}
+															}
+															Model 
+															{
+																var Visible = true
+																var ViewCulling = true
+																var VisibilityEvents = true
+																var OverrideBoundingBox = false
+																var LocalAabbCenter = Real3{0, 0, 0}
+																var LocalAabbHalfExtents = Real3{1, 1, 1}
+																var GroupSortValue = 0
+																var Material = "583afb5e7bf75e18:ZeroMaterial"
+																var Mesh = "598141e58e44020a:FlagTest_FlagPole"
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

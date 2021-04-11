@@ -1,0 +1,47 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Joshua Davis
+// Last update: 7/24/2016
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Creates a space and loads the given hud level into it
+class SpaceCreator : ZilchComponent
+{
+  // Space archetype used to create the Space
+  [Property]
+  var SpaceArchetype : Archetype = Archetype.DefaultSpace;
+  
+  // What to name the space we create
+  [Property]
+  var NewSpaceName : String = "UiSpace";
+  
+  // The level that is to be loaded
+  [Property]
+  var LevelToLoad : Level;
+  
+  // Store the space where our level will be loaded
+  var CreatedSpace : Space;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Handle not having a space to load
+    if(this.LevelToLoad == null)
+      return;
+    
+    // Create the space and then load our level into it
+    this.CreatedSpace = this.GameSession.CreateNamedSpace(this.NewSpaceName, this.SpaceArchetype);
+    this.CreatedSpace.LoadLevel(this.LevelToLoad);
+    
+    Zero.Connect(this.Owner, Events.CogDestroy, this.Destroyed);
+  }
+  
+  function Destroyed(event : ObjectEvent)
+  {
+    // Make sure to clean up the space when we get destroyed
+    if(this.CreatedSpace != null)
+    {
+      this.CreatedSpace.Destroy();
+    }
+  }
+}

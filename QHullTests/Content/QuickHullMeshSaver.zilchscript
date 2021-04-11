@@ -1,0 +1,89 @@
+class QuickHullMeshSaver : ZilchComponent
+{
+  [Dependency] var QuickHullTest : QuickHullTest;
+  [Property] var Active : Boolean = true;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.QuickHullFinished, this.OnQuickHullFinished);
+  }
+
+  function OnQuickHullFinished(event : ZilchEvent)
+  {
+    if(this.Active)
+      this.Save(this.QuickHullTest.TestName);
+  }
+  
+  function GenerateFileName(fileNameNoExt : String) : String
+  {
+    return "`fileNameNoExt`.generated.convexmesh.txt";
+  }
+  
+  function GetFilePath(fileName : String) : String
+  {
+    var projectFolder = Zero.Editor.ProjectCog.ProjectSettings.ProjectFolder;
+    var levelName = Zero.Editor.EditLevel.Name;
+    var filePath = FilePath.CombineDirectoriesAndFile(projectFolder, "Tests", levelName, fileName);
+    return filePath;
+  }
+  
+  function Save(testName : String, outStream : UnitTestStreamWriter)
+  {
+    var vertices = this.QuickHullTest.Vertices;
+    var edges = this.QuickHullTest.Edges;
+    var faces = this.QuickHullTest.Faces;
+    var vDigits = Math.Floor(Math.Log10(vertices.Count)) + 1;
+    var eDigits = Math.Floor(Math.Log10(edges.Count)) + 1;
+    var fDigits = Math.Floor(Math.Log10(faces.Count)) + 1;
+    Console.WriteLine(vertices.Count);
+    
+    outStream.WriteLine("Vertices:");
+    for(var i = 0; i < vertices.Count; ++i)
+    {
+      var vertex = vertices[i];
+      var vertexI = String.FormatC("%`vDigits`i", i);
+      outStream.WriteLine("  `vertexI`: `vertex`");
+    }
+    
+    outStream.WriteLine("Edges:");
+    for(var i = 0; i < edges.Count; ++i)
+    {
+      var edge = edges[i];
+      var edgeI = String.FormatC("%`eDigits`i", i);
+      var vertI = String.FormatC("%`vDigits`d", edge.Vertex);
+      var twinI = String.FormatC("%`eDigits`d", edge.Twin);
+      var faceI = String.FormatC("%`fDigits`d", edge.Face);
+      outStream.WriteLine("  `edgeI`: Vertex(`vertI`) Twin(`twinI`) Face(`faceI`)");
+    }
+    outStream.WriteLine("");
+    
+    outStream.WriteLine("Faces:");
+    for(var i = 0; i < faces.Count; ++i)
+    {
+      var face = faces[i];
+      var faceI = String.FormatC("%`fDigits`i", i);
+      var faceBuilder = StringBuilder();
+      
+      faceBuilder.Write("  `faceI`: ");
+      
+      
+      foreach(var edge in face.Edges)
+      {
+        var eI = String.FormatC("%`eDigits`d", edge);
+        faceBuilder.Write("`eI`, ");
+      }
+      outStream.WriteLine(faceBuilder.ToString());
+    }
+    outStream.WriteLine("");
+  }
+  
+  function Save(testName : String)
+  {
+    var fileName = this.GenerateFileName(testName);
+    var filePath = this.GetFilePath(fileName);
+    var file = FileUnitTestStreamWriter(filePath);
+    
+    this.Save(testName, file);
+  }
+}
+

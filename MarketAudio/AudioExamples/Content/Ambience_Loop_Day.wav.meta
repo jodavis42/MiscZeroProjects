@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Ambience_Loop_Day"
+		var ResourceId = 0x5944f682d4c81cce
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 8.49213505
+		var AudioChannels = 2
+		var SampleRate = 96000
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

@@ -1,0 +1,167 @@
+[Version:1]
+Cog 
+{
+	var Name = "GenericTallLamp"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59817c06f681eead]
+		{
+			var Name = "GenericTallLampPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817c06f681eeb8]
+				{
+					var Name = "GenericTallLampScaling"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{0.0253999997, 0.0253999997, 0.0253999997}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817c06f681eebc]
+						{
+							var Name = "GenericTallLampGeometricTranslation"
+							Transform 
+							{
+								var Translation = Real3{0, -1.45089223e-06, 33.192543}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59817c06f681eec0]
+								{
+									var Name = "GenericTallLamp"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x59817c06f681eec4]
+										{
+											var Name = "GenericTallLampBase"
+											Transform 
+											{
+												var Translation = Real3{-0.260582924, 0.0416228399, -0.00619816221}
+												var Scale = Real3{1.0072757, 0.99999994, 1.11609995}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "59817c07f6d8ef4d:GenericTallLamp_GenericTallLampBase"
+											}
+										}
+										Cog [Id:0x59817c06f681eeca]
+										{
+											var Name = "GenericTallLampShade"
+											Transform 
+											{
+												var Translation = Real3{-5.68434189e-14, -0.0822786018, 81.2236176}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{-4.37113883e-08, 1, -4.37113883e-08, -4.37113883e-08}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "59817c07f6d8ef7d:GenericTallLamp_GenericTallLampShade"
+											}
+										}
+										Cog [Id:0x59817c06f681eece]
+										{
+											var Name = "GenericTallLampStand"
+											Transform 
+											{
+												var Translation = Real3{-0.191642761, -0.0876860842, 69.8726273}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Hierarchy 
+											{
+												Cog [Id:0x59817c06f681eed2]
+												{
+													var Name = "GenericTallLampStandGeneratedMeshNode0"
+													Transform 
+													{
+														var Translation = Real3{0, 0, 0}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "59817c07f6d8ef89:GenericTallLamp_GenericTallLampStandGeneratedMeshNode0"
+													}
+												}
+												Cog [Id:0x59817c06f681eed6]
+												{
+													var Name = "GenericTallLampStandGeneratedMeshNode1"
+													Transform 
+													{
+														var Translation = Real3{0, 0, 0}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "59817c07f6d8ef97:GenericTallLamp_GenericTallLampStandGeneratedMeshNode1"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

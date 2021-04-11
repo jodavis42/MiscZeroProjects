@@ -1,0 +1,19 @@
+DataContent = 
+{
+	ContentTags = 
+	{
+		object Tags = 
+		[
+			"Cog",
+			"Blocks",
+		],
+	},
+	DataBuilder = 
+	{
+		string Name = "Swivel",
+		uint64 ResourceId = 52625465bb4680a3,
+		string LoaderType = "Cog",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

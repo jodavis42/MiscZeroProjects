@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Ambience_Loop_Night"
+		var ResourceId = 0x5944f682d4cb43bc
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 6.28122902
+		var AudioChannels = 2
+		var SampleRate = 48000
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

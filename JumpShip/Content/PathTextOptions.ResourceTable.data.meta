@@ -1,0 +1,11 @@
+DataContent = 
+{
+	DataBuilder = 
+	{
+		string Name = "PathTextOptions",
+		uint64 ResourceId = 52e01c6d4b38aba7,
+		string LoaderType = "ResourceTable",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

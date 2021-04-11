@@ -1,0 +1,124 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// A simple example of using joints to control a first person player.
+// The player moves along their orientation's forward and right vectors using constrained linear axes.
+// Rotation is achieved by locking orienation about the right and forward vectors and then
+// using mouse input to control rotation about the up vector using an angular motor.
+// Camera up/down rotation is achieved separately (the player shouldn't rotate up/down)
+class FirstPersonPlayerJoint : ZilchComponent
+{
+  [Dependency]  var CustomJoint : CustomJoint;
+  [Dependency]  var Orientation : Orientation;
+  
+  [Property] var Active : Boolean = true;
+  // The target linear speed that the character will try to move with
+  [Property] var TargetLinearSpeed : Real = 5.0;
+  [Property] var MaxLinearImpulse : Real = 1;
+  // The target angular speed (in degrees per second) for the player to rotate
+  [Property] var TargetAngularSpeed : Real = 180;
+  [Property] var MaxAngularImpulse : Real = 1;
+  [Property] var SmoothingAngle : Real = 20;
+  [Property] var JumpPower : Real = 5.0;
+  
+  // Store how much we want to rotate about the up vector (controlled by the mouse movement)
+  var RotationDeltaAboutUp : Real;
+  
+  var ForwardAxisConstraint : CustomConstraintInfo;
+  var SideAxisConstraint : CustomConstraintInfo;
+  var UpRotationConstraint : CustomConstraintInfo;
+  var RightRotationConstraint : CustomConstraintInfo;
+  var ForwardRotationConstraint : CustomConstraintInfo;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.ComputeCustomJointInfo, this.OnComputeCustomJointInfo);
+    Zero.Connect(this.Space, Events.MouseMove, this.OnMouseMove);
+    
+    this.ForwardAxisConstraint = this.CustomJoint.CreateConstraint();
+    this.SideAxisConstraint = this.CustomJoint.CreateConstraint();
+    
+    this.UpRotationConstraint = this.CustomJoint.CreateConstraint();
+    this.RightRotationConstraint = this.CustomJoint.CreateConstraint();
+    this.ForwardRotationConstraint = this.CustomJoint.CreateConstraint();
+  }
+  
+  function OnMouseMove(event : ViewportMouseEvent)
+  {
+    // Track the left/right mose movement to rotate about the player's up vector
+    this.RotationDeltaAboutUp = Zero.Mouse.RawMovement.X;
+  }
+  
+  function UpdateLinearMovement(playerCog : Cog)
+  {
+    var worldForward = this.Orientation.WorldForward;
+    var worldRight = this.Orientation.WorldRight;
+    var forwardTargetSpeed = 0.0;
+    var sideTargetSpeed = 0.0;
+    // Build up keyboard input
+    if(Zero.Keyboard.KeyIsDown(Keys.Left) || Zero.Keyboard.KeyIsDown(Keys.A))
+      sideTargetSpeed -= this.TargetLinearSpeed;
+    if(Zero.Keyboard.KeyIsDown(Keys.Right) || Zero.Keyboard.KeyIsDown(Keys.D))
+      sideTargetSpeed += this.TargetLinearSpeed;
+    if(Zero.Keyboard.KeyIsDown(Keys.Up) || Zero.Keyboard.KeyIsDown(Keys.W))
+      forwardTargetSpeed += this.TargetLinearSpeed;
+    if(Zero.Keyboard.KeyIsDown(Keys.Down) || Zero.Keyboard.KeyIsDown(Keys.S))
+      forwardTargetSpeed -= this.TargetLinearSpeed;
+    // Hardcode a simple jump when the user hits space for now
+    if(Zero.Keyboard.KeyIsPressed(Keys.Space))
+      this.Owner.RigidBody.Velocity += this.Orientation.WorldUp * this.JumpPower;
+    
+    // Set the velocity constraints to by default zero out the velocity of the player's center along the x and y axes
+    var constrainedPoint = Real3.Zero;
+    this.CustomJoint.ConstrainLinearVelocity(this.ForwardAxisConstraint, null, playerCog, constrainedPoint, constrainedPoint, worldForward);
+    this.CustomJoint.ConstrainLinearVelocity(this.SideAxisConstraint, null, playerCog, constrainedPoint, constrainedPoint, worldRight);
+    
+    // Add motors to force acceleration / deceleration
+    var maxAccel = this.MaxLinearImpulse;
+    this.ForwardAxisConstraint.ComputeMotor(forwardTargetSpeed, -maxAccel, maxAccel);
+    this.SideAxisConstraint.ComputeMotor(sideTargetSpeed, -maxAccel, maxAccel);
+  }
+  
+  function UpdateAngularMovement(playerCog : Cog)
+  {
+    var upVector = this.Orientation.WorldUp;
+    var rightVector = this.Orientation.WorldRight;
+    var forwardVector = this.Orientation.WorldForward;
+    var globalUp = this.Orientation.GlobalUp;
+    
+    // The cross product's length between the desired up and the actual up has a length of sin(theta).
+    // We can project this onto an axis to approximate the error on that axis.
+    var rotationAxis = Math.Cross(globalUp, upVector);
+    
+    // Kill all angular rotation about the right vector and fix all error
+    var rightError = Math.Dot(rightVector, rotationAxis);
+    this.CustomJoint.ConstrainAngularVelocity(this.RightRotationConstraint, null, playerCog, rightVector);
+    this.RightRotationConstraint.SetErrorAndBias(rightError);
+    // Same for forward
+    var forwardError = Math.Dot(forwardVector, rotationAxis);
+    this.CustomJoint.ConstrainAngularVelocity(this.ForwardRotationConstraint, null, playerCog, forwardVector);
+    this.ForwardRotationConstraint.SetErrorAndBias(forwardError);
+    
+    // By default, lock angular velocity about the up vector to zero
+    this.CustomJoint.ConstrainAngularVelocity(this.UpRotationConstraint, null, playerCog, globalUp);
+    // We need to rotate the opposite direction about the up vector so negate the delta
+    var targetRotationalSpeed = -this.RotationDeltaAboutUp;
+    this.UpRotationConstraint.ComputeMotor(targetRotationalSpeed, -this.MaxAngularImpulse, this.MaxAngularImpulse);
+    // Clear out the rotation delta
+    this.RotationDeltaAboutUp = 0;
+  }
+
+  function OnComputeCustomJointInfo(event : Event)
+  {
+    if(this.Active == false)
+      return;
+      
+    var playerCog = this.Owner;
+    this.UpdateLinearMovement(playerCog);
+    this.UpdateAngularMovement(playerCog);
+  }
+}

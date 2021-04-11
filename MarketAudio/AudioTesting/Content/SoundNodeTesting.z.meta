@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "SoundNodeTesting"
+		var ResourceId = 0x58b522df2567c4fe
+	}
+}

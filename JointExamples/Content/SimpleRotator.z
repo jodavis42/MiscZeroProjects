@@ -1,0 +1,37 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Simple helper class that rotates an object with a rigid body (forced to be kinematic) about an axis.
+// Just used to help visualize that certain constraints are working correctly
+class SimpleRotator : ZilchComponent
+{
+  [Dependency] var Transform : Transform;
+  [Dependency] var RigidBody : RigidBody;
+  
+  [Property] var WorldRotationAxis : Real3 = Real3(0, 0, 1);
+  [Property] var RotationDegreesPerSecond : Real = 45;
+  
+  var AccumulatedAngle : Real;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    // Force this rigid body to be kinematic, otherwise certain things won't work correctly
+    // (constraints will seem like they're a frame behind since this object's velocity won't be correct)
+    this.RigidBody.DynamicState = RigidBodyDynamicState.Kinematic;
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // Accumulate the total angle
+    this.AccumulatedAngle += event.Dt * Math.ToRadians(this.RotationDegreesPerSecond);
+    
+    // Build and set the rotation
+    var rotation = Math.ToQuaternion(this.WorldRotationAxis, this.AccumulatedAngle);
+    this.Transform.WorldRotation = Math.Normalize(rotation);
+  }
+}

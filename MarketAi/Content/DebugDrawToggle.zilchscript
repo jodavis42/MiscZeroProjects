@@ -1,0 +1,34 @@
+class DebugDrawToggle : ZilchComponent
+{
+  var Toggle : Boolean = false;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if (Zero.Keyboard.KeyIsReleased(Keys.Space))
+    {
+      this.Toggle = !this.Toggle;
+      
+      foreach (var cog in this.Space.AllObjects)
+      {
+        var steering = cog.SteeringAccumulator;
+        
+        if (steering != null)
+        {
+          steering.DebugDrawEnabled = this.Toggle;
+        }
+        
+        var sensing = cog.Sensor;
+        
+        if (sensing != null)
+        {
+          sensing.DebugDrawEnabled = this.Toggle;
+        }
+      }
+    }
+  }
+}

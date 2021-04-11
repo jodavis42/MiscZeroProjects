@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "SplineHelper"
+		var ResourceId = 0x58dd6fa724d4c04b
+	}
+}

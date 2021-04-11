@@ -1,0 +1,74 @@
+class DamageEvent : ZilchEvent
+{
+    var Damage : Real = 0.0;
+    var Normal : Real3 = local Real3(0.0, 0.0, 0.0);
+    var WorldPoint : Real3 = local Real3(0.0, 0.0, 0.0);
+    var DamageType : DamageTypes = DamageTypes.Energy;
+    
+    constructor() : base()
+    {
+    }
+}
+
+class Health : ZilchComponent
+{
+    // The max health we can have
+    [Property]
+    var MaxHealth : Real = 50.0;
+    var CurrentHealth : Real = 50.0;
+    
+    // If we reach zero health should we call destroy on ourself?
+    [Property]
+    var DestroyAtZeroHealth : Boolean = true;
+    
+    sends Death : ZilchEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        this.CurrentHealth = this.MaxHealth;
+        Zero.Connect(this.Owner, Events.ApplyDamage, this.OnApplyDamage);
+    }
+    
+    function OnApplyDamage(damageEvent : DamageEvent)
+    {
+        this.ApplyDamage(damageEvent.Damage, damageEvent.DamageType);
+    }
+    
+    function ApplyDamage(damage : Real, damageType : DamageTypes)
+    {
+        var damageResistances = this.Owner.DamageResistance;
+        if(damageResistances != null)
+        {
+            var resistance = damageResistances.GetResistance(damageType);
+            damage /= resistance;
+        }
+        
+        this.CurrentHealth -= damage;
+        // Clamp our current health (in my case I don't want to have
+        // to heal through negative health so I clamp to 0)
+        this.CurrentHealth = Math.Clamp(this.CurrentHealth, 0.0, this.MaxHealth);
+        
+        // If we have no health
+        if(this.CurrentHealth <= 0.0)
+        {
+            // Let anyone listening know we just died
+            var toSend = new ZilchEvent();
+            this.Owner.DispatchEvent(Events.Death, toSend);
+            
+            // And if the property is set destroy ourself
+            if(this.DestroyAtZeroHealth)
+            {
+                this.Owner.Destroy();
+            }
+        }
+    }
+    
+    function IsZero() : Boolean
+    {
+        return this.CurrentHealth <= 0.0;
+    }
+}

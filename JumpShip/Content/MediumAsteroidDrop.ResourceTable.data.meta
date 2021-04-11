@@ -1,0 +1,11 @@
+DataContent = 
+{
+	DataBuilder = 
+	{
+		string Name = "MediumAsteroidDrop",
+		uint64 ResourceId = 522fc8f1db69f0cf,
+		string LoaderType = "ResourceTable",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

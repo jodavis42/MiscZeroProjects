@@ -1,0 +1,31 @@
+class BlockCamera : ZilchComponent
+{
+    var BlockCameraCog : Cog = null;
+    
+    var UnsafeActivePlayer : Player = null;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, "Activate", this.OnActivate);
+        
+        this.BlockCameraCog = this.Owner.FindChildByName("Camera");
+    }
+
+    function OnActivate(e : PlayerEvent)
+    {
+        if (this.UnsafeActivePlayer == e.Player)
+        {
+            this.LevelSettings.CameraViewport.Camera = e.Player.CameraCog;
+            this.UnsafeActivePlayer = null;
+        }
+        else
+        {
+            this.LevelSettings.CameraViewport.Camera = this.BlockCameraCog;
+            this.UnsafeActivePlayer = e.Player;
+        }
+    }
+}

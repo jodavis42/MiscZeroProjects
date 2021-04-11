@@ -1,0 +1,842 @@
+[Version:1]
+Level 
+{
+	Cog 
+	{
+		var Name = "LevelSettings"
+		var LinkId = 1
+		GravityEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var LocalSpaceDirection = true
+			var Strength = 10
+			var Direction = Vec3{0, -1, 0}
+		}
+		DragEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.100000001
+			var LinearDrag = 0
+			var AngularDrag = 0
+		}
+		GridDraw 
+		{
+			var Active = false
+			var HalfCellOffset = false
+			var CellSize = 1
+			var Axis = GridAxis.YAxis
+			var Lines = 100
+			var DrawAxisOrigins = true
+			var AlwaysDrawInEditor = true
+			var DrawInGame = false
+			var GridColor = Vec4{0.5, 0.5, 0.5, 0.400000006}
+			var GridHighlight = Vec4{0, 0, 0, 0.400000006}
+			var HighlightInterval = 10
+			var FollowEditorCamera = false
+		}
+	}
+	Cog 
+	{
+		var Name = "EditorCamera"
+		var LinkId = 2
+		Transform 
+		{
+			var Translation = Vec3{128.291382, 23.8003407, 176.527969}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{-0.0757642314, 0.295450121, 0.0235116389, 0.952058911}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Vec2{1, 1}
+			var NormalizedOffset = Vec2{0, 0}
+			var Camera = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Renderer = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Vec2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Vec4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 1000
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 60
+			var Size = 20
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.Orbit
+			var LookDistance = 261.338348
+			var VerticalAngle = 0.158823907
+			var HorizontalAngle = 213.026489
+			var LookTarget = Vec3{-17.7996292, -17.5321522, -36.1849365}
+			var MoveSensitivity = 1
+		}
+	}
+	Cog 
+	{
+		var Name = "GameCamera"
+		var LinkId = 4
+		Transform 
+		{
+			var Translation = Vec3{-52.4244843, 34.4922028, -233.826019}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{0.0107835056, 0.986142933, 0.0711392835, -0.149482384}
+		}
+		SelectionIcon 
+		{
+			var Visible = true
+			var Material = "56581e2bb81777be:DebugDrawOnTop"
+			var SpriteSource = "58f8e4be7360cf7c:CameraIcon"
+			var ViewScale = 1
+			var OverrideSelections = true
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = false
+			var RenderInGame = true
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Vec2{1, 1}
+			var NormalizedOffset = Vec2{0, 0}
+			var Camera = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Renderer = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Vec2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Letterbox
+			var MarginColor = Vec4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 500
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 50
+			var Size = 20
+		}
+		SoundListener 
+		{
+			var Active = true
+		}
+	}
+	Cog 
+	{
+		var Name = "Renderer"
+		var LinkId = 3
+		FluidRenderer 
+		{
+		}
+		DeferredRenderer 
+		{
+			var DrawDebug = true
+			var GeometryDebug = GeometryValue.None
+			var ShowDiffuse = true
+			var ShowSpecular = true
+			var Skybox = "5822dec85e380cf1:SimpleSkybox"
+			var DrawSkybox = true
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+		}
+		Ssao 
+		{
+			var Enabled = true
+			var Radius = 1
+			var Intensity = 2.20000005
+			var BlurDepthThreshold = 0.0500000007
+			var DebugBuffer = false
+		}
+		Bloom 
+		{
+			var Enabled = true
+			var Intensity = 0.100000001
+			var Threshold = 1
+			var Bloom1 = true
+			var Bloom2 = true
+			var Bloom3 = true
+			var Bloom4 = true
+			var Bloom5 = true
+		}
+	}
+	Cog 
+	{
+		var Name = "Water"
+		var LinkId = 5
+		Transform 
+		{
+			var Translation = Vec3{-4.70102882, 0, 0}
+			var Scale = Vec3{2.89785528, 1.00000072, 2.14945126}
+			var Rotation = Quat{0, 0, 0, 1}
+		}
+		Hierarchy 
+		{
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 6
+				Transform 
+				{
+					var Translation = Vec3{0, 0, 0}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 7
+				Transform 
+				{
+					var Translation = Vec3{100, 0, 50}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 8
+				Transform 
+				{
+					var Translation = Vec3{50, 0, -100}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 9
+				Transform 
+				{
+					var Translation = Vec3{100, 0, 0}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 10
+				Transform 
+				{
+					var Translation = Vec3{50, 0, 50}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 11
+				Transform 
+				{
+					var Translation = Vec3{-50, 0, -50}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 12
+				Transform 
+				{
+					var Translation = Vec3{0, 0, -50}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 13
+				Transform 
+				{
+					var Translation = Vec3{100, 0, -100}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 14
+				Transform 
+				{
+					var Translation = Vec3{50, 0, 0}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 15
+				Transform 
+				{
+					var Translation = Vec3{-50, 0, 0}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 16
+				Transform 
+				{
+					var Translation = Vec3{-50, 0, -100}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 17
+				Transform 
+				{
+					var Translation = Vec3{0, 0, 50}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 18
+				Transform 
+				{
+					var Translation = Vec3{0, 0, -100}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 19
+				Transform 
+				{
+					var Translation = Vec3{-50, 0, 50}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 20
+				Transform 
+				{
+					var Translation = Vec3{100, 0, -50}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+			Cog 
+			{
+				var Name = "WaterBlock"
+				var LinkId = 21
+				Transform 
+				{
+					var Translation = Vec3{50, 0, -50}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588ccd805ba081b3:Fluid"
+					var Mesh = "588ccd74a25066a2:Plane.pPlane1"
+				}
+				FluidShaderInputs 
+				{
+					var HeightMap = "589b752ca712835b:Runtime"
+					var RandomizationMap = "589b752ca712fbb9:Runtime"
+				}
+			}
+		}
+	}
+	Cog 
+	{
+		var Name = "Environment"
+		var LinkId = 22
+		Transform 
+		{
+			var Translation = Vec3{0, 0, 0}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{0, 0, 0, 1}
+		}
+		Hierarchy 
+		{
+			Cog 
+			{
+				var Name = "Cube"
+				var LinkId = 23
+				Transform 
+				{
+					var Translation = Vec3{102.992348, -3.72871017, -13.5465546}
+					var Scale = Vec3{63.3115959, 63.3115959, 192.795776}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "583afb5e7bf75e18:ZeroMaterial"
+					var Mesh = "4de0354322b345ae:Cube"
+				}
+				BoxCollider 
+				{
+					var Ghost = false
+					var SendsEvents = true
+					var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+					var CollisionGroup = "4e740859314e5515:DefaultGroup"
+					var Offset = Vec3{0, 0, 0}
+					var HalfSize = Vec3{0.5, 0.5, 0.5}
+				}
+			}
+			Cog 
+			{
+				var Name = "Cube"
+				var LinkId = 24
+				Transform 
+				{
+					var Translation = Vec3{-63.7948914, -3.72871017, -64.0632019}
+					var Scale = Vec3{63.3115959, 63.3115959, 63.3115959}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "583afb5e7bf75e18:ZeroMaterial"
+					var Mesh = "4de0354322b345ae:Cube"
+				}
+				BoxCollider 
+				{
+					var Ghost = false
+					var SendsEvents = true
+					var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+					var CollisionGroup = "4e740859314e5515:DefaultGroup"
+					var Offset = Vec3{0, 0, 0}
+					var HalfSize = Vec3{0.5, 0.5, 0.5}
+				}
+			}
+			Cog 
+			{
+				var Name = "Cube"
+				var LinkId = 25
+				Transform 
+				{
+					var Translation = Vec3{32.0215302, -3.72871017, -21.1102371}
+					var Scale = Vec3{63.3115959, 63.3115959, 63.3115959}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "583afb5e7bf75e18:ZeroMaterial"
+					var Mesh = "4de0354322b345ae:Cube"
+				}
+				BoxCollider 
+				{
+					var Ghost = false
+					var SendsEvents = true
+					var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+					var CollisionGroup = "4e740859314e5515:DefaultGroup"
+					var Offset = Vec3{0, 0, 0}
+					var HalfSize = Vec3{0.5, 0.5, 0.5}
+				}
+			}
+			Cog 
+			{
+				var Name = "Cube"
+				var LinkId = 26
+				Transform 
+				{
+					var Translation = Vec3{-54.5947456, -3.72871017, 61.8471909}
+					var Scale = Vec3{63.3115959, 63.3115959, 63.3115959}
+					var Rotation = Quat{0, 0.438412458, 0, 0.898773909}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "583afb5e7bf75e18:ZeroMaterial"
+					var Mesh = "4de0354322b345ae:Cube"
+				}
+				BoxCollider 
+				{
+					var Ghost = false
+					var SendsEvents = true
+					var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+					var CollisionGroup = "4e740859314e5515:DefaultGroup"
+					var Offset = Vec3{0, 0, 0}
+					var HalfSize = Vec3{0.5, 0.5, 0.5}
+				}
+			}
+			Cog 
+			{
+				var Name = "DirectionalLight"
+				var LinkId = 27
+				Transform 
+				{
+					var Translation = Vec3{23.6379147, 131.526337, 115.442505}
+					var Scale = Vec3{0.99999994, 1, 1}
+					var Rotation = Quat{-0.518070519, 0.138532221, -0.0854696482, 0.839706421}
+				}
+				SelectionIcon 
+				{
+					var Visible = true
+					var Material = "56581e2bb81777be:DebugDrawOnTop"
+					var SpriteSource = "58f8e4be736f5ea2:LightIcon"
+					var ViewScale = 1
+					var OverrideSelections = true
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = false
+					var VisibilityEvents = true
+					var Material = ""
+					var Mesh = ""
+				}
+				DirectionalLight 
+				{
+					var LightColorValue = Vec3{1, 1, 1}
+					var LightIntensityValue = 2
+					var CastShadowsValue = true
+					var NormalOffsetBias = 0.100000001
+				}
+				CameraViewport 
+				{
+					var RenderInEditor = true
+					var RenderInGame = true
+					var RenderToViewport = false
+					var ForwardViewportEvents = false
+					var RenderOrder = -1
+					var NormalizedSize = Vec2{1, 1}
+					var NormalizedOffset = Vec2{0, 0}
+					var Camera = CogPath
+					{
+						var Path = "."
+						var ErrorOnResolveToNull = false
+						var ErrorOnPathCantCompute = false
+						var ErrorOnDirectLinkFail = false
+						var UpdateCogOnPathChange = true
+						var UpdatePathOnCogChange = true
+						var UpdateCogOnInitialize = true
+						var ResolvedNullErrorOccurred = false
+						var ResolvedCog = 27
+						var PathPreference0 = CogPathPreference.CogRelative
+						var PathPreference1 = CogPathPreference.SpaceRelative
+						var PathPreference2 = CogPathPreference.Absolute
+					}
+					var Renderer = CogPath
+					{
+						var Path = "."
+						var ErrorOnResolveToNull = false
+						var ErrorOnPathCantCompute = false
+						var ErrorOnDirectLinkFail = false
+						var UpdateCogOnPathChange = true
+						var UpdatePathOnCogChange = true
+						var UpdateCogOnInitialize = true
+						var ResolvedNullErrorOccurred = false
+						var ResolvedCog = 27
+						var PathPreference0 = CogPathPreference.CogRelative
+						var PathPreference1 = CogPathPreference.SpaceRelative
+						var PathPreference2 = CogPathPreference.Absolute
+					}
+					var Resolution = Vec2{1, 1}
+					var ViewportScaling = ViewportScaling.Fill
+					var MarginColor = Vec4{0, 0, 0, 1}
+				}
+				Camera 
+				{
+					var NearPlane = 0.100000001
+					var FarPlane = 500
+					var PerspectiveMode = PerspectiveMode.Orthographic
+					var FieldOfView = 45
+					var Size = 500
+				}
+				ShadowRenderer 
+				{
+					var ResolutionValue = ShadowResolution.High
+				}
+				Hierarchy 
+				{
+				}
+			}
+		}
+	}
+}

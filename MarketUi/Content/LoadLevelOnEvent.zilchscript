@@ -1,0 +1,26 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Arend Danielek
+// Last update: 7/24/2016
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Load the given level when the given event is triggered from this Cog.
+class LoadLevelOnEvent : ZilchComponent
+{
+  [Property]
+  var EventString : String;
+  
+  [Property]
+  var LevelToLoad : Level;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, this.EventString, this.OnPropertyEvent);
+  }
+  
+  function OnPropertyEvent(event : ZilchEvent)
+  {
+    this.Space.LoadLevel(this.LevelToLoad);
+  }
+}

@@ -1,0 +1,41 @@
+[Version:1]
+Cog 
+{
+	var Name = "Renderer"
+	var LinkId = 1
+	Ssao 
+	{
+		var Active = true
+		var Radius = 1
+		var Intensity = 2.20000005
+		var BlurDepthThreshold = 0.0500000007
+		var DebugBuffer = false
+	}
+	Bloom 
+	{
+		var Active = true
+		var Intensity = 0.100000001
+		var Threshold = 1
+		var Bloom1 = true
+		var Bloom2 = true
+		var Bloom3 = true
+		var Bloom4 = true
+		var Bloom5 = true
+		var DebugBuffer = false
+	}
+	DeferredRenderer 
+	{
+		var GeometryDebug = GeometryValue.None
+		var EditorDebugDraw = true
+		var GameDebugDraw = true
+		var RenderDiffuse = true
+		var RenderSpecular = true
+		var RenderSkybox = true
+		var Skybox = "5822dec85e380cf1:SimpleSkybox"
+		var ClearColor = Real4{0, 0, 0, 1}
+		var DirectLighting = true
+		var IndirectLighting = true
+		var IndirectIntensity = 1
+		var ToneMap = true
+	}
+}

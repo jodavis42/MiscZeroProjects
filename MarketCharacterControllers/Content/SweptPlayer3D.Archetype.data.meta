@@ -1,0 +1,18 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "SweptPlayer3D"
+		var ResourceId = 0x592e7570a263596b
+		var LoaderType = "Cog"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

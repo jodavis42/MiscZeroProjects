@@ -1,0 +1,73 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// An example of creating a stick joint with a limit and a motor.
+class CustomStickJoint : ZilchComponent
+{
+  [Dependency] var ObjectLink : ObjectLink;
+  [Dependency] var CustomJoint : CustomJoint;
+  
+  [Property] var MinDistance : Real = 2;
+  [Property] var MaxDistance : Real = 4;
+  
+  var StickConstraint : CustomConstraintInfo;
+  var MotorConstraint : CustomConstraintInfo;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.FrameUpdate, this.OnFrameUpdate);
+    Zero.Connect(this.Owner, Events.ComputeCustomJointInfo, this.OnComputeCustomJointInfo);
+    this.StickConstraint = this.CustomJoint.CreateConstraint();
+    this.MotorConstraint = this.CustomJoint.CreateConstraint();
+  }
+  
+  function OnComputeCustomJointInfo(event : CustomJointEvent)
+  {
+    var cogA = this.ObjectLink.ObjectA;
+    var cogB = this.ObjectLink.ObjectB;
+    var localPointA = this.ObjectLink.LocalPointA;
+    var localPointB = this.ObjectLink.LocalPointB;
+    
+    // Instead of creating get/set properties for the limits, just use the actual min and max.
+    // This just makes life easier for now, but a little less intuitive for a user.
+    var minDistance = Math.Min(this.MinDistance, this.MaxDistance);
+    var maxDistance = Math.Max(this.MinDistance, this.MaxDistance);
+    // Constraint the distance betweent he two local points to be between the min and max distance
+    this.CustomJoint.ConstrainDistance(this.StickConstraint, cogA, cogB, localPointA, localPointB, minDistance, maxDistance);
+    
+    // If we have a joint motor the use its properties to create a motor
+    var jointMotor = this.Owner.JointMotor;
+    if(jointMotor != null)
+    {
+      this.MotorConstraint.Active = jointMotor.Active;
+      // Compute the axis to apply the motor on from the world points
+      var worldAxis = Math.Normalize(this.ObjectLink.WorldPointB - this.ObjectLink.WorldPointA);
+      // This motor constrains the linear velocity on the world axis. However, instead of
+      // constraining the relative velocity to be zero, we'll use the motor properties to
+      // constrain it to be some speed with a max force we can use to achieve this speed.
+      this.CustomJoint.ConstrainLinearVelocity(this.MotorConstraint, cogA, cogB, localPointA, localPointB, worldAxis);
+      var motorSpeed = jointMotor.Speed;
+      if(jointMotor.Reverse)
+        motorSpeed = -motorSpeed;
+      this.MotorConstraint.ComputeMotor(motorSpeed, -jointMotor.MaxImpulse, jointMotor.MaxImpulse);
+    }
+  }
+  
+  function OnFrameUpdate(event : UpdateEvent)
+  {
+    this.DebugDraw();
+  }
+  
+  function DebugDraw()
+  {
+    var worldPointA = this.ObjectLink.WorldPointA;
+    var worldPointB = this.ObjectLink.WorldPointB;
+    
+    var line = DebugLine(worldPointA, worldPointB) {Color = Real4(1), OnTop = true};
+    DebugDraw.Add(line);
+  }
+}

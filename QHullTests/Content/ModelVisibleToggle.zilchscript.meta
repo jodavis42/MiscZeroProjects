@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "ModelVisibleToggle"
+		var ResourceId = 0x598081a8a824fee6
+	}
+}

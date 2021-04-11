@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchFragmentBuilder 
+	{
+		var Name = "TestRenderPass"
+		var ResourceId = 0x588db50ceb79bf3e
+	}
+}

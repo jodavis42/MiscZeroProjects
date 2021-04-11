@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Plane.Archetype"
+		var ResourceId = 0x588ccd74a26bd175
+		var LoaderType = ""
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

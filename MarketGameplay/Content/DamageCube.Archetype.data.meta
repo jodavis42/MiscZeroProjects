@@ -1,0 +1,19 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "DamageCube"
+		var ResourceId = 0x583857ddf4d10499
+		var LoaderType = "Cog"
+		var Version = 0
+		var ShowInEditor = true
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Cog"
+		}
+	}
+}

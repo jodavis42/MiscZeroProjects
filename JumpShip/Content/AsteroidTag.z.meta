@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "AsteroidTag",
+		uint64 ResourceId = 521f514bfb251df5,
+	},
+},

@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Starling_1"
+		var ResourceId = 0x5944f09038ed19dc
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 1.14435375
+		var AudioChannels = 2
+		var SampleRate = 44100
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

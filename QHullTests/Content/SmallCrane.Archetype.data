@@ -1,0 +1,1091 @@
+[Version:1]
+Cog 
+{
+	var Name = "SmallCrane"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x598178d0156b0e3a]
+		{
+			var Name = "SmallCrane"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{0.839187503, 0.839187503, 0.839187503}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x598178d0156b0e40]
+				{
+					var Name = "Scrane"
+					Transform 
+					{
+						var Translation = Real3{0.0036056519, -1.51651466, -2.85619593}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x598178d0156b0e42]
+						{
+							var Name = "ScraneGeneratedMeshNode0"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "598178d214c3071e:SmallCrane_ScraneGeneratedMeshNode0"
+							}
+						}
+						Cog [Id:0x598178d0156b0e44]
+						{
+							var Name = "ScraneGeneratedMeshNode1"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "598178d214c3074b:SmallCrane_ScraneGeneratedMeshNode1"
+							}
+						}
+						Cog [Id:0x598178d0156b0e46]
+						{
+							var Name = "ScraneGeneratedMeshNode2"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "598178d214c30755:SmallCrane_ScraneGeneratedMeshNode2"
+							}
+						}
+					}
+				}
+				Cog [Id:0x598178d0156b0e48]
+				{
+					var Name = "SmallCr"
+					Transform 
+					{
+						var Translation = Real3{0.161750793, -1.04508054, -2.49787593}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "598178d214c30762:SmallCrane_SmallCr"
+					}
+				}
+				Cog [Id:0x598178d0156b0e4a]
+				{
+					var Name = "ScraneD"
+					Transform 
+					{
+						var Translation = Real3{0.372077942, -1.01760328, -2.67528605}
+						var Scale = Real3{0.0326818042, 0.0326818042, 0.012337001}
+						var Rotation = Quaternion{0.5, 0.50000006, 0.5, 0.5}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x598178d0156b0e4c]
+						{
+							var Name = "ScraneDGeneratedMeshNode3"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "598178d214c30770:SmallCrane_ScraneDGeneratedMeshNode3"
+							}
+						}
+						Cog [Id:0x598178d0156b0e4e]
+						{
+							var Name = "ScraneDGeneratedMeshNode4"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "598178d214c3077c:SmallCrane_ScraneDGeneratedMeshNode4"
+							}
+						}
+					}
+				}
+				Cog [Id:0x598178d0156b0e50]
+				{
+					var Name = "Sc1"
+					Transform 
+					{
+						var Translation = Real3{0.00123748777, -2.03771377, -1.48881876}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "598178d214c30785:SmallCrane_Sc1"
+					}
+				}
+				Cog [Id:0x598178d0156b0e52]
+				{
+					var Name = "Sc2"
+					Transform 
+					{
+						var Translation = Real3{-0.211112976, -1.52619016, -1.04679835}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x598178d0156b0e54]
+						{
+							var Name = "Sc2GeneratedMeshNode5"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "598178d214c30798:SmallCrane_Sc2GeneratedMeshNode5"
+							}
+						}
+						Cog [Id:0x598178d0156b0e56]
+						{
+							var Name = "Sc2GeneratedMeshNode6"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "598178d214c307a3:SmallCrane_Sc2GeneratedMeshNode6"
+							}
+						}
+					}
+				}
+				Cog [Id:0x598178d0156b0e58]
+				{
+					var Name = "Sc27"
+					Transform 
+					{
+						var Translation = Real3{0.147187814, 0.269963115, 1.06089962}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0.5, 0.50000006, 0.5, 0.5}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "598178d214c307ac:SmallCrane_Sc27"
+					}
+				}
+				Cog [Id:0x598178d0156b0e5a]
+				{
+					var Name = "WireK02"
+					Transform 
+					{
+						var Translation = Real3{0.00282745366, 2.17392278, 2.97050762}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "598178d214c307ba:SmallCrane_WireK02"
+					}
+				}
+				Cog [Id:0x598178d0156b0e5c]
+				{
+					var Name = "Sc3"
+					Transform 
+					{
+						var Translation = Real3{0.000471496576, 1.21503603, 1.34137571}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "598178d214c307c3:SmallCrane_Sc3"
+					}
+				}
+				Cog [Id:0x598178d0156b0e5d]
+				{
+					var Name = "SmallC2"
+					Transform 
+					{
+						var Translation = Real3{0.000260925299, -1.51878667, -2.97311854}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "598178d214c307cb:SmallCrane_SmallC2"
+					}
+				}
+				Cog [Id:0x598178d0156b0e5f]
+				{
+					var Name = "ChainC"
+					Transform 
+					{
+						var Translation = Real3{0.374523938, -1.44093633, -2.96458006}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x598178d0156b0e61]
+						{
+							var Name = "ChainCGeneratedMeshNode8"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "598178d214c307d4:SmallCrane_ChainCGeneratedMeshNode8"
+							}
+						}
+						Cog [Id:0x598178d0156b0e63]
+						{
+							var Name = "ChainCGeneratedMeshNode9"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Model 
+							{
+								var Visible = true
+								var ViewCulling = true
+								var VisibilityEvents = true
+								var OverrideBoundingBox = false
+								var LocalAabbCenter = Real3{0, 0, 0}
+								var LocalAabbHalfExtents = Real3{1, 1, 1}
+								var GroupSortValue = 0
+								var Material = "583afb5e7bf75e18:ZeroMaterial"
+								var Mesh = "598178d214c307e6:SmallCrane_ChainCGeneratedMeshNode9"
+							}
+						}
+					}
+				}
+				Cog [Id:0x598178d0156b0e65]
+				{
+					var Name = "Shook05"
+					Transform 
+					{
+						var Translation = Real3{-0.0203002933, 2.1517427, 2.59304786}
+						var Scale = Real3{0.46218887, 0.46218881, 0.4621889}
+						var Rotation = Quaternion{0.342020303, 0, 0, 0.939692616}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "598178d214c307ef:SmallCrane_Shook05"
+					}
+				}
+			}
+		}
+		Cog [Id:0x598178d0156b0e67]
+		{
+			var Name = "Direct01"
+			Transform 
+			{
+				var Translation = Real3{-58.1212044, -13.3618317, 37.5341492}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.425716013, -0.341966212, -0.524640739, 0.653128743}
+			}
+		}
+		Cog [Id:0x598178d0156b0e69]
+		{
+			var Name = "Direct01Target"
+			Transform 
+			{
+				var Translation = Real3{2.38973093, -6.54521614e-07, 10.1942472}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{1.37678796e-07, 0.707106829, 0.707106829, 1.37678782e-07}
+			}
+		}
+		Cog [Id:0x598178d0156b0e6b]
+		{
+			var Name = "Camera01"
+			Transform 
+			{
+				var Translation = Real3{7.05751038, 18.2245121, 24.4362564}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.135512233, 0.35356915, 0.864238441, 0.331236124}
+			}
+		}
+		Cog [Id:0x598178d0156b0e6d]
+		{
+			var Name = "Camera01Target"
+			Transform 
+			{
+				var Translation = Real3{-1.28559065, 8.93921947, 11.73351}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+		}
+		Cog [Id:0x598178d0156b0e6f]
+		{
+			var Name = "Direct02"
+			Transform 
+			{
+				var Translation = Real3{34.0072479, 45.2110252, -33.7441788}
+				var Scale = Real3{1, 0.99999994, 1}
+				var Rotation = Quaternion{0.375724882, 0.840782106, 0.355849475, 0.159020379}
+			}
+		}
+		Cog [Id:0x598178d0156b0e71]
+		{
+			var Name = "Direct02Target"
+			Transform 
+			{
+				var Translation = Real3{0.447610825, 15.1603155, 9.94104958}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.5, 0.50000006, 0.50000006, -0.49999997}
+			}
+		}
+		Cog [Id:0x598178d0156b0e73]
+		{
+			var Name = "Omni01"
+			Transform 
+			{
+				var Translation = Real3{9.27889824, -5.15774155, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e74]
+		{
+			var Name = "Omni02"
+			Transform 
+			{
+				var Translation = Real3{9.27889824, -3.97444344, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e76]
+		{
+			var Name = "Omni03"
+			Transform 
+			{
+				var Translation = Real3{9.27889824, -1.35682607, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e78]
+		{
+			var Name = "Omni04"
+			Transform 
+			{
+				var Translation = Real3{9.27889824, 3.0978725, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e7a]
+		{
+			var Name = "Omni05"
+			Transform 
+			{
+				var Translation = Real3{9.27889824, 4.10866451, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e7c]
+		{
+			var Name = "Omni06"
+			Transform 
+			{
+				var Translation = Real3{9.27889824, 6.10140085, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e7e]
+		{
+			var Name = "Omni07"
+			Transform 
+			{
+				var Translation = Real3{9.27889824, 7.65831757, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e80]
+		{
+			var Name = "Omni08"
+			Transform 
+			{
+				var Translation = Real3{9.27889824, 12.2626371, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e82]
+		{
+			var Name = "Omni09"
+			Transform 
+			{
+				var Translation = Real3{9.27889824, 13.4391861, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e83]
+		{
+			var Name = "Omni10"
+			Transform 
+			{
+				var Translation = Real3{9.27889824, 15.214592, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e85]
+		{
+			var Name = "Omni11"
+			Transform 
+			{
+				var Translation = Real3{9.27889824, 16.4075871, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e87]
+		{
+			var Name = "Omni12"
+			Transform 
+			{
+				var Translation = Real3{-9.27697754, -5.15774155, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e89]
+		{
+			var Name = "Omni13"
+			Transform 
+			{
+				var Translation = Real3{-9.27697754, -3.97444344, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e8b]
+		{
+			var Name = "Omni14"
+			Transform 
+			{
+				var Translation = Real3{-9.27697754, -1.35682607, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e8d]
+		{
+			var Name = "Omni15"
+			Transform 
+			{
+				var Translation = Real3{-9.27697754, 3.0978725, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e8f]
+		{
+			var Name = "Omni16"
+			Transform 
+			{
+				var Translation = Real3{-9.27697754, 4.10866451, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e90]
+		{
+			var Name = "Omni17"
+			Transform 
+			{
+				var Translation = Real3{-9.27697754, 6.10140085, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e92]
+		{
+			var Name = "Omni18"
+			Transform 
+			{
+				var Translation = Real3{-9.27697754, 7.65831757, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e94]
+		{
+			var Name = "Omni19"
+			Transform 
+			{
+				var Translation = Real3{-9.27697754, 12.2626371, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e96]
+		{
+			var Name = "Omni20"
+			Transform 
+			{
+				var Translation = Real3{-9.27697754, 13.4391861, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e98]
+		{
+			var Name = "Omni21"
+			Transform 
+			{
+				var Translation = Real3{-9.27697754, 15.214592, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e9a]
+		{
+			var Name = "Omni22"
+			Transform 
+			{
+				var Translation = Real3{-9.27697754, 16.4075871, 6.58863163}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e9c]
+		{
+			var Name = "Omni23"
+			Transform 
+			{
+				var Translation = Real3{5.72222996, 15.55546, 9.83417892}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e9d]
+		{
+			var Name = "Omni24"
+			Transform 
+			{
+				var Translation = Real3{5.72222996, 17.8970985, 9.83417892}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0e9f]
+		{
+			var Name = "Omni25"
+			Transform 
+			{
+				var Translation = Real3{5.72222996, 20.2365932, 9.83417892}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ea1]
+		{
+			var Name = "Omni26"
+			Transform 
+			{
+				var Translation = Real3{5.72222996, 22.5840664, 9.83417892}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ea3]
+		{
+			var Name = "Omni27"
+			Transform 
+			{
+				var Translation = Real3{5.70959997, 21.4006252, 9.06580639}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ea5]
+		{
+			var Name = "Omni28"
+			Transform 
+			{
+				var Translation = Real3{5.70959997, 19.0827866, 9.06580639}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ea7]
+		{
+			var Name = "Omni29"
+			Transform 
+			{
+				var Translation = Real3{-5.6973772, 15.5554609, 9.83417892}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ea9]
+		{
+			var Name = "Omni30"
+			Transform 
+			{
+				var Translation = Real3{-5.6973772, 20.2365932, 9.83417892}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0eab]
+		{
+			var Name = "Omni31"
+			Transform 
+			{
+				var Translation = Real3{-5.6973772, 22.5840664, 9.83417892}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0eac]
+		{
+			var Name = "Omni32"
+			Transform 
+			{
+				var Translation = Real3{-5.6973772, 17.8971004, 9.83417892}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0eae]
+		{
+			var Name = "Omni33"
+			Transform 
+			{
+				var Translation = Real3{-5.71000671, 19.0827885, 9.06580639}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0eb0]
+		{
+			var Name = "Omni34"
+			Transform 
+			{
+				var Translation = Real3{-5.71000671, 21.4006271, 9.06580639}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0eb2]
+		{
+			var Name = "Omni35"
+			Transform 
+			{
+				var Translation = Real3{-4.60304165, 24.2991219, 9.82863712}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0eb4]
+		{
+			var Name = "Omni36"
+			Transform 
+			{
+				var Translation = Real3{-4.60304165, 24.2991219, 10.5910215}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0eb6]
+		{
+			var Name = "Omni37"
+			Transform 
+			{
+				var Translation = Real3{-4.60304165, 24.2991219, 11.346344}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0eb8]
+		{
+			var Name = "Omni38"
+			Transform 
+			{
+				var Translation = Real3{-2.31372881, 24.2991219, 11.346344}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0eb9]
+		{
+			var Name = "Omni39"
+			Transform 
+			{
+				var Translation = Real3{-2.31372881, 24.2991219, 10.5910215}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ebb]
+		{
+			var Name = "Omni40"
+			Transform 
+			{
+				var Translation = Real3{-2.31372881, 24.2991219, 9.82863712}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ebd]
+		{
+			var Name = "Omni41"
+			Transform 
+			{
+				var Translation = Real3{0.0220499039, 24.2991219, 11.346344}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ebf]
+		{
+			var Name = "Omni42"
+			Transform 
+			{
+				var Translation = Real3{0.0220499039, 24.2991219, 10.5910215}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ec1]
+		{
+			var Name = "Omni43"
+			Transform 
+			{
+				var Translation = Real3{0.0220499039, 24.2991219, 9.82863712}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ec3]
+		{
+			var Name = "Omni44"
+			Transform 
+			{
+				var Translation = Real3{2.36933851, 24.2991219, 11.346344}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ec5]
+		{
+			var Name = "Omni45"
+			Transform 
+			{
+				var Translation = Real3{2.36933851, 24.2991219, 10.5910215}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ec6]
+		{
+			var Name = "Omni46"
+			Transform 
+			{
+				var Translation = Real3{2.36933851, 24.2991219, 9.82863712}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ec8]
+		{
+			var Name = "Omni47"
+			Transform 
+			{
+				var Translation = Real3{4.71692991, 24.2991219, 11.346344}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0eca]
+		{
+			var Name = "Omni48"
+			Transform 
+			{
+				var Translation = Real3{4.71692991, 24.2991219, 10.5910215}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ecc]
+		{
+			var Name = "Omni49"
+			Transform 
+			{
+				var Translation = Real3{4.71692991, 24.2991219, 9.82863712}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ece]
+		{
+			var Name = "Omni50"
+			Transform 
+			{
+				var Translation = Real3{1.83110702, 16.8544502, 13.895401}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ed0]
+		{
+			var Name = "Omni51"
+			Transform 
+			{
+				var Translation = Real3{1.83110702, 15.1543837, 13.895401}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ed1]
+		{
+			var Name = "Omni52"
+			Transform 
+			{
+				var Translation = Real3{-2.21470714, 15.1543837, 13.9026976}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ed3]
+		{
+			var Name = "Omni53"
+			Transform 
+			{
+				var Translation = Real3{-2.21470714, 16.8544502, 13.9026976}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ed5]
+		{
+			var Name = "Omni54"
+			Transform 
+			{
+				var Translation = Real3{-1.94777715, 17.3948193, 13.894043}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ed7]
+		{
+			var Name = "Omni55"
+			Transform 
+			{
+				var Translation = Real3{-0.200563818, 17.3948193, 13.894043}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ed9]
+		{
+			var Name = "Omni56"
+			Transform 
+			{
+				var Translation = Real3{1.42772472, 17.3948193, 13.894043}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0edb]
+		{
+			var Name = "Omni57"
+			Transform 
+			{
+				var Translation = Real3{10.1442118, -8.86945629, 8.96555042}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0edd]
+		{
+			var Name = "Omni58"
+			Transform 
+			{
+				var Translation = Real3{9.30396175, -11.3665409, 8.96555042}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0edf]
+		{
+			var Name = "Omni59"
+			Transform 
+			{
+				var Translation = Real3{-8.66503811, -11.9147139, 8.96555042}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+		Cog [Id:0x598178d0156b0ee0]
+		{
+			var Name = "Omni60"
+			Transform 
+			{
+				var Translation = Real3{-10.3501348, -9.52991772, 8.96555042}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+			}
+		}
+	}
+}

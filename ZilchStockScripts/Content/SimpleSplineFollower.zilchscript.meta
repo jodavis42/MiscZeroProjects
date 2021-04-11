@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "SimpleSplineFollower"
+		var ResourceId = 0x595a7244798e2d28
+	}
+}

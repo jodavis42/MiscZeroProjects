@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Voice_Amazing_1"
+		var ResourceId = 0x5944f143428904a9
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 1.39276648
+		var AudioChannels = 2
+		var SampleRate = 44100
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

@@ -1,0 +1,18 @@
+DataContent = 
+{
+	ContentTags = 
+	{
+		object Tags = 
+		[
+			"Turbine",
+		],
+	},
+	DataBuilder = 
+	{
+		string Name = "TurbineMaxSpeed",
+		uint64 ResourceId = 52289a063a5ef1dc,
+		string LoaderType = "SampleCurve",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

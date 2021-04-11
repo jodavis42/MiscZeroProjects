@@ -1,0 +1,36 @@
+[Version:1]
+Cog 
+{
+	var Name = "Helmet"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59817d28b00cef77]
+		{
+			var Name = "Helmet"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{0.89597708, 0.89597702, 0.89597702}
+				var Rotation = Quaternion{0.0871557519, 0, 0, 0.99619478}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59817d28b0075a41:Helmet"
+			}
+		}
+	}
+}

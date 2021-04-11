@@ -1,0 +1,279 @@
+[Version:1]
+Cog 
+{
+	var Name = "GenericBedsideTable"
+	Transform 
+	{
+		var Translation = Real3{3, -4, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	HierarchyMeshToTextBlock 
+	{
+		var ApplyTransform = false
+		var FindUsedVertices = false
+	}
+	QuickHullTest 
+	{
+		var Active = false
+		var DebugDrawMode = QuickHullDebugDrawMode.None
+	}
+	QuickHullRenderSettings 
+	{
+		var RenderGraphics = true
+		var RenderHullFilled = true
+		var RenderHullEdges = true
+		var RenderHullTriangleEdges = false
+		var RenderHullNormals = false
+	}
+	BaseCogResultRecorder 
+	{
+	}
+	QuickHullMeshSaver 
+	{
+		var Active = false
+	}
+	QuickHullUnitTest 
+	{
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x5981423554efc768]
+		{
+			var Name = "GenericBedsideDrawersPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x5981423554efc76e]
+				{
+					var Name = "GenericBedsideDrawersRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0.707106829, 0.707106829}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x5981423554efc770]
+						{
+							var Name = "GenericBedsideDrawersScaling"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{0.0253999997, 0.0253999997, 0.0253999997}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x5981423554efc772]
+								{
+									var Name = "GenericBedsideDrawersGeometricTranslation"
+									Transform 
+									{
+										var Translation = Real3{-0.169794679, 2.63240035e-14, 13.7772551}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x5981423554efc775]
+										{
+											var Name = "GenericBedsideDrawers"
+											Transform 
+											{
+												var Translation = Real3{0, 0, 0}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Hierarchy 
+											{
+												Cog [Id:0x5981423554efc777]
+												{
+													var Name = "GenericBedsideTableBody"
+													Transform 
+													{
+														var Translation = Real3{3.75542974, 2.84217094e-14, -0.00227189064}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "5981423554e73238:GenericBedsideTable_GenericBedsideTableBody"
+													}
+												}
+												Cog [Id:0x5981423554efc779]
+												{
+													var Name = "GenericBedsideTableDrawerTop"
+													Transform 
+													{
+														var Translation = Real3{-4.20524645, 5.01174213e-09, 17.5728416}
+														var Scale = Real3{1, 1, 0.913670301}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "5981423554e7329b:GenericBedsideTable_GenericBedsideTableDrawerTop"
+													}
+												}
+												Cog [Id:0x5981423554efc77c]
+												{
+													var Name = "GenericBedsideTableDrawerMiddle"
+													Transform 
+													{
+														var Translation = Real3{1.41923654, 3.57355532e-07, 9.51215649}
+														var Scale = Real3{1, 1, 0.913670301}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "5981423554e732c1:GenericBedsideTable_GenericBedsideTableDrawerMiddle"
+													}
+												}
+												Cog [Id:0x5981423554efc77e]
+												{
+													var Name = "GenericBedsideTableDrawerBottom"
+													Transform 
+													{
+														var Translation = Real3{1.41923654, 7.14595217e-07, 1.3394649}
+														var Scale = Real3{1, 1, 0.913670301}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "5981423554e732e4:GenericBedsideTable_GenericBedsideTableDrawerBottom"
+													}
+												}
+												Cog [Id:0x5981423554efc780]
+												{
+													var Name = "GenericHandleBottom"
+													Transform 
+													{
+														var Translation = Real3{-9.34837818, 4.76837158e-07, 4.84305382}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "5981423554e73304:GenericBedsideTable_GenericHandleBottom"
+													}
+												}
+												Cog [Id:0x5981423554efc782]
+												{
+													var Name = "GenericHandleMiddle"
+													Transform 
+													{
+														var Translation = Real3{-9.34837818, 2.84217094e-14, 13.1516609}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "5981423554e7332c:GenericBedsideTable_GenericHandleMiddle"
+													}
+												}
+												Cog [Id:0x5981423554efc784]
+												{
+													var Name = "GenericHandleTop"
+													Transform 
+													{
+														var Translation = Real3{-14.9728613, 0, 21.3565598}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "5981423554e73346:GenericBedsideTable_GenericHandleTop"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		Cog [Id:0x598142c75be42e10][InheritId:"59806fa92d4eddb3:ConvexHullFilled"]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+		Cog [Id:0x598142c75be439d3][InheritId:"59806fb3123a38d8:ConvexHullWireFrame"]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+	}
+}

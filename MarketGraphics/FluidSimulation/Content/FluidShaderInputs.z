@@ -1,0 +1,21 @@
+[RunInEditor]
+class FluidShaderInputs : ZilchComponent
+{
+  [Property][ShaderInput] var HeightMap : Texture = Texture.White;
+  
+  var Renderer : Cog;
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.Renderer = this.Space.FindObjectByName("Renderer");
+    
+    Zero.Connect(this.Renderer, "NewHeightMap", this.OnNewHeightMap);
+  }
+  
+  function OnNewHeightMap(event : Event)
+  {
+    var fluidRenderer = this.Renderer.FluidRenderer;
+    
+    this.HeightMap = fluidRenderer.GetHeightResult();
+  }
+}

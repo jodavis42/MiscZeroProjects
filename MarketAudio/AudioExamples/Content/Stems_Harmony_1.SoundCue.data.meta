@@ -1,0 +1,19 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Music"
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "Stems_Harmony_1"
+		var ResourceId = 0x5944d7dd7605ba56
+		var LoaderType = "SoundCue"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

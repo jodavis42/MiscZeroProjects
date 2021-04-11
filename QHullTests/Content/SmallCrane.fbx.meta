@@ -1,0 +1,115 @@
+[Version:1]
+GeometryContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "SmallCrane_ScraneGeneratedMeshNode0"
+				var ResourceId = 0x598178d214c3071e
+			}
+			Object
+			{
+				var Name = "SmallCrane_ScraneGeneratedMeshNode1"
+				var ResourceId = 0x598178d214c3074b
+			}
+			Object
+			{
+				var Name = "SmallCrane_ScraneGeneratedMeshNode2"
+				var ResourceId = 0x598178d214c30755
+			}
+			Object
+			{
+				var Name = "SmallCrane_SmallCr"
+				var ResourceId = 0x598178d214c30762
+			}
+			Object
+			{
+				var Name = "SmallCrane_ScraneDGeneratedMeshNode3"
+				var ResourceId = 0x598178d214c30770
+			}
+			Object
+			{
+				var Name = "SmallCrane_ScraneDGeneratedMeshNode4"
+				var ResourceId = 0x598178d214c3077c
+			}
+			Object
+			{
+				var Name = "SmallCrane_Sc1"
+				var ResourceId = 0x598178d214c30785
+			}
+			Object
+			{
+				var Name = "SmallCrane_Sc2GeneratedMeshNode5"
+				var ResourceId = 0x598178d214c30798
+			}
+			Object
+			{
+				var Name = "SmallCrane_Sc2GeneratedMeshNode6"
+				var ResourceId = 0x598178d214c307a3
+			}
+			Object
+			{
+				var Name = "SmallCrane_Sc27"
+				var ResourceId = 0x598178d214c307ac
+			}
+			Object
+			{
+				var Name = "SmallCrane_WireK02"
+				var ResourceId = 0x598178d214c307ba
+			}
+			Object
+			{
+				var Name = "SmallCrane_Sc3"
+				var ResourceId = 0x598178d214c307c3
+			}
+			Object
+			{
+				var Name = "SmallCrane_SmallC2"
+				var ResourceId = 0x598178d214c307cb
+			}
+			Object
+			{
+				var Name = "SmallCrane_ChainCGeneratedMeshNode8"
+				var ResourceId = 0x598178d214c307d4
+			}
+			Object
+			{
+				var Name = "SmallCrane_ChainCGeneratedMeshNode9"
+				var ResourceId = 0x598178d214c307e6
+			}
+			Object
+			{
+				var Name = "SmallCrane_Shook05"
+				var ResourceId = 0x598178d214c307ef
+			}
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 0.100000001
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x598178d214fea5c1
+	}
+}

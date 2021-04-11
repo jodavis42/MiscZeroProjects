@@ -1,0 +1,58 @@
+// An item to be picked up for resources. Can only be picked
+// up by a core with a PickupCollector component.
+class Pickup : ZilchComponent
+{
+    // The kind of resource this is (experience, platinum, etc...)
+    [Property]
+    var ResourceType : String = "";
+    
+    // The amount of resources this pickup is worth.
+    [Property]
+    var Value : Real = 1.0;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollisionStarted);
+    }
+    
+    function OnCollisionStarted(collisionEvent : CollisionEvent)
+    {
+        // Get the other object root
+        var otherObj = collisionEvent.OtherObject;
+        var otherRoot = otherObj.FindRoot();
+        
+        // If the other object is a ghost then we shouldn't get
+        // collected (likely from a damage region)
+        if(otherObj.Collider.Ghost)
+        {
+            return;
+        }
+        
+        // Try to find the core (via the core link)
+        var coreLink = otherRoot.CoreLink;
+        if(coreLink == null)
+        {
+            return;
+        }
+        
+        // Make sure the corelink has a core
+        var coreCog = coreLink.CoreCog;
+        if(coreCog == null)
+        {
+            return;
+        }
+        
+        // If that core exists, see if it has a pickup collector.
+        // If it does add our resources to the collector, then destroy ourself.
+        var pickupCollector = coreCog.PickupCollector;
+        if(pickupCollector != null)
+        {
+            pickupCollector.CollectPickup(this);
+            this.Owner.Destroy();
+        }
+    }
+}

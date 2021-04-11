@@ -1,0 +1,188 @@
+// Used to easily pass around the amount of each resource that is needed for an upgrade.
+struct UpgradeData
+{
+    var ExpRequired : Real = 0.0;
+    var ZincRequired : Real = 0.0;
+    var SteelRequired : Real = 0.0;
+    var PlatinumRequired : Real = 0.0;
+    
+    constructor()
+    {
+    }
+}
+
+// Manages all logic pertaining to upgrading a part, including displaying the upgrade
+// window. All parts look at their current level through this component.
+class Upgradable : ZilchComponent
+{
+    [Property]
+    var Level : Real = 0.0;
+    
+    [Property]
+    var UpgradeWindow : Archetype = Archetype.UpgradeWindow;
+    
+    // We need a reactive to get mouse events, although we
+    // don't actually need the reactive component.
+    [Dependency]
+    var Reactive : Reactive = null;
+    
+    // The upgrade window we have open (if we do have one open)
+    var Window : Cog = null;
+    
+    // Does middle mouse click in the space close the upgrade window?
+    // Needed so we don't close the first frame we're opened.
+    var CanClose : Boolean = false;
+    
+    // We send the upgrade event with just the basic event structure for now.
+    sends Upgrade : ZilchEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.MiddleMouseDown, this.OnMiddleMouseDown);
+        Zero.Connect(this.Owner, Events.MiddleMouseUp, this.OnMiddleMouseUp);
+        Zero.Connect(this.Space, Events.MiddleMouseDown, this.OnGlobalMiddleMouseDown);
+        
+        Zero.Connect(this.Owner, Events.DetachFromCore, this.OnDetachFromCore);
+    }
+    
+    function OnDetachFromCore(e : ZilchEvent)
+    {
+        this.CloseWindow();
+    }
+    
+    function OnMiddleMouseDown(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // If we had an old window then close it
+        this.CloseWindow();
+        
+        var root = this.Owner.FindRoot();
+        var coreLink = root.CoreLink;
+        if(coreLink == null)
+        {
+            return;
+        }
+        
+        var coreCog = coreLink.CoreCog;
+        if(coreCog == null)
+        {
+            return;
+        }
+        
+        if(coreCog.PlayerCore == null)
+        {
+            return;
+        }
+        
+        var windowPos = this.Owner.Transform.WorldTranslation + local Real3(0.0, 0.0, 1.0);
+        this.Window = this.Space.CreateAtPosition(this.UpgradeWindow, windowPos);
+        
+        // Tell the window that we created it so it can look back at us
+        this.Window.UiUpgradeWindow.Setup(this.Owner);
+        
+        // We don't want to close on a down until we get our up later (so the same down can't open and close)
+        this.CanClose = false;
+    }
+    
+    function OnMiddleMouseUp(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // Now that the mouse has gone up it's okay to close the upgrade window on the next down
+        this.CanClose = true;
+    }
+    
+    function OnGlobalMiddleMouseDown(viewportMouseEvent : ViewportMouseEvent)
+    {
+        this.CloseWindow();
+    }
+    
+    function CloseWindow()
+    {
+        // If the window wasn't just opened, destroy it
+        if(this.CanClose)
+        {
+            if(this.Window != null)
+            {
+                this.Window.Destroy();
+            }
+        }
+    }
+    
+    function GetUpgradeData() : UpgradeData
+    {
+        // Just some hardcoded values until we get custom resources
+        var upgradeData = local UpgradeData();
+        upgradeData.ExpRequired      = Math.Pow(2.0, this.Level);
+        upgradeData.ZincRequired     = Math.Pow(2.0, Math.Max(this.Level - 3.0, 0.0)) - 1.0;
+        upgradeData.SteelRequired    = Math.Pow(2.0, Math.Max(this.Level - 5.0, 0.0)) - 1.0;
+        upgradeData.PlatinumRequired = Math.Pow(2.0, Math.Max(this.Level - 7.0, 0.0)) - 1.0;
+        return upgradeData;
+    }
+    
+    function CheckUpgrade(actuallyUpgrade : Boolean) : Boolean
+    {
+        // Try to get to our core's pickup collector if we have one
+        var root = this.Owner.FindRoot();
+        var coreCog = root.CoreLink.CoreCog;
+        
+        if(coreCog == null)
+        {
+            return false;
+        }
+        
+        var pickupCollector = coreCog.PickupCollector;
+        if(pickupCollector == null)
+        {
+            return false;
+        }
+        
+        // Now get how much of each resource we need and have
+        var data = this.GetUpgradeData();
+        var expCount = pickupCollector.Resources.Get("Exp", 0.0);
+        var zincCount = pickupCollector.Resources.Get("Zinc", 0.0);
+        var steelCount = pickupCollector.Resources.Get("Steel", 0.0);
+        var platinumCount = pickupCollector.Resources.Get("Platinum", 0.0);
+        
+        // If we don't have enough to upgrade then we can't upgrade
+        if(expCount < data.ExpRequired || zincCount < data.ZincRequired ||
+           steelCount < data.SteelRequired || platinumCount < data.PlatinumRequired)
+        {
+            return false;
+        }
+        
+        // If the user wanted to actually upgrade and not just check then upgrade
+        if(actuallyUpgrade)
+        {
+            pickupCollector.Resources.AddOrOverwrite("Exp", expCount - data.ExpRequired);
+            pickupCollector.Resources.AddOrOverwrite("Zinc", zincCount - data.ZincRequired);
+            pickupCollector.Resources.AddOrOverwrite("Steel", steelCount - data.SteelRequired);
+            pickupCollector.Resources.AddOrOverwrite("Platinum", platinumCount - data.PlatinumRequired);
+            
+            pickupCollector.UpdateUi();
+        }
+        
+        return true;
+    }
+    
+    function CanUpgrade() : Boolean
+    {
+        // Check if we can upgrade but don't actually upgrade
+        return this.CheckUpgrade(false);
+    }
+    
+    function Upgrade()
+    {
+        // Check for an upgrade and perform it if we can
+        var upgradeSuccessful = this.CheckUpgrade(true);
+        // Now actually update our level and let any other component know that we upgraded,
+        // however don't destroy our window so that the user can upgrade multiple times
+        if(upgradeSuccessful)
+        {
+            this.Level += 1.0;
+            var toSend = new ZilchEvent();
+            this.Owner.DispatchEvent(Events.Upgrade, toSend);
+        }
+    }
+}

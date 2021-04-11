@@ -1,0 +1,35 @@
+[Version:1]
+GeometryContent 
+{
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x58875567dcc36bac
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Vec3{0, 0, 0}
+		var ScaleFactor = 1
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = true
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var PhysicsImport = PhysicsImport.NoMesh
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "Asteroid.pCube1"
+				var ResourceId = 0x58875567dcde5125
+			}
+		}
+	}
+}

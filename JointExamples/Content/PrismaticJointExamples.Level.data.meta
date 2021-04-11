@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "PrismaticJointExamples"
+		var ResourceId = 0x58d919c8fcf6e2b5
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

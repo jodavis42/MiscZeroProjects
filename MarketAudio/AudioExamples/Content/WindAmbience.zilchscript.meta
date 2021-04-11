@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "WindAmbience"
+		var ResourceId = 0x5944f357b63fe8e7
+	}
+}

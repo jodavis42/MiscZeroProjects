@@ -1,0 +1,176 @@
+[Version:1]
+Cog 
+{
+	var Name = "GenericBed"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59814272686bb585]
+		{
+			var Name = "GenericBedPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59814272686bb58a]
+				{
+					var Name = "GenericBedScaling"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{0.0253999997, 0.0253999997, 0.0253999997}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59814272686bb58c]
+						{
+							var Name = "GenericBedGeometricTranslation"
+							Transform 
+							{
+								var Translation = Real3{-1.90734863e-06, 2.91742094e-06, 20.5272923}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59814272686bb58e]
+								{
+									var Name = "GenericBed"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x59814272686bb590]
+										{
+											var Name = "GenericMattress"
+											Transform 
+											{
+												var Translation = Real3{-45.0787735, -0.431393355, 13.6365156}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{0, 0.707106829, 0, 0.707106769}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "59814273686307ad:GenericBed_GenericMattress"
+											}
+										}
+										Cog [Id:0x59814272686bb592]
+										{
+											var Name = "GenericBedFrame"
+											Transform 
+											{
+												var Translation = Real3{-47.0187378, -0.0376862921, 14.4466286}
+												var Scale = Real3{1, 1.09308684, 1.04284787}
+												var Rotation = Quaternion{0, 0.707106829, 0, 0.707106769}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "59814273686307fb:GenericBed_GenericBedFrame"
+											}
+										}
+										Cog [Id:0x59814272686bb594]
+										{
+											var Name = "GenericBlanket"
+											Transform 
+											{
+												var Translation = Real3{-47.4832687, -0.0376939215, 3.58546257}
+												var Scale = Real3{1, 1.05406821, 1.05310798}
+												var Rotation = Quaternion{0, 0.707106829, 0, 0.707106769}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "5981427368630816:GenericBed_GenericBlanket"
+											}
+										}
+										Cog [Id:0x59814272686bb596]
+										{
+											var Name = "GenericPillow"
+											Transform 
+											{
+												var Translation = Real3{33.6534576, 9.50589657, 22.4959641}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "5981427368630832:GenericBed_GenericPillow"
+											}
+										}
+										Cog [Id:0x59814272686bb598]
+										{
+											var Name = "GenericPillow0"
+											Transform 
+											{
+												var Translation = Real3{33.6534576, -10.8674955, 22.4959641}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "598142736863084e:GenericBed_GenericPillow0"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

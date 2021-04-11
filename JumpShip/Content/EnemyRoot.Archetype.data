@@ -1,0 +1,147 @@
+Cog = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Archetyped = 
+	{
+		string Name = "52ed9802631f503f:EnemyRoot",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [8.46402, 7.97988, 0],
+		Vec3 Scale = [1, 1, 1],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	RigidBody = 
+	{
+		bool Static = false,
+		bool Asleep = false,
+		bool Kinematic = false,
+		bool RotationLocked = false,
+		bool Mode2D = true,
+		bool AllowSleep = false,
+		bool Inherit2DMode = true,
+		Vec3 Velocity = [0, 0, 0],
+		Vec3 AngularVelocity = [0, 0, 0],
+	},
+	ObjectGrid = 
+	{
+		string DisplayArchetype = "5252e76acb5e3746:GridCellSprite",
+	},
+	CoreLink = 
+	{
+	},
+	Attachable = 
+	{
+	},
+	Hierarchy = 
+	{
+		Cog = 
+		{
+			LinkId = 
+			{
+				uint Id = 2,
+			},
+			Transform = 
+			{
+				Vec3 Translation = [0, 0, 0],
+				Vec3 Scale = [0.999999, 0.999999, 1],
+				Quat Rotation = [0, 0, 0, 1],
+			},
+			RigidBody = 
+			{
+				bool Static = true,
+				bool Asleep = false,
+				bool Kinematic = false,
+				bool RotationLocked = false,
+				bool Mode2D = true,
+				bool AllowSleep = true,
+				bool Inherit2DMode = true,
+				Vec3 Velocity = [0, 0, 0],
+				Vec3 AngularVelocity = [0, 0, 0],
+			},
+			BoxCollider = 
+			{
+				bool Ghost = false,
+				bool SendsMessages = true,
+				bool Seamless = true,
+				string MaterialName = "4de020863e872da8:DefaultPhysicsMaterial",
+				string SerializedGroupName = "4e740859314e5515:DefaultGroup",
+				Vec3 Offset = [0, 0, 0],
+				Vec3 Size = [0.5, 0.5, 0.1],
+			},
+			Sprite = 
+			{
+				string SpriteSource = "524dc939f7a122eb:Core",
+				bool FlipX = false,
+				bool FlipY = false,
+				Vec4 Color = [1, 1, 1, 1],
+				bool Visible = true,
+				bool OnTop = false,
+				bool AnimationActive = true,
+				float AnimationSpeed = 1,
+				uint StartFrame = 0,
+				BlendMode BlendMode = Alpha,
+				SpriteGeometryMode GeometryMode = ZPlane,
+				string SpriteLayer = "52ad5fa30d7fcd50:DefaultSpriteLayer",
+			},
+			Orientation = 
+			{
+				Vec3 GlobalUp = [0, 0, 1],
+				Vec3 UpVector = [0, 0, 1],
+				Vec3 ForwardVector = [0, 1, 0],
+				OrientationBases DefaultBases = ForwardZUpY,
+			},
+			Core = 
+			{
+			},
+			Health = 
+			{
+				float MaxHealth = 50,
+				bool DestroyAtZeroHealth = true,
+			},
+			CreateOnDestroy = 
+			{
+				string ArchetypeToCreate = "52247a3f629e359a:Explosion",
+			},
+			PickupCollector = 
+			{
+				bool CreateUi = false,
+				string UiLevel = "52308e37bdbac48e:UiLevel",
+			},
+			Reactive = 
+			{
+				bool Active = true,
+				bool CaptureMouse = false,
+			},
+			GridAttachable = 
+			{
+				bool IsDraggable = false,
+				string RootArchetype = "525b9b8a9d8d8062:ObjectRoot",
+			},
+			CompositeAiCore = 
+			{
+				string UiTextRoot = "52e852f848594746:UiTextRoot",
+			},
+			BasicEnemyBehavior = 
+			{
+				string ContextMenu = "521f3a3a938ff591:ClickableText",
+			},
+			WanderBehavior = 
+			{
+				string ContextMenu = "521f3a3a938ff591:ClickableText",
+			},
+			WeightedCreateOnDestroy = 
+			{
+				string DropTable = "52f181d38bff7297:EnemyDropTable",
+				bool ApplyRandomVelocity = false,
+				int MaxItemsToSpawn = 1,
+			},
+			Hierarchy = 
+			{
+			},
+		},
+	},
+},

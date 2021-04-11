@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchFragmentBuilder 
+	{
+		var Name = "TestPostProcessCopy"
+		var ResourceId = 0x588db0c487daf0ae
+	}
+}

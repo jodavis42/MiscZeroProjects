@@ -1,0 +1,12 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "BPM120"
+		var ResourceId = 0x58b4d37715f971f7
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+	}
+}

@@ -1,0 +1,18 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "Cone"
+		var ResourceId = 0x598171715ada4da7
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

@@ -1,0 +1,40 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Helper extension methods on orientation
+class OrientationExtensions
+{
+  // Draw the world basis with a given scaled length
+  [Extension(typeid(Orientation))]
+  function DrawBases(scalar : Real)
+  {
+    var worldPoint = this.Owner.Transform.WorldTranslation;
+    
+    var rightLine   = DebugLine(worldPoint, worldPoint + this.WorldRight) {Color = Real4(1, 0, 0, 1)};
+    var upLine      = DebugLine(worldPoint, worldPoint + this.WorldUp) {Color = Real4(0, 1, 0, 1)};
+    var rorwardLine = DebugLine(worldPoint, worldPoint + this.WorldForward) {Color = Real4(0, 0, 1, 1)};
+    DebugDraw.Add(rightLine);
+    DebugDraw.Add(upLine);
+    DebugDraw.Add(rorwardLine);
+  }
+}
+
+// Extend the cog class to get the orientation's world bases if they exist.
+// Otherwise, fall back on the transform's world rotation.
+class CogExtensions
+{
+  [Extension(typeid(Cog))]
+  function GetWorldBasis() : Quaternion
+  {
+    var orientation = this.Orientation;
+    if(orientation != null)
+      return orientation.OrientationToWorldRotation;
+    else
+      return this.Transform.WorldRotation;
+  }
+}
+

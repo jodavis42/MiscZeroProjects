@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "CompositeAiCore",
+		uint64 ResourceId = 521f2b5dc256c4a6,
+	},
+},

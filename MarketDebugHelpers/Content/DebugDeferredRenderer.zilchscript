@@ -1,0 +1,245 @@
+[RunInEditor]
+class DebugDeferredRenderer : ZilchComponent
+{
+  [Property] var DrawDebug : Boolean = true;
+  [Property] var GeometryDebug : GeometryValue = GeometryValue.None;
+  [Property] var RenderDiffuse : Boolean = true;
+  [Property] var RenderSpecular : Boolean = true;
+  
+  [Property] var Skybox : Texture = Texture.SimpleSkybox;
+  [Property] var DrawSkybox : Boolean = true;
+  [Property] var DirectLighting : Boolean = true;
+  [Property] var IndirectLighting : Boolean = true;
+  [Property] var IndirectIntensity : Real = 1.0;
+  [Property] var ToneMap : Boolean = true;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.RenderTasksUpdate, this.OnRenderTasksUpdate);
+  }
+
+  function OnRenderTasksUpdate(event : RenderTasksEvent)
+  {
+    var viewportSize = event.ViewportSize;
+    var final = event.GetFinalTarget(viewportSize, TextureFormat.RGB8);
+    
+    // Geometry pass
+    var geometryBuffer0 = event.GetRenderTarget(viewportSize, TextureFormat.RGBA32f);
+    var geometryBuffer1 = event.GetRenderTarget(viewportSize, TextureFormat.RGBA32f);
+    var depthStencil = event.GetRenderTarget(viewportSize, TextureFormat.Depth24Stencil8);
+    
+    var geometryPassSettings = RenderSettings();
+    geometryPassSettings.MultiRenderTarget.ColorTarget0 = geometryBuffer0;
+    geometryPassSettings.MultiRenderTarget.ColorTarget1 = geometryBuffer1;
+    geometryPassSettings.DepthTarget = depthStencil;
+    
+    geometryPassSettings.DepthSettings.DepthMode = DepthMode.Write;
+    geometryPassSettings.DepthSettings.DepthCompareFunc = TextureCompareFunc.LessEqual;
+    // Using stencil buffer to optimally identify which pixels had opaque objects rendered to them
+    geometryPassSettings.DepthSettings.StencilMode = StencilMode.Enabled;
+    geometryPassSettings.DepthSettings.StencilCompareFunc = TextureCompareFunc.Always;
+    geometryPassSettings.DepthSettings.StencilFailOp = StencilOp.Keep;
+    geometryPassSettings.DepthSettings.DepthFailOp = StencilOp.Keep;
+    geometryPassSettings.DepthSettings.DepthPassOp = StencilOp.Replace;
+    geometryPassSettings.DepthSettings.StencilTestValue = 1 as Byte;
+    
+    // Clearing color targets to 1 so that depth value the way it is currently stored will be farplane
+    event.AddRenderTaskClearTarget(geometryPassSettings, Real4(1.0), 1.0, 0);
+    
+    geometryPassSettings.CullMode = CullMode.BackFace;
+    event.AddRenderTaskRenderPass(geometryPassSettings, RenderGroup.Opaque, GeometryPass());
+    
+    geometryPassSettings.CullMode = CullMode.Disabled;
+    event.AddRenderTaskRenderPass(geometryPassSettings, RenderGroup.OpaqueDoubleSided, GeometryPass());
+    
+    // Lighting
+    var lightBuffer = event.GetRenderTarget(viewportSize, TextureFormat.RGB16f);
+    event.AddRenderTaskClearTarget(lightBuffer, Real4(0.0));
+    
+    var lightSettings = RenderSettings();
+    lightSettings.ColorTarget = lightBuffer;
+    lightSettings.DepthTarget = depthStencil;
+    
+    // Only process background pixels
+    lightSettings.DepthSettings.StencilMode = StencilMode.Enabled;
+    lightSettings.DepthSettings.StencilCompareFunc = TextureCompareFunc.Equal;
+    lightSettings.DepthSettings.StencilFailOp = StencilOp.Keep;
+    lightSettings.DepthSettings.DepthFailOp = StencilOp.Keep;
+    lightSettings.DepthSettings.DepthPassOp = StencilOp.Keep;
+    lightSettings.DepthSettings.StencilTestValue = 0 as Byte;
+    
+    if (this.DrawSkybox)
+    {
+      var skybox = Skybox();
+      skybox.Skybox = this.Skybox;
+    
+      event.AddRenderTaskPostProcess(lightSettings, skybox);
+    }
+    
+    // Only process opaque pixels
+    lightSettings.DepthSettings.StencilTestValue = 1 as Byte;
+    
+    if (this.GeometryDebug != GeometryValue.None)
+    {
+      // Bring skybox to gamma space for monitor display
+      this.LinearToGamma(event, lightBuffer, final);
+      
+      var geometryDebug = GeometryDebug();
+      geometryDebug.GeometryBuffer0 = geometryBuffer0.Texture;
+      geometryDebug.GeometryBuffer1 = geometryBuffer1.Texture;
+      
+      if (this.GeometryDebug == GeometryValue.Normal)
+        geometryDebug.ShowNormal = true;
+      else if (this.GeometryDebug == GeometryValue.Depth)
+        geometryDebug.ShowDepth = true;
+      else if (this.GeometryDebug == GeometryValue.Roughness)
+        geometryDebug.ShowRoughness = true;
+      else if (this.GeometryDebug == GeometryValue.Albedo)
+        geometryDebug.ShowAlbedo = true;
+      else if (this.GeometryDebug == GeometryValue.Metallic)
+        geometryDebug.ShowMetallic = true;
+      else if (this.GeometryDebug == GeometryValue.Specular)
+        geometryDebug.ShowSpecular = true;
+      
+      var geometryDebugSettings = RenderSettings();
+      geometryDebugSettings.ColorTarget = final;
+      geometryDebugSettings.DepthTarget = depthStencil;
+      geometryDebugSettings.DepthSettings = lightSettings.DepthSettings;
+      
+      event.AddRenderTaskPostProcess(geometryDebugSettings, geometryDebug);
+      
+      this.DrawDebugObjects(event, final, depthStencil);
+        
+      return;
+    }
+      
+    if (this.IndirectLighting)
+    {
+      var imageBasedLighting = ImageBasedLighting();
+      imageBasedLighting.DitherTexture = Texture.BlueNoise;
+      imageBasedLighting.EnvironmentBrdfLut = Texture.EnvironmentBrdfLut;
+      imageBasedLighting.Skybox = this.Skybox;
+      imageBasedLighting.Intensity = this.IndirectIntensity;
+      imageBasedLighting.GeometryBuffer0 = geometryBuffer0.Texture;
+      imageBasedLighting.GeometryBuffer1 = geometryBuffer1.Texture;
+      imageBasedLighting.RenderDiffuse = this.RenderDiffuse;
+      imageBasedLighting.RenderSpecular = this.RenderSpecular;
+    
+      event.AddRenderTaskPostProcess(lightSettings, imageBasedLighting);
+    }
+    
+    // Ssao
+    if (this.Owner.Ssao != null)
+    {
+      this.Owner.Ssao.AddRenderTasks(event, lightBuffer, depthStencil, geometryBuffer0);
+      if (this.Owner.Ssao.DebugBuffer && this.Owner.Ssao.Active)
+      {
+        // Don't do any other lighting if debugging ssao buffer
+        this.LinearToGamma(event, lightBuffer, final);
+        this.DrawDebugObjects(event, final, depthStencil);
+        return;
+      }
+    }
+    
+    if (this.DirectLighting)
+    {
+      var geometryInputs = ShaderInputs();
+      geometryInputs.Add("GeometryInput", "GeometryBuffer0", geometryBuffer0.Texture);
+      geometryInputs.Add("GeometryInput", "GeometryBuffer1", geometryBuffer1.Texture);
+      
+      lightSettings.GlobalShaderInputs = geometryInputs;
+      lightSettings.CullMode = CullMode.FrontFace;
+      lightSettings.BlendSettings.BlendMode = BlendMode.Enabled;
+      lightSettings.BlendSettings.BlendEquation = BlendEquation.Add;
+      lightSettings.BlendSettings.SourceFactor = BlendFactor.One;
+      lightSettings.BlendSettings.DestFactor = BlendFactor.One;
+      lightSettings.DepthSettings.DepthMode = DepthMode.Read;
+      lightSettings.DepthSettings.DepthCompareFunc = TextureCompareFunc.GreaterEqual;
+      
+      var lightPass = LightPass();
+      lightPass.DitherTexture = Texture.BlueNoise;
+      lightPass.RenderDiffuse = this.RenderDiffuse;
+      lightPass.RenderSpecular = this.RenderSpecular;
+      
+      event.AddRenderTaskRenderPass(lightSettings, RenderGroup.Lights, lightPass);
+    }
+    
+    // Additive materials
+    var alphaSettings = RenderSettings();
+    alphaSettings.ColorTarget = lightBuffer;
+    alphaSettings.DepthTarget = depthStencil;
+    
+    alphaSettings.CullMode = CullMode.Disabled;
+    
+    alphaSettings.BlendSettings.BlendMode = BlendMode.Enabled;
+    alphaSettings.BlendSettings.BlendEquation = BlendEquation.Add;
+    alphaSettings.BlendSettings.SourceFactor = BlendFactor.SourceAlpha;
+    alphaSettings.BlendSettings.DestFactor = BlendFactor.One;
+    
+    alphaSettings.DepthSettings.DepthMode = DepthMode.Read;
+    alphaSettings.DepthSettings.DepthCompareFunc = TextureCompareFunc.LessEqual;
+    
+    event.AddRenderTaskRenderPass(alphaSettings, RenderGroup.AdditiveBlend, ColorOutput());
+
+    // Bloom
+    if (this.Owner.Bloom != null)
+      this.Owner.Bloom.AddRenderTasks(event, lightBuffer);
+    
+    // Bring final lighting to gamma space for monitor display
+    this.LinearToGamma(event, lightBuffer, final);
+    
+    // Alpha materials
+    alphaSettings.ColorTarget = final;
+    
+    alphaSettings.BlendSettings.BlendMode = BlendMode.Enabled;
+    alphaSettings.BlendSettings.BlendEquation = BlendEquation.Add;
+    alphaSettings.BlendSettings.SourceFactor = BlendFactor.SourceAlpha;
+    alphaSettings.BlendSettings.DestFactor = BlendFactor.InvSourceAlpha;
+    
+    event.AddRenderTaskRenderPass(alphaSettings, RenderGroup.AlphaBlend, ColorOutput());
+    
+    this.DrawDebugObjects(event, final, depthStencil);
+  }
+  
+  function LinearToGamma(event : RenderTasksEvent, inputBuffer : RenderTarget, outputBuffer : RenderTarget)
+  {
+    if (this.ToneMap)
+    {
+      var filmicToneMap = FilmicTonemap();
+      filmicToneMap.Texture = inputBuffer.Texture;
+      event.AddRenderTaskPostProcess(outputBuffer, filmicToneMap);
+    }
+    else
+    {
+      var toGamma = ToGamma();
+      toGamma.Texture = inputBuffer.Texture;
+      event.AddRenderTaskPostProcess(outputBuffer, toGamma);
+    }
+  }
+  
+  function DrawDebugObjects(event : RenderTasksEvent, color : RenderTarget, depth : RenderTarget)
+  {
+    // Only debug draws for the editor camera
+    if (!this.DrawDebug)
+      return;
+    
+    var debugSettings = RenderSettings();
+    debugSettings.ColorTarget = color;
+    debugSettings.DepthTarget = depth;
+    
+    debugSettings.CullMode = CullMode.Disabled;
+    
+    debugSettings.BlendSettings.BlendMode = BlendMode.Enabled;
+    debugSettings.BlendSettings.BlendEquation = BlendEquation.Add;
+    debugSettings.BlendSettings.SourceFactor = BlendFactor.SourceAlpha;
+    debugSettings.BlendSettings.DestFactor = BlendFactor.InvSourceAlpha;
+    
+    debugSettings.DepthSettings.DepthMode = DepthMode.Read;
+    debugSettings.DepthSettings.DepthCompareFunc = TextureCompareFunc.LessEqual;
+    
+    event.AddRenderTaskRenderPass(debugSettings, RenderGroup.DebugDraw, ColorOutput());
+    
+    debugSettings.DepthSettings.DepthMode = DepthMode.Disabled;
+    event.AddRenderTaskRenderPass(debugSettings, RenderGroup.DebugDrawOnTop, ColorOutput());
+  }
+}

@@ -1,0 +1,78 @@
+class UiShake : ZilchComponent
+{
+  sends ShakeRequest : ShakeEvent;
+  
+  
+  [Dependency]
+  var UiWidget : UiWidget;
+  
+  
+  [Display]
+  var TestDuration : Real = 0.5;
+  [Display]
+  var TestMagnitude : Real = 10;
+  
+  
+  var LatestDuration : Real;
+  var LatestMagnitude : Real;
+  var Actions : ActionSet;
+  var RNG : Random = Random();
+  
+  var T_ : Real;
+  var T : Real
+  {
+    get { return this.T_; }
+    
+    set
+    {
+      this.T_ = value;
+      
+      var direction = this.RNG.UnitReal2();
+      //var magnitude = this.RNG.Real() * this.LatestMagnitude * value / this.LatestDuration;
+      var magnitude = this.LatestMagnitude * value / this.LatestDuration;
+      var offset = direction * magnitude;
+      
+      this.UiWidget.LocalTranslation = offset;
+    }
+  }
+  
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.Actions = Action.Group(this.Owner.Actions);
+    
+    Zero.Connect(this.Owner, Events.ShakeRequest, this.OnShakeRequest);
+  }
+  
+  
+  function OnShakeRequest(event : ShakeEvent)
+  {
+    this.LatestDuration  = event.Duration;
+    this.LatestMagnitude = event.Magnitude;
+    
+    this.Actions.Cancel();
+    this.Actions = Action.Group(this.Owner.Actions);
+    this.T = event.Duration;
+    Action.Property(this.Actions, @this.T, 0, event.Duration, Ease.QuadOut);
+    
+    event.Terminate();
+  }
+  
+  
+  [Display]
+  function TestShake()
+  {
+    var se = ShakeEvent();
+    se.Duration = this.TestDuration;
+    se.Magnitude = this.TestMagnitude;
+    this.Owner.DispatchEvent(Events.ShakeRequest, se);
+  }
+}
+
+
+class ShakeEvent : ZilchEvent
+{
+  var Duration : Real;
+  var Magnitude : Real;
+}

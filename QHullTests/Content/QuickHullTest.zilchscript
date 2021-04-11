@@ -1,0 +1,143 @@
+enum QuickHullDebugDrawMode {None, Debug, Final}
+
+class QuickHullEvent : ZilchEvent
+{
+  var Owner : Cog;
+}
+
+
+class QuickHullTest : ZilchComponent
+{
+  sends QuickHullFinished : QuickHullEvent;
+  
+  [Property] var Active : Boolean = true;
+  [Property] var DebugDrawMode : QuickHullDebugDrawMode = QuickHullDebugDrawMode.None;
+  
+  var QuickHull : QuickHull3D = QuickHull3D();
+  var Index : Integer = 0;
+  var TestName : String = "";
+  
+  var Vertices = Array[Real3]();
+  var Edges = Array[QEdge]();
+  var Faces = Array[QFace]();
+  
+  [Property] function Run()
+  {
+    this.RunQuickHull();
+  }
+  
+  function Initialize(init : CogInitializer)
+  {
+    if(!this.Active)
+      return;
+      
+    Zero.Connect(init, Events.AllObjectsInitialized, this.OnAllObjectsInitialized);
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    Zero.Connect(Zero.Keyboard, Events.KeyDown, this.OnKeyDown);
+  }
+
+  function OnAllObjectsInitialized(event : CogInitializerEvent)
+  {
+    this.RunQuickHull();
+  }
+  
+  function RunQuickHull()
+  {
+    var queryEvent = QuickHullVertexQueryEvent();
+    this.Owner.DispatchEvent(Events.QueryQuickHullVertices, queryEvent);
+    
+    if(queryEvent.Vertices == null)
+      return;
+      
+    this.TestName = queryEvent.TestName;
+    var points = queryEvent.Vertices;
+    
+    this.QuickHull.ShowDebugDraw = (this.DebugDrawMode == QuickHullDebugDrawMode.Debug);
+    this.QuickHull.Clear();
+    foreach(var point in points)
+      this.QuickHull.Add(point);
+    this.QuickHull.Build();
+    this.CacheMesh();
+    
+    var toSend = QuickHullEvent() {Owner = this.Owner};
+    this.Owner.DispatchEvent(Events.QuickHullFinished, toSend);
+    this.Owner.DispatchDown(Events.QuickHullFinished, toSend);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if(this.DebugDrawMode == QuickHullDebugDrawMode.Debug)
+    {
+      this.QuickHull.Index = this.Index;
+      this.QuickHull.Draw();
+    }
+    else if(this.DebugDrawMode == QuickHullDebugDrawMode.Final)
+    {
+      this.DrawCachedMesh();
+    }
+  }
+  
+  function OnKeyDown(event : KeyboardEvent)
+  {
+    if(event.Key == Keys.Add || event.Key == Keys.Equal)
+    {
+      ++this.Index;
+    }
+    if(event.Key == Keys.Minus || event.Key == Keys.Subtract)
+    {
+      --this.Index;
+    }
+  }
+  
+  function CacheMesh()
+  {
+    this.Vertices.Clear();
+    this.Edges.Clear();
+    this.Faces.Clear();
+    
+    var mesh = this.QuickHull.Mesh;
+    
+    var vertices = mesh.Vertices;
+    var edges = mesh.Edges;
+    var faces = mesh.Faces;
+    
+    for(var i = 0; i < vertices.Count; ++i)
+      this.Vertices.Add(vertices[i]);
+    for(var i = 0; i < edges.Count; ++i)
+    {
+      var edge = edges[i];
+      this.Edges.Add(QEdge() {Vertex = edge.VertexIndex, Twin = edge.TwinIndex, Face = edge.FaceIndex});
+    }
+    for(var i = 0; i < faces.Count; ++i)
+    {
+      var face = faces[i];
+      var qFace = QFace();
+      for(var eI = 0; eI < face.Edges.Count; ++eI)
+      {
+        qFace.Edges.Add(face.Edges[eI]);
+      }
+      this.Faces.Add(qFace);
+    }
+  }
+  
+  function DrawCachedMesh()
+  {
+    var edgeMap = HashMap[Integer, Integer]();
+    
+    var line = DebugLine();
+    foreach(var edge in this.Edges)
+    {
+      var twin = this.Edges[edge.Twin];
+      
+      if(edgeMap.Contains(edge.Twin) || edgeMap.Contains(twin.Twin))
+        continue;
+      edgeMap[edge.Twin] = edge.Twin;
+      
+      var v0 = this.Vertices[edge.Vertex];
+      var v1 = this.Vertices[twin.Vertex];
+      line.Start = v0;
+      line.End = v1;
+      DebugDraw.Add(line);
+    }
+  }
+}

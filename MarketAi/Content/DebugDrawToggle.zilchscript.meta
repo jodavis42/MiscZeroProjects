@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "DebugDrawToggle"
+		var ResourceId = 0x58ff6d5a08fa7370
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Debugging"
+		}
+	}
+}

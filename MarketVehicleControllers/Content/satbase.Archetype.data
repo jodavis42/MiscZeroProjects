@@ -1,0 +1,90 @@
+[Version:1]
+Cog 
+{
+	var Name = "satbase"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Vec3{0, 0, 0}
+		var Scale = Vec3{1, 1, 1}
+		var Rotation = Quat{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x5886b10d0e86dd89]
+		{
+			var Name = "satelliteAssimpFbxRotationPivot"
+			var LinkId = 2
+			Transform 
+			{
+				var Translation = Vec3{-0.034913063, 5.08366442, 0.0122022629}
+				var Scale = Vec3{1, 1, 1}
+				var Rotation = Quat{0, 0, 0, 1}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x5886b10d0e86dd8e]
+				{
+					var Name = "satelliteAssimpFbxRotationPivotInverse"
+					var LinkId = 3
+					Transform 
+					{
+						var Translation = Vec3{0.034913063, -5.08366442, -0.0122022629}
+						var Scale = Vec3{1, 1, 1}
+						var Rotation = Quat{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x5886b10d0e86dd8f]
+						{
+							var Name = "satelliteAssimpFbxScalingPivot"
+							var LinkId = 4
+							Transform 
+							{
+								var Translation = Vec3{-0.034913063, 5.08366442, 0.0122022629}
+								var Scale = Vec3{1, 1, 1}
+								var Rotation = Quat{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x5886b10d0e86dd91]
+								{
+									var Name = "satelliteAssimpFbxScalingPivotInverse"
+									var LinkId = 5
+									Transform 
+									{
+										var Translation = Vec3{0.034913063, -5.08366442, -0.0122022629}
+										var Scale = Vec3{1, 1, 1}
+										var Rotation = Quat{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x5886b10d0e86dd92]
+										{
+											var Name = "satellite"
+											var LinkId = 6
+											Transform 
+											{
+												var Translation = Vec3{0, 0, 0}
+												var Scale = Vec3{1, 1, 1}
+												var Rotation = Quat{0, 0, 0, 1}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "5886b15406f3884d:satbase.satellite"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

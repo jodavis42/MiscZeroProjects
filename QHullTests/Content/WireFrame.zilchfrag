@@ -1,0 +1,138 @@
+struct WireFrameData
+{
+  [Input][Output] var ViewPosition : Real3;
+  [Input][Output] var PerspectivePosition : Real4;
+  [Input][Output] var ViewNormal : Real3;
+  [Output] var AlbedoValue : Real4 = Real4(1);
+}
+
+[Geometry(maxVertices : 45)]
+struct WireFrame
+{
+  [BuiltInInput] var ViewToPerspective : Real4x4;
+  [PropertyInput] var RenderFilled : Boolean = true;
+  [PropertyInput] var RenderEdges : Boolean = true;
+  [PropertyInput] var RenderNormals : Boolean = false;
+  [PropertyInput] var NormalBaseSize : Real = 0.0025;
+  [PropertyInput] var NormalLength : Real = 0.1;
+  
+  var InsetPoints = FixedArray[WireFrameData, 3]();
+  var Center = WireFrameData();
+
+  function Main(input : TriangleInput[WireFrameData], output : TriangleOutput[WireFrameData])
+  {
+    // Compute the triangle's normal from the points
+    var viewNormal = Math.Cross(input[1].ViewPosition - input[0].ViewPosition, input[2].ViewPosition - input[0].ViewPosition);
+    viewNormal = Math.Normalize(viewNormal);
+    for(var i = 0; i < 3; ++i)
+      input[i].ViewNormal = viewNormal;
+      
+    this.ComputeCenter(input);
+    this.ComputeInsetPoints(input);
+    
+    if(this.RenderFilled)
+      this.DrawFilled(input, output);
+    
+    if(this.RenderEdges)
+      this.DrawEdges(input, output);
+   
+    if(this.RenderNormals)
+      this.OutputLine(this.Center, this.Center.ViewNormal, this.NormalBaseSize, this.NormalLength, output);
+  }
+  
+  function ComputeCenter(input : TriangleInput[WireFrameData])
+  {
+    // Average the position and normal
+    this.Center.ViewPosition = (input[0].ViewPosition + input[1].ViewPosition + input[2].ViewPosition) / 3.0;
+    this.Center.ViewNormal = (input[0].ViewNormal + input[1].ViewNormal + input[2].ViewNormal) / 3.0;
+    this.Center.ViewNormal = Math.Normalize(this.Center.ViewNormal);
+    // Compute the perspective position from the new view position, otherwise nothing will draw
+    this.Center.PerspectivePosition = Math.Multiply(this.ViewToPerspective, Real4(this.Center.ViewPosition, 1));
+    this.Center.AlbedoValue = Real4(0);
+  }
+  
+  function ComputeInsetPoints(input : TriangleInput[WireFrameData])
+  {
+    var lerpValue = 0.05;
+    // If we don't render edges then position the inset points at the actual vertex poitns
+    if(this.RenderEdges == false)
+      lerpValue = 0;
+      
+    for(var i = 0; i < 3; ++i)
+    {
+      this.InsetPoints[i] = input[i];
+      // Compute the inset points as a lerp between the actual points and the center of the triangle
+      this.InsetPoints[i].ViewPosition = Math.Lerp(this.InsetPoints[i].ViewPosition, this.Center.ViewPosition, lerpValue);
+      this.InsetPoints[i].PerspectivePosition = Math.Multiply(this.ViewToPerspective, Real4(this.InsetPoints[i].ViewPosition, 1));
+    }
+  }
+  
+  function DrawFilled(input : TriangleInput[WireFrameData], output : TriangleOutput[WireFrameData])
+  {
+    output.Append(this.InsetPoints[0], 0);
+    output.Append(this.InsetPoints[1], 1);
+    output.Append(this.InsetPoints[2], 2);
+    output.Restart();
+  }
+  
+  function DrawEdges(input : TriangleInput[WireFrameData], output : TriangleOutput[WireFrameData])
+  {
+    // Set the albedo value for all of the inset points
+    for(var i = 0; i < 3; ++i)
+    {
+      this.InsetPoints[i].AlbedoValue = Real4(0);
+      input[i].AlbedoValue = Real4(0);
+    }
+    
+    // Output a quad for each edge around the triangle
+    for(var i = 0; i < 3; ++i)
+    {
+      var j = (i + 1) % 3;
+      output.Append(this.InsetPoints[i], 0);
+      output.Append(input[i], 0);
+      output.Append(input[j], 0);
+      output.Restart();
+      output.Append(this.InsetPoints[i], 0);
+      output.Append(input[j], 0);
+      output.Append(this.InsetPoints[j], 0);
+      output.Restart();
+    }
+  }
+ 
+  function OutputLine(p0 : WireFrameData, viewNormal : Real3, size : Real, length : Real, output : TriangleOutput[WireFrameData])
+  {
+    // Compute two basis vectors from the view normal
+    var b0 = Math.Cross(viewNormal, Real3.YAxis);
+    if(b0 == Real3.Zero)
+      b0 = Math.Cross(viewNormal, Real3.XAxis);
+    var b1 = Math.Cross(viewNormal, b0);
+   
+   // Compute a quad in the center of the triangle
+    var basePoints = FixedArray[WireFrameData, 4]() {p0, p0, p0, p0};
+    basePoints[0].ViewPosition = p0.ViewPosition + (b0 + b1) * size;
+    basePoints[1].ViewPosition = p0.ViewPosition + (b0 - b1) * size;
+    basePoints[2].ViewPosition = p0.ViewPosition + (-b0 - b1) * size;
+    basePoints[3].ViewPosition = p0.ViewPosition + (-b0 + b1) * size;
+    for(var i = 0; i < 4; ++i)
+    {
+      basePoints[i].PerspectivePosition = Math.Multiply(this.ViewToPerspective, Real4(basePoints[i].ViewPosition, 1));
+    }
+    
+    // Compute the tip of the line
+    var topPoint = p0;
+    topPoint.ViewPosition = p0.ViewPosition + viewNormal * length;
+    topPoint.PerspectivePosition = Math.Multiply(this.ViewToPerspective, Real4(topPoint.ViewPosition, 1));
+    
+    // Output each triangle from the base to the tip
+    for(var i = 0; i < 4; ++i)
+    {
+      var j = (i + 1) % 4;
+     
+      output.Append(basePoints[i], 0);
+     
+      output.Append(topPoint, 0);
+      output.Append(basePoints[j], 0);
+      output.Restart();
+    }
+  }
+}

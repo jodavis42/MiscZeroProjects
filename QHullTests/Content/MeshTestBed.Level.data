@@ -1,0 +1,1028 @@
+[Version:1]
+Level 
+{
+	Cog [ContextId:1]
+	{
+		var Name = "LevelSettings"
+		GravityEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = false
+			var LocalSpaceDirection = true
+			var Strength = 10
+			var Direction = Real3{0, -1, 0}
+		}
+		DragEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = false
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.100000001
+			var LinearDrag = 0
+			var AngularDrag = 0
+		}
+		GridDraw 
+		{
+			var Active = true
+			var HalfCellOffset = false
+			var CellSize = 1
+			var Axis = AxisDirection.Y
+			var Lines = 100
+			var DrawAxisOrigins = true
+			var AlwaysDrawInEditor = true
+			var DrawInGame = false
+			var GridColor = Real4{0.5, 0.5, 0.5, 0.400000006}
+			var GridHighlight = Real4{0, 0, 0, 0.400000006}
+			var HighlightInterval = 10
+			var FollowEditorCamera = false
+		}
+	}
+	Cog [ContextId:2]
+	{
+		var Name = "Renderer"
+		DeferredRenderer 
+		{
+			var GeometryDebug = GeometryValue.None
+			var EditorDebugDraw = true
+			var GameDebugDraw = true
+			var RenderDiffuse = true
+			var RenderSpecular = true
+			var RenderSkybox = true
+			var Skybox = "5822dec85e380cf1:SimpleSkybox"
+			var ClearColor = Real4{0, 0, 0, 1}
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+		}
+		Ssao 
+		{
+			var Active = true
+			var Radius = 1
+			var Intensity = 1
+			var BlurDepthThreshold = 0.0500000007
+			var DebugBuffer = false
+		}
+		Bloom 
+		{
+			var Active = true
+			var Intensity = 0.100000001
+			var Threshold = 1
+			var Bloom1 = true
+			var Bloom2 = true
+			var Bloom3 = true
+			var Bloom4 = true
+			var Bloom5 = true
+			var DebugBuffer = false
+		}
+	}
+	Cog [ContextId:3]
+	{
+		var Name = "DirectionalLightShadows"
+		Transform 
+		{
+			var Translation = Real3{0, 20, 20}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.382683456, 0, 0, 0.923879504}
+		}
+		SelectionIcon 
+		{
+			var Visible = true
+			var VisibilityEvents = true
+			var Material = "56581e2bb81777be:DebugDrawOnTop"
+			var SpriteSource = "58f8e4be736f5ea2:LightIcon"
+			var ViewScale = 1
+			var OverrideSelections = true
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = false
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "580267aabbf7843e:DirectionalLightShadows"
+			var Mesh = "59040f1e835d03e1:Triangle"
+		}
+		DirectionalLight 
+		{
+			var LightColor = Real4{1, 1, 1, 1}
+			var LightIntensity = 5
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = true
+			var RenderOrder = -1
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var Cog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var Cog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var ResolutionOrAspect = Integer2{1920, 1080}
+			var RenderToViewport = false
+			var ForwardViewportEvents = false
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 100
+			var PerspectiveMode = PerspectiveMode.Orthographic
+			var FieldOfView = 45
+			var Size = 64
+		}
+		ShadowRenderer 
+		{
+			var ResolutionValue = ShadowResolution.High
+			var NormalOffsetBias = 0.100000001
+		}
+	}
+	Cog [ContextId:4]
+	{
+		var Name = "EditorCamera"
+		Transform 
+		{
+			var Translation = Real3{-17.9716167, 9.17644978, 24.5556831}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.111970313, -0.224245265, -0.0259460844, 0.967731118}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderOrder = 0
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var Cog = 4
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var Cog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var ResolutionOrAspect = Integer2{1920, 1080}
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 200
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 60
+			var Size = 20
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.Orbit
+			var Previous3DMode = ControlMode.Orbit
+			var LookDistance = 43.2687874
+			var VerticalAngle = 0.230383486
+			var HorizontalAngle = 31.8713341
+			var LookTarget = Real3{0.556407988, -0.704016805, -13.2765341}
+			var MoveSensitivity = 1
+		}
+	}
+	Cog [ContextId:5]
+	{
+		var Name = "GameCamera"
+		Transform 
+		{
+			var Translation = Real3{0, 2, 10}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SelectionIcon 
+		{
+			var Visible = true
+			var VisibilityEvents = true
+			var Material = "56581e2bb81777be:DebugDrawOnTop"
+			var SpriteSource = "58f8e4be7360cf7c:CameraIcon"
+			var ViewScale = 1
+			var OverrideSelections = true
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = false
+			var RenderInGame = true
+			var RenderOrder = 0
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var Cog = 5
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var Cog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var ResolutionOrAspect = Integer2{1920, 1080}
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var ViewportScaling = ViewportScaling.Letterbox
+			var MarginColor = Real4{0, 0, 0, 1}
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 200
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 60
+			var Size = 20
+		}
+		SoundListener 
+		{
+			var Active = true
+		}
+		QuaternionCamera 
+		{
+			var Speed = 8
+			var LookSpeed = 0.00499999989
+			var RunWhilePaused = true
+			var AllowRotation = true
+			var AllowTranslation = true
+			var MouseTrapped = false
+		}
+	}
+	Cog [InheritId:"59809235c0300812:Aircraft123321Hull"][ChildOrderOverride][ContextId:6]
+	{
+		Transform 
+		{
+			var Translation = Real3{12, 0, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		HierarchyMeshToTextBlock 
+		{
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullRenderSettings 
+		{
+		}
+		BaseCogResultRecorder 
+		{
+		}
+		QuickHullMeshSaver 
+		{
+		}
+		Hierarchy 
+		{
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"5980888f8eb60896:Apache2Hull"][ContextId:7]
+	{
+		Transform 
+		{
+			var Translation = Real3{9, 0, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"5980892769a8920b:Axe01Hull"][ChildOrderOverride][ContextId:8]
+	{
+		Transform 
+		{
+			var Translation = Real3{6, 0, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullRenderSettings 
+		{
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		BaseCogResultRecorder 
+		{
+		}
+		QuickHullMeshSaver 
+		{
+		}
+		Hierarchy 
+		{
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"5980806a0ce487cc:BlimpHull"][ContextId:9]
+	{
+		Transform 
+		{
+			var Translation = Real3{3, 0, 0}
+			var Rotation = Quaternion{0.5, -0.50000006, -0.5, -0.50000006}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+			var WeldType = 1
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"598081f4bf8f0bc6:boat_fishing_02Hull"][ContextId:10]
+	{
+		Transform 
+		{
+			var Translation = Real3{0, 0, -10}
+			var Rotation = Quaternion{0, 0.707106829, 0, 0.707106829}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"5980bd0afbaab241:BoatDragonHull"][ContextId:11]
+	{
+		Transform 
+		{
+			var Translation = Real3{5.19270563, 0, -10}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+			var WeldType = 4
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"5980be95ab6b20fb:F1TireHull"][ChildOrderOverride][ContextId:12]
+	{
+		Transform 
+		{
+			var Translation = Real3{-6, 0, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		BaseCogResultRecorder 
+		{
+		}
+		HierarchyMeshToTextBlock 
+		{
+		}
+		QuickHullTest 
+		{
+			var Active = true
+			var WeldType = 1
+		}
+		QuickHullRenderSettings 
+		{
+		}
+		QuickHullMeshSaver 
+		{
+		}
+		Hierarchy 
+		{
+		}
+	}
+	Cog [InheritId:"5980ba11e2017000:ConeHull"][ContextId:13]
+	{
+		Transform 
+		{
+			var Translation = Real3{0, 0, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"5980ba92d848c360:CrystalHull"][ChildOrderOverride][ContextId:14]
+	{
+		Transform 
+		{
+			var Translation = Real3{-3, 0, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		HierarchyMeshToTextBlock 
+		{
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullRenderSettings 
+		{
+		}
+		BaseCogResultRecorder 
+		{
+		}
+		QuickHullMeshSaver 
+		{
+		}
+		Hierarchy 
+		{
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"5980bb11b61fb5f2:DeckCraneHull"][ContextId:15]
+	{
+		Transform 
+		{
+			var Translation = Real3{15, 0, -15}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+			var WeldType = 1
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"5980b2785ebcd464:FireballHull"][ContextId:16]
+	{
+		Transform 
+		{
+			var Translation = Real3{-9, 0, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"598141a47b3d1747:FlagTestHull"][ContextId:17]
+	{
+		Transform 
+		{
+			var Translation = Real3{12, -4, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"598142696ad80f61:FuelTankHull"][ContextId:18]
+	{
+		Transform 
+		{
+			var Translation = Real3{9, -4, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"5981422b573648aa:GenericBedHull"][ContextId:19]
+	{
+		Transform 
+		{
+			var Translation = Real3{6, -4, 0}
+			var Rotation = Quaternion{0, 0.707106829, 0, 0.707106829}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59814236541c0002:GenericBedsideTable"][ContextId:20]
+	{
+		Transform 
+		{
+			var Translation = Real3{3, -4, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"5981436c3e27f614:GenericDoorBodyHull"][ContextId:21]
+	{
+		Transform 
+		{
+			var Translation = Real3{0, -4, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"5981433628f9eeb5:GenericDVDPlayerHull"][ContextId:22]
+	{
+		Transform 
+		{
+			var Translation = Real3{-3, -4, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"598143e2177eb177:GenericGameConsoleHull"][ContextId:23]
+	{
+		Transform 
+		{
+			var Translation = Real3{-6, -4, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"5981438d1ef442dc:GenericShelfHull"][ContextId:24]
+	{
+		Transform 
+		{
+			var Translation = Real3{-9, -4, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817c4d0bdec47a:GenericShortLampHull"][ContextId:25]
+	{
+		Transform 
+		{
+			var Translation = Real3{-12, -4, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817c7df10cdd4a:GenericSofaHull"][ContextId:26]
+	{
+		Transform 
+		{
+			var Translation = Real3{12, -8, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817cf0ee9b4b3c:GenericTallLampHull"][ContextId:27]
+	{
+		Transform 
+		{
+			var Translation = Real3{9, -8.98270988, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817c9fd1c846ad:GenericTeddyHull"][ContextId:28]
+	{
+		Transform 
+		{
+			var Translation = Real3{6, -8, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817d45de483d3e:GenericTVHull"][ContextId:29]
+	{
+		Transform 
+		{
+			var Translation = Real3{3, -8, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817d7cc580c2bd:GunHull"][ContextId:30]
+	{
+		Transform 
+		{
+			var Translation = Real3{0, -8, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817d23b252edd1:GunTripodHull"][ContextId:31]
+	{
+		Transform 
+		{
+			var Translation = Real3{-3, -8, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817dd4bbd39b14:HelmetHull"][ContextId:32]
+	{
+		Transform 
+		{
+			var Translation = Real3{-6, -8, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817db6ae9eeba6:JeepBodyHull"][ContextId:33]
+	{
+		Transform 
+		{
+			var Translation = Real3{-6, 0, -8}
+			var Rotation = Quaternion{-3.09086232e-08, 0.707106829, 0.707106829, -3.09086232e-08}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+			var WeldType = 1
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817e7c999c3a19:JeepWheelHull"][ContextId:34]
+	{
+		Transform 
+		{
+			var Translation = Real3{-9, -8, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+			var WeldType = 1
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817ef57653907d:LifeBoatHull"][ContextId:35]
+	{
+		Transform 
+		{
+			var Translation = Real3{-12, -8, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817f766c7d019c:MercedensBenzBodyHull"][ContextId:36]
+	{
+		Transform 
+		{
+			var Translation = Real3{-12, 0, -8}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"598178433b6d7f6a:RiverBridgeHull"][ContextId:37]
+	{
+		Transform 
+		{
+			var Translation = Real3{24, 0, -12}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"5981781028769a68:rock1Hull"][ContextId:38]
+	{
+		Transform 
+		{
+			var Translation = Real3{9, -12, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"598178162aafc558:rock2Hull"][ContextId:39]
+	{
+		Transform 
+		{
+			var Translation = Real3{12, -12, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"598178b70b783059:SmallCraneHull"][ContextId:40]
+	{
+		Transform 
+		{
+			var Translation = Real3{-18, 3, -5.24531937}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817966f144bd93:SnakeBuildingHull"][ContextId:41]
+	{
+		Transform 
+		{
+			var Translation = Real3{15, 0, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817a32ba06183f:Ztree1Hull"][ContextId:42]
+	{
+		Transform 
+		{
+			var Translation = Real3{41.0367546, 0, -10}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"59817a37b528d91a:ZHouse1Hull"][ContextId:43]
+	{
+		Transform 
+		{
+			var Translation = Real3{35, 0, -10}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+			var WeldType = 4
+		}
+		QuickHullMeshSaver 
+		{
+			var Active = false
+		}
+		QuickHullUnitTest [LocallyRemoved]
+		{
+		}
+	}
+	Cog [InheritId:"598ed0cbe6d8aae8:stanfordbunnyHull"][ContextId:44]
+	{
+		Transform 
+		{
+			var Translation = Real3{-26, 0, -13}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+			var WeldType = 4
+		}
+	}
+	Cog [InheritId:"598ed3536a8538d8:armadilloHull"][ContextId:45]
+	{
+		Transform 
+		{
+			var Translation = Real3{-31.4486027, 0, -13}
+			var Rotation = Quaternion{-0, 1, -0, -4.37113883e-08}
+			var Scale = Real3{1, 1, 1}
+		}
+		QuickHullTest 
+		{
+			var Active = true
+			var WeldType = 1
+		}
+	}
+}

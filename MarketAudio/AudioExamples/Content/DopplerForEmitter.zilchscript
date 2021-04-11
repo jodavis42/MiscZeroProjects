@@ -1,0 +1,81 @@
+//**********************************************************************************
+//
+// Changes the pitch of the SoundEmitter according to the relative speed between
+// it and the selected SoundListener, imitating the Doppler effect.
+// The PitchChangeScale value sets how strong the pitch change is:
+// at lower values the effect will be less noticeable.
+//
+//**********************************************************************************
+class DopplerForEmitter : ZilchComponent
+{
+  // There must be a SoundEmitter on this object
+  [Dependency] var SoundEmitter : SoundEmitter;
+
+  // Larger numbers will make the pitch changes more obvious
+  [Property] var PitchChangeScale : Integer = 10;
+  // The script needs to know about the object with the SoundListener
+  [Property] var ListenerObject : CogPath = CogPath();
+
+  // The position of this object on the last update
+  var PreviousEmitterPosition : Real3;
+  // The position of the listener on the last update
+  var PreviousListenerPosition : Real3;
+  // The relative position between emitter and listener ont he last update
+  var PreviousRelativePosition : Real3;
+  // A quick way to access the SoundListener component directly
+  var Listener : SoundListener;
+  // The speed of sound at sea level and 59 degrees farenheit
+  var SpeedOfSound : Real = 340.29;
+  
+  function Initialize(init : CogInitializer)
+  {
+    if (this.ListenerObject != null)
+    {
+      // Connect the LogicUpdate function
+      Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+      // Set the variable for directly accessing the SoundListener component
+      this.Listener = this.ListenerObject.Cog.SoundListener;
+      // Store the listener's current position
+      this.PreviousListenerPosition = this.Listener.Owner.Transform.WorldTranslation;
+      // Store this object's current position
+      this.PreviousEmitterPosition = this.Owner.Transform.WorldTranslation;
+      // Store the relative position
+      this.PreviousRelativePosition = this.PreviousListenerPosition - this.PreviousEmitterPosition;
+    }
+    else
+      Console.WriteLine("Select listener object for DopplerForEmitter script");
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // Determine the emitter and listener velocities
+    var emitterVelocity = this.PreviousEmitterPosition - this.Owner.Transform.WorldTranslation;
+    var listenerVelocity = this.PreviousListenerPosition - this.Listener.Owner.Transform.WorldTranslation;
+    // Store the emitter and listener current positions
+    this.PreviousEmitterPosition = this.Owner.Transform.WorldTranslation;
+    this.PreviousListenerPosition = this.Listener.Owner.Transform.WorldTranslation;
+    // Get the relative position between the listener and the emitter
+    var relativePosition = this.PreviousListenerPosition - this.PreviousEmitterPosition;
+    
+    // Check if the objects are moving relative to each other
+    if (relativePosition != this.PreviousRelativePosition)
+    {
+      // Store the relative position
+      this.PreviousRelativePosition = relativePosition;
+      // Save the length of the relative position vector
+      var distance = Math.Length(relativePosition);
+      // Determine the relative velocities, adjusting with distance
+      var listenerRelativeVelocity = Math.Dot(listenerVelocity, relativePosition) / distance;
+      var emitterRelativeVelocity = Math.Dot(emitterVelocity, relativePosition) / distance;
+      // Determine the pitch adjustment
+      var pitch = (this.SpeedOfSound + listenerRelativeVelocity) / (this.SpeedOfSound + emitterRelativeVelocity);
+      // Translate for Zero's pitch values
+      var pitchValue = Math.Log2(pitch);
+      // Set the pitch on the SoundEmitter
+      this.SoundEmitter.InterpolatePitch(pitchValue * this.PitchChangeScale, event.Dt);
+    }
+    // If not moving, make sure the pitch is set to 0
+    else
+      this.SoundEmitter.Pitch = 0.0;
+  }
+}

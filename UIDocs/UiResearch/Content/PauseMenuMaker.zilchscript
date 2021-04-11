@@ -1,0 +1,26 @@
+class PauseMenuMaker : ZilchComponent
+{
+  [Property] var PauseMenuLevel : Level;
+  
+  var PauseMenuSpace : Space;
+  
+  function Initialize(init : CogInitializer)
+  {
+    if (this.PauseMenuLevel == null)
+    {
+      Console.WriteLine("Unable to create pause menu: no level specified");
+      return;
+    }
+    
+    this.PauseMenuSpace = this.GameSession.CreateNamedSpace("PauseMenuSpace", Archetype.Space);
+    this.PauseMenuSpace.LoadLevel(this.PauseMenuLevel);
+    
+    Zero.Connect(this.Owner, Events.CogDestroy, this.OnCogDestroy);
+  }
+  
+  function OnCogDestroy(event : ObjectEvent)
+  {
+    if (this.PauseMenuSpace != null)
+      this.PauseMenuSpace.Destroy();
+  }
+}

@@ -1,0 +1,225 @@
+/************************************************************************************************************/
+/* Copyright 2016 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 1/3/2016                                                                                    */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Arend Danielek                                                                          */
+/* Class: HierarchyDisplay                                                                                  */
+/* Brief: Projects the mouse position into 3D space then uses joints to pull the object in the direction    */
+/* of the projected mouse.                                                                                  */
+/************************************************************************************************************/
+
+class ManipulatorScript : ZilchComponent
+{
+    // Depends on a camera to raycast through.
+    [Dependency]
+    var Camera : Camera;
+    
+    [Dependency]
+    var CameraViewport : CameraViewport;
+    
+    // If this is set then the manipulation joint created
+    // will lock the rotation of the grabbed object.
+    [Property]
+    var LockRotation : Boolean = false;
+    
+    // The minimum distance we can drag the object towards
+    // the camera during mouse scroll.
+    [Property]
+    var MinDistance : Real = 3.0;
+    
+    // The maximum distance we can drag the objet away from the camera.
+    [Property]
+    var MaxDistance : Real = 100.0;
+    
+    // The object that we are currently grabbing
+    var SelectedObj : Cog = null;
+    // The current distance away from the camera that
+    // the object's grab point should be.
+    var Distance : Real = 0.0;
+    
+    var ManipulatorJoint : ManipulatorJoint = null;
+    var PhyGunJoint : PhyGunJoint = null;
+    
+    function Initialize(initializer : CogInitializer)
+    {
+        // We only operator on a component with a camera viewport,
+        // grab the viewport from that component
+        var viewport = this.CameraViewport;
+        
+        Zero.Connect(viewport, Events.MouseMove, this.OnMouseMove);
+        Zero.Connect(viewport, Events.LeftMouseDown, this.OnLeftMouseDown);
+        Zero.Connect(viewport, Events.LeftMouseUp, this.OnLeftMouseUp);
+        Zero.Connect(viewport, Events.MouseScroll, this.OnMouseScroll);
+        Zero.Connect(Zero.Keyboard, Events.KeyDown, this.OnKeyDown);
+    }
+    
+    function OnKeyDown(keyboardEvent : KeyboardEvent)
+    {
+        // We only do logic when 'P' is pressed right now
+        if(keyboardEvent.Key != Keys.P)
+        {
+            return;
+        }
+        
+        // If we have an object selected, we need to
+        // deselect it before changing our joint type
+        if(this.SelectedObj != null)
+        {
+            this.DeselectObj();
+        }
+        this.LockRotation = !this.LockRotation;
+    }
+    
+    function OnMouseMove(viewportMouseEvent : ViewportMouseEvent)
+    {
+        this.UpdateDraggedObject(viewportMouseEvent);
+    }
+    
+    function OnLeftMouseDown(viewportMouseEvent : ViewportMouseEvent)
+    {
+        if(this.SelectedObj != null)
+        {
+            this.DeselectObj();
+        }
+        
+        var ray = viewportMouseEvent.WorldRay;
+        
+        var selectedPoint = Real3(0.0, 0.0, 0.0);
+        
+        // Find the object we clicked, if there wasn't one don't do anything
+        var castResults = this.Space.PhysicsSpace.CastRay(ray, 1);
+        foreach(var castResult in castResults)
+        {
+            // Save the object we hit
+            this.SelectedObj = castResult.ObjectHit;
+            // Save the point at which we clicked the object
+            selectedPoint = castResult.WorldPosition;
+        }
+        
+        if(this.SelectedObj == null)
+        {
+            return;
+        }
+        
+        // Find how far away the pick point is (for keeping the object on a sphere around us)
+        this.Distance = Math.Length(selectedPoint - this.Owner.Transform.Translation);
+        
+        if(this.LockRotation)
+        {
+            this.CreatePhyGun(this.SelectedObj,selectedPoint);
+        }
+        else
+        {
+            this.CreateManipulator(this.SelectedObj,selectedPoint);
+        }
+    }
+    
+    function OnLeftMouseUp(viewportMouseEvent : ViewportMouseEvent)
+    {
+        this.DeselectObj();
+    }
+    
+    function DeselectObj()
+    {
+        if(this.SelectedObj == null)
+        {
+            return;
+        }
+        
+        // Mark that we have no selected object, and destroy the joint
+        this.SelectedObj = null;
+        if(this.LockRotation)
+        {
+            this.PhyGunJoint.Owner.Destroy();
+        }
+        else
+        {
+            this.ManipulatorJoint.Owner.Destroy();
+        }
+        
+        this.ManipulatorJoint = null;
+        this.PhyGunJoint = null;
+    }
+    
+    function OnMouseScroll(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // If we do not have a selected object, there is nothing to drag
+        if(this.SelectedObj == null)
+        {
+            return;
+        }
+        
+        // Alter our grab distance but clamp between our min and max distance
+        this.Distance += viewportMouseEvent.Scroll.Y;
+        this.Distance = Math.Clamp(this.Distance, this.MinDistance, this.MaxDistance);
+        // Now compute the new world position of the mouse
+        var newWorldPoint = this.ComputeWorldPoint(viewportMouseEvent);
+        // Update the object we grabbed with the new world point
+        if(this.LockRotation)
+        {
+            this.UpdatePhyGunPoint(newWorldPoint);
+        }
+        else
+        {
+            this.UpdateManipulatorPoint(newWorldPoint);
+        }
+    }
+    
+    function CreateManipulator(obj : Cog, point : Real3)
+    {
+        // Build a new manipulator joint attached by the picked point and save it
+        var jointCreator = JointCreator();
+        jointCreator.AttachToWorld = true;
+        var cog = jointCreator.CreateWorldPoints(obj,obj,"ManipulatorJoint",point,point);
+        this.ManipulatorJoint = cog.ManipulatorJoint;
+    }
+        
+    function CreatePhyGun(obj : Cog, point : Real3)
+    {
+        // Build a new manipulator joint attached by the picked point and save it
+        var jointCreator = JointCreator();
+        jointCreator.AttachToWorld = true;
+        var cog = jointCreator.CreateWorldPoints(obj,obj,"PhyGunJoint",point,point);
+        this.PhyGunJoint = cog.PhyGunJoint;
+    }
+        
+    function UpdateDraggedObject(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // If we do not have a selected object, there is nothing to drag
+        if(this.SelectedObj == null)
+        {
+            return;
+        }
+        
+        var newWorldPoint = this.ComputeWorldPoint(viewportMouseEvent);
+        
+        if(this.LockRotation)
+        {
+            this.UpdatePhyGunPoint(newWorldPoint);
+        }
+        else
+        {
+            this.UpdateManipulatorPoint(newWorldPoint);
+        }
+    }
+    
+    function ComputeWorldPoint(viewportMouseEvent : ViewportMouseEvent) : Real3
+    {
+        // Get the vector into the screen from where we clicked
+        var viewPlaneNormal = viewportMouseEvent.RayDirection;
+        // We want to keep the point on the object we clicked at a fixed distance from us,
+        // so use the viewPlaneNormal to find the point on the sphere defined by the
+        // initial picking distance
+        return this.Owner.Transform.Translation + viewPlaneNormal * this.Distance;
+    }
+        
+    function UpdateManipulatorPoint(worldPoint : Real3)
+    {
+        this.ManipulatorJoint.TargetPoint = worldPoint;
+    }
+        
+    function UpdatePhyGunPoint(worldPoint : Real3)
+    {
+        this.PhyGunJoint.TargetPoint = worldPoint;
+    }
+}

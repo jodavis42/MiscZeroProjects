@@ -1,0 +1,19 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Music"
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "Music_Bubbles"
+		var ResourceId = 0x58b3f86f65a49901
+		var LoaderType = "SoundCue"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

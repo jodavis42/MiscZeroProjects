@@ -1,0 +1,209 @@
+//**********************************************************************************
+//
+// The quality levels that can be used for occlusion.
+//
+//**********************************************************************************
+enum OcclusionQuality { SingleCast, Low, Medium, High }
+
+//**********************************************************************************
+//
+// Stores occlusion data for an object which will occlude a SoundEmitter.
+//
+//**********************************************************************************
+class OcclusionObject : ZilchComponent
+{
+  // The volume the SoundEmitter will be reduced to when occluded
+  [Property] var OccludedVolume : Real = 0.5;
+  // The cutoff frequency of the low pass filter
+  [Property] var LowPassCutoff : Real = 500.0;
+  
+  
+}
+
+//**********************************************************************************
+//
+// Changes the volume and low pass on a SoundEmitter if occlusion objects
+// are between it and a specified SoundListener.
+//
+//**********************************************************************************
+class OccludedEmitter : ZilchComponent
+{
+  // Requires a SoundEmitter component
+  [Dependency] var Emitter : SoundEmitter;
+  // Requires a Transform component
+  [Dependency] var Transform : Transform;
+  
+  // Angle in radians for the cone of casts
+  [Property] var ConeSizeRadians : Real = Math.Pi / 50.0;
+  // If the SoundListener is beyond this distance it will not be checked
+  [Property] var MaxDistance : Real = 50.0;
+  // The occlusion quality setting to use
+  [Property] var Quality : OcclusionQuality = OcclusionQuality.Low;
+  // An object with a SoundListener component to use for occlusion
+  [Property] var ListenerObject : CogPath = CogPath();
+  // If true, the cast lines will be drawn. DebugDraw must be enabled also.
+  [Property] var DrawDebugLines : Boolean = false;
+  
+  // The LowPassNode to use for occlusion
+  var LowPass : LowPassNode = Audio.LowPassNode();
+  // The VolumeNode to use for occlusion
+  var Volume : VolumeNode = Audio.VolumeNode();
+  // Array of angle values for casts
+  var AngleValues : Array[Real2] = Array[Real2]();
+  // The reduced volume value
+  var ReducedVolume : Real;
+  // The low pass cutoff  value
+  var LowPassCutoff : Real;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the LogicUpdate event
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    // Add the LowPassNode after the SoundEmitter
+    this.Emitter.OutputNode.InsertNodeAfter(this.LowPass);
+    // Add the VolumeNode between the SoundEmitter and LowPassNode
+    this.Emitter.OutputNode.InsertNodeAfter(this.Volume);
+    
+    // Set up variables 
+    var howManyCasts = 0;
+    var angleIncrement = 0.0;
+    var angle = this.ConeSizeRadians;
+    
+    // Check if the quality is low
+    if (this.Quality == OcclusionQuality.Low)
+    {
+      // Set the number of casts and angle increment
+      howManyCasts = 4;
+      angleIncrement = Math.Pi * 2.0 / 4.0;
+    }
+    // Check if the quality is medium
+    else if (this.Quality == OcclusionQuality.Medium)
+    {
+      // Set the number of casts and angle increment
+      howManyCasts = 8;
+      angleIncrement = Math.Pi * 2.0 / 8.0;
+    }
+    // Check if the quality is high
+    else if (this.Quality == OcclusionQuality.High)
+    {
+      // Set the number of casts and angle increment
+      howManyCasts = 14;
+      angleIncrement = Math.Pi * 2.0 / 8.0;
+    }
+      
+    // Add the centered cast
+    this.AngleValues.Push(Real2(0.0, 0.0));
+    // Add all the other casts
+    for (var i = 0; i < howManyCasts; ++i)
+    {
+      // If we've done eight outer casts, switch to the inner ring
+      if (i == 8)
+      {
+        angle /= 2.0;
+        angleIncrement = Math.Pi * 2.0 / 6.0;
+      }
+      
+      // Add the angle to the list
+      this.AngleValues.Push(Real2(angle, i * angleIncrement));
+    }
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // Find the occlusion percentage
+    var percent = this.GetOcclusionPercent();
+    // Save the maximum cutoff value (at this value the low pass filter turns off)
+    var maxCutoff = 20000.0;
+    // Calculate the low pass cutoff frequency using the occlusion percentage
+    this.LowPass.CutoffFrequency = maxCutoff - ((maxCutoff - this.LowPassCutoff) * percent);
+    // Calculate the volume using the occlusion percentage
+    this.Volume.Volume = 1.0 - ((1.0 - this.ReducedVolume) * percent);
+  }
+  
+  function GetOcclusionPercent() : Real
+  {
+    // Get the vector to the SoundListener
+    var vectorToListener = this.ListenerObject.Cog.Transform.WorldTranslation - this.Transform.WorldTranslation;
+    // If the length of the vector is further than the maximum distance, don't do any more
+    if (Math.LengthSq(vectorToListener) > this.MaxDistance * this.MaxDistance)
+      return 0;
+    
+    // Save the vectors for rotation
+    var rotationVector1 = Math.Normalize(Real3(-vectorToListener.Y, vectorToListener.X, 0));
+    var rotationVector2 = Math.Normalize(vectorToListener);
+    // Create the other variables
+    var hitCount = 0;
+    var castsWithHits = 0;
+    this.LowPassCutoff = 0;
+    this.ReducedVolume = 0;
+    
+    // Do each cast
+    for (var i = 0; i < this.AngleValues.Count; ++i)
+    {
+      // Create the variable for tracking whether we hit anything
+      var foundSomething = false;
+      // Do the first rotation
+      var firstRotation = Math.RotateVector(vectorToListener, rotationVector1, this.AngleValues[i].X);
+      // Do the second rotation
+      var secondRotation = Math.RotateVector(firstRotation, rotationVector2, this.AngleValues[i].Y);
+      // Find the end point of the cast
+      var endPoint = this.Transform.WorldTranslation + secondRotation;
+      
+      // Draw the debug line if the option is turned on
+      this.DrawLine(endPoint);
+      
+      // Create the segment for the cast
+      var segment = Segment();
+      segment.Start = this.Transform.WorldTranslation;
+      segment.End = endPoint;
+      // Get the cast results
+      var results = this.Space.PhysicsSpace.CastSegment(segment, 20);
+      // Check each object hit
+      foreach (var hit in results)
+      {
+        // Check if the object has an OcclusionObject component
+        if (hit.ObjectHit.OcclusionObject != null)
+        {
+          // Increase the hit count
+          ++hitCount;
+          // Mark that we found something
+          foundSomething = true;
+          // Add this object's LowPassCutoff to the total
+          this.LowPassCutoff += hit.ObjectHit.OcclusionObject.LowPassCutoff;
+          // Add this object's ReducedVolume to the total
+          this.ReducedVolume += hit.ObjectHit.OcclusionObject.OccludedVolume;
+        }
+      }
+      
+      // If we hit something, increment the number of casts with hits
+      if (foundSomething == true)
+        ++castsWithHits;
+    }
+    
+    // If we hit things, normalize the LowPassCutoff and ReducedVolume
+    if (hitCount > 0)
+    {
+      this.LowPassCutoff /= hitCount;
+      this.ReducedVolume /= hitCount;
+    }
+    
+    // Return the percentage of casts that hit occlusion objects
+    return castsWithHits as Real / this.AngleValues.Count;
+  }
+  
+  function DrawLine(endPoint : Real3)
+  {
+    // Check if we should draw the lines
+    if (this.DrawDebugLines)
+    {
+      // Create the line and set its variables
+      var line = DebugLine(this.Transform.WorldTranslation, endPoint);
+      line.Start = this.Transform.WorldTranslation;
+      line.End = endPoint;
+      line.Color = Real4(1.0,1.0,1.0,1.0);
+      
+      // Draw the line
+      DebugDraw.Add(line);
+    }
+  }
+}

@@ -1,0 +1,77 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Helper struct to contain information for sampling from a spline
+class SplineSampleInformation
+{
+  var SamplePoint : Real3;
+  var Tangent0 : Real3;
+  var Tangent1 : Real3;
+  var Tangent2 : Real3;
+}
+
+// Simple helper class to sample a point and basis along a spline
+class SplineHelper : ZilchComponent
+{
+  // Where to find our spline
+  [Property]  var SplineCogPath : CogPath;
+  
+  function FindSpline() : Spline
+  {
+    var splineCog = this.SplineCogPath.Cog;
+    var toSend = SplineEvent();
+    splineCog.DispatchEvent(Events.QuerySpline, toSend);
+    return toSend.Spline;
+  }
+  
+  // Find the closes point on the target spline (only check  with some sampling delta along the spline)
+  function FindClosestPointInternal(testPoint : Real3) : SplineSampleData
+  {
+    var spline = this.FindSpline();
+    if(spline == null)
+      return SplineSampleData();
+    
+    var sampleDelta = 0.5;
+    var closestDist = Real.PositiveMax;
+    var sampleData = SplineSampleData();
+    // Sample points at a fixed interval along the spline and keep the closest one (reasonable approximation)
+    for(var currT = 0.0; currT <= spline.TotalDistance; currT += sampleDelta)
+    {
+        var currSample = spline.SampleDistance(currT);
+        var dist = Math.DistanceSq(currSample.WorldPoint, testPoint);
+        if(dist < closestDist)
+        {
+            closestDist = dist;
+            sampleData = currSample;
+        }
+    }
+    return sampleData;
+  }
+  
+  // Finds a point on a spline closest to the given query point
+  function FindClosestPoint(queryPoint : Real3) : SplineSampleInformation
+  {
+    var sampleInfo = this.FindClosestPointInternal(queryPoint);
+    
+    var result = SplineSampleInformation();
+    result.SamplePoint = sampleInfo.WorldPoint;
+    result.Tangent0 = sampleInfo.WorldTangent;
+    
+    // Compute an orthonormal basis from the tangent direction
+    var absTangent = Math.Abs(result.Tangent0);
+    if(absTangent.X >= absTangent.Y && absTangent.X >= absTangent.Z)
+       result.Tangent1 = Real3(-result.Tangent0.Y, result.Tangent0.X, 0);
+    else
+       result.Tangent1 = Real3(0, result.Tangent0.Z, -result.Tangent0.Y);
+    
+    result.Tangent1 = Math.Normalize(result.Tangent1);
+    result.Tangent2 = Math.Cross(result.Tangent0, result.Tangent1);
+    result.Tangent2 = Math.Normalize(result.Tangent2);
+    
+    return result;
+  }
+}

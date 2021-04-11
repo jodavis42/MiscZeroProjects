@@ -1,0 +1,55 @@
+[Version:1]
+Cog 
+{
+	var Name = ""
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	RigidBody 
+	{
+		var Velocity = Real3{0, 0, 0}
+		var AngularVelocity = Real3{0, 0, 0}
+		var DynamicState = RigidBodyDynamicState.Dynamic
+		var AllowSleep = true
+		var Asleep = false
+		var RotationLocked = false
+		var Mode2D = Mode2DStates.Mode2D
+	}
+	BoxCollider 
+	{
+		var Ghost = false
+		var SendsEvents = true
+		var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+		var CollisionGroup = "4e740859314e5515:DefaultGroup"
+		var Offset = Real3{0, 0, 0}
+		var HalfSize = Real3{0.5, 2, 0.5}
+	}
+	Sprite 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var Material = "582c575af53d18c9:AlphaSprite"
+		var VertexColor = Real4{1, 1, 1, 1}
+		var GeometryMode = SpriteGeometryMode.ZPlane
+		var SpriteSource = "5376abd8c282117a:HardBlock"
+		var FlipX = false
+		var FlipY = false
+		var AnimationActive = true
+		var AnimationSpeed = 1
+		var StartFrame = 0
+	}
+	Health 
+	{
+		var Health = 100
+		var DamagedHealth = 50
+		var CollisionDamageScale = 10
+		var MinimumImpulseForDamage = 1
+		var DamagedSprite = "5376abd8c2824fc2:HardBlockDamaged"
+		var DeathExplosion = "53768c63d0a98357:StoneBreak"
+	}
+}

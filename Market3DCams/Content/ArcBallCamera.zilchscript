@@ -1,0 +1,104 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Arend Danielek
+// Last update: 1/3/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Implements an orbit camera using a object hierarchy approach with an
+// intermediary mount object in the hierarchy.
+class ArcBallCamera : ZilchComponent
+{
+  [Dependency] var Transform : Transform;
+  [Dependency] var Camera : Camera;
+  
+  // Radial distance per second the camera will rotate around the mount
+  [Property] var RotationSpeed : Real3 = Real3();
+  
+  // Max positive rotation around the local X-Axis
+  [Property] var MaxVerticalAngle : Real = 60.0;
+  
+  // Min positive rotation around the local X-Axis
+  [Property] var MinVerticalAngle : Real = -30.0;
+  
+  // Cog Path to the Focus object
+  [Property] var FocusObjPath : CogPath = null;
+  
+  // Min pitch constraint
+  [Property] var MinPitch : Real = -30.0;
+  
+  // Max pitch constraint
+  [Property] var MaxPitch : Real = -30.0;
+  
+  // Interpolation speed of the camera when it is "zooming"
+  [Property] var ZoomSpeed : Real = 5.0;
+  
+  // The closest distance the camera can be from the focus object.
+  [Property] var MinZoom : Real = 3.0;
+  
+  // The furthest away the camera can be from the focus object.
+  [Property] var MaxZoom : Real = 10.0;
+  
+  // The current zoom distance to interpolate towards
+  var TargetZoom : Real = 0.0;
+  
+  // Target rotation for the camera mount object
+  var MountTargetAngles : Real3 = Real3();
+  
+  // How zoomed in the camera is (distance from the focus object)
+  var CurrentZoom : Real
+  {
+    get
+    {
+      return Math.Length(this.Transform.Translation);
+    }
+    set
+    {
+      var dir = Math.Normalize(this.Transform.Translation);
+      this.Transform.Translation = dir * value;
+    }
+  }
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    Zero.Connect(this.Space, Events.MouseMove, this.OnMouseMove);
+    Zero.Connect(this.Space, Events.MouseScroll, this.OnMouseScroll);
+    
+    // Store initial value for the target variables
+    var mountCog = this.FocusObjPath.Cog;
+    this.MountTargetAngles = mountCog.Transform.EulerAngles;
+    this.TargetZoom = this.CurrentZoom;
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // Set the mount rotation to make the Camera orbit
+    var mountCog = this.FocusObjPath.Cog;
+    mountCog.Transform.Rotation = Math.ToQuaternion(this.MountTargetAngles);
+    
+    // Interpolate towards the current zoom
+    this.CurrentZoom = Math.Lerp(this.CurrentZoom, this.TargetZoom, this.ZoomSpeed * event.Dt);
+  }
+
+  function OnMouseMove(event : ViewportMouseEvent)
+  {
+    // Convert the mouse data to radians so the integer values are not incredibly large compared to the value range of Radians
+    var movement = Math.ToRadians(event.Movement);
+    var rotationSpeedRadians = Math.ToRadians(this.RotationSpeed);
+    var targetAngles = this.MountTargetAngles + Real3(rotationSpeedRadians.X * movement.Y, rotationSpeedRadians.Y * -movement.X, 0.0);
+    
+    // Constrain the pitch of the camera
+    var minPitchRadians = Math.ToRadians(this.MinPitch);
+    var maxPitchRadians = Math.ToRadians(this.MaxPitch);
+    targetAngles.X = Math.Clamp(targetAngles.X, minPitchRadians, maxPitchRadians);
+    this.MountTargetAngles = targetAngles;
+  }
+
+  function OnMouseScroll(event : ViewportMouseEvent)
+  {
+    // Calculate the new TargetZoom based off the mouse scroll for the frame
+    var newZoom = this.TargetZoom - event.Scroll.Y;
+    this.TargetZoom = Math.Clamp(newZoom, this.MinZoom, this.MaxZoom);
+  }
+}

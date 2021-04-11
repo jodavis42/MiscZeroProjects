@@ -1,0 +1,19 @@
+DataContent = 
+{
+	ContentTags = 
+	{
+		object Tags = 
+		[
+			"Effects",
+			"Cog",
+		],
+	},
+	DataBuilder = 
+	{
+		string Name = "KeyEffect",
+		uint64 ResourceId = 5155a9c3f0149967,
+		string LoaderType = "Cog",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

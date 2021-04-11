@@ -1,0 +1,224 @@
+enum NodeType
+{
+  None,
+  Noise,
+  AdditiveSynth,
+  BandPass,
+  Chorus,
+  CustomAudio,
+  Delay,
+  DynamicsCompression,
+  Equilizer,
+  Flanger,
+  GeneratedWave,
+  HighPass,
+  LowPass,
+  Modulation,
+  Panning,
+  Pitch,
+  Recording,
+  Reverb,
+  Volume
+}
+
+class SoundNodeTesting : ZilchComponent
+{
+  [Property]
+  var Sound : SoundCue = null;
+  
+  [Property]
+  var TestNodeType : NodeType = NodeType.Noise;
+  
+  var CustomNode : CustomAudioNode = null;
+  var Buffer : SoundBuffer = null;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // TODO: What happens if I put this before the soundSpace node? DOes the new node get added to that?
+    // TODO: What happens if I put this after the new node, then add the new node to the instance? Does the chain follow? or is it disjointed?
+    // TODO: What if you take a node and reinsert it somewhere else? Will it detach it from the other node?
+    // NEED: Ability to debug node graph. Figure this out.
+    //var volume = Audio.VolumeNode();
+    //this.Space.SoundSpace.SoundNode.InsertNodeBefore(
+    
+    var instance = this.Space.SoundSpace.PlayCue(this.Sound);
+    var node : SoundNode = null;
+    
+    if (this.TestNodeType == NodeType.None)
+    {
+      node = Audio.VolumeNode();
+    }
+    else if (this.TestNodeType == NodeType.Noise)
+    {
+      var noise = Audio.AddNoiseNode();
+      
+      noise.AdditiveGain = -40.0; // -40.0
+      noise.MultiplicativeGain = -10.0; // -10.0
+      noise.AdditiveCutoff = 2000.0; // 2000.0 hz
+      noise.MultiplicativeCutoff = 50.0; // 50.0
+      
+      node = noise;
+    }
+    else if (this.TestNodeType == NodeType.AdditiveSynth)
+    {
+      var synth = Audio.AdditiveSynthNode();
+      var envelope = AdsrEnvelope();
+      
+      envelope.AttackTime = 0.09;
+      envelope.DecayTime = 2.0;
+      envelope.SustainTime = 0.27;
+      envelope.SustainLevel = 0.5;
+      envelope.ReleaseTime = 3.0;
+      
+      synth.AddHarmonic(1.0, 0.5, envelope);
+      
+      envelope.AttackTime = 0.02;
+      envelope.DecayTime = 0;
+      envelope.SustainTime = 0.02;
+      envelope.SustainLevel = 1.0;
+      envelope.ReleaseTime = 1.0;
+      
+      synth.AddHarmonic(3.0, 0.25, envelope);
+      
+      synth.NoteOn(69.0, 0.5);
+      synth.NoteOn(100.0, 0.5);
+      
+      this.Space.SoundSpace.SoundNode.AddInputNode(synth);
+    }
+    else if (this.TestNodeType == NodeType.BandPass)
+    {
+      var band = Audio.BandPassNode();
+      
+      band.CentralFrequency = 200.0;
+      band.QualityFactor = 0.09;
+      
+      node = band;
+    }
+    else if (this.TestNodeType == NodeType.Chorus)
+    {
+      var chorus = Audio.ChorusNode();
+      
+      chorus.ModulationDepthPercent = 50.0;
+      chorus.ModulationFrequency = 0.18;
+      chorus.FeedbackPercent = 80.0;
+      chorus.ChorusOffsetMillisec = 0.0;
+      
+      node = chorus;
+    }
+    else if (this.TestNodeType == NodeType.CustomAudio)
+    {
+      this.CustomNode = Audio.CustomAudioNode();
+      this.Buffer = Audio.SoundBuffer();
+      
+      Zero.Connect(this.CustomNode, Events.NeedMoreSamples, this.OnSoundEvent);
+      
+      var bufferSize = this.CustomNode.MinimumBufferSize;
+      
+      for (var i = 0; i < bufferSize; ++i)
+      {
+        this.Buffer.AddSampleToBuffer(Math.Sin(2.0 * Math.Pi * 60.0 * i / bufferSize) * 0.5);
+      }
+      
+      this.Space.SoundSpace.SoundNode.AddInputNode(this.CustomNode);
+    }
+    else if (this.TestNodeType == NodeType.Delay)
+    {
+      var delay = Audio.DelayNode();
+      
+      delay.Delay = 0.1;
+      delay.FeedbackPercent = 50.0;
+      delay.WetPercent = 20.0;
+      
+      delay.InterpolateWetPercent(80.0, 10.0);
+      
+      node = delay;
+    }
+    else if (this.TestNodeType == NodeType.DynamicsCompression)
+    {
+      var compressor = Audio.DynamicsCompressionNode();
+      
+      compressor.InputGainDecibels = 100.0;
+      compressor.ThresholdDecibels = -30.0;
+      compressor.AttackMillisec = 20.0;
+      compressor.ReleaseMillisec = 1000.0;
+      compressor.Ratio = 1.0;
+      compressor.OutputGainDecibels = 0.0;
+      compressor.KneeWidth = 0.0;
+      compressor.Type = 0;
+      //compressor.Type = DynamicsCompressionTypes.Expand;
+      
+      node = compressor;
+    }
+    else if (this.TestNodeType == NodeType.Equilizer)
+    {
+      var equalizer = Audio.EqualizerNode();
+      
+      equalizer.LowPassGain = 5.0;
+      
+      node = equalizer;
+    }
+    else if (this.TestNodeType == NodeType.Flanger)
+    {
+      var flang = Audio.FlangerNode();
+      
+      flang.ModulationDepthPercent = 50.0;
+      flang.ModulationFrequency = 0.18;
+      flang.FeedbackPercent = 50.0; // 0.0;
+      
+      node = flang;
+    }
+    else if (this.TestNodeType == NodeType.GeneratedWave)
+    {
+      node = Audio.GeneratedWaveNode();
+    }
+    else if (this.TestNodeType == NodeType.HighPass)
+    {
+      node = Audio.HighPassNode();
+    }
+    else if (this.TestNodeType == NodeType.LowPass)
+    {
+      node = Audio.LowPassNode();
+    }
+    else if (this.TestNodeType == NodeType.Modulation)
+    {
+      node = Audio.ModulationNode();
+    }
+    else if (this.TestNodeType == NodeType.Panning)
+    {
+      node = Audio.PanningNode();
+    }
+    else if (this.TestNodeType == NodeType.Pitch)
+    {
+      node = Audio.PitchNode();
+    }
+    else if (this.TestNodeType == NodeType.Recording)
+    {
+      node = Audio.RecordingNode();
+    }
+    else if (this.TestNodeType == NodeType.Reverb)
+    {
+      node = Audio.ReverbNode();
+    }
+    else if (this.TestNodeType == NodeType.Volume)
+    {
+      node = Audio.VolumeNode();
+    }
+    
+    if (node != null)
+    {
+      instance.SoundNode.InsertNodeAfter(node);
+    }
+    
+    // Audio.GetNodeGraphInfo
+    // Audio.GetPeakOutputLevel
+    // Audio.GetRMSOutputLevel
+    // Audio.GetSystemVolume
+    // Audio.SetSystemVolume
+    // Audio.SoundBuffer
+  }
+  
+  function OnSoundEvent(event : SoundEvent)
+  {
+      this.CustomNode.SendBuffer(this.Buffer);
+  }
+}

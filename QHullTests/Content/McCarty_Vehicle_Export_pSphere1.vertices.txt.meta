@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	TextBuilder 
+	{
+		var Name = "McCarty_Vehicle_Export_pSphere1.vertices"
+		var ResourceId = 0x59823a8019e5228a
+	}
+}

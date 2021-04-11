@@ -1,0 +1,11 @@
+DataContent = 
+{
+	DataBuilder = 
+	{
+		string Name = "BigAsteroidDrop",
+		uint64 ResourceId = 522fcfcaac9e699f,
+		string LoaderType = "ResourceTable",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

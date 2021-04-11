@@ -1,0 +1,84 @@
+[Version:1]
+Cog 
+{
+	var Name = "Weapon"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	RigidBody 
+	{
+		var Velocity = Real3{0, 0, 0}
+		var AngularVelocity = Real3{0, 0, 0}
+		var DynamicState = RigidBodyDynamicState.Static
+		var AllowSleep = true
+		var Asleep = false
+		var RotationLocked = false
+		var Mode2D = Mode2DStates.Mode2D
+	}
+	BoxCollider 
+	{
+		var Ghost = false
+		var SendsEvents = true
+		var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+		var CollisionGroup = "4e740859314e5515:DefaultGroup"
+		var Offset = Real3{0, 0, 0}
+		var HalfSize = Real3{0.200000003, 0.224999994, 0.0500000007}
+	}
+	Sprite 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var OverrideBoundingBox = false
+		var LocalAabbCenter = Real3{0, 0, 0}
+		var LocalAabbHalfExtents = Real3{1, 1, 1}
+		var GroupSortValue = 0
+		var Material = "582c575af53d18c9:AlphaSprite"
+		var VertexColor = Real4{1, 1, 1, 1}
+		var GeometryMode = SpriteGeometryMode.ZPlane
+		var SpriteSource = "524dc896a7f2a4f4:IonWeapon"
+		var FlipX = false
+		var FlipY = false
+		var AnimationActive = true
+		var AnimationSpeed = 1
+		var StartFrame = 0
+	}
+	Reactive 
+	{
+		var Active = true
+	}
+	ItemMountable 
+	{
+		var RootArchetype = "525b9b8a9d8d8062:ObjectRoot"
+	}
+	Weapon 
+	{
+		var RefireTime = 0.5
+		var LocalFireDirection = Real3{0, 1, 0}
+	}
+	Orientation 
+	{
+		var GlobalUp = Real3{0, 0, 1}
+		var LocalOrientationBasis = Quaternion{0.707106769, -0, 0, 0.707106769}
+		var DefaultBases = OrientationBases.ForwardYUpZ
+	}
+	InputFromCore 
+	{
+		var EventName = "Fire"
+		var Key = 32
+	}
+	Upgradable 
+	{
+		var Level = 0
+		var UpgradeWindow = "5230b4fb7a12c599:UpgradeWindow"
+	}
+	WeaponBasic 
+	{
+		var ProjectileArchetype = "5226ea44cc3b5c37:PlasmaProjectile"
+		var FireSpeedCurve = "52288017287c7c84:WeaponSpeed"
+	}
+}

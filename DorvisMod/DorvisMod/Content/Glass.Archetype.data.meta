@@ -1,0 +1,19 @@
+DataContent = 
+{
+	ContentTags = 
+	{
+		object Tags = 
+		[
+			"Cog",
+			"Blocks",
+		],
+	},
+	DataBuilder = 
+	{
+		string Name = "Glass",
+		uint64 ResourceId = 520330a34f8aefe2,
+		string LoaderType = "Cog",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

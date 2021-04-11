@@ -1,0 +1,481 @@
+// Information describing an attempted attachment to a new root
+class GridAttachInfo
+{
+    // The new root we can attach to
+    var Root : Cog = null;
+    // The core of this root (if there is one)
+    var CoreCog : Cog = null;
+    // The resultant key in the new root
+    var Key : Real2 = local Real2();
+    // The world position of the key (used to find a best match)
+    var AttachPosition : Real3 = local Real3();
+    
+    constructor()
+    {
+    }
+}
+
+// Event sent (and received by ObjectGrid) to test attachments.
+class GridAttachEvent : ZilchEvent
+{
+    // The position we want to test for attachment
+    var TestPos : Real3 = local Real3();
+    // The current root that is being tested for attachment.
+    // Used to reject checking the root that is currently testing.
+    var TestRoot : Cog = null;
+    
+    // The possible attachments we can have. This event is modified by every
+    // ObjectGrid that receives this and is a valid attach candidate
+    var PossibleAttachments : Array[GridAttachInfo] = new Array[GridAttachInfo]();
+    
+    constructor() : base()
+    {
+    }
+}
+
+// Manages all pieces in a grid and handles doing any sort of
+// flood fill or other management of the grid.
+class ObjectGrid : ZilchComponent
+{
+    // The archetype used to display to the user where the object can be mounted.
+    [Property]
+    var DisplayArchetype : Archetype = Archetype.GridCellSprite;
+    
+    // A map of keys to current pieces attached to this root.
+    var PieceMap : HashMap[Real2, Cog] = new HashMap[Real2, Cog]();
+    // Current free key positions. The cog will either be null or
+    // the sprite representing the free position.
+    var FreeMap : HashMap[Real2, Cog] = new HashMap[Real2, Cog]();
+    
+    // The size of a sprite (units per pixel / 100). Used to
+    // normalize the key sizes if the sprite size is different
+    var SpriteSize : Real = 1.0;
+    var SelectedKey : Real2 = local Real2(0.0, 0.0);
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+      Zero.Connect(init, Events.AllObjectsInitialized, this.OnAllObjectsInitialized);
+        // Listen for when a piece start/stops dragging so we can create/destroy visuals
+        Zero.Connect(this.Space, Events.PieceDragBegin, this.OnPieceDragBegin);
+        Zero.Connect(this.Space, Events.PieceDragEnd, this.OnPieceDragEnd);
+        
+        Zero.Connect(this.Space, Events.TestAttachment, this.OnTestAttachment);
+        
+        
+    }
+
+    function OnAllObjectsInitialized(event : CogInitializerEvent)
+    {
+      // We might have some children so do the initial grid population
+      this.RebuildGrid();
+    }
+    
+    function OnPieceDragBegin(e : GridAttachEvent)
+    {
+        // If the object beginning the drag is ourself don't do anything
+        if(e.TestRoot == this.Owner)
+        {
+            return;
+        }
+        
+        // Add all of the sprites for the free map positions
+        this.AddFreeSprites();
+    }
+    
+    function OnPieceDragEnd(e : GridAttachEvent)
+    {
+        // Remove all sprites representing the free positions (should we make them invisible?)
+        foreach(var cog in this.FreeMap.Values)
+        {
+            if(cog != null)
+            {
+                cog.Destroy();
+            }
+        }
+        
+        // We now no longer have a key for the selected sprite
+        this.SelectedKey = local Real2();
+    }
+    
+    function OnTestAttachment(e : GridAttachEvent)
+    {
+        var worldPos = e.TestPos;
+        var newKey = this.GetPieceKey(worldPos);
+        
+        // If the key being tested is different then our old key
+        if((newKey != this.SelectedKey) as Boolean)
+        {
+            // Set the old key's sprite to the normal color
+            var selection = this.FreeMap.Get(this.SelectedKey, null);
+            if(selection != null)
+            {
+                selection.Sprite.VertexColor = local Real4(1.0, 1.0, 1.0, 0.5);
+            }
+            // Replace the current key with this new key
+            this.SelectedKey = newKey;
+        }
+        
+        // See if this new key is a free spot
+        var selection = this.FreeMap.Get(this.SelectedKey, null);
+        if(selection != null)
+        {
+            // Change the color to give user feedback that this is the spot that'll be selected
+            selection.Sprite.VertexColor = local Real4(selection.Sprite.VertexColor.XYZ, 1.0);
+            
+            // Build up the info for where this attachment info is and add it to the event
+            var info = new GridAttachInfo();
+            info.AttachPosition = this.KeyToWorldPosition(newKey);
+            info.Key = newKey;
+            info.Root = this.Owner;
+            info.CoreCog = this.Owner.CoreLink.CoreCog;
+            e.PossibleAttachments.Add(info);
+        }
+    }
+    
+    function SetSelectionInvalid()
+    {
+        // If we have a valid selection set it to red
+        var selection = this.FreeMap.Get(this.SelectedKey, null);
+        if(selection != null)
+        {
+            var sprite = selection.Sprite;
+            sprite.VertexColor = local Real4(1.0, 0.0, 0.0, 1.0);
+        }
+    }
+    
+    function AddFreeSprites()
+    {
+        foreach(var key in this.FreeMap.Keys)
+        {
+            // Convert the key to a local space position
+            var pos = local Real3(key, 0.0);
+            var localPos = pos * this.SpriteSize;
+            
+            // Create the free cell as a child at the key position
+            var selection = this.Space.Create(this.DisplayArchetype);
+            selection.Transform.Translation = localPos;
+            // Not using attach relative because we already know the desired local position
+            selection.AttachToPreserveLocal(this.Owner);
+            
+            // Set the color dimmed so that selections are more obvious
+            selection.Sprite.VertexColor = local Real4(selection.Sprite.VertexColor.XYZ, 0.5);
+            
+            this.FreeMap.AddOrOverwrite(key, selection);
+        }
+    }
+    
+    function KeyToWorldPosition(key : Real2) : Real3
+    {
+        // Convert the key to a local space position
+        var pos = local Real3(key, 0.0);
+        var localPos = pos * this.SpriteSize;
+        
+        // Bring it to world space
+        return this.Owner.Transform.TransformPoint(localPos);
+    }
+    
+    function GetPieceKey(piecePos : Real3) : Real2
+    {
+        // Find the relative position in world space of the piece and ourself
+        var myPos = this.Owner.Transform.WorldTranslation;
+        var dir = piecePos - myPos;
+        // Bring that into local space
+        dir = this.Owner.Transform.TransformNormalInverse(dir);
+        // The sprites are not unit size, so take us to the "sprite space"
+        dir = dir * (1.0 / this.SpriteSize);
+        // Now we need to turn our value into an index in the cell.
+        // We do this by adding half a cell and then floor
+        dir = dir + local Real3(0.5, 0.5, 0.5);
+        var key = Math.Floor(dir.XY);
+        return key;
+    }
+    
+    function GetPieceKey(pieceCog : Cog) : Real2
+    {
+      var transform = pieceCog.Transform;
+      var scale = transform.LocalScale;
+      var pos = transform.WorldTranslation;
+        // Get the key from the current cog's position
+        return this.GetPieceKey(pos);
+    }
+    
+    function AddFreeNeighbors(key : Real2)
+    {
+        // Test each up/down/left/right key position.
+        // If there's no piece there then add that spot to the free map.
+        var rKey = key + local Real2(1.0, 0.0);
+        if(this.PieceMap.Get(rKey, null) == null)
+        {
+            this.FreeMap.AddOrIgnore(rKey, null);
+        }
+        
+        var uKey = key + local Real2(0.0, 1.0);
+        if(this.PieceMap.Get(uKey, null) == null)
+        {
+            this.FreeMap.AddOrIgnore(uKey, null);
+        }
+        
+        var lKey = key + local Real2(-1.0, 0.0);
+        if(this.PieceMap.Get(lKey, null) == null)
+        {
+            this.FreeMap.AddOrIgnore(lKey, null);
+        }
+        
+        var dKey = key + local Real2(0.0, -1.0);
+        if(this.PieceMap.Get(dKey, null) == null)
+        {
+            this.FreeMap.AddOrIgnore(dKey, null);
+        }
+    }
+    
+    function CheckIfNeighborsEmpty(key : Real2) : Boolean
+    {
+        // Test up/down/left/right, if any neighbor is not empty then
+        // not all neighbors are empty (return false)
+        var rKey = key + local Real2(0.0, 1.0);
+        if(this.PieceMap.Get(rKey, null) != null)
+        {
+            return false;
+        }
+        var uKey = key + local Real2(1.0, 0.0);
+        if(this.PieceMap.Get(uKey, null) != null)
+        {
+            return false;
+        }
+        var lKey = key + local Real2(0.0, -1.0);
+        if(this.PieceMap.Get(lKey, null) != null)
+        {
+            return false;
+        }
+        var dKey = key + local Real2(-1.0, 0.0);
+        if(this.PieceMap.Get(dKey, null) != null)
+        {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    function TryRemoveFromFreeMap(key : Real2)
+    {
+        // If this is a valid free spot position and all neighbors are empty then remove it.
+        // If there is non-empty neighbor then this free spot needs to exist because of another square
+        if((this.FreeMap.FindIndex(key) != -1) && this.CheckIfNeighborsEmpty(key))
+        {
+            this.FreeMap.RemoveOrIgnore(key);
+        }
+    }
+    
+    function CheckPieceNeighbors(key : Real2)
+    {
+        // Try to remove all of this piece's neighbors from the free map
+        var testKey = key + local Real2(0.0, -1.0);
+        this.TryRemoveFromFreeMap(testKey);
+        testKey = key + local Real2(0.0, 1.0);
+        this.TryRemoveFromFreeMap(testKey);
+        testKey = key + local Real2(-1.0, 0.0);
+        this.TryRemoveFromFreeMap(testKey);
+        testKey = key + local Real2(1.0, 0.0);
+        this.TryRemoveFromFreeMap(testKey);
+    }
+    
+    function AddPiece(pieceCog : Cog)
+    {
+        var key = this.GetPieceKey(pieceCog);
+        
+        this.AddPiece(key, pieceCog);
+    }
+    
+    function AddPiece(key : Real2, pieceCog : Cog)
+    {
+        // If this free map had a selection (which it should almost
+        // always have, the exception is creation) remove it (and destroy it)
+        var freeIndex = this.FreeMap.FindIndex(key);
+        if(freeIndex != -1)
+        {
+            var selection = this.FreeMap.Get(key, null);
+            if(selection != null)
+            {
+                selection.Destroy();
+                
+            }
+            this.FreeMap.RemoveOrError(key);
+        }
+        // Add this to the piece map and add check all the neighbors
+        // to see if they should be in the free list
+        this.PieceMap.AddOrOverwrite(key, pieceCog);
+        this.AddFreeNeighbors(key);
+    }
+    
+    function RemovePiece(pieceCog : Cog)
+    {
+        var key = this.GetPieceKey(pieceCog);
+        
+        // If there is a neighbor that is not empty then we need to add this spot
+        // to the free map (otherwise the piece likely got detached as a result
+        // of detaching another piece)
+        if(this.CheckIfNeighborsEmpty(key) == false)
+        {
+            this.FreeMap.AddOrOverwrite(key, null);
+        }
+        
+        this.PieceMap.RemoveOrIgnore(key);
+        // Now check all neighbors of this piece to see if they should be removed from the free map
+        this.CheckPieceNeighbors(key);
+    }
+    
+    function RebuildGrid()
+    {
+        this.PieceMap.Clear();
+        this.FreeMap.Clear();
+        
+        // Add all children as pieces
+        var hierarchy = this.Owner.Hierarchy;
+        if(hierarchy == null)
+        {
+            return;
+        }
+        
+        var children = hierarchy.Children.All;
+        foreach (var cog in children)
+        {
+          this.AddPiece(cog);
+        }
+    }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    //Flood Fill Detaching logic
+    
+    function FloodFill(results : Array[Cog], ids : HashMap[Real2, Boolean], key : Real2) : Boolean
+    {
+        // If there's no object here then we did not find the core...
+        var obj = this.PieceMap.Get(key, null);
+        if(obj == null)
+        {
+            return false;
+        }
+        
+        // We already have visited this spot so return
+        if(ids.Get(key, false) != false)
+        {
+            return false;
+        }
+        
+        // We found a core, don't add the core to the results
+        // (since the core can't be detached) but return that we found the core
+        if(obj.Core != null)
+        {
+            return true;
+        }
+        
+        // Add to our id map that we've visited this spot and add
+        // the object to the list of cog's we've visited
+        ids.AddOrOverwrite(key, true);
+        results.Add(obj);
+        
+        // Check all of our neighbors, make sure to properly combine
+        // the results of any of them finding the core
+        var isCorePresent = false;
+        var rKey = key + local Real2(1.0, 0.0);
+        isCorePresent = isCorePresent || this.FloodFill(results, ids, rKey);
+        var uKey = key + local Real2(0.0, 1.0);
+        isCorePresent = isCorePresent || this.FloodFill(results, ids, uKey);
+        var lKey = key + local Real2(-1.0, 0.0);
+        isCorePresent = isCorePresent || this.FloodFill(results, ids, lKey);
+        var dKey = key + local Real2(0.0, -1.0);
+        isCorePresent = isCorePresent || this.FloodFill(results, ids, dKey);
+        
+        return isCorePresent;
+    }
+    
+    function TestKeyFloodFill(finalResults : Array[Cog], results : Array[Cog], ids : HashMap[Real2, Boolean], key : Real2)
+    {
+        // If this flood fill found the core then add all of the
+        // results we got into our final results
+        var isCorePresent = this.FloodFill(results, ids, key);
+        if(isCorePresent == false)
+        {
+            foreach(var cog in results)
+            {
+                finalResults.Add(cog);
+            }
+        }
+        // The results need to be cleared every test otherwise we'll
+        // add them if any other test finds the core
+        results.Clear();
+    }
+    
+    function GetDependentPieces(pieceCog : Cog) : Array[Cog]
+    {
+        var finalResults = new Array[Cog]();
+        
+        var results = new Array[Cog]();
+        var ids = new HashMap[Real2, Boolean]();
+        
+        var key = this.GetPieceKey(pieceCog);
+        
+        // Flood fill each cardinal direction and add all results to the total final results pool
+        ids.Clear();
+        ids.AddOrOverwrite(key, true);
+        var rKey = key + local Real2(1.0, 0.0);
+        this.TestKeyFloodFill(finalResults, results, ids, rKey);
+        ids.Clear();
+        ids.AddOrOverwrite(key, true);
+        var uKey = key + local Real2(0.0, 1.0);
+        this.TestKeyFloodFill(finalResults, results, ids, uKey);
+        ids.Clear();
+        ids.AddOrOverwrite(key, true);
+        var lKey = key + local Real2(-1.0, 0.0);
+        this.TestKeyFloodFill(finalResults, results, ids, lKey);
+        ids.Clear();
+        ids.AddOrOverwrite(key, true);
+        var dKey = key + local Real2(0.0, -1.0);
+        this.TestKeyFloodFill(finalResults, results, ids, dKey);
+        return finalResults;
+    }
+    
+    function TestKeyFloodFill(finalResults : Array[Array[Cog]], results : Array[Cog], ids : HashMap[Real2, Boolean], key : Real2)
+    {
+        // Flood fill this direction, if the core was not present then the
+        // results we got should be split into their own island so add this list to the final results
+        var isCorePresent = this.FloodFill(results, ids, key);
+        if(isCorePresent == false)
+        {
+            finalResults.Add(results);
+        }
+    }
+    
+    function GetSplit(key : Real2) : Array[Array[Cog]]
+    {
+        var finalResults = new Array[Array[Cog]]();
+        
+        var results = new Array[Cog]();
+        var ids = new HashMap[Real2, Boolean]();
+        
+        ids.AddOrOverwrite(key, true);
+        
+        // Flood fill each cardinal direction and add all results to the total final results pool
+        var rKey = key + local Real2(1.0, 0.0);
+        this.TestKeyFloodFill(finalResults, results, ids, rKey);
+        // Have to make sure to make a new array every time to avoid having a
+        // reference to an array that was added to finalResults. Could do this only
+        // when results were added to finalResults, but I don't care.
+        results = new Array[Cog]();
+        
+        var uKey = key + local Real2(0.0, 1.0);
+        this.TestKeyFloodFill(finalResults, results, ids, uKey);
+        results = new Array[Cog]();
+        
+        var lKey = key + local Real2(-1.0, 0.0);
+        this.TestKeyFloodFill(finalResults, results, ids, lKey);
+        results = new Array[Cog]();
+        
+        var dKey = key + local Real2(0.0, -1.0);
+        this.TestKeyFloodFill(finalResults, results, ids, dKey);
+        return finalResults;
+    }
+}

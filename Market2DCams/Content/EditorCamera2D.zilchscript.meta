@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "EditorCamera2D"
+		var ResourceId = 0x59db32071c84eaea
+	}
+}

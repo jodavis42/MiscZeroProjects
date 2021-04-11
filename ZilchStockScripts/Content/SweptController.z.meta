@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "SweptController",
+		uint64 ResourceId = 55159ec6816c30a0,
+	},
+},

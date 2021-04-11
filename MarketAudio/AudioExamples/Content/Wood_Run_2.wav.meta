@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Wood_Run_2"
+		var ResourceId = 0x5944f27080afff03
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 0.484512478
+		var AudioChannels = 1
+		var SampleRate = 44100
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

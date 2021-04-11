@@ -1,0 +1,153 @@
+[Version:1]
+Cog 
+{
+	var Name = "SnakeBuilding"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x598178bd09450fe4]
+		{
+			var Name = "flameTranslation"
+			Transform 
+			{
+				var Translation = Real3{0, -1.84711325, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x598178bd09450fea]
+				{
+					var Name = "flameRotationOffset"
+					Transform 
+					{
+						var Translation = Real3{0, 1.76199746, -1.98060751}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x598178bd09450fec]
+						{
+							var Name = "flameRotationPivot"
+							Transform 
+							{
+								var Translation = Real3{-0.0326475054, 0.109305009, 1.87130249}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x598178bd09450fee]
+								{
+									var Name = "flameRotation"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x598178bd09450ff0]
+										{
+											var Name = "flameRotationPivotInverse"
+											Transform 
+											{
+												var Translation = Real3{0.0326475054, -0.109305009, -1.87130249}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Hierarchy 
+											{
+												Cog [Id:0x598178bd09450ff3]
+												{
+													var Name = "flameScalingOffset"
+													Transform 
+													{
+														var Translation = Real3{1.05560267, -3.53419542, -60.5054474}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Hierarchy 
+													{
+														Cog [Id:0x598178bd09450ff5]
+														{
+															var Name = "flameScalingPivot"
+															Transform 
+															{
+																var Translation = Real3{-1.08825016, 3.64350033, 62.3767509}
+																var Scale = Real3{1, 1, 1}
+																var Rotation = Quaternion{0, 0, 0, 1}
+															}
+															Hierarchy 
+															{
+																Cog [Id:0x598178bd09450ff7]
+																{
+																	var Name = "flameScaling"
+																	Transform 
+																	{
+																		var Translation = Real3{0, 0, 0}
+																		var Scale = Real3{0.0299999993, 0.0299999993, 0.0299999993}
+																		var Rotation = Quaternion{0, 0, 0, 1}
+																	}
+																	Hierarchy 
+																	{
+																		Cog [Id:0x598178bd09450ff9]
+																		{
+																			var Name = "flameScalingPivotInverse"
+																			Transform 
+																			{
+																				var Translation = Real3{1.08825016, -3.64350033, -62.3767509}
+																				var Scale = Real3{1, 1, 1}
+																				var Rotation = Quaternion{0, 0, 0, 1}
+																			}
+																			Hierarchy 
+																			{
+																				Cog [Id:0x598178bd09450ffb]
+																				{
+																					var Name = "flame"
+																					Transform 
+																					{
+																						var Translation = Real3{0, 0, 0}
+																						var Scale = Real3{1, 1, 1}
+																						var Rotation = Quaternion{0, 0, 0, 1}
+																					}
+																					Model 
+																					{
+																						var Visible = true
+																						var ViewCulling = true
+																						var VisibilityEvents = true
+																						var OverrideBoundingBox = false
+																						var LocalAabbCenter = Real3{0, 0, 0}
+																						var LocalAabbHalfExtents = Real3{1, 1, 1}
+																						var GroupSortValue = 0
+																						var Material = "583afb5e7bf75e18:ZeroMaterial"
+																						var Mesh = "598178be097d37c9:SnakeBuilding"
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

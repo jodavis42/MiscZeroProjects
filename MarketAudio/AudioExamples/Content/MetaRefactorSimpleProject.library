@@ -1,0 +1,8 @@
+[Version:1]
+ContentLibrary 
+{
+	var Name = "MetaRefactorSimpleProject"
+	var LibraryId = 0x58d13f471e6b90c2
+	var SourceControlType = ""
+	var ReadOnly = false
+}

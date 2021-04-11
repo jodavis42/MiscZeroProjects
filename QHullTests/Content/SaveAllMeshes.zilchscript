@@ -1,0 +1,15 @@
+[Command(autoRegister:true)][RunInEditor]
+class SaveAllMeshes : ZilchComponent
+{
+  sends SaveVertices : ZilchEvent;
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.CommandExecute, this.OnCommandExecute);
+  }
+
+  function OnCommandExecute(event : CommandEvent)
+  {
+    event.Space.DispatchEvent(Events.SaveVertices, ZilchEvent());
+    Console.WriteLine("SaveAllMeshes Command Executed");
+  }
+}

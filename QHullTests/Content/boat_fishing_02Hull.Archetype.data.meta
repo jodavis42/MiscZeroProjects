@@ -1,0 +1,20 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "boat_fishing_02Hull"
+		var ResourceId = 0x598081f4bf8f0bc6
+		var LoaderType = "Cog"
+		var Version = 0
+		var ShowInEditor = true
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Archetype"
+			"Cog"
+		}
+	}
+}

@@ -1,0 +1,25 @@
+[Version:1]
+ImageContent 
+{
+	TextureInfo 
+	{
+		var FileType = "png"
+		var LoadFormat = "RGBA8"
+		var Dimensions = "1024 x 1024"
+		var Size = "5.333 MB"
+	}
+	TextureBuilder 
+	{
+		var Name = "Satellite_Specular"
+		var ResourceId = 0x58869bd35aa1b0ae
+		var Type = TextureType.Texture2D
+		var Compression = TextureCompression.None
+		var AddressingX = TextureAddressing.Repeat
+		var AddressingY = TextureAddressing.Repeat
+		var Filtering = TextureFiltering.Trilinear
+		var Anisotropy = TextureAnisotropy.x16
+		var MipMapping = TextureMipMapping.PreGenerated
+		var PremultipliedAlpha = false
+		var GammaCorrection = false
+	}
+}

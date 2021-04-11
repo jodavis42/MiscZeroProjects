@@ -1,0 +1,39 @@
+// No enum properties yet
+// Set number manually on each object for now
+enum Direction
+{
+    Left,  // 0
+    Right, // 1
+    Up,    // 2
+    Down   // 3
+}
+
+class Door : ZilchComponent
+{
+    [Property]
+    var ToLevel : Level = null;
+    
+    [Property]
+    var FromDirection : Direction = Direction.Left;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollision);
+    }
+
+    function OnCollision(collisionEvent : CollisionEvent)
+    {
+        if (collisionEvent.OtherObject.Name == "Player")
+        {
+            Zero.ObjectStore.Store("Player", collisionEvent.OtherObject);
+            this.GameSession.LevelData.FromLevelName = this.Space.CurrentLevel.Name;
+            this.GameSession.LevelData.PositionDifference = collisionEvent.OtherObject.Transform.Translation - this.Owner.Transform.Translation;
+            
+            this.Space.LoadLevel(this.ToLevel);
+        }
+    }
+}

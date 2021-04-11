@@ -1,0 +1,78 @@
+[Version:1]
+Cog 
+{
+	var Name = "Ball"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Real3{-7.55911064, -4.16934872, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Sprite 
+	{
+		var Visible = true
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var Material = "582c575af53d18c9:AlphaSprite"
+		var VertexColor = Real4{1, 1, 1, 1}
+		var GeometryMode = SpriteGeometryMode.ZPlane
+		var SpriteSource = "5376a85d0d12870d:Ball"
+		var FlipX = false
+		var FlipY = false
+		var AnimationActive = true
+		var AnimationSpeed = 1
+		var StartFrame = 0
+	}
+	Reactive 
+	{
+		var Active = true
+	}
+	Ball 
+	{
+		var Slingshot = CogPath
+		{
+			var Path = ":/Slingshot"
+			var ErrorOnResolveToNull = false
+			var ErrorOnPathCantCompute = false
+			var ErrorOnDirectLinkFail = false
+			var UpdateCogOnPathChange = true
+			var UpdatePathOnCogChange = true
+			var UpdateCogOnInitialize = true
+			var ResolvedNullErrorOccurred = false
+			var ResolvedCog = 2
+			var PathPreference0 = CogPathPreference.CogRelative
+			var PathPreference1 = CogPathPreference.SpaceRelative
+			var PathPreference2 = CogPathPreference.Absolute
+		}
+		var MaxStretchLength = 3
+		var ShootPower = 10
+	}
+	SphereCollider 
+	{
+		var Ghost = false
+		var SendsEvents = true
+		var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+		var CollisionGroup = "4e740859314e5515:DefaultGroup"
+		var Offset = Real3{0, 0, 0}
+		var Radius = 0.5
+	}
+	RigidBody 
+	{
+		var Velocity = Real3{0, 0, 0}
+		var AngularVelocity = Real3{0, 0, 0}
+		var DynamicState = RigidBodyDynamicState.Kinematic
+		var AllowSleep = true
+		var Asleep = false
+		var RotationLocked = false
+		var Mode2D = Mode2DStates.Mode2D
+	}
+	MassOverride 
+	{
+		var Active = true
+		var InverseMass = 1
+		var Mass = 1
+		var LocalInverseInertiaTensor = Real3x3{1, 0, 0, 0, 1, 0, 0, 0, 1}
+		var LocalCenterOfMass = Real3{0, 0, 0}
+	}
+}

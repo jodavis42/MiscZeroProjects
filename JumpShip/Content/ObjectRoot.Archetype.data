@@ -1,0 +1,46 @@
+Cog = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Named = 
+	{
+		string Name = "Root",
+	},
+	Archetyped = 
+	{
+		string Name = "525b9b8a9d8d8062:ObjectRoot",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [0, 0, 0],
+		Vec3 Scale = [1, 1, 1],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	RigidBody = 
+	{
+		bool Static = false,
+		bool Asleep = false,
+		bool Kinematic = false,
+		bool RotationLocked = false,
+		bool Mode2D = false,
+		bool AllowSleep = true,
+		bool Inherit2DMode = true,
+		Vec3 Velocity = [0, 0, 0],
+		Vec3 AngularVelocity = [0, 0, 0],
+	},
+	ObjectGrid = 
+	{
+		string DisplayArchetype = "5252e76acb5e3746:GridCellSprite",
+	},
+	CoreLink = 
+	{
+	},
+	Attachable = 
+	{
+	},
+	Hierarchy = 
+	{
+	},
+},

@@ -1,0 +1,21 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "BigAsteroid"
+		var ResourceId = 0x524dce7f2db914b8
+		var AtlasId = 0x5274cf95e4a661fd
+		var FrameSizeX = 69
+		var FrameSizeY = 75
+		var FrameCount = 1
+		var FrameDelay = 0.0833332986
+		var OriginX = 34
+		var OriginY = 37
+		var PixelsPerUnit = 32
+		var Sampling = SpriteSampling.Nearest
+		var Looping = true
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+}

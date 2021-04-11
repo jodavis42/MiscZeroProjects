@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	TextBuilder 
+	{
+		var Name = "Cube.vertices"
+		var ResourceId = 0x59823a1126eded64
+	}
+}

@@ -1,0 +1,112 @@
+Cog = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Named = 
+	{
+		string Name = "Drill",
+	},
+	Archetyped = 
+	{
+		string Name = "5204f49adebbeffc:WeaponDrill",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [0, 0, 0],
+		Vec3 Scale = [1, 1, 1],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	RigidBody = 
+	{
+		bool Static = true,
+		bool Asleep = false,
+		bool Kinematic = false,
+		bool RotationLocked = false,
+		bool Mode2D = true,
+		bool AllowSleep = true,
+		bool Inherit2DMode = true,
+		Vec3 Velocity = [0, 0, 0],
+		Vec3 AngularVelocity = [0, 0, 0],
+	},
+	Sprite = 
+	{
+		string SpriteSource = "52026759d3313998:Drill",
+		bool FlipX = false,
+		bool FlipY = false,
+		Vec4 Color = [1, 1, 1, 1],
+		bool Visible = true,
+		bool OnTop = false,
+		bool AnimationActive = true,
+		float AnimationSpeed = 1,
+		uint StartFrame = 0,
+		BlendMode BlendMode = Alpha,
+		SpriteGeometryMode GeometryMode = ZPlane,
+	},
+	Orientation = 
+	{
+		Vec3 UpVector = [0, 0, 1],
+		Vec3 ForwardVector = [0, 1, 0],
+	},
+	BoxCollider = 
+	{
+		bool Ghost = false,
+		bool SendsMessages = true,
+		bool Seamless = false,
+		string MaterialName = "4de020863e872da8:DefaultPhysicsMaterial",
+		string SerializedGroupName = "4e740859314e5515:DefaultGroup",
+		Vec3 Offset = [0, 0, 0],
+		Vec3 Size = [0.25, 0.25, 0.05],
+	},
+	Reactive = 
+	{
+		bool Active = true,
+		bool CaptureMouse = false,
+	},
+	ItemMountable = 
+	{
+		string RootArchetype = "525b9b8a9d8d8062:ObjectRoot",
+	},
+	Upgradable = 
+	{
+		float Level = 0,
+		string UpgradeWindow = "5230b4fb7a12c599:UpgradeWindow",
+	},
+	Hierarchy = 
+	{
+		Cog = 
+		{
+			LinkId = 
+			{
+				uint Id = 2,
+			},
+			Named = 
+			{
+				string Name = "Weapon",
+			},
+			Transform = 
+			{
+				Vec3 Translation = [0, 0, 0],
+				Vec3 Scale = [1, 1, 1],
+				Quat Rotation = [0, 0, 0, 1],
+			},
+			ConvexMeshCollider = 
+			{
+				bool Ghost = false,
+				bool SendsMessages = true,
+				bool Seamless = false,
+				string MaterialName = "522ed4616b15044d:Massless",
+				string SerializedGroupName = "4e740859314e5515:DefaultGroup",
+				Vec3 Offset = [0, 0, 0],
+				string MeshName = "52026601f8780c12:Drill",
+			},
+			DamageRegion = 
+			{
+				string DamageCurve = "52289e04f7821205:DamageCurve",
+				string DamageEffect = "523c8e0cbc053bc4:DamageEffect",
+				int DamageType = 2,
+			},
+		},
+	},
+},

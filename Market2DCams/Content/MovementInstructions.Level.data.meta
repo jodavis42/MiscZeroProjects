@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "MovementInstructions"
+		var ResourceId = 0x581b0646f09fe3e3
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

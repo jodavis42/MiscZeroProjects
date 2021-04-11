@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "UiUpgradeWindow",
+		uint64 ResourceId = 5230b7276a23a1b1,
+	},
+},

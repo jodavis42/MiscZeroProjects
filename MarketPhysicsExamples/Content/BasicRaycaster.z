@@ -1,0 +1,56 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 8/9/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Basic example of raycasting with physics
+class BasicRaycaster : ZilchComponent
+{
+  [Dependency] var Transform : Transform;
+  
+  // The local space vector that we use to raycast
+  [Property] var LocalVector : Real3 = Real3.YAxis;
+  // The maximum distance the raycast will go
+  [Property] var MaxCastDistance : Real = 50.0;
+  // Color to draw the ray and arrow head
+  [Property] var DrawColor : Real4 = Real4(1.0);
+  // Size of the arrow head to draw
+  [Property] var HeadSize : Real = 0.25;
+  // Is the ray is always drawn on top of everything else?
+  [Property] var OnTop : Boolean = true;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(updateEvent : UpdateEvent)
+  {
+    var transform = this.Transform;
+    
+    // Compute the ray's world-space start and direction
+    var ray = Ray();
+    ray.Start = transform.WorldTranslation;
+    ray.Direction = transform.TransformNormal(this.LocalVector);
+    ray.Direction = Math.Normalize(ray.Direction);
+    
+    // Initialize the max distance for the raycast
+    var distance = this.MaxCastDistance;
+    
+    // Do a raycast for only 1 result
+    var castResult = this.Space.PhysicsSpace.CastRayFirst(ray);
+    
+    // If an object was hit by the raycast, store the distance along the ray that we hit an object
+    if(castResult.ObjectHit != null)
+      distance = Math.Min(this.MaxCastDistance, castResult.Distance);
+    
+    // Draw the ray up to our hit point (or max distance)
+    var line = DebugLine(ray.Start, ray.Start + distance * ray.Direction);
+    line.HeadSize = this.HeadSize;
+    line.Color = this.DrawColor;
+    line.OnTop = this.OnTop;
+    DebugDraw.Add(line);
+  }
+}

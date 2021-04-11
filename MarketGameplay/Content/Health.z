@@ -1,0 +1,75 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Arend Danielek
+// Last updated: 1/4/2017
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Implements basic health and damage logic.
+class Health : ZilchComponent
+{
+  // When we die, we sound out a death event.
+  sends Death : ZilchEvent;
+  
+  // The max health we can have
+  [Property] var MaxHealth : Real = 50.0;
+  
+  // If we reach zero health should we call destroy on ourself?
+  [Property] var DestroyAtZeroHealth : Boolean = true;
+  
+  // A scalar to modify how much damage this object takes.
+  [Property] var DamageScalar : Real = 1.0;
+  
+  [Property] var DebugPrint : Boolean = false;
+  
+  // How much health we currently have. Separated from MaxHealth so that we can clamp to max health.
+  var CurrentHealth : Real = 50.0;
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.CurrentHealth = this.MaxHealth;
+    Zero.Connect(this.Owner, Events.ApplyDamage, this.OnApplyDamage);
+  }
+  
+  function OnApplyDamage(damageEvent : DamageEvent)
+  {
+    this.ApplyDamage(damageEvent.Damage);
+  }
+  
+  function ApplyDamage(damage : Real)
+  {
+    if(this.DebugPrint)
+      Console.WriteLine("Attempt to apply `damage` damage.");
+    
+    // Compute the total damage based upon our damage scalar.
+    var totalDamage = damage * this.DamageScalar;
+    
+    if(this.DebugPrint)
+      Console.WriteLine("Damage after Scalar: `totalDamage`");
+    
+    this.CurrentHealth -= totalDamage;
+    // Clamp our current health (in my case I don't want to have
+    // to heal through negative health so I clamp to 0).
+    this.CurrentHealth = Math.Clamp(this.CurrentHealth, 0.0, this.MaxHealth);
+    
+    if(this.DebugPrint)
+      Console.WriteLine("Health after damage: `this.CurrentHealth`");
+    
+    // If we have no health.
+    if(this.CurrentHealth <= 0.0)
+    {
+      if(this.DebugPrint)
+        Console.WriteLine("Dispatching death event: `this.Owner`");
+      
+      // Let anyone listening know we just died.
+      var toSend = ZilchEvent();
+      this.Owner.DispatchEvent(Events.Death, toSend);
+      
+      // And if the property is set destroy ourself.
+      if(this.DestroyAtZeroHealth)
+      {
+        this.Owner.Destroy();
+      }
+    }
+  }
+}

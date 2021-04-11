@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "TargetColor"
+		var ResourceId = 0x5912e7ef4116b2bc
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

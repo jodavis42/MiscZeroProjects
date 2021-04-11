@@ -1,0 +1,21 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "SmallAsteroid1"
+		var ResourceId = 0x522ff6c6f5123d15
+		var AtlasId = 0x5274cf95e4a661fd
+		var FrameSizeX = 22
+		var FrameSizeY = 20
+		var FrameCount = 1
+		var FrameDelay = 0.0833332986
+		var OriginX = 11
+		var OriginY = 10
+		var PixelsPerUnit = 32
+		var Sampling = SpriteSampling.Nearest
+		var Looping = true
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+}

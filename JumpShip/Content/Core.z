@@ -1,0 +1,186 @@
+// Notify the core that its target of where to move is being changed
+class MoveTargetEvent : ZilchEvent
+{
+    var MoveTarget : Real3 = local Real3();
+    
+    constructor() : base()
+    {
+    }
+}
+
+// Notify the core or other components (weapons) that where we're aiming has changed
+class AimTargetEvent : ZilchEvent
+{
+    var AimTarget : Real3 = local Real3();
+    
+    constructor() : base()
+    {
+    }
+}
+
+// Just an event to notify someone that something has happened with a core.
+class CoreEvent : ZilchEvent
+{
+    var CoreCog : Cog = null;
+    
+    constructor() : base()
+    {
+    }
+}
+
+class Core : ZilchComponent
+{
+    var IsMoving : Boolean = false;
+    var TargetMoved : Boolean = false;
+    
+    var MoveTarget : Real3 = local Real3(0.0,0.0,0.0);
+    var AimTarget : Real3 = local Real3(0.0,0.0,0.0);
+    
+    var LinearScalar : Real = 0.015;
+    var AngularScalar : Real = 0.15;
+    var MaxSpeed : Real = 2.0;
+    
+    sends TargetMoved : AimTargetEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(initializer : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        Zero.Connect(this.Owner, "SetMoveTarget", this.OnSetMoveTarget);
+        Zero.Connect(this.Owner, Events.Death, this.OnDeath);
+        
+        // Find the core link on our root and set ourself as the core
+        var coreLink = this.Owner.FindRoot().CoreLink;
+        if(coreLink != null)
+        {
+            coreLink.SetCore(this.Owner);
+        }
+    }
+    
+    function OnDeath(e : ZilchEvent)
+    {
+        // Send out an end fire override so any weapon that was firing will stop
+        var toSend = new ZilchEvent();
+        this.Owner.DispatchEvent("OverrideEnd", toSend);
+    }
+    
+    function OnLogicUpdate(e : UpdateEvent)
+    {
+        if(this.TargetMoved)
+        {
+            this.TargetMoved = false;
+            
+            var targetEvent = new AimTargetEvent();
+            targetEvent.AimTarget = this.AimTarget;
+            this.Owner.DispatchEvent(Events.TargetMoved, targetEvent as Event);
+        }
+        
+        if(this.IsMoving == false)
+        {
+            return;
+        }
+        
+        this.Move();
+    }
+    
+    function OnSetMoveTarget(e : MoveTargetEvent)
+    {
+        this.SetMoveTarget(moveTarget : e.MoveTarget);
+    }
+    
+    function SetMoveTarget(moveTarget : Real3)
+    {
+        this.MoveTarget = moveTarget;
+        this.IsMoving = true;
+    }
+    
+    function SetAimTarget(aimTarget : Real3)
+    {
+        this.AimTarget = aimTarget;
+        this.TargetMoved = true;
+        
+        var targetEvent = new AimTargetEvent();
+        targetEvent.AimTarget = this.AimTarget;
+        this.Owner.DispatchEvent(Events.TargetMoved, targetEvent as Event);
+    }
+    
+    function Move()
+    {
+        var root = this.Owner.FindRoot();
+        var rootBody = root.RigidBody;
+        
+        this.IsMoving = false;
+        
+        // Get the core's position in world space
+        var pos = this.Owner.Transform.WorldTranslation;
+        
+        // Get the target direction (from the core position to the target point in world space)
+        // Normalize that vector since we only care about direction, not magnitude
+        var targetDir = this.MoveTarget - pos;
+        targetDir.Z = 0;
+        targetDir = Math.Normalize(targetDir);
+        
+        // Get the world forward vector of the ship
+        var forward = this.Owner.Orientation.WorldForward;
+        
+        // The target rotation is the cross product between the target direction and the ship's current direction
+        // This will generate a torque vector that represents the ship's rotation to get to facing that point
+        // Not sure why the negative is needed, though
+        var targetRotation = local Real3(0.0,0.0,0.0) - Math.Cross(targetDir,forward);
+        // Zero out the other components since it's 2d
+        targetRotation.X = 0.0;
+        targetRotation.Y = 0.0;
+        
+        // If the target direction is opposite of the forward direction (behind a plane made by the forward)
+        if(Math.Dot(forward,targetDir) < 0.0)
+        {
+            // Normalize the rotation so that we turn around quickly
+            targetRotation = Math.Normalize(targetRotation);
+        }
+        
+        // Get the current velocity of the object
+        var curVel = rootBody.Velocity;
+        
+        // The speed is the magnitude of the velocity
+        var curNormalizedVel = Math.Normalize(curVel);
+        
+        // Get the amount that the direction is facing the same way as the velocity
+        // This is basically a [1, -1] value, 1 being in the same direction, -1 being in the opposite, 0 means orthogonal
+        var speed = Math.Length(curVel);
+        
+        // Get the amount that the direction is facing the same way as the velocity
+        // This is basically a [1, -1] value, 1 being in the same direction, -1 being in the opposite, 0 means orthogonal
+        var velInDir = Math.Dot(Math.Normalize(curVel),targetDir);
+        
+        // Compute an amount that tells us the magnitude of the rotational force
+        var rotationMagnitude = Math.Length(targetRotation);
+        
+        // Compute an amount that tells us how close the rotation is to being in the
+        // same direction, where 1 is a value that means we're fully in that direction
+        var rotationInDir = 1.0 - rotationMagnitude;
+        
+        // The linear velocity that we apply is in the target direction, scaled by a defined scalar,
+        // and finally we scale it by how much the rotation is already in the proper facing direction
+        // This gives the ship a better feel since it has to turn first, then accelerate
+        var appliedLinVel = targetDir * local Real3(this.LinearScalar * rotationInDir);
+        
+        // The angular velocity that we apply starts with the target rotation, is scaled by a defined
+        // scalar, and then scaled again by the rotations magnitude (this gives the effect that the
+        // closer it gets, the more it slows down, which is effecitvely squaring the targetRotation)
+        var appliedAngVel = targetRotation * local Real3(this.AngularScalar * rotationMagnitude);
+        
+        // If the speed is greater than the maximum speed, and we're not trying to move away from the current velocity...
+        if(speed >= this.MaxSpeed && velInDir > 0.0)
+        {
+            // Scale the applied linear velocity so that it will not move any faster in the same direction
+            appliedLinVel *= local Real3(1.0 - velInDir);
+        }
+        
+        // Apply the linear and angular velocities
+        rootBody.ApplyLinearImpulse(appliedLinVel);
+        rootBody.ApplyAngularVelocity(appliedAngVel);
+    }
+}

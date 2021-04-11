@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "PlayerMaterial"
+		var ResourceId = 0x58d943e7a654c3cc
+		var LoaderType = "PhysicsMaterial"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

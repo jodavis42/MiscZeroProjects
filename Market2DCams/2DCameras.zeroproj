@@ -1,0 +1,36 @@
+[Version:1]
+Cog 
+{
+	var Name = ""
+	ProjectSettings 
+	{
+		var ProjectName = "2DCameras"
+		var ProjectOwner = ""
+		var DefaultLevel = "Level"
+		var ProjectSpace = "Space"
+		var ProjectEngineRevision = 122
+		var AutoTakeProjectScreenshot = true
+		var Guid = 0x58069bb18b93a33d
+	}
+	EditorSettings 
+	{
+		var ViewCube = true
+		var ViewCubeSize = 0.150000006
+		var ScriptReloadGame = ScriptReloadMethod.PatchObjects
+		var AutoUpdateContentChanges = true
+	}
+	ProjectConfig 
+	{
+		var EditorMode = EditorMode.Mode3D
+	}
+	LauncherProjectInfo 
+	{
+		var Tags = ""
+		var ExperimentalBranchName = ""
+		var MajorVersion = 1
+		var MinorVersion = 0
+		var PatchVersion = 0
+		var RevisionId = 122
+		var ShortChangeSet = "d5ebf63a038e"
+	}
+}

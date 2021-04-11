@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "MusicEventTesting"
+		var ResourceId = 0x58b4d242452ad72f
+	}
+}

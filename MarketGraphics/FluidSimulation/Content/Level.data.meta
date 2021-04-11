@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Level"
+		var ResourceId = 0x588ccd74a26b4457
+		var LoaderType = ""
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

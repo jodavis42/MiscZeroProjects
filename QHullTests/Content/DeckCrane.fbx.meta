@@ -1,0 +1,55 @@
+[Version:1]
+GeometryContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "DeckCrane_BaseGeneratedMeshNode0"
+				var ResourceId = 0x5980bb60c9668ef1
+			}
+			Object
+			{
+				var Name = "DeckCrane_BaseGeneratedMeshNode1"
+				var ResourceId = 0x5980bb60c9668f1d
+			}
+			Object
+			{
+				var Name = "DeckCrane_Main"
+				var ResourceId = 0x5980bb60c9668f27
+			}
+			Object
+			{
+				var Name = "DeckCrane_WireC01"
+				var ResourceId = 0x5980bb60c9668f35
+			}
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 0.100000001
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x5980bb60c889fe78
+	}
+}

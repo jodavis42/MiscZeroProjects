@@ -1,0 +1,119 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Performs a raycast to try and hold an object in front of the target object. The constraints used
+// are basically a weld, but without error correction on the rotational terms.
+class PlayerGrabber : ZilchComponent
+{
+  [Dependency] var ObjectLink : ObjectLink;
+  [Dependency] var CustomJoint : CustomJoint;
+  
+  // The cog we're attaching the constraint to. Typically should be this object. To avoid
+  // certain mass/velocity/etc... issues, this object should most likely be kinematic.
+  [Property] var AnchorCog : CogPath;
+  // How far to hold the held object
+  [Property] var GrabOffset : Real = 3;
+  // The max distance we'll look for objects to grab
+  [Property] var MaxGrabDistance : Real = 5;
+  
+  // The current object we're grabbing
+  var TargetCog : Cog = null;
+  
+  var AxisXConstraint : CustomConstraintInfo;
+  var AxisYConstraint : CustomConstraintInfo;
+  var AxisZConstraint : CustomConstraintInfo;
+  var Rotation0Constraint : CustomConstraintInfo;
+  var Rotation1Constraint : CustomConstraintInfo;
+  var Rotation2Constraint : CustomConstraintInfo;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.ComputeCustomJointInfo, this.OnComputeCustomJointInfo);
+    
+    this.AxisXConstraint = this.CustomJoint.CreateConstraint();
+    this.AxisYConstraint = this.CustomJoint.CreateConstraint();
+    this.AxisZConstraint = this.CustomJoint.CreateConstraint();
+    this.Rotation0Constraint = this.CustomJoint.CreateConstraint();
+    this.Rotation1Constraint = this.CustomJoint.CreateConstraint();
+    this.Rotation2Constraint = this.CustomJoint.CreateConstraint();
+  }
+  
+  function OnComputeCustomJointInfo(event : CustomJointEvent)
+  {
+    // We're active if we have a target
+    var active = this.TargetCog != null;
+    // Make sure to reset the active flag everytime, otherwise old
+    // values of the constraint will still be solved
+    this.AxisXConstraint.Active = active;
+    this.AxisYConstraint.Active = active;
+    this.AxisZConstraint.Active = active;
+    this.Rotation0Constraint.Active = active;
+    this.Rotation1Constraint.Active = active;
+    this.Rotation2Constraint.Active = active;
+    
+    if(!active)
+      return;
+      
+    var cogA = this.ObjectLink.ObjectA;
+    var cogB = this.ObjectLink.ObjectB;
+    var localPointA = this.ObjectLink.LocalPointA;
+    var localPointB = this.ObjectLink.LocalPointB;
+    
+    // Constrain the two local points to be equal on the x, y, and z axes (effectively locking the points together)
+    this.CustomJoint.ConstrainLinearPosition(this.AxisXConstraint, cogA, cogB, localPointA, localPointB, Real3.XAxis);
+    this.CustomJoint.ConstrainLinearPosition(this.AxisYConstraint, cogA, cogB, localPointA, localPointB, Real3.YAxis);
+    this.CustomJoint.ConstrainLinearPosition(this.AxisZConstraint, cogA, cogB, localPointA, localPointB, Real3.ZAxis);
+    
+    // Constraint the rotational x, y, and z axes to all have equal angular velocities (no error correction)
+    this.Rotation0Constraint.SetJacobian(Real3.Zero, -Real3.XAxis, Real3.Zero, Real3.XAxis);
+    this.Rotation1Constraint.SetJacobian(Real3.Zero, -Real3.YAxis, Real3.Zero, Real3.YAxis);
+    this.Rotation2Constraint.SetJacobian(Real3.Zero, -Real3.ZAxis, Real3.Zero, Real3.ZAxis);
+  }
+  
+  function TryGrab()
+  {
+    // Cast a ray given our position and forward direction
+    var forward = this.Owner.Orientation.WorldForward;
+    var position = this.Owner.Transform.WorldTranslation;
+    var ray = Ray();
+    ray.Start = position;
+    ray.Direction = Math.Normalize(forward);
+    var results = this.Space.PhysicsSpace.CastRay(ray, 100);
+    foreach(var result in results)
+    {
+      // If this object was too far away then skip it
+      if(result.Distance > this.MaxGrabDistance)
+        continue;
+      // If this object shares the same root as ourself then we're trying
+      // to grab a part of ourself so skip this object
+      if(result.ObjectHit.FindRoot() == this.Owner.FindRoot())
+        continue;
+      
+      // If result object doesn't have a dynamic rigid body then skip it (we can grab the floor)
+      var body = result.ObjectHit.RigidBody;
+      if(body == null || body.DynamicState != RigidBodyDynamicState.Dynamic)
+        continue;
+      
+      // Save the target cog. Setup the object link properties such that we're
+      // grabbing this object at it's center, but at a fixed distance from the camera
+      var worldGrabPoint = position + forward * this.GrabOffset;
+      var anchorCog = this.AnchorCog.Cog;
+      this.TargetCog = result.ObjectHit;
+      this.ObjectLink.ObjectA = anchorCog;
+      this.ObjectLink.ObjectB = this.TargetCog;
+      // Make sure to transform our grab point back into local space
+      this.ObjectLink.LocalPointA = anchorCog.Transform.TransformPointInverse(worldGrabPoint);
+      this.ObjectLink.LocalPointB = Real3();
+      break;
+    }
+  }
+  
+  function ClearTarget()
+  {
+    this.TargetCog = null;
+  }
+}

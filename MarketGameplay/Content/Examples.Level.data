@@ -1,0 +1,255 @@
+[Version:1]
+Level 
+{
+	Cog 
+	{
+		var Name = "LevelSettings"
+		var LinkId = 1
+		GravityEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var LocalSpaceDirection = true
+			var Strength = 10
+			var Direction = Vec3{0, -1, 0}
+		}
+		DragEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.100000001
+			var LinearDrag = 0
+			var AngularDrag = 0.100000001
+		}
+		GridDraw 
+		{
+			var Active = true
+			var HalfCellOffset = false
+			var CellSize = 1
+			var Axis = GridAxis.YAxis
+			var Lines = 100
+			var DrawAxisOrigins = true
+			var AlwaysDrawInEditor = true
+			var DrawInGame = false
+			var GridColor = Vec4{0.5, 0.5, 0.5, 0.400000006}
+			var GridHiLight = Vec4{0, 0, 0, 0.400000006}
+			var HilightInterval = 10
+			var FollowEditorCamera = false
+		}
+	}
+	Cog 
+	{
+		var Name = "EditorCamera"
+		var LinkId = 2
+		Transform 
+		{
+			var Translation = Vec3{-19.6586056, 2.58814025, 0.102930777}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{-0.0463679209, -0.703743279, -0.0461257808, 0.707437575}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Vec2{1, 1}
+			var NormalizedOffset = Vec2{0, 0}
+			var Camera = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Renderer = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Vec2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Vec4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var Facing = Facing.NegativeZ
+			var NearPlane = 0.5
+			var FarPlane = 500
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 45
+			var Size = 20
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.Orbit
+			var LookDistance = 20.3285122
+			var VerticalAngle = 0.130899712
+			var HorizontalAngle = 1.56556046
+			var LookTarget = Vec3{0.4957183, -0.0652634576, -0.00259553874}
+			var MoveSensitivity = 1
+		}
+	}
+	Cog 
+	{
+		var Name = "Camera"
+		var LinkId = 4
+		Transform 
+		{
+			var Translation = Vec3{0, 4.89699841, 18.8646431}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{0, 0, 0, 1}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = false
+			var RenderInGame = true
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Vec2{1, 1}
+			var NormalizedOffset = Vec2{0, 0}
+			var Camera = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Renderer = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Vec2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Letterbox
+			var MarginColor = Vec4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var Facing = Facing.NegativeZ
+			var NearPlane = 0.5
+			var FarPlane = 100
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 45
+			var Size = 20
+		}
+		SoundListener 
+		{
+			var Active = true
+		}
+	}
+	Cog 
+	{
+		var Name = "Spawner"
+		var LinkId = 5
+		Transform 
+		{
+			var Translation = Vec3{0, 6.08691835, 0}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{0, 0, 0, 1}
+		}
+		ObjectSpawner 
+		{
+			var Count = 6
+			var Delay = 1
+			var Velocity = Vec3{0, 0, 0}
+			var ArchetypeToSpawn = "583857ddf4d10499:DamageCube"
+		}
+	}
+	Cog 
+	{
+		var Name = "Player"
+		var LinkId = 6
+		Transform 
+		{
+			var Translation = Vec3{0, 0, 0}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b376ae:Sphere"
+		}
+		Health 
+		{
+			var MaxHealth = 50
+			var DestroyAtZeroHealth = true
+			var DamageScalar = 1
+			var DebugPrint = true
+		}
+		SphereCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Vec3{0, 0, 0}
+			var Radius = 0.5
+		}
+		CreateOnDeath 
+		{
+			var ArchetypeToCreate = "581cee81c750620d:TwoSecondCylinder"
+		}
+	}
+	Cog 
+	{
+		var Name = "Renderer"
+		var LinkId = 3
+		DeferredRenderer 
+		{
+			var DrawDebug = true
+			var GeometryDebug = GeometryValue.None
+			var ShowDiffuse = true
+			var ShowSpecular = true
+			var Skybox = "5822dec85e380cf1:SimpleSkybox"
+			var DrawSkybox = true
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+		}
+	}
+}

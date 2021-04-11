@@ -1,0 +1,358 @@
+// Used to notify that an attach/detach has happened to the given core cog.
+class AttachEvent : ZilchEvent
+{
+    var CoreCog : Cog = null;
+    var Attaching : Boolean = true;
+    constructor() : base()
+    {
+    }
+}
+
+// Used to determine if an inner function should get results and if so what kind of results.
+// Zilch currently doesn't have enums. This is my current workaround.
+enum TestResultTypes {NoResults, AttachableResults, AlwaysGetResults}
+
+// Handles a piece being attachable/detachable. Also handles splitting
+// a hierarchy into multiple pieces if this is destroyed.
+class GridAttachable : ZilchComponent
+{
+    // Can this piece be dragged? This exists so that we can have a piece that can't be
+    // dragged but still run the proper logic to split the hierarchy if we're destroyed (player core).
+    [Property]
+    var IsDraggable : Boolean = true;
+    
+    // When we separate we need to create a new root for us,
+    // this is the archetype to create to do this.
+    [Property]
+    var RootArchetype : Archetype = Archetype.ObjectRoot;
+    
+    // We need a reactive to get mouse events, although we
+    // don't actually need the reactive component.
+    [Dependency]
+    var Reactive : Reactive = null;
+    
+    // Should we do mouse drag logic because the mouse went down on us?
+    var IsMoving : Boolean = false;
+    
+    // Action group used to animate towards an attached position.
+    // These groups are currently broken in zilch (dangling pointer or something), waiting for a fix to use.
+    var Group : ActionSet = null;
+    
+    sends AttachToCore : AttachEvent;
+    sends DetachFromCore : AttachEvent;
+    sends PieceDragBegin : GridAttachEvent;
+    sends PieceDragEnd : GridAttachEvent;
+    sends TestAttachment : GridAttachEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        // If we aren't draggable don't listent to any event except our death
+        if(this.IsDraggable)
+        {
+            Zero.Connect(this.Owner, Events.LeftMouseDown, this.OnLeftMouseDown);
+            Zero.Connect(this.Owner, Events.LeftMouseUp, this.OnLeftMouseUp);
+            
+            // Currently MouseMove and MouseUpdate must be listened to in order to get events every frame.
+            Zero.Connect(this.Space, Events.MouseUpdate, this.OnMouseMove);
+        }
+        
+        Zero.Connect(this.Owner, Events.Death, this.OnDeath);
+    }
+    
+    function OnLeftMouseDown(viewportMouseEvent : ViewportMouseEvent)
+    {
+        var root = this.Owner.FindRoot();
+        
+        // If our root had a core then we need to figure out what pieces would
+        // be orphaned when we are removed from this core. These pieces need to
+        // move with us
+        var coreCog = root.CoreLink.CoreCog;
+        if(coreCog != null)
+        {
+            //if(this.Group != null)
+            //{
+            //    if(this.Group.Active)
+            //    {
+            //        this.Group.Cancel();
+            //    }
+            //}
+            
+            // Find (via a flood fill) what pieces need are part of the new root we'll be making
+            var pieces = root.ObjectGrid.GetDependentPieces(this.Owner);
+            // Add ourself for easy iteration
+            pieces.Add(this.Owner);
+            
+            // Create the new root that everything will be attached to
+            var newRoot = this.Space.CreateAtPosition(this.RootArchetype, this.Owner.Transform.WorldTranslation);
+            // We need to set the initial rotation of the root so that the pieces will be aligned correctly
+            newRoot.Transform.Rotation = root.Transform.Rotation;
+            
+            // Save where we were in the old grid so that we can properly offset every piece about ourself
+            var oldGrid = root.ObjectGrid;
+            var key = oldGrid.GetPieceKey(this.Owner);
+            
+            foreach(var cog in pieces)
+            {
+                // We need to preserve the relative position of this piece to ourself (the one we're clicking).
+                // We can do this by preserving the key offset, which is our local position offset.
+                var objKey = oldGrid.GetPieceKey(cog);
+                var newKey = objKey - key;
+                
+                this.ChangeToRoot(cog, oldGrid, newRoot, newKey);
+                
+                // Make sure this cog has the correct transform under the new root
+                cog.Transform.Translation = local Real3(newKey, 0.0);
+                cog.Transform.Rotation = local Quaternion();
+                
+                // Tell all of our components that we're attaching to another core
+                var attachEvent = new AttachEvent();
+                attachEvent.CoreCog = coreCog;
+                cog.DispatchEvent(Events.DetachFromCore, attachEvent);
+            }
+            
+            // Our root has just changed for the below logic
+            root = newRoot;
+        }
+        
+        // Tell the root to start dragging from where we clicked
+        root.Attachable.OnLeftMouseDown(viewportMouseEvent);
+        
+        // Tell everyone that we're being dragged
+        var toSend = new GridAttachEvent();
+        toSend.TestPos = viewportMouseEvent.ToWorldZPlane(0.0);
+        toSend.TestRoot = root;
+        this.Space.DispatchEvent(Events.PieceDragBegin, toSend);
+        
+        // The mouse is now down over us, so it's ok to do movement logic
+        this.IsMoving = true;
+    }
+    
+    function OnMouseMove(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // If the mouse did not click down on us then we don't care that it is moving
+        if(this.IsMoving == false)
+        {
+            return;
+        }
+        
+        // Make sure to tell the root to do dragging logic
+        var root = this.Owner.FindRoot();
+        root.Attachable.OnMouseMove(viewportMouseEvent);
+        
+        // Now test to see if there's anything to attach to (we want results)
+        var info = this.TestAttachment(viewportMouseEvent, TestResultTypes.AlwaysGetResults);
+        if(info != null)
+        {
+            var possibleRoot = info.Root;
+            if(possibleRoot != null)
+            {
+                // Start rotating to the same orientation as the possible new root
+                root.Transform.Rotation = Math.Slerp(root.Transform.Rotation, possibleRoot.Transform.Rotation, 0.1);
+            }
+        }
+    }
+    
+    // Helper function to attach a cog to a new core with the
+    // given key (local position) while properly animating in.
+    function AttachAtKey(cog : Cog, coreCog : Cog, key : Real2)
+    {
+        // Create an action grup to rotate and translate to the correct position for this key
+        var endPos = local Real3(key, 0.0);
+        var group = Actions.Group(cog.Actions);
+        Actions.Property(group, @cog.Transform.Translation, endPos, 0.1, Ease.Linear);
+        Actions.Property(group, @cog.Transform.Rotation, Quaternion.Identity, 0.1, Ease.Linear);
+        //this.Group = group;
+       
+        // Tell all of our components that we're attaching to another core
+        var attachEvent = new AttachEvent();
+        attachEvent.CoreCog = coreCog;
+        cog.DispatchEvent(Events.AttachToCore, attachEvent);
+    }
+    
+    function ChangeToRoot(cog : Cog, oldGrid : ObjectGrid, newRoot : Cog, key : Real2)
+    {
+        // Remove from old parent/grid
+        oldGrid.RemovePiece(cog);
+        cog.RigidBody.DynamicState = RigidBodyDynamicState.Static;
+        cog.Detach();
+        // Add to new parent/grid
+        cog.AttachTo(newRoot);
+        newRoot.ObjectGrid.AddPiece(key, cog);
+    }
+    
+    function ChangeToRoot(cog : Cog, oldGrid : ObjectGrid, info : GridAttachInfo, key : Real2)
+    {
+        // To completely change over to a new root, we have to change our parent hierarchy
+        // and then change our transform to the right spot
+        cog.RigidBody.DynamicState = RigidBodyDynamicState.Static;
+        this.ChangeToRoot(cog, oldGrid, info.Root, key);
+        
+        this.AttachAtKey(cog, info.CoreCog, key);
+    }
+    
+    function OnLeftMouseUp(viewportMouseEvent : ViewportMouseEvent)
+    {
+        var root = this.Owner.FindRoot();
+        var coreCog = root.CoreLink.CoreCog;
+        
+        // Let our root handle mouse up logic (not dragging anymore, etc...)
+        root.Attachable.OnLeftMouseUp(viewportMouseEvent);
+        
+        // Now test to see if there's anything to attach to (we want results)
+        var info = this.TestAttachment(viewportMouseEvent, TestResultTypes.AttachableResults);
+        if(info != null)
+        {
+            // Grab where we were in our old grid
+            var oldGrid = root.ObjectGrid;
+            var oldKey = oldGrid.GetPieceKey(this.Owner);
+            var oldPieceMap = oldGrid.PieceMap;
+            
+            // Change the main piece (the one being dragged, aka ourself) to the new root
+            this.ChangeToRoot(this.Owner, oldGrid, info, info.Key);
+            
+            // Now we need to move over all of the old pieces to the new root (with safe iteration)
+            while(oldPieceMap.Count != 0)
+            {
+                var key = oldPieceMap.UnorderedFirstKey();
+                var cog = oldPieceMap.UnorderedFirstValue();
+                
+                // Compute where this piece should be in the new root relative to ourself
+                var keyDiff = oldGrid.GetPieceKey(cog) - oldKey;
+                
+                this.ChangeToRoot(cog, oldGrid, info, keyDiff + info.Key);
+            }
+            // Now this root doesn't have any pieces so delete it
+            root.Destroy();
+        }
+        
+        // Let everyone know we've stopped dragging
+        var toSend = new GridAttachEvent();
+        toSend.TestPos = viewportMouseEvent.ToWorldZPlane(0.0);
+        toSend.TestRoot = this.Owner.FindRoot();
+        this.Space.DispatchEvent(Events.PieceDragEnd, toSend);
+        
+        // Don't do mouse move logic anymore
+        this.IsMoving = false;
+    }
+    
+    function TestAttachment(viewportMouseEvent : ViewportMouseEvent, resultsWanted : TestResultTypes) : GridAttachInfo
+    {
+        var root = this.Owner.FindRoot();
+        
+        // Create an event to send out on the space that will get any valid attachment points
+        var toSend = new GridAttachEvent();
+        toSend.TestPos = viewportMouseEvent.ToWorldZPlane(0.0);
+        toSend.TestRoot = root;
+        this.Space.DispatchEvent(Events.TestAttachment, toSend);
+        
+        // If the caller didn't want results then there's nothing more to do,
+        // Otherwise we need to find the closest attachment point
+        if(resultsWanted == TestResultTypes.NoResults)
+        {
+            return null;
+        }
+        
+        var objGrid = root.ObjectGrid;
+        
+        var pos = this.Owner.Transform.WorldTranslation;
+        
+        var minDistance = 999.0;
+        var bestAttachPoint : GridAttachInfo = null;
+        
+        // Loop through all attachment points and find the
+        // closest one to our current position
+        foreach(var info in toSend.PossibleAttachments)
+        {
+            var dir = pos - info.AttachPosition;
+            var distance = Math.Length(dir);
+            
+            if(distance < minDistance)
+            {
+                minDistance = distance;
+                bestAttachPoint = info;
+            }
+        }
+        
+        // Now that we've found the best attachment point we need to see if it's actually
+        // valid (if any of our pieces would collide with another piece)
+        if(bestAttachPoint != null)
+        {
+            var oldKey = objGrid.GetPieceKey(this.Owner);
+            // Test all current pieces in the grid (double tests us, but oh well for now)
+            foreach(var cog in objGrid.PieceMap.Values)
+            {
+                var keyDiff = objGrid.GetPieceKey(cog) - oldKey;
+                var newKey = bestAttachPoint.Key + keyDiff;
+                
+                var newRoot = bestAttachPoint.Root;
+                // If anything exists in the spot we're testing then this attachment can't work
+                if(newRoot.ObjectGrid.PieceMap.Get(newKey, null) != null)
+                {
+                    // Set our current attachment point as invalid
+                    newRoot.ObjectGrid.SetSelectionInvalid();
+                    
+                    // However, if the user always wants results give them the point
+                    // back (so they can still rotate towards this root)
+                    if(resultsWanted == TestResultTypes.AlwaysGetResults)
+                    {
+                        return bestAttachPoint;
+                    }
+                    return null;
+                }
+            }
+        }
+        return bestAttachPoint;
+    }
+    
+    function OnDeath(e : ZilchEvent)
+    {
+        var root = this.Owner.FindRoot();
+        var coreCog = root.CoreLink.CoreCog;
+        var oldGrid = root.ObjectGrid;
+        
+        // Get the key we were at in the old grid and then remove ourself from the grid
+        var key = oldGrid.GetPieceKey(this.Owner);
+        oldGrid.RemovePiece(this.Owner);
+        
+        // Get all of the groups that are to be split into their own hierarchies
+        var splitGroups = oldGrid.GetSplit(key);
+        
+        foreach(var group in splitGroups)
+        {
+            // Create the new root that everything will be attached to
+            var newRoot = this.Space.CreateAtPosition(this.RootArchetype, this.Owner.Transform.WorldTranslation);
+            // We need to set the initial rotation of the root so that the pieces will be aligned correctly
+            newRoot.Transform.Rotation = root.Transform.Rotation;
+            
+            // Move each cog over to the new root
+            foreach(var cog in group)
+            {
+                // We need to preserve the relative position of this piece to ourself (the one we're clicking).
+                // We can do this by preserving the key offset, which is our local position offset
+                var objKey = oldGrid.GetPieceKey(cog);
+                var newKey = objKey - key;
+                
+                this.ChangeToRoot(cog, oldGrid, newRoot, newKey);
+                
+                // Make sure this cog has the correct transform under the new root
+                cog.Transform.Translation = local Real3(newKey, 0.0);
+                cog.Transform.Rotation = local Quaternion();
+                
+                // Tell all of our components that we're attaching to another core
+                var attachEvent = new AttachEvent();
+                attachEvent.CoreCog = coreCog;
+                cog.DispatchEvent(Events.DetachFromCore, attachEvent);
+            }
+        }
+        
+        if(oldGrid.PieceMap.Count == 0)
+        {
+            root.Destroy();
+            return;
+        }
+    }
+}

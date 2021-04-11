@@ -1,0 +1,59 @@
+[Version:1]
+Cog [InheritId:"5980bb60c889fe78:DeckCrane"]
+{
+	Transform 
+	{
+		var Translation = Real3{15, 0, -15}
+		var Rotation = Quaternion{0, 0, 0, 1}
+		var Scale = Real3{1, 1, 1}
+	}
+	HierarchyMeshToTextBlock [LocallyAdded]
+	{
+		var ApplyTransform = false
+		var FindUsedVertices = false
+	}
+	QuickHullTest [LocallyAdded]
+	{
+		var Active = false
+		var DebugDrawMode = QuickHullDebugDrawMode.None
+	}
+	QuickHullRenderSettings [LocallyAdded]
+	{
+		var RenderGraphics = true
+		var RenderHullFilled = true
+		var RenderHullEdges = true
+		var RenderHullTriangleEdges = false
+		var RenderHullNormals = false
+	}
+	BaseCogResultRecorder [LocallyAdded]
+	{
+	}
+	QuickHullMeshSaver [LocallyAdded]
+	{
+		var Active = false
+	}
+	QuickHullUnitTest [LocallyAdded]
+	{
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59814151add8a4ab][InheritId:"59806fa92d4eddb3:ConvexHullFilled"][LocallyAdded]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+		Cog [Id:0x59814151add8c861][InheritId:"59806fb3123a38d8:ConvexHullWireFrame"][LocallyAdded]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+	}
+}

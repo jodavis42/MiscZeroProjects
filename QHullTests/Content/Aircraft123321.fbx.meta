@@ -1,0 +1,65 @@
+[Version:1]
+GeometryContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "Aircraft123321_pCube1GeneratedMeshNode0"
+				var ResourceId = 0x59809265d042facb
+			}
+			Object
+			{
+				var Name = "Aircraft123321_pCube1GeneratedMeshNode1"
+				var ResourceId = 0x59809265d042faf7
+			}
+			Object
+			{
+				var Name = "Aircraft123321_pCube1GeneratedMeshNode2"
+				var ResourceId = 0x59809265d042fb01
+			}
+			Object
+			{
+				var Name = "Aircraft123321_pCube1GeneratedMeshNode3"
+				var ResourceId = 0x59809265d042fb0e
+			}
+			Object
+			{
+				var Name = "Aircraft123321_pCube1GeneratedMeshNode4"
+				var ResourceId = 0x59809265d042fb1a
+			}
+			Object
+			{
+				var Name = "Aircraft123321_pCube1GeneratedMeshNode5"
+				var ResourceId = 0x59809265d042fb2a
+			}
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 0.100000001
+		var ChangeBasis = true
+		var XBasisTo = BasisType.NegativeX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.NegativeZ
+	}
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x598091a0e7980108
+	}
+}

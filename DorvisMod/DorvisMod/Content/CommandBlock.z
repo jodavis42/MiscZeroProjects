@@ -1,0 +1,75 @@
+class CommandBlock : ZilchComponent
+{
+    var ReDirectionCog : Cog = null;
+    var Root : Cog = null;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    }
+
+    function OnLogicUpdate(e : UpdateEvent)
+    {
+        if (this.ReDirectionCog == null)
+        {
+            return;
+        }
+        
+        var start = this.Owner.Transform.WorldTranslation;
+        var end = this.ReDirectionCog.Transform.WorldTranslation;
+        
+        var line = new DebugLine();
+        line.Start(start);
+        line.End(end);
+        line.HeadSize(0.2);
+        line.SpaceId(this.Owner.Space.RuntimeId);
+        line.Draw();
+    }
+    
+    // Setup can be called multiple times, but it MUST be called any time our hierarchy is changed
+    function Setup()
+    {
+        var root = this.Owner.FindRoot();
+        
+        if (this.Root != null)
+        {
+            Zero.Disconnect(this.Root, "PlayerKeyDown", this);
+            Zero.Disconnect(this.Root, "PlayerKeyUp", this);
+            Zero.Disconnect(this.Root, "PlayerMouseMove", this);
+        }
+        
+        Zero.Connect(root, "PlayerKeyDown", this.OnKeyDown);
+        Zero.Connect(root, "PlayerKeyUp", this.OnKeyUp);
+        Zero.Connect(root, "PlayerMouseMove", this.OnMouseMove);
+        
+        this.Root = root;
+    }
+    
+    function OnKeyDown(e : PlayerKeyEvent)
+    {
+        if (this.ReDirectionCog != null)
+        {
+            this.ReDirectionCog.DispatchEvent("PlayerKeyDown", e);
+        }
+    }
+    
+    function OnKeyUp(e : PlayerKeyEvent)
+    {
+        if (this.ReDirectionCog != null)
+        {
+            this.ReDirectionCog.DispatchEvent("PlayerKeyUp", e);
+        }
+    }
+    
+    function OnMouseMove(e : PlayerMouseEvent)
+    {
+        if (this.ReDirectionCog != null)
+        {
+            this.ReDirectionCog.DispatchEvent("PlayerMouseMove", e);
+        }
+    }
+}

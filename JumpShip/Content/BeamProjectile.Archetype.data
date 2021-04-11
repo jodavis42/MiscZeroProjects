@@ -1,0 +1,41 @@
+[Version:1]
+Cog 
+{
+	var Name = ""
+	var LinkId = 1
+	ObjectLink 
+	{
+		var ObjectAPath = CogPath
+		{
+			var Path = ""
+			var ErrorOnResolveToNull = false
+			var ErrorOnPathCantCompute = false
+			var ErrorOnDirectLinkFail = false
+			var UpdateCogOnPathChange = true
+			var UpdatePathOnCogChange = true
+			var UpdateCogOnInitialize = true
+			var ResolvedNullErrorOccurred = false
+			var ResolvedCog = 4294967293
+			var PathPreference0 = CogPathPreference.CogRelative
+			var PathPreference1 = CogPathPreference.SpaceRelative
+			var PathPreference2 = CogPathPreference.Absolute
+		}
+		var ObjectBPath = CogPath
+		{
+			var Path = ""
+			var ErrorOnResolveToNull = false
+			var ErrorOnPathCantCompute = false
+			var ErrorOnDirectLinkFail = false
+			var UpdateCogOnPathChange = true
+			var UpdatePathOnCogChange = true
+			var UpdateCogOnInitialize = true
+			var ResolvedNullErrorOccurred = false
+			var ResolvedCog = 4294967293
+			var PathPreference0 = CogPathPreference.CogRelative
+			var PathPreference1 = CogPathPreference.SpaceRelative
+			var PathPreference2 = CogPathPreference.Absolute
+		}
+		var LocalPointA = Real3{0, 0, 0}
+		var LocalPointB = Real3{0, 0, 0}
+	}
+}

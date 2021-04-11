@@ -1,0 +1,12 @@
+[Version:1]
+GameSession 
+{
+	var Name = ""
+	var LinkId = 1
+	DefaultGameSetup 
+	{
+		var StartingSpace = "576f215c0825de61:Space"
+		var StartingLevel = "59632c55f4a55d51:MusicalExample"
+		var LoadEditingLevel = true
+	}
+}

@@ -1,0 +1,15 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "SpriteFader",
+		uint64 ResourceId = 5610fb5177eb63d4,
+	},
+	ContentTags = 
+	{
+		Array Tags = 
+		[
+			"UI",
+		],
+	},
+},

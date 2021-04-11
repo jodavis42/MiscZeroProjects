@@ -1,0 +1,112 @@
+class AnimationController : ZilchComponent
+{
+    [Property]
+    var Child : CogPath = null;
+    
+    [Property]
+    var Idle : SpriteSource = SpriteSource.BoxManIdle;
+    [Property]
+    var Walk : SpriteSource = SpriteSource.BoxManWalk;
+    [Property]
+    var Run : SpriteSource = SpriteSource.BoxManRun;
+    [Property]
+    var JumpUp : SpriteSource = SpriteSource.BoxManJumpUp;
+    [Property]
+    var JumpDown : SpriteSource = SpriteSource.BoxManJumpDown;
+    [Property]
+    var Flip : SpriteSource = SpriteSource.BoxManFlip;
+    
+    [Serialized]
+    var Flipping : Boolean = false;
+    
+    [Serialized]
+    var Walking : Boolean = false;
+    
+    [Serialized]
+    var FlipX : Boolean = false;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    }
+    
+    function OnLogicUpdate(updateEvent : UpdateEvent)
+    {
+        var cog = this.Child.Cog;
+        if (cog == null)
+        {
+            return;
+        }
+        
+        var grounded = this.Owner.SweptController.Grounded;
+        var velocity = this.Owner.SweptController.ControllerVelocity;
+        
+        var sprite = cog.Sprite;
+        
+        //if (velocity.X < 0.0)
+        //{
+        //    sprite.FlipX = true;
+        //}
+        //else if (velocity.X > 0.0)
+        //{
+        //    sprite.FlipX = false;
+        //}
+        
+        sprite.FlipX = this.FlipX;
+        
+        if (grounded)
+        {
+            this.Flipping = false;
+            
+            //if (velocity.X != 0.0)
+            if (this.Walking)
+            {
+                if (Math.Abs(velocity.X) > 10.0)
+                {
+                    this.SetAnimation(this.Run);
+                }
+                else
+                {
+                    this.SetAnimation(this.Walk);
+                }
+            }
+            else
+            {
+                this.SetAnimation(this.Idle);
+            }
+        }
+        else if (!this.Flipping)
+        {
+            if (Math.Abs(velocity.X) > 10.0 && velocity.Y > 0.0)
+            {
+                this.SetAnimation(this.Flip);
+                this.Flipping = true;
+            }
+            else
+            {
+                if (velocity.Y >= 0.0)
+                {
+                    this.SetAnimation(this.JumpUp);
+                }
+                else
+                {
+                    this.SetAnimation(this.JumpDown);
+                }
+            }
+        }
+    }
+    
+    function SetAnimation(source : SpriteSource)
+    {
+        var sprite = this.Child.Cog.Sprite;
+        
+        if (sprite.SpriteSource != source)
+        {
+            sprite.SpriteSource = source;
+        }
+    }
+}

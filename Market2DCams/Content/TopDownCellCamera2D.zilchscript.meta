@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "TopDownCellCamera2D"
+		var ResourceId = 0x5806b0ad1263735c
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Camera"
+		}
+	}
+}

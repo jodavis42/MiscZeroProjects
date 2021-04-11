@@ -1,0 +1,585 @@
+class Player : ZilchComponent
+{
+    [Property]
+    var Speed : Real = 10.0;
+    
+    [Property]
+    var LookSpeed : Real = 0.01;
+    
+    [Property]
+    var JumpVelocity : Real = 6.0;
+    
+    [Property]
+    var InteractDistance : Real = 6.0;
+    
+    [Property]
+    var Active : Boolean = true;
+    
+    [Property]
+    var InteractSound : SoundCue = SoundCue.Interact;
+    [Property]
+    var ChangeToolSound : SoundCue = SoundCue.ChangeTool;
+    
+    [Property]
+    var FovToSpeed : Real = 3.0;
+    
+    // For right now, we disable fov
+    [Property]
+    var MaxFovChange : Real = 0.0;
+    [Property]
+    var FovSmoothing : Real = 0.3;
+    
+    [Property]
+    var MinSpeedForFovChange : Real = 20.0;
+    
+    [Dependency]
+    var NetObject : NetObject;
+    
+    [Dependency]
+    var NetUser : NetUser;
+    
+    sends ActivateTool : PlayerEvent;
+    sends DeactivateTool : PlayerEvent;
+    
+    var CameraCog : Cog;
+    
+    var RotationAngles : Real2;
+    var ToolContainer : Cog;
+    var UndoCounter : Integer;
+    
+    var Movement : Real3;
+    
+    var InteractMessage : String;
+    var InteractCog : Cog;
+    
+    // Both
+    var Tools : Array[Cog] = Array[Cog]();
+    var ActiveTool : Cog;
+    
+    var FreezeKeyboardInput : Boolean;
+    var FreezeMouseInput : Boolean;
+    
+    var InitialFieldOfView : Real = 80.0;
+    var FovTarget : Real = 80.0;
+
+    var IsServer : Boolean;
+    var IsMyClient : Boolean;
+    var IsOtherClient : Boolean;
+    
+    // For some reason this results in a type not found error
+    var UndoStack : Array[Undo] = new Array[Undo]();
+    
+    var WorldLookForward : Real3
+    {
+        get { return this.CameraCog.Orientation.WorldForward; }
+    }
+    var WorldLookUp : Real3
+    {
+        get { return this.CameraCog.Orientation.WorldUp; }
+    }
+    var WorldLookRight : Real3
+    {
+        get { return this.CameraCog.Orientation.WorldRight; }
+    }
+    
+    var WorldLookPosition : Real3
+    {
+        get { return this.CameraCog.Transform.WorldTranslation; }
+    }
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.NetInitialized, this.OnNetInitialized);
+    }
+
+    function OnNetInitialized(event : NetInitialized)
+    {
+        this.IsServer = this.GameSession.NetPeer.IsServer;
+        if (this.GameSession.NetPeer.IsClient)
+        {
+            this.IsMyClient = this.NetUser.AddedByMyPeer;
+            this.IsOtherClient = !this.IsMyClient;
+        }
+        
+        // Things that both server and clients do
+        this.CameraCog = this.Owner.FindChildByName("Camera");
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        
+        this.ToolContainer = this.Owner.FindChildByName("ToolContainer");
+        
+        // Add all the initial tools
+        foreach (var tool in this.ToolContainer.Hierarchy.Children)
+        {
+            this.Tools.Add(tool);
+        }
+        this.ActiveTool = this.Tools.Get(0);
+        
+        if (this.IsServer)
+        {
+            // Things that only server players do
+        }
+        else if (this.IsMyClient)
+        {
+            // Things that only my client player does
+            this.LevelSettings.CameraViewport.Camera = this.CameraCog;
+            
+            this.InitialFieldOfView = this.CameraCog.Camera.FieldOfView;
+            this.FovTarget = this.InitialFieldOfView;
+        }
+        
+        this.Activate();
+    }
+    
+    
+    function Activate()
+    {
+        // Both client and servers call this function!
+        this.Owner.RigidBody.Static = false;
+        this.Owner.Collider.Ghost = false;
+        
+        this.Active = true;
+        this.ActivateTool(this.ActiveTool);
+        
+        // This only occurs on the server
+        if (this.IsServer)
+        {
+            // Only activate the dynamic motor on the server (we still allow rigid body simulation on the client)
+            this.Owner.DynamicMotor.Activate();
+            
+            // Push ourselves out of any geometry (pops us out of vehicles)
+            var filter = this.Space.PhysicsSpace.CreateDefaultCastFilter();
+            for (var i = 0; i < 100; ++i)
+            {
+                var results = this.Space.PhysicsSpace.CastColliderResults(local Real3(), this.Owner.Collider, filter);
+                // Because when activating, we could be inside something, attempt to resolve a portion of the collision
+                foreach (var contact in results)
+                {
+                    if (contact.Collider.Ghost)
+                    {
+                        continue;
+                    }
+                    
+                    var hitRoot = contact.ObjectHit.FindRoot();
+                    
+                    if (hitRoot == this.Owner.FindRoot())
+                    {
+                        continue;
+                    }
+                    
+                    this.Owner.Transform.WorldTranslation += contact.Normal * local Real3(0.5);
+                }
+            }
+        }
+    }
+    
+    function Deactivate()
+    {
+        this.Owner.RigidBody.Static = true;
+        this.Owner.Collider.Ghost = true;
+        this.Owner.DynamicMotor.Deactivate();
+        this.Active = false;
+        this.DeactivateTool();
+    }
+    
+    function Server_QueueUndo(name : String, action : delegate(undo : Undo) : Boolean) : Undo
+    {
+        var undo = this.Server_QueueUndo(name);
+        undo.Action = action;
+        return undo;
+    }
+    
+    function Server_QueueUndo(name : String) : Undo
+    {
+        var undo = new Undo();
+        undo.Name = name;
+        ++this.UndoCounter;
+        
+        var builder = new StringBuilder();
+        builder.Write(this);
+        builder.Write("_");
+        builder.Write(this.UndoCounter);
+        
+        undo.UniqueName = builder.ToString();
+        this.UndoStack.Add(undo);
+        
+        return undo;
+    }
+    
+    function AddMovement(e : LockStepKeyEvent, key : Integer, movement : Real3)
+    {
+        if (e.Key == key)
+            this.Movement += movement;
+    }
+    
+    function ResetRotationAngles()
+    {
+        this.RotationAngles = local Real2();
+        this.UpdateRotationAngles();
+    }
+    
+    function UpdateRotationAngles()
+    {
+        var playerRotation = local Real3(0.0, this.RotationAngles.Y, 0.0);
+        var cameraRotation = local Real3(this.RotationAngles.X, Math.Pi, 0.0);
+        this.Owner.Transform.EulerAngles = playerRotation;
+        this.CameraCog.Transform.EulerAngles  = cameraRotation;
+    }
+    
+    function OnLogicUpdate(e : UpdateEvent)
+    {
+        if (this.FreezeMouseInput == false)
+        {
+            this.UpdateRotationAngles();
+        }
+        if (this.FreezeKeyboardInput == false)
+        {
+            var movement = this.Owner.Transform.TransformNormal(this.Movement);
+            movement.Y = 0.0;
+            //this.Owner.DynamicMotor.SetMaxMoveForce(1.0);
+            this.Owner.DynamicMotor.MoveInDirection(movement * local Real3(this.Speed), local Real3(0.0, 1.0, 0.0));
+        }
+        
+        this.InteractCog = null;
+        
+        // Only do interactions if the player is active
+        this.InteractMessage = null;
+        var result = this.RayCast(this.InteractFilter, this.InteractDistance);
+        
+        if (result != null)
+            this.InteractCog = result.Object;
+        
+        this.FovTarget = this.InitialFieldOfView;
+        
+        var body = this.Owner.Collider.ActiveBody;
+        if (body != null)
+        {
+            var velocity = body.GetPointVelocity(this.Owner.Transform.WorldTranslation);
+            var speed = Math.Length(velocity);
+            speed -= this.MinSpeedForFovChange;
+            
+            if (speed > 0.0)
+            {
+                var fovChange = this.FovToSpeed * speed;
+                
+                if (fovChange > this.MaxFovChange)
+                {
+                    fovChange = this.MaxFovChange;
+                }
+                
+                this.FovTarget += fovChange;
+            }
+        }
+        
+        var actualFov = this.CameraCog.Camera.FieldOfView;
+        var newFov = Math.Lerp(actualFov, this.FovTarget, this.FovSmoothing);
+        
+        this.CameraCog.Camera.FieldOfView = newFov;
+    }
+    
+    function SendInteractEvent(eventName : String, to : Cog) : InteractEvent
+    {
+        var toSend = new InteractEvent();
+        this.FillPlayerEvent(toSend);
+        to.DispatchEvent(eventName, toSend);
+        return toSend;
+    }
+    
+    function InteractFilter(hit : Cog) : Boolean
+    {
+        var e = this.SendInteractEvent("TestInteract", hit);
+        this.InteractMessage = e.Message;
+        
+        // Commenting this in will cause a crash... WHY? (because it's null!)
+        //Console.WriteLine(e.Message);
+        return e.Message != null;
+    }
+    
+    function RayCast(filter : delegate(hit : Cog) : Boolean) : HitResult
+    {
+        return this.RayCast(filter, 100000.0);
+    }
+    
+    function RayCast(filter : delegate(hit : Cog) : Boolean, maxDistance : Real) : HitResult
+    {
+        var ray = local Ray();
+        ray.Direction = Math.Normalize(this.CameraCog.Orientation.WorldForward);
+        ray.Start = this.CameraCog.Transform.WorldTranslation;
+        
+        var foundObject : Cog = null;
+        var worldNormal = local Real3();
+        var worldPosition = local Real3();
+        
+        var castResults = this.Space.PhysicsSpace.CastRayResults(ray, 20);
+        foreach(var castResult in castResults)
+        {
+            if (castResult.Distance > maxDistance)
+            {
+                break;
+            }
+            
+            var hitObject = castResult.ObjectHit;
+            
+            // Skip ourself
+            if (hitObject.FindRoot() == this.Owner)
+            {
+                continue;
+            }
+            
+            if (filter(hitObject))
+            {
+                
+                foundObject = hitObject;
+                worldNormal = castResult.Normal;
+                worldPosition = castResult.WorldPosition;
+                break;
+            }
+            
+        }
+        
+        var nullResult : HitResult = null;
+        
+        if (foundObject == null)
+        {
+            return nullResult;
+        }
+        
+        var result = new HitResult();
+        result.Object = foundObject;
+        result.WorldNormal = worldNormal;
+        result.WorldPosition = worldPosition;
+        
+        return result;
+    }
+    
+    function FillPlayerEvent(toSend : PlayerEvent)
+    {
+        toSend.Player = this;
+        toSend.PlayerCog = this.Owner;
+    }
+    
+    function SendMouseEvent(eventName : String, e : LockStepMouseEvent, button : Integer, scroll : Real2)
+    {
+        var toSend = new PlayerMouseEvent();
+        this.FillPlayerEvent(toSend);
+        toSend.ScreenDelta = e.ScreenDelta;
+        toSend.WorldStart = e.WorldStart;
+        toSend.WorldDirection = e.WorldDirection;
+        toSend.Button = button;
+        toSend.AltPressed = e.AltPressed;
+        toSend.ShiftPressed = e.ShiftPressed;
+        toSend.CtrlPressed = e.CtrlPressed;
+        toSend.ScrollDelta = scroll;
+        this.Owner.DispatchEvent(eventName, toSend);
+    }
+    
+    function OnLockStepMouseMove(e : LockStepMouseEvent)
+    {
+        this.RotationAngles.Y -= e.ScreenDelta.X * this.LookSpeed;
+        this.RotationAngles.X -= e.ScreenDelta.Y * this.LookSpeed;
+        
+        var maxDown = -Math.Pi / 2.0;
+        var maxUp = Math.Pi / 2.0;
+        
+        if (this.RotationAngles.X < maxDown)
+        {
+            this.RotationAngles.X = maxDown;
+        }
+        
+        if (this.RotationAngles.X > maxUp)
+        {
+            this.RotationAngles.X = maxUp;
+        }
+        
+        this.SendMouseEvent("PlayerMouseMove", e, -1, local Real2());
+    }
+    
+    function OnLockStepMouseScroll(e : LockStepMouseScrollEvent)
+    {
+        this.SendMouseEvent("PlayerMouseScroll", e, -1, e.ScrollDelta);
+    }
+    
+    function OnLockStepMouseDown(e : LockStepMouseButtonEvent)
+    {
+        this.SendMouseEvent("PlayerMouseDown", e, e.Button, local Real2());
+    }
+    
+    function OnLockStepMouseUp(e : LockStepMouseButtonEvent)
+    {
+        this.SendMouseEvent("PlayerMouseUp", e, e.Button, local Real2());
+    }
+    
+    function SendKeyEvent(eventName : String, e : LockStepKeyEvent)
+    {
+        var toSend = new PlayerKeyEvent();
+        
+        this.FillPlayerEvent(toSend);
+        toSend.Key = e.Key;
+        toSend.AltPressed = e.AltPressed;
+        toSend.ShiftPressed = e.ShiftPressed;
+        toSend.CtrlPressed = e.CtrlPressed;
+        this.Owner.DispatchEvent(eventName, toSend);
+    }
+    
+    function OnLockStepKeyDown(e : LockStepKeyEvent)
+    {
+        this.AddMovement(e, Keys.W, local Real3( 0.0, 0.0,  1.0));
+        this.AddMovement(e, Keys.S, local Real3( 0.0, 0.0, -1.0));
+        this.AddMovement(e, Keys.A, local Real3( 1.0, 0.0,  0.0));
+        this.AddMovement(e, Keys.D, local Real3(-1.0, 0.0,  0.0));
+        
+        this.SendKeyEvent("PlayerKeyDown", e);
+        
+        // We still allow movement to happen when freezing input (we ignore it in update)
+        if (this.FreezeKeyboardInput)
+        {
+            return;
+        }
+        
+        if (this.Active)
+        {
+            if (e.Key == Keys.Space)
+            {
+                this.Owner.RigidBody.ApplyLinearVelocity(local Real3(0.0, this.JumpVelocity, 0.0));
+            }
+            
+            if (e.Key >= Keys.Zero && e.Key <= Keys.Nine)
+            {
+                var index = (e.Key - Keys.One) as Integer;
+                
+                // Handle the '0' button case
+                if (index == -1)
+                {
+                    index = 9;
+                }
+                
+                if (e.ShiftPressed)
+                {
+                    index += 10;
+                }
+                
+                // Check if the key was a valid key
+                if (index >= 0 && index < this.Tools.Count)
+                {
+                    var newTool = this.Tools.Get(index);
+                    if (this.ActiveTool != newTool)
+                    {
+                        this.DeactivateTool();
+                        this.ActivateTool(newTool);
+                    }
+                }
+            }
+        }
+        
+        if (e.Key == Keys.Z && this.UndoStack.Count != 0)
+        {
+            var undo = this.UndoStack.Pop();
+            var result = undo.Action(undo);
+            
+            // If we failed an undo, just clear the undo stack for now
+            if (result == false)
+            {
+                this.UndoStack.Clear();
+            }
+        }
+        
+        if (e.Key == Keys.E && this.InteractCog != null)
+        {
+            this.Space.SoundSpace.PlayCueAt(this.InteractSound, this.InteractCog.Transform.WorldTranslation);
+            this.SendInteractEvent("Interact", this.InteractCog);
+        }
+    }
+    
+    function OnLockStepKeyUp(e : LockStepKeyEvent)
+    {
+        this.AddMovement(e, Keys.W, local Real3( 0.0, 0.0, -1.0));
+        this.AddMovement(e, Keys.S, local Real3( 0.0, 0.0,  1.0));
+        this.AddMovement(e, Keys.A, local Real3(-1.0, 0.0,  0.0));
+        this.AddMovement(e, Keys.D, local Real3( 1.0, 0.0,  0.0));
+        
+        this.SendKeyEvent("PlayerKeyUp", e);
+    }
+    
+    function ActivateTool(tool : Cog)
+    {
+        this.ActiveTool = tool;
+        this.SendToolEvent(Events.ActivateTool, this.ActiveTool);
+        
+        if (this.IsMyClient)
+            this.Space.SoundSpace.PlayCue(this.ChangeToolSound);
+    }
+    
+    function DeactivateTool()
+    {
+        this.SendToolEvent(Events.DeactivateTool, this.ActiveTool);
+    }
+    
+    function SendToolEvent(eventName : String, to : Cog)
+    {
+        this.SendPlayerEventTo(eventName, to);
+    }
+    
+    function SendPlayerEventTo(eventName : String, to : Cog)
+    {
+        var toSend = new PlayerEvent();
+        this.FillPlayerEvent(toSend);
+        to.DispatchEvent(eventName, toSend);
+    }
+}
+
+class HitResult
+{
+    var Object : Cog;
+    var WorldNormal : Real3;
+    var WorldPosition : Real3;
+}
+
+class Undo
+{
+    var Action : delegate(undo : Undo) : Boolean = Undo.DoNothing;
+    var UniqueName : String = "";
+    var Name : String = "Unknown";
+    
+    [Static]
+    function DoNothing(undo : Undo) : Boolean
+    {
+        return false;
+    }
+}
+
+class PlayerEvent : ZilchEvent
+{
+    var Player : Player;
+    var PlayerCog : Cog;
+}
+
+class InteractEvent : PlayerEvent
+{
+    // If this gets set to anything but null, it means someone responded
+    var Message : String;
+}
+
+class PlayerInputEvent : PlayerEvent
+{
+    var AltPressed : Boolean;
+    var ShiftPressed : Boolean;
+    var CtrlPressed : Boolean;
+}
+
+class PlayerKeyEvent : PlayerInputEvent
+{
+    var Key : Integer;
+}
+
+class PlayerMouseEvent : PlayerInputEvent
+{
+    var ScreenDelta : Real2;
+    var WorldStart : Real3;
+    var WorldDirection : Real3;
+    var Button : Integer;
+    var ScrollDelta : Real2;
+}
+

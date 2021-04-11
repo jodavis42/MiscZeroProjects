@@ -1,0 +1,79 @@
+class Ball : ZilchComponent
+{
+  var Grabbed : Boolean = false;
+  
+  [Property]
+  var Slingshot : CogPath = CogPath();
+  
+  [Property]
+  var MaxStretchLength : Real = 3.0;
+  
+  [Property]
+  var ShootPower : Real = 10.0;
+  
+  var SlingshotPosition : Real3 = local Real3();
+  
+  constructor() : base()
+  {
+  }
+
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.MouseDown, this.OnMouseDown);
+    Zero.Connect(this.Owner, Events.MouseUpdate, this.OnMouseUpdate);
+    Zero.Connect(this.Owner, Events.MouseUp, this.OnMouseUp);
+    
+    Zero.Connect(init, Events.AllObjectsInitialized, this.OnAllObjectsInitialized);
+  }
+
+  function OnAllObjectsInitialized(event : CogInitializerEvent)
+  {
+    var slingshotCog = this.Slingshot.Cog;
+    if(slingshotCog != null)
+      this.SlingshotPosition = slingshotCog.Transform.WorldTranslation;
+  }
+  
+  function ComputeMouseVector(e : ViewportMouseEvent) : Real3
+  {
+    var newPosition = e.ToWorldZPlane(0.0);
+    
+    var slingshotToBall = newPosition - this.SlingshotPosition;
+    
+    if (Math.Length(slingshotToBall) > this.MaxStretchLength)
+    {
+      slingshotToBall = Math.Normalize(slingshotToBall) * this.MaxStretchLength;
+    }
+    
+    return slingshotToBall;
+  }
+
+  function OnMouseDown(e : ViewportMouseEvent)
+  {
+    if (this.Owner.RigidBody.DynamicState == RigidBodyDynamicState.Kinematic)
+    {
+      this.Grabbed = true;
+    }
+  }
+
+  function OnMouseUpdate(e : ViewportMouseEvent)
+  {
+    if (this.Grabbed)
+    {
+      var slingshotToBall = this.ComputeMouseVector(e);
+      this.Owner.Transform.WorldTranslation = this.SlingshotPosition + slingshotToBall;
+    }
+  }
+
+  function OnMouseUp(e : ViewportMouseEvent)
+  {
+    if (this.Grabbed)
+    {
+      this.Grabbed = false;
+      
+      var slingshotToBall = this.ComputeMouseVector(e);
+      this.Owner.RigidBody.DynamicState = RigidBodyDynamicState.Dynamic;
+      this.Owner.RigidBody.Velocity = -slingshotToBall * this.ShootPower;
+      this.LevelSettings.GameLogic.State = GameState.Fired;
+    }
+  }
+}

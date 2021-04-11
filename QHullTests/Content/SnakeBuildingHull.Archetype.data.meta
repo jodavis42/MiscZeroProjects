@@ -1,0 +1,18 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "SnakeBuildingHull"
+		var ResourceId = 0x59817966f144bd93
+		var LoaderType = "Cog"
+		var Version = 0
+		var ShowInEditor = true
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+}

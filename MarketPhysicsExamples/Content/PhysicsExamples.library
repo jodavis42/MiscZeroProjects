@@ -1,0 +1,8 @@
+[Version:1]
+ContentLibrary 
+{
+	var Name = "PhysicsExamples"
+	var LibraryId = 0x59ddc3d3c5de56d8
+	var SourceControlType = ""
+	var ReadOnly = false
+}

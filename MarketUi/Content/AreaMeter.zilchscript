@@ -1,0 +1,184 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Arend Danielek
+// Last update: 7/24/2016
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Event to trigger a new value range for the meter
+class MeterValueRangeUpdate : ZilchEvent
+{
+  sends MeterValueRangeUpdate : MeterValueRangeUpdate;
+  var MinVal : Real = 0.0;
+  var MaxVal : Real = 1.0;
+  var StartVal : Real = 1.0;
+}
+
+// Triggers a reset to the initial value range of the meter
+class MeterValueReset : ZilchEvent
+{
+  sends MeterValueReset : MeterValueReset;
+}
+
+// Triggers a value reset using the current value range
+class MeterReset : ZilchEvent
+{
+  sends MeterReset : MeterReset;
+}
+
+// Triggers the value, scale, and justifacation update of the meter
+class MeterUpdate : ZilchEvent
+{
+  sends MeterUpdate : MeterUpdate;
+  var Val : Real = 1.0;
+}
+
+// Implements a scaling functionality for a sprite with an Area component based off a percentage
+class AreaMeter : ZilchComponent
+{
+  [Dependency]
+  var Area : Area = null;
+  
+  // Maximum, minimum, and starting values of the meter
+  [Property]
+  var InitMaxVal : Real = 1.0;
+  [Property]
+  var InitMinVal : Real = 0.0;
+  [Property]
+  var InitStartVal : Real = 1.0;
+  
+  // If true the meter will scale on the X or Y axis respectively
+  [Property]
+  var ScaleX : Boolean = true;
+  [Property]
+  var ScaleY : Boolean = false; 
+  
+  // Member variables used to store constaint and initial value data so i can be changed and reverted.
+  var MaxVal : Real = 1.0;
+  var MinVal : Real = 0.0;
+  var StartVal : Real = 1.0;
+  
+  var CurVal : Real = 1.0;
+  var PrevVal : Real = 1.0;
+  
+  // Current percentage of the full size of the meter
+  var CurPerc : Real = 1.0;
+  // Percentage of the full size of the meter from the previous frame
+  var PrevPerc : Real = 1.0;
+  
+  // Original size from the Area component
+  var InitSize : Real2 = Real2();
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Store Init value range properties in local variables for future manipulation
+    this.MaxVal = this.InitMaxVal;
+    this.MinVal = this.InitMinVal;
+    this.StartVal = this.InitStartVal;
+    
+    // Initialize the current and previous percentage that the meter is filled
+    this.CurPerc = this.CurVal/this.MaxVal;
+    this.PrevPerc = this.CurPerc;
+    
+    // Record the initial scale and position for future use
+    this.InitSize = this.Area.Size;
+    
+    // Update the scale of the meter to reflect starting values
+    this.UpdateScale();
+    
+    // Listen for MeterValueRangeUpdate to change the value range of the meter
+    Zero.Connect(this.Owner, Events.MeterValueRangeUpdate, this.OnMeterValueRangeUpdate);
+    // Listen for MeterValueReset to reset the value range to the property values
+    Zero.Connect(this.Owner, Events.MeterValueReset, this.OnValueReset);
+    // Listen for MeterReset to reset the meter to the current StartVal using
+    // the current value range
+    Zero.Connect(this.Owner, Events.MeterReset, this.OnMeterReset);
+    // Listen for MeterUpdate to update the current value of the meter
+    Zero.Connect(this.Owner, Events.MeterUpdate, this.OnMeterUpdate);
+  }
+  
+  // Updates the value range of the meter. 
+  // Resets the current values using the new value range
+  function OnMeterValueRangeUpdate(event : MeterValueRangeUpdate)
+  {
+    // Update to the new value range
+    this.MinVal = event.MinVal;
+    this.MaxVal = event.MaxVal;
+    this.StartVal = event.StartVal;
+
+    // Reset the scale and justifacation
+    this.Owner.DispatchEvent(Events.MeterReset, MeterReset());
+  }
+  
+  // Resets the value range to their initial property values 
+  function OnValueReset(event : MeterValueReset)
+  {
+    // Reset the current values to the initial property values
+    this.MinVal = this.InitMinVal;
+    this.MaxVal = this.InitMaxVal;
+    this.StartVal = this.InitStartVal;
+    
+    // Reset the scale and justifacation
+    this.Owner.DispatchEvent(Events.MeterReset, MeterReset());
+  }
+  
+  // Resets the current values using the current value range
+  function OnMeterReset(event : MeterReset)
+  {
+    // Reset the current values to the current property values
+    this.CurVal = this.StartVal;
+    this.PrevVal = this.StartVal;
+    
+    // Update the current value and percentage
+    this.CurPerc = this.CurVal/this.MaxVal;
+    this.PrevPerc = this.CurPerc;
+    
+    // Update the scale and justifacation to reflect the new value
+    this.UpdateScale();
+  }
+  
+  // Update the meter scale using the current value range
+  function OnMeterUpdate(event : MeterUpdate)
+  {
+    if (event.Val < 0.0)
+      event.Val = 0.0;
+    
+    // Store the previous value and percentage
+    this.PrevVal = this.CurVal;
+    this.PrevPerc = this.CurPerc;
+    
+    // Update the current value and percentage
+    this.CurVal = event.Val;
+    Console.WriteLine("CurVal: `this.CurVal`");
+    Console.WriteLine("CurPerc: `this.CurPerc`");
+    this.CurPerc = this.CurVal/this.MaxVal;
+    
+    // Update the scale and justifacation to reflect the new value
+    this.UpdateScale();
+  }
+  
+  // Update the meter scale using the current value range
+  function UpdateScale()
+  {
+    // If the percentage has not change don't do anything
+    if(this.CurPerc == this.PrevPerc)
+    {
+      return;
+    }
+    
+    // Calculate the new scale
+    var newSize : Real2 = this.InitSize * this.CurPerc;
+    
+    // If the X or Y axis doesn't scale reset it
+    if(!this.ScaleX)
+    {
+      newSize.X = this.InitSize.X;
+    }
+    if(!this.ScaleY)
+    {
+      newSize.Y = this.InitSize.Y;
+    }
+    
+    this.Area.Size = newSize;
+  }
+}

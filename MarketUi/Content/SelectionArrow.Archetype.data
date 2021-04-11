@@ -1,0 +1,37 @@
+Cog = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Named = 
+	{
+		string Name = "SelectionArrow",
+	},
+	Transform = 
+	{
+		Vec3 Translation = [-6.5, 2.5, 0],
+		Vec3 Scale = [1, 1, 1],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	Sprite = 
+	{
+		bool Visible = false,
+		bool ViewCulling = true,
+		bool VisibilityEvents = true,
+		string Material = "56dcc7b15f51207d:DefaultSpriteMaterial",
+		Vec4 VertexColor = [1, 1, 1, 1],
+		SpriteGeometryMode GeometryMode = ZPlane,
+		string SpriteSource = "583b9859e72c3f59:ArrowRight3",
+		bool FlipX = false,
+		bool FlipY = false,
+		bool AnimationActive = true,
+		float AnimationSpeed = 1,
+		uint StartFrame = 0,
+	},
+	Area = 
+	{
+		Vec2 Size = [2.25, 2.25],
+		Location Origin = Center,
+	},
+},

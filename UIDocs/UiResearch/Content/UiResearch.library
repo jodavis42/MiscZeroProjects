@@ -1,0 +1,8 @@
+[Version:1]
+ContentLibrary 
+{
+	var Name = "UiResearch"
+	var LibraryId = 0x5a7caaea8456e7da
+	var SourceControlType = ""
+	var ReadOnly = false
+}

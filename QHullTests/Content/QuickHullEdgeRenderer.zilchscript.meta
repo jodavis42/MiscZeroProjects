@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "QuickHullEdgeRenderer"
+		var ResourceId = 0x59804f8ca15721f3
+	}
+}

@@ -1,0 +1,5 @@
+# use glob syntax.
+syntax: glob
+
+# Don't commit the editor preview
+3DCameras/EditorContent/

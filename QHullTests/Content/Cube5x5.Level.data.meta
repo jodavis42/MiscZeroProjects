@@ -1,0 +1,18 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "Cube5x5"
+		var ResourceId = 0x598227a2ca88ceed
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

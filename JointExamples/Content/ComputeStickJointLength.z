@@ -1,0 +1,40 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+[Command(autoRegister:true)]
+// This command auto-computes a stick joint's length from the current world positions
+class ComputeStickJointLength : ZilchComponent
+{
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.CommandExecute, this.OnCommandExecute);
+  }
+
+  function OnCommandExecute(event : CommandEvent)
+  {
+    // Find all active stick joints in the active selection
+    foreach(var object in Zero.Editor.Selection.All)
+    {
+      var cog = object as Cog;
+      var stickJoint = cog.StickJoint;
+      if(stickJoint == null)
+        continue;
+      
+      // Mark the space as modified
+      event.Space.MarkModified();
+      // Compute the distance between the points
+      var objectLink = cog.ObjectLink;
+      var distance = Math.Distance(objectLink.WorldPointA, objectLink.WorldPointB);
+      // Set the stick joint's length
+      stickJoint.Length = distance;
+      // If there's a joint limit then set the upper limit for that as well (leave the lower limit alone)
+      var limit = cog.JointLimit;
+      if(limit != null)
+        limit.UpperLimit = distance;
+    }
+  }
+}

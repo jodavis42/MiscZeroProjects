@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"UnitTests"
+		}
+	}
+	ZilchScriptBuilder 
+	{
+		var Name = "ProjectUnitTestManager"
+		var ResourceId = 0x589c25b530a4e213
+	}
+}

@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Crow_2"
+		var ResourceId = 0x5944f6abd3ea558b
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 0.889500022
+		var AudioChannels = 1
+		var SampleRate = 48000
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

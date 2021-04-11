@@ -1,0 +1,77 @@
+[Version:1]
+Cog [InheritId:"598089537e238548:Axe01"][ChildOrderOverride]
+{
+	Transform 
+	{
+		var Translation = Real3{6, 0, 0}
+		var Rotation = Quaternion{0, 0, 0, 1}
+		var Scale = Real3{1, 1, 1}
+	}
+	QuickHullRenderSettings [LocallyAdded]
+	{
+		var RenderGraphics = true
+		var RenderHullFilled = true
+		var RenderHullEdges = true
+		var RenderHullTriangleEdges = false
+		var RenderHullNormals = false
+	}
+	QuickHullTest 
+	{
+	}
+	BaseCogResultRecorder [LocallyAdded]
+	{
+	}
+	QuickHullMeshSaver [LocallyAdded]
+	{
+		var Active = false
+	}
+	QuickHullUnitTest [LocallyAdded]
+	{
+	}
+	Hierarchy [ChildOrderOverride]
+	{
+		Cog [Id:0x59808a5c3399ab73][LocallyAdded]
+		{
+			var Name = "Axe01"
+			Transform 
+			{
+				var Translation = Real3{0, 3.87430191e-07, 2.25554686e-10}
+				var Scale = Real3{0.00999999978, 0.00999999978, 0.00999999978}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "598089537e35db0c:Axe01"
+			}
+		}
+		Cog [Id:0x59814bd9b003d66a][InheritId:"59806fa92d4eddb3:ConvexHullFilled"][LocallyAdded]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+		Cog [Id:0x59814bd9b003e2d5][InheritId:"59806fb3123a38d8:ConvexHullWireFrame"][LocallyAdded]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+		Cog [Id:0x598089537e329fde][LocallyRemoved]
+		{
+		}
+	}
+}

@@ -1,0 +1,18 @@
+[Version:1]
+GameSession 
+{
+	var Name = ""
+	var LinkId = 1
+	DefaultGameSetup 
+	{
+		var StartingSpace = "536dc42546f6100c:Space"
+		var StartingLevel = "536dc42546f7f36e:Sector0101"
+		var LoadEditingLevel = true
+	}
+	LevelData 
+	{
+	}
+	RunUnitTests 
+	{
+	}
+}

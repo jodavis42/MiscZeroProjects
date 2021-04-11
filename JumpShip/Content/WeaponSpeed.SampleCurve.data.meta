@@ -1,0 +1,11 @@
+DataContent = 
+{
+	DataBuilder = 
+	{
+		string Name = "WeaponSpeed",
+		uint64 ResourceId = 52288017287c7c84,
+		string LoaderType = "SampleCurve",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

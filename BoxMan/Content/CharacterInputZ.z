@@ -1,0 +1,89 @@
+class CharacterInputZ : ZilchComponent
+{
+    [Dependency]
+    var Controller : SweptController = null;
+    
+    [Property]
+    var Projectile : Archetype = null;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.CharacterUpdate, this.OnCharacterUpdate);
+    }
+
+    function OnCharacterUpdate(event : UpdateEvent)
+    {
+        var movement = local Real3(0.0, 0.0, 0.0);
+        
+        if (Zero.Keyboard.KeyIsDown(Keys.Right))
+        {
+            movement.X += 1.0;
+            this.Owner.AnimationController.FlipX = false;
+        }
+        if (Zero.Keyboard.KeyIsDown(Keys.Left))
+        {
+            movement.X -= 1.0;
+            this.Owner.AnimationController.FlipX = true;
+        }
+        
+        if (movement.X == 0.0)
+        {
+            this.Owner.AnimationController.Walking = false;
+        }
+        else
+        {
+            this.Owner.AnimationController.Walking = true;
+        }
+        
+        if (this.Owner.SweptController.Grounded)
+        {
+            if (Zero.Keyboard.KeyIsDown(Keys.Shift))
+            {
+                this.Owner.SweptController.MaxMoveSpeed = 20.0;
+            }
+            else
+            {
+                this.Owner.SweptController.MaxMoveSpeed = 10.0;
+            }
+        }
+        else if (Math.Abs(this.Owner.SweptController.ControllerVelocity.X) <= 10.0)
+        {
+            this.Owner.SweptController.MaxMoveSpeed = 10.0;
+        }
+        
+        // Shoots a cube, not that important
+        //if (Zero.Keyboard.KeyIsPressed(Keys.Space))
+        //{
+        //    var cog = this.Space.Create(this.Projectile);
+        //    if (cog != null)
+        //    {
+        //        if (this.Owner.AnimationController.Child.Cog.Sprite.FlipX)
+        //        {
+        //            cog.Transform.Translation = this.Owner.Transform.Translation + local Real3(-0.5, 0.0, 0.0);
+        //            cog.RigidBody.Velocity = local Real3(-50.0, 0.0, 0.0);
+        //        }
+        //        else
+        //        {
+        //            cog.Transform.Translation = this.Owner.Transform.Translation + local Real3(0.5, 0.0, 0.0);
+        //            cog.RigidBody.Velocity = local Real3(50.0, 0.0, 0.0);
+        //        }
+        //    }
+        //}
+        
+        if (Zero.Keyboard.KeyIsPressed(Keys.Up))
+        {
+            this.Controller.Jump();
+        }
+        if (!Zero.Keyboard.KeyIsDown(Keys.Space) && !Zero.Keyboard.KeyIsDown(Keys.Up))
+        {
+            this.Controller.JumpCancel();
+        }
+        
+        //Console.WriteLine("Controller update");
+        this.Controller.Update(movement, event.Dt);
+    }
+}

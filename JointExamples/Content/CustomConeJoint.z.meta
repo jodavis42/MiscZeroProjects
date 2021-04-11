@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "CustomConeJoint"
+		var ResourceId = 0x58d95dc0c0135a0e
+	}
+}

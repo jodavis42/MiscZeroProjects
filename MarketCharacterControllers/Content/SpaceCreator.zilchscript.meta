@@ -1,0 +1,17 @@
+[Version:1]
+TextContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"SampleUI[1.0]"
+			"UI"
+		}
+	}
+	ZilchScriptBuilder 
+	{
+		var Name = "SpaceCreator"
+		var ResourceId = 0x532e2ab87b295e08
+	}
+}

@@ -1,0 +1,42 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "Ball"
+		var ResourceId = 0x5376a85d0d12870d
+		var AtlasId = 0x5274cf95e4a661fd
+		var FrameSizeX = 32
+		var FrameSizeY = 32
+		var FrameCount = 1
+		var FrameDelay = 0.0833332986
+		var OriginX = 16
+		var OriginY = 16
+		var PixelsPerUnit = 32
+		var Sampling = SpriteSampling.Linear
+		var Looping = true
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+	TextureBuilder 
+	{
+		var Name = "Ball"
+		var ResourceId = 0x5376a874719259f9
+		var Type = TextureType.Texture2D
+		var Compression = TextureCompression.None
+		var AddressingX = TextureAddressing.Repeat
+		var AddressingY = TextureAddressing.Repeat
+		var Filtering = TextureFiltering.Trilinear
+		var Anisotropy = TextureAnisotropy.x16
+		var MipMapping = TextureMipMapping.PreGenerated
+		var PremultipliedAlpha = false
+		var GammaCorrection = false
+	}
+	TextureInfo 
+	{
+		var FileType = "png"
+		var LoadFormat = "RGBA8"
+		var Dimensions = "32 x 32"
+		var Size = "0.005 MB"
+	}
+}

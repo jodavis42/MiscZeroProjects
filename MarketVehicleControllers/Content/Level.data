@@ -1,0 +1,516 @@
+[Version:1]
+Level 
+{
+	Cog 
+	{
+		var Name = "LevelSettings"
+		var LinkId = 1
+		GridDraw 
+		{
+			var Active = true
+			var HalfCellOffset = false
+			var CellSize = 1
+			var Axis = GridAxis.YAxis
+			var Lines = 100
+			var DrawAxisOrigins = true
+			var AlwaysDrawInEditor = true
+			var DrawInGame = true
+			var GridColor = Vec4{0.5, 0.5, 0.5, 0.400000006}
+			var GridHighlight = Vec4{0, 0, 0, 0.400000006}
+			var HighlightInterval = 10
+			var FollowEditorCamera = false
+		}
+		DragEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = true
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.600000024
+			var LinearDrag = 0.25
+			var AngularDrag = 1.20000005
+		}
+	}
+	Cog 
+	{
+		var Name = "EditorCamera"
+		var LinkId = 2
+		Transform 
+		{
+			var Translation = Vec3{1.2015053, 5.54179382, 43.1302414}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{-0.0497183912, 0.0130096208, 0.000647665467, 0.998678386}
+		}
+		Camera 
+		{
+			var NearPlane = 0.5
+			var FarPlane = 500
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 45
+			var Size = 20
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Vec2{1, 1}
+			var NormalizedOffset = Vec2{0, 0}
+			var Camera = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Renderer = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Vec2{1280, 720}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Vec4{0, 0, 0, 1}
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.Orbit
+			var LookDistance = 46.3530006
+			var VerticalAngle = 0.0994862318
+			var HorizontalAngle = -18.8756084
+			var LookTarget = Vec3{0, 0.937911987, -2.97790718}
+			var MoveSensitivity = 1
+		}
+		DeferredRenderer 
+		{
+			var DrawDebug = true
+			var GeometryDebug = GeometryValue.None
+			var ShowDiffuse = true
+			var ShowSpecular = true
+			var Skybox = "588753071d9b0924:Milkyway_small"
+			var DrawSkybox = true
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+		}
+	}
+	Cog 
+	{
+		var Name = "SpaceShip"
+		var LinkId = 3
+		Transform 
+		{
+			var Translation = Vec3{0, 0, 0}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{0, 0, 0, 1}
+		}
+		Orientation 
+		{
+			var GlobalUp = Vec3{0, 1, 0}
+			var LocalOrientationBasis = Quat{0, 0, 0, 1}
+			var DefaultBases = OrientationBases.ForwardNegativeZUpY
+		}
+		RigidBody 
+		{
+			var Velocity = Vec3{0, 0, 0}
+			var AngularVelocity = Vec3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		FlightInputInterpreter 
+		{
+			var StickDeadZone = 0.100000001
+			var TriggerDeadZone = 0.100000001
+			var MouseSensitivity = Vec2{1, 1}
+			var AccelerateKey = Keys.Space
+			var PitchUpKey = Keys.W
+			var PitchDownKey = Keys.S
+			var YawLeftKey = Keys.A
+			var YawRightKey = Keys.D
+			var RollLeftKey = Keys.Q
+			var RollRightKey = Keys.E
+			var BoostKey = Keys.Shift
+			var BoostButton = Buttons.A
+		}
+		ForceBasedFlightController 
+		{
+			var ApplyConstantThrust = false
+			var ThrustForce = 10
+			var ReverseForce = 5
+			var PitchYawForce = 5
+			var RollForce = 5
+			var BoostForce = 100
+		}
+		Hierarchy 
+		{
+			Cog 
+			{
+				var Name = "Camera"
+				var LinkId = 4
+				Transform 
+				{
+					var Translation = Vec3{0, 0.761423349, 6.37925196}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Camera 
+				{
+					var NearPlane = 0.5
+					var FarPlane = 400
+					var PerspectiveMode = PerspectiveMode.Perspective
+					var FieldOfView = 45
+					var Size = 20
+				}
+				CameraViewport 
+				{
+					var RenderInEditor = false
+					var RenderInGame = true
+					var RenderToViewport = true
+					var ForwardViewportEvents = false
+					var RenderOrder = 0
+					var NormalizedSize = Vec2{1, 1}
+					var NormalizedOffset = Vec2{0, 0}
+					var Camera = CogPath
+					{
+						var Path = "."
+						var ErrorOnResolveToNull = false
+						var ErrorOnPathCantCompute = false
+						var ErrorOnDirectLinkFail = false
+						var UpdateCogOnPathChange = true
+						var UpdatePathOnCogChange = true
+						var UpdateCogOnInitialize = true
+						var ResolvedNullErrorOccurred = false
+						var ResolvedCog = 4
+						var PathPreference0 = CogPathPreference.CogRelative
+						var PathPreference1 = CogPathPreference.SpaceRelative
+						var PathPreference2 = CogPathPreference.Absolute
+					}
+					var Renderer = CogPath
+					{
+						var Path = "."
+						var ErrorOnResolveToNull = false
+						var ErrorOnPathCantCompute = false
+						var ErrorOnDirectLinkFail = false
+						var UpdateCogOnPathChange = true
+						var UpdatePathOnCogChange = true
+						var UpdateCogOnInitialize = true
+						var ResolvedNullErrorOccurred = false
+						var ResolvedCog = 4
+						var PathPreference0 = CogPathPreference.CogRelative
+						var PathPreference1 = CogPathPreference.SpaceRelative
+						var PathPreference2 = CogPathPreference.Absolute
+					}
+					var Resolution = Vec2{1280, 720}
+					var ViewportScaling = ViewportScaling.Fill
+					var MarginColor = Vec4{0, 0, 0, 1}
+				}
+				DefaultRenderer 
+				{
+					var ClearColor = Vec4{0, 0, 0, 1}
+					var DrawDebug = true
+				}
+				SoundListener 
+				{
+					var Active = true
+				}
+			}
+			Cog 
+			{
+				var Name = "ShipModel"
+				var LinkId = 5
+				Transform 
+				{
+					var Translation = Vec3{0, 0, 0}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588699fdf8a2d08c:SpaceShip"
+					var Mesh = "58869a8231516217:spacefighterLow.Spacefighter"
+				}
+			}
+			Cog 
+			{
+				var Name = "ShipModel"
+				var LinkId = 6
+				Transform 
+				{
+					var Translation = Vec3{0, 0, 32.6743546}
+					var Scale = Vec3{1, 1, 1}
+					var Rotation = Quat{0, 0, 0, 1}
+				}
+				Model 
+				{
+					var Visible = true
+					var ViewCulling = true
+					var VisibilityEvents = true
+					var Material = "588699fdf8a2d08c:SpaceShip"
+					var Mesh = "588699ccf6a6fa60:spacefighter.Spacefighter"
+				}
+			}
+		}
+	}
+	Cog 
+	{
+		var Name = "BasicParticleEffect"
+		var LinkId = 7
+		Transform 
+		{
+			var Translation = Vec3{0, 0, 0}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{0, 0, 0, 1}
+		}
+		SpriteParticleSystem 
+		{
+			var Visible = false
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var Material = "56dcc7b15f51207d:DefaultSpriteMaterial"
+			var ChildMode = SystemChildMode.Independent
+			var SystemSpace = SystemSpace.WorldSpace
+			var DrawOrder = 0
+			var Tint = Vec4{1, 1, 1, 1}
+			var WarmUpTime = 10
+			var GeometryMode = ParticleGeometry.Billboarded
+			var SortMode = ParticleSortMode.Youngest
+			var ParticleAnimation = ParticleAnimation.Looping
+			var SpriteSource = "5274db4c2e7c11f9:Circle"
+			var VelocityScale = 1
+			var LengthScale = 1
+			var SystemSize = Vec3{500, 500, 500}
+			var PreviewInEditor = false
+		}
+		SphericalParticleEmitter 
+		{
+			var Active = true
+			var EmitCount = 0
+			var EmitRate = 500
+			var EmitVariance = 0
+			var Size = 0.0199999996
+			var SizeVariance = 0.00999999978
+			var Lifetime = 10
+			var LifetimeVariance = 1
+			var Spin = 0
+			var SpinVariance = 50
+			var RandomSpin = true
+			var Fill = 0
+			var EmitterVelocityPercent = 0
+			var StartVelocity = Vec3{0, 0, 0}
+			var RandomVelocity = Vec3{0, 0, 0}
+			var TangentVelocity = Vec3{0, 0, 0}
+			var EmitterSize = Vec3{500, 500, 500}
+			var FastMovingEmitter = false
+		}
+		LinearParticleAnimator 
+		{
+			var Force = Vec3{0, 0, 0}
+			var RandomForce = Vec3{0, 0, 0}
+			var Torque = 0
+			var Growth = 0
+			var Dampening = 0
+			var Twist = Vec3{0, 0, 0}
+		}
+		ParticleColorAnimator 
+		{
+			var Color0 = Vec4{1, 1, 1, 0}
+			var Color1 = Vec4{1, 1, 1, 1}
+			var Color2 = Vec4{1, 1, 1, 1}
+			var Color3 = Vec4{1, 1, 1, 1}
+			var Color4 = Vec4{1, 1, 1, 0}
+		}
+	}
+	Cog 
+	{
+		var Name = "Transform"
+		var LinkId = 8
+		Transform 
+		{
+			var Translation = Vec3{-28.5092773, 0.937911987, -2.97790718}
+			var Scale = Vec3{1, 1, 1}
+			var Rotation = Quat{0, 0, 0, 1}
+		}
+	}
+	Cog [InheritId:"5886b15406f6fbb6:satbase"]
+	{
+		Transform 
+		{
+			var Translation = Vec3{-30, 0, 5}
+			var Rotation = Quat{0, 0, 0, 1}
+			var Scale = Vec3{1, 1, 1}
+		}
+		Hierarchy 
+		{
+			Cog [Id:0x5886b10d0e86dd89]
+			{
+				Hierarchy 
+				{
+					Cog [Id:0x5886b10d0e86dd8e]
+					{
+						Hierarchy 
+						{
+							Cog [Id:0x5886b10d0e86dd8f]
+							{
+								Hierarchy 
+								{
+									Cog [Id:0x5886b10d0e86dd91]
+									{
+										Hierarchy 
+										{
+											Cog [Id:0x5886b10d0e86dd92]
+											{
+												Transform 
+												{
+													var Translation = Vec3{-92.9510803, 0, 0}
+												}
+												Model 
+												{
+													var Material = "58869b3e522a3f5d:Satellite"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	Cog [InheritId:"5886b1ff24254610:panels"]
+	{
+		Transform 
+		{
+			var Translation = Vec3{-30, 0, 5}
+			var Rotation = Quat{0, 0, 0, 1}
+			var Scale = Vec3{1, 1, 1}
+		}
+		Hierarchy 
+		{
+			Cog 
+			{
+				Hierarchy 
+				{
+					Cog 
+					{
+						Hierarchy 
+						{
+							Cog 
+							{
+								Hierarchy 
+								{
+									Cog 
+									{
+										Hierarchy 
+										{
+											Cog 
+											{
+												Transform 
+												{
+													var Translation = Vec3{-92.9510803, 0, 0}
+												}
+												Model 
+												{
+													var Material = "58869bb471ef84ed:SolarPanels"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	Cog [InheritId:"58875451a4b29ad8:Planet1"]
+	{
+		Transform 
+		{
+			var Translation = Vec3{126.70063, 103.660156, -178.800842}
+			var Rotation = Quat{0, 0, 0, 1}
+			var Scale = Vec3{1, 1, 1}
+		}
+		Hierarchy [ChildOrderOverride]
+		{
+			Cog 
+			{
+				Transform 
+				{
+					var Translation = Vec3{-50.8774719, -86.0144806, 123.476776}
+					var Scale = Vec3{0.100000001, 0.100000001, 0.100000001}
+				}
+				Model 
+				{
+					var Material = "58875b87944535df:Planet1"
+				}
+			}
+		}
+	}
+	Cog [InheritId:"58875567dcc36bac:Asteroid"]
+	{
+		Transform 
+		{
+			var Translation = Vec3{3.83664703, 29.2791748, 11.1529541}
+			var Rotation = Quat{0, 0, 0, 1}
+			var Scale = Vec3{1, 1, 1}
+		}
+		Hierarchy 
+		{
+			Cog 
+			{
+				Model 
+				{
+					var Material = "58875539e265f84f:Asteroid"
+				}
+			}
+		}
+	}
+	Cog 
+	{
+		var Name = "planet1"
+		var LinkId = 9
+		Transform 
+		{
+			var Translation = Vec3{156.545135, 18.9601135, 137.127838}
+			var Scale = Vec3{0.5, 0.5, 0.5}
+			var Rotation = Quat{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var Material = "588754f7c76f487b:Planet2"
+			var Mesh = "58875451a48d3411:Planet1.planet1"
+		}
+	}
+}

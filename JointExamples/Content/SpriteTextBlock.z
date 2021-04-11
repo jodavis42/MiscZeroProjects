@@ -1,0 +1,36 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+[RunInEditor]
+// Auto-sets the SpriteText's Text property from a text-block resource.
+class SpriteTextBlock : ZilchComponent
+{
+  [Dependency] var SpriteText : SpriteText;
+  // The internal text block we reference
+  var TextBlockInternal : TextBlock = null;
+  // On the text block changing, reset the sprite text
+  [Property] var TextBlock : TextBlock
+  {
+    get { return this.TextBlockInternal; }
+    set
+    {
+      this.TextBlockInternal = value;
+      this.SetSpriteText();
+    }
+  }
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.SetSpriteText();
+  }
+  
+  function SetSpriteText()
+  {
+    if(this.SpriteText != null)
+      this.SpriteText.Text = this.TextBlockInternal.Text;
+  }
+}

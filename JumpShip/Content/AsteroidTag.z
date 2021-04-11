@@ -1,0 +1,11 @@
+class AsteroidTag : ZilchComponent
+{
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        
+    }
+}

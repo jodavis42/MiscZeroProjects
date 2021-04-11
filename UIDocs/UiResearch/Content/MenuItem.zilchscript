@@ -1,0 +1,216 @@
+class MenuItem : ZilchComponent
+{
+  sends UiDisable : MenuEvent;
+  sends UiEnable : MenuEvent;
+  
+  
+  [Dependency]
+  var UiWidget : UiWidget;
+  [Dependency]
+  var Layout : UiLayout;
+  
+  
+  [Property]
+  var Enabled = true;
+  [Property]
+  var TextPath = CogPath("UiShadowedText");
+  
+  var DefaultColor : Real4 = Real4(1.0.XXX, 0.25);
+  var HoverColor : Real4 = Color.FromHsva(50/360.0, 0.9, 0.9, 0.75);
+  
+  var DefaultPadding : Real = 8;
+  var HoverPadding : Real = 16;
+  var HoverActionsDuration : Real = 3/60.0;
+  var Actions : ActionSet;
+  var Blinking = false;
+  var Shrinking = false;
+  var MouseIsOver = false;
+  
+  var Clone : Cog;
+  
+  var CanAnimate : Boolean { get { return !this.Blinking && !this.Shrinking; }}
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.Actions = Action.Group(this.Owner.Actions);
+    
+    Print.TimeSpace = this.Space.TimeSpace;
+    
+    this.UiWidget.LocalColor = this.DefaultColor;
+    this.Layout.PaddingLeft = this.DefaultPadding;
+    
+    Zero.Connect(init, Events.AllObjectsInitialized, this.OnAllObjectsInitialized);
+  }
+  
+  
+  function OnAllObjectsInitialized(event : CogInitializerEvent)
+  {
+    if (this.Enabled)
+      this.Enable();
+    else
+      this.Disable();
+  }
+  
+  
+  function OnMouseEnterHierarchy(event : ViewportMouseEvent)
+  {
+    this.MouseIsOver = true;
+    
+    if (this.CanAnimate)
+      this.Highlight();
+  }
+  
+  
+  function OnMouseExitHierarchy(event : ViewportMouseEvent)
+  {
+    this.MouseIsOver = false;
+    
+    if (this.CanAnimate)
+      this.Unhighlight();
+  }
+  
+  
+  function OnLeftClick(event : ViewportMouseEvent)
+  {
+    if (!this.CanAnimate) return;
+    
+    this.Activate();
+  }
+  
+  
+  function Highlight()
+  {
+    var colorProperty = @this.UiWidget.LocalColor;
+    var colorEndValue = this.HoverColor;
+    var paddingProperty = @this.Layout.PaddingLeft;
+    var paddingEndValue = this.HoverPadding;
+    var duration = this.HoverActionsDuration;
+    var ease = Ease.QuadInOut;
+    
+    this.Actions.Cancel();
+    this.Actions = Action.Group(this.Owner.Actions);
+      
+      Action.Property(this.Actions, colorProperty, colorEndValue, duration, ease);
+      Action.Property(this.Actions, paddingProperty, paddingEndValue, duration, ease);
+  }
+  
+  
+  function Unhighlight()
+  {
+    var colorProperty = @this.UiWidget.LocalColor;
+    var colorEndValue = this.DefaultColor;
+    var paddingProperty = @this.Layout.PaddingLeft;
+    var paddingEndValue = this.DefaultPadding;
+    var duration = this.HoverActionsDuration;
+    var ease = Ease.QuadInOut;
+    
+    this.Actions.Cancel();
+    this.Actions = Action.Group(this.Owner.Actions);
+      
+      Action.Property(this.Actions, colorProperty, colorEndValue, duration, ease);
+      Action.Property(this.Actions, paddingProperty, paddingEndValue, duration, ease);
+  }
+  
+  
+  function Activate()
+  {
+    this.Blinking = true;
+    
+    this.Actions.Cancel();
+    this.Actions = Action.Group(this.Owner.Actions);
+      
+      var seq = Action.Sequence(this.Actions);
+        
+        var flashes = 2;
+        var duration = 5/60.0;
+        var delay = 2/60.0;
+        
+        for (var i = 0; i < flashes; ++i)
+        {
+          Action.Property(seq, @this.UiWidget.LocalColor, Colors.White, 0, Ease.Linear);
+          Action.Delay(seq, delay);
+          Action.Property(seq, @this.UiWidget.LocalColor, this.HoverColor, duration, Ease.Linear);
+        }
+        
+        Action.Property(seq, @this.Blinking, false, 0, Ease.Linear);
+        Action.Call(seq, this.DispatchActivateEvent);
+        Action.Call(seq, this.ColorSafety);
+        //Action.Call(seq, this.CreateClone);
+        //Action.Call(seq, this.ShrinkInLayout);
+        //Action.Property(seq, @this.UiWidget.Visible, false, 0, Ease.Linear);
+  }
+  
+  
+  function DispatchActivateEvent()
+  {
+    this.Owner.DispatchEvent(Events.UiActivated, MenuEvent());
+  }
+  
+  
+  function ColorSafety()
+  {
+    if (!this.MouseIsOver)
+      this.Unhighlight();
+  }
+  
+  
+  function CreateClone()
+  {
+    if (this.Clone != null)
+      this.Clone.Destroy();
+    
+    this.Clone = this.Space.Create(Archetype.MenuItemClone);
+    this.Clone.AttachToPreserveLocal(this.Owner.Parent);
+    
+    var mie = MenuItemEvent();
+    mie.MenuItemCog = this.Owner;
+    mie.TextCog = this.TextPath.Cog;
+    this.Clone.DispatchEvent(Events.MenuItemCloneSetup, mie);
+  }
+  
+  
+  function ShrinkInLayout()
+  {
+    this.Shrinking = true;
+    
+    var seq = Action.Sequence(this.Actions);
+      
+      var grp = Action.Group(seq);
+        
+        Action.Property(grp, @this.UiWidget.FlexSize, Real2(1, 0), 0.25, Ease.QuadIn);
+        Action.Property(grp, @this.UiWidget.HierarchyColor, Real4(Colors.White.XXX, 0), 0.25, Ease.Linear);
+        
+      Action.Property(seq, @this.UiWidget.Active, false, 0, Ease.Linear);
+      Action.Property(seq, @this.Shrinking, true, 0, Ease.Linear);
+      
+      var se = ShakeEvent();
+      se.Duration = 0.4;
+      se.Magnitude = 3;
+      
+      Action.Call(seq, this.Owner.DispatchUp, Events.ShakeRequest, se);
+  }
+  
+  
+  function Enable()
+  {
+    //Print("Enabling 
+    this.Enabled = true;
+    this.Owner.DispatchDown(Events.UiEnable, MenuEvent());
+    
+    Zero.Connect(this.Owner, Events.MouseEnterHierarchy, this.OnMouseEnterHierarchy);
+    Zero.Connect(this.Owner, Events.MouseExitHierarchy, this.OnMouseExitHierarchy);
+    Zero.Connect(this.Owner, Events.LeftClick, this.OnLeftClick);
+  }
+  
+  
+  function Disable()
+  {
+    this.Enabled = false;
+    this.Owner.DispatchDown(Events.UiDisable, MenuEvent());
+    
+    Zero.Disconnect(this.Owner, Events.MouseEnterHierarchy, this);
+    Zero.Disconnect(this.Owner, Events.MouseExitHierarchy, this);
+    Zero.Disconnect(this.Owner, Events.LeftClick, this);
+  }
+}

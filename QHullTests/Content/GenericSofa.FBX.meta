@@ -1,0 +1,44 @@
+[Version:1]
+GeometryContent 
+{
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x59817c510e5a65e6
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "GenericSofa_GenericSofaBottomPad"
+				var ResourceId = 0x59817c500e2d883e
+			}
+			Object
+			{
+				var Name = "GenericSofa_GenericSofaBodyGeneratedMeshNode0"
+				var ResourceId = 0x59817c500e2d888c
+			}
+			Object
+			{
+				var Name = "GenericSofa_GenericSofaBodyGeneratedMeshNode1"
+				var ResourceId = 0x59817c500e2d88a2
+			}
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 1
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+}

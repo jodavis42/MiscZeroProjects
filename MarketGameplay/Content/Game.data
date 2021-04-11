@@ -1,0 +1,15 @@
+[Version:1]
+GameSession 
+{
+	var Name = ""
+	var LinkId = 1
+	DefaultGameSetup 
+	{
+		var StartingSpace = "576f215c0825de61:Space"
+		var StartingLevel = "58385682c2e519d1:Examples"
+		var LoadEditingLevel = true
+	}
+	ZilchState 
+	{
+	}
+}

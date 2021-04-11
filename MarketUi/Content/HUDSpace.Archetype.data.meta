@@ -1,0 +1,11 @@
+DataContent = 
+{
+	DataBuilder = 
+	{
+		string Name = "HUDSpace",
+		uint64 ResourceId = 58381740e1c56257,
+		string LoaderType = "Space",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

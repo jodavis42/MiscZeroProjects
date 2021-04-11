@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "MidiKeyboard"
+		var ResourceId = 0x591dc97566a550e8
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

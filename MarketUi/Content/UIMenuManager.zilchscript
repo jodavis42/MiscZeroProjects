@@ -1,0 +1,146 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Arend Danielek
+// Last update: 7/24/2016
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// This component is intended to be used with the UIButton component. This component should be
+// attached to an object that is the parent of all objects that have a UIButton component within a level.
+class UIMenuManager : ZilchComponent
+{
+  // Should the component be active or not
+  [Property]
+  var Active : Boolean = true;
+  
+  // The CogPath for the selection arrow pointing to selected button
+  [Property] 
+  var SelectionArrow : CogPath = null;
+  
+  // The offset of the selection arrow relative to selected button
+  [Property] 
+  var ArrowOffset : Real3 = Real3();
+  
+  var ReturnLevel : Level;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to dispatched UIButton event
+    Zero.Connect(this.Space, Events.UIButtonEnterDefaultState, this.OnUIButtonEnterDefaultState);
+    Zero.Connect(this.Space, Events.UIButtonEnterHoveredState, this.OnUIButtonEnterHoveredState);
+    Zero.Connect(this.Space, Events.UIButtonEnterClickedState, this.OnUIButtonEnterClickedState);
+  }
+
+  function OnUIButtonEnterDefaultState(event : UIButtonStateChange)
+  {
+    // Check to see if the SelectionArrow is being used in this level
+    if(this.SelectionArrow.Cog != null)
+      // If so, make it invisible
+      this.SelectionArrow.Cog.Sprite.Visible = false;
+  }
+
+  function OnUIButtonEnterHoveredState(event : UIButtonStateChange)
+  {
+    // Check to see if the SelectionArrow is being used in this level
+    if(this.SelectionArrow.Cog != null)
+    {
+      // If buttons are on the confirmation window
+      if(event.Button.Name == "ConfirmYesButton" || event.Button.Name == "ConfirmNoButton")
+      {
+        // Make the selection arrow invisible
+        this.SelectionArrow.Cog.Sprite.Visible = false;
+      }
+      // If the button is anywhere else (i.e., the main menu)
+      else
+      {
+        // Make the selection arrow visible
+        this.SelectionArrow.Cog.Sprite.Visible = true;
+        
+        // Offset the position of SelectionArrow relative to the current button
+        this.SelectionArrow.Cog.Transform.Translation = event.Button.Transform.Translation + this.ArrowOffset;
+      }
+    }
+  }
+  
+  function OnUIButtonEnterClickedState(event : UIButtonStateChange)
+  {
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // This is where you check which button was activated and perform unique logic such as loading levels //
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    // Check to see if the SelectionArrow is being used in this level
+    if(this.SelectionArrow.Cog != null)
+      // If so, make it invisible
+      this.SelectionArrow.Cog.Sprite.Visible = false;
+    
+    // Check to see if the button is one that loads a level; if it is, load the level.
+    if(event.Button.Name == "StartGameButton" ||
+       event.Button.Name == "HowToPlayButton" ||
+       event.Button.Name == "CreditsButton")
+    {
+      this.ReturnLevel = this.Space.CurrentLevel;
+      this.Space.LoadLevel(event.LevelToLoad);
+    }
+    else if(event.Button.Name == "ReturnButton")
+    {
+      this.Space.LoadLevel(this.ReturnLevel);
+    }
+    else if(event.Button.Name == "MainMenuButton")
+    {
+      this.Space.DispatchEvent(Events.UnpauseGameEvent, ZilchEvent());
+    }
+    // If the button is meant to quit the game...
+    else if(event.Button.Name == "QuitButton")
+    {
+      //Create a new instance of the event that requests the confirmation window
+      var conReq = ConfirmationPopUpRequest();
+      
+      // Set event's Source variable to this object
+      conReq.Source = this.Owner;
+      conReq.ResponseFunction = this.GameSession.Quit;
+      
+      // Dispatch the event onto the space
+      this.Space.DispatchEvent(Events.ConfirmationPopUpRequest, conReq);
+      
+      // Connect to the UIButtonEvent being dispatched from the new space where
+      // the confirmation window exists.
+      Zero.Connect(conReq.ConSpace, Events.UIButtonEnterClickedState, this.OnUIButtonEnterClickedState);
+    }
+    
+    // If the button confirms that the player wishes to quit...
+    else if(event.Button.Name == "ConfirmYesButton")
+    {
+      // Create a new instance of the event that sends a confirmation response
+      var conEvent = ConfirmationPopUpResponse();
+      
+      // Sets the event's Response variable (true means to confirm quit)
+      conEvent.Response = true;
+      
+      // Dispatch the event onto the space
+      this.Space.DispatchEvent(Events.ConfirmationPopUpResponse, conEvent);
+    }
+    
+    // If the button denies that the player wishes to exit...
+    else if(event.Button.Name == "ConfirmNoButton")
+    {
+      // Create a new instance of the event that sends a confirmation response
+      var conEvent = ConfirmationPopUpResponse();
+      
+      // Sets the event's Response variable (false means to deny quit)
+      conEvent.Response = false;
+      
+      // Dispatch the event onto the space
+      this.Space.DispatchEvent(Events.ConfirmationPopUpResponse, conEvent);
+    }
+  }
+  
+  // Used to activate or deactivate the Reactive components on the
+  // non-confirmation buttons in the current level
+  function SetChildrenReactive(val : Boolean)
+  {
+    // Iterate through the buttons parented to the buttons parent object (i.e., this.Owner)
+    foreach(var child in this.Owner.Children)
+      // Activate or deactivate Reactive component based on passed in boolean (i.e, val)
+      child.Reactive.Active = val;
+  }
+}

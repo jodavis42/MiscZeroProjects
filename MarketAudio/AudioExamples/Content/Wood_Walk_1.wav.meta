@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Wood_Walk_1"
+		var ResourceId = 0x5944f20c822fee2b
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 0.54897958
+		var AudioChannels = 1
+		var SampleRate = 44100
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

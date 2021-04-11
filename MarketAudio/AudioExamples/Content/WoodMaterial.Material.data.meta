@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "WoodMaterial"
+		var ResourceId = 0x594588228b008efb
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

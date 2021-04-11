@@ -1,0 +1,675 @@
+[Version:1]
+GeometryContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "BoatDragon_Hull"
+				var ResourceId = 0x5980bcd91474ffbb
+			}
+			Object
+			{
+				var Name = "BoatDragon_Keel"
+				var ResourceId = 0x5980bcd91474ffe4
+			}
+			Object
+			{
+				var Name = "BoatDragon_Mast"
+				var ResourceId = 0x5980bcd91474ffee
+			}
+			Object
+			{
+				var Name = "BoatDragon_RopeMast"
+				var ResourceId = 0x5980bcd91474fffb
+			}
+			Object
+			{
+				var Name = "BoatDragon_RopeMastBack"
+				var ResourceId = 0x5980bcd914750007
+			}
+			Object
+			{
+				var Name = "BoatDragon_RopeMastFront"
+				var ResourceId = 0x5980bcd914750012
+			}
+			Object
+			{
+				var Name = "BoatDragon_RopeLiftLeft"
+				var ResourceId = 0x5980bcd91475001a
+			}
+			Object
+			{
+				var Name = "BoatDragon_RopeLiftRight"
+				var ResourceId = 0x5980bcd914750026
+			}
+			Object
+			{
+				var Name = "BoatDragon_Yardarm"
+				var ResourceId = 0x5980bcd91475002e
+			}
+			Object
+			{
+				var Name = "BoatDragon_RopeYardarm"
+				var ResourceId = 0x5980bcd914750036
+			}
+			Object
+			{
+				var Name = "BoatDragon_Sail"
+				var ResourceId = 0x5980bcd914750044
+			}
+			Object
+			{
+				var Name = "BoatDragon_RopeClewLeft"
+				var ResourceId = 0x5980bcd91475004c
+			}
+			Object
+			{
+				var Name = "BoatDragon_RopeClewRight"
+				var ResourceId = 0x5980bcd914750053
+			}
+			Object
+			{
+				var Name = "BoatDragon_RopeYardarmEnd"
+				var ResourceId = 0x5980bcd91475005c
+			}
+			Object
+			{
+				var Name = "BoatDragon_RopeBraceLeft"
+				var ResourceId = 0x5980bcd91475006f
+			}
+			Object
+			{
+				var Name = "BoatDragon_RopeBraceRight"
+				var ResourceId = 0x5980bcd914750077
+			}
+			Object
+			{
+				var Name = "BoatDragon_Stand"
+				var ResourceId = 0x5980bcd914750080
+			}
+			Object
+			{
+				var Name = "BoatDragon_RodLeft"
+				var ResourceId = 0x5980bcd914750088
+			}
+			Object
+			{
+				var Name = "BoatDragon_RodRight"
+				var ResourceId = 0x5980bcd914750090
+			}
+			Object
+			{
+				var Name = "BoatDragon_RudderSupport"
+				var ResourceId = 0x5980bcd914750098
+			}
+			Object
+			{
+				var Name = "BoatDragon_Rudder"
+				var ResourceId = 0x5980bcd9147500aa
+			}
+			Object
+			{
+				var Name = "BoatDragon_RopeTie"
+				var ResourceId = 0x5980bcd9147500b2
+			}
+			Object
+			{
+				var Name = "BoatDragon_Bench"
+				var ResourceId = 0x5980bcd9147500b9
+			}
+			Object
+			{
+				var Name = "BoatDragon_TreasureBox"
+				var ResourceId = 0x5980bcd9147500c1
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk"
+				var ResourceId = 0x5980bcd9147500c9
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid"
+				var ResourceId = 0x5980bcd9147500d1
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp"
+				var ResourceId = 0x5980bcd9147500d9
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk1"
+				var ResourceId = 0x5980bcd9147500e1
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid1"
+				var ResourceId = 0x5980bcd9147500e9
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp1"
+				var ResourceId = 0x5980bcd9147500fe
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk2"
+				var ResourceId = 0x5980bcd914750106
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid2"
+				var ResourceId = 0x5980bcd91475010e
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp2"
+				var ResourceId = 0x5980bcd914750116
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk3"
+				var ResourceId = 0x5980bcd91475011d
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid3"
+				var ResourceId = 0x5980bcd914750125
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp3"
+				var ResourceId = 0x5980bcd91475012d
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk4"
+				var ResourceId = 0x5980bcd914750135
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid4"
+				var ResourceId = 0x5980bcd91475013d
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp4"
+				var ResourceId = 0x5980bcd914750145
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk5"
+				var ResourceId = 0x5980bcd91475014c
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid5"
+				var ResourceId = 0x5980bcd914750154
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp5"
+				var ResourceId = 0x5980bcd91475015d
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk6"
+				var ResourceId = 0x5980bcd914750165
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid6"
+				var ResourceId = 0x5980bcd91475018b
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp6"
+				var ResourceId = 0x5980bcd914750193
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk7"
+				var ResourceId = 0x5980bcd91475019b
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid7"
+				var ResourceId = 0x5980bcd9147501a3
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp7"
+				var ResourceId = 0x5980bcd9147501aa
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk8"
+				var ResourceId = 0x5980bcd9147501b2
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid8"
+				var ResourceId = 0x5980bcd9147501ba
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp8"
+				var ResourceId = 0x5980bcd9147501c2
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk9"
+				var ResourceId = 0x5980bcd9147501ca
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid9"
+				var ResourceId = 0x5980bcd9147501d2
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp9"
+				var ResourceId = 0x5980bcd9147501d9
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk10"
+				var ResourceId = 0x5980bcd9147501e2
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid10"
+				var ResourceId = 0x5980bcd9147501e9
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp10"
+				var ResourceId = 0x5980bcd9147501f1
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk11"
+				var ResourceId = 0x5980bcd9147501f8
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid11"
+				var ResourceId = 0x5980bcd914750201
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp11"
+				var ResourceId = 0x5980bcd914750215
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk12"
+				var ResourceId = 0x5980bcd91475021c
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid12"
+				var ResourceId = 0x5980bcd914750224
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp12"
+				var ResourceId = 0x5980bcd91475022c
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk13"
+				var ResourceId = 0x5980bcd914750233
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid13"
+				var ResourceId = 0x5980bcd914750257
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp13"
+				var ResourceId = 0x5980bcd91475025f
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk14"
+				var ResourceId = 0x5980bcd914750266
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid14"
+				var ResourceId = 0x5980bcd91475026e
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp14"
+				var ResourceId = 0x5980bcd914750276
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk15"
+				var ResourceId = 0x5980bcd91475027e
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid15"
+				var ResourceId = 0x5980bcd914750286
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp15"
+				var ResourceId = 0x5980bcd91475028e
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk16"
+				var ResourceId = 0x5980bcd914750296
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid16"
+				var ResourceId = 0x5980bcd91475029d
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp16"
+				var ResourceId = 0x5980bcd9147502a5
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchTrunk17"
+				var ResourceId = 0x5980bcd9147502ad
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchLid17"
+				var ResourceId = 0x5980bcd9147502b5
+			}
+			Object
+			{
+				var Name = "BoatDragon_BenchHasp17"
+				var ResourceId = 0x5980bcd9147502bc
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield"
+				var ResourceId = 0x5980bcd9147502c5
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield1"
+				var ResourceId = 0x5980bcd9147502cc
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield2"
+				var ResourceId = 0x5980bcd9147502d4
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield3"
+				var ResourceId = 0x5980bcd9147502dc
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield4"
+				var ResourceId = 0x5980bcd9147502e4
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield5"
+				var ResourceId = 0x5980bcd9147502ed
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield6"
+				var ResourceId = 0x5980bcd9147502f4
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield7"
+				var ResourceId = 0x5980bcd9147502fc
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield8"
+				var ResourceId = 0x5980bcd914750303
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield9"
+				var ResourceId = 0x5980bcd91475030b
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield10"
+				var ResourceId = 0x5980bcd914750313
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield11"
+				var ResourceId = 0x5980bcd91475031b
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield12"
+				var ResourceId = 0x5980bcd914750322
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield13"
+				var ResourceId = 0x5980bcd91475032a
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield14"
+				var ResourceId = 0x5980bcd914750332
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield15"
+				var ResourceId = 0x5980bcd914750339
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield16"
+				var ResourceId = 0x5980bcd914750340
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield17"
+				var ResourceId = 0x5980bcd914750370
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield18"
+				var ResourceId = 0x5980bcd914750378
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield19"
+				var ResourceId = 0x5980bcd91475037f
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield20"
+				var ResourceId = 0x5980bcd914750388
+			}
+			Object
+			{
+				var Name = "BoatDragon_Shield21"
+				var ResourceId = 0x5980bcd914750390
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong"
+				var ResourceId = 0x5980bcd914750398
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong1"
+				var ResourceId = 0x5980bcd9147503a0
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong2"
+				var ResourceId = 0x5980bcd9147503a7
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong3"
+				var ResourceId = 0x5980bcd9147503af
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong4"
+				var ResourceId = 0x5980bcd9147503b7
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong5"
+				var ResourceId = 0x5980bcd9147503bf
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong6"
+				var ResourceId = 0x5980bcd9147503c7
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong7"
+				var ResourceId = 0x5980bcd9147503cf
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong8"
+				var ResourceId = 0x5980bcd9147503d7
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong9"
+				var ResourceId = 0x5980bcd9147503df
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong10"
+				var ResourceId = 0x5980bcd9147503e7
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong11"
+				var ResourceId = 0x5980bcd9147503f0
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong12"
+				var ResourceId = 0x5980bcd9147503f8
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong13"
+				var ResourceId = 0x5980bcd914750400
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong14"
+				var ResourceId = 0x5980bcd914750408
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong15"
+				var ResourceId = 0x5980bcd914750410
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong16"
+				var ResourceId = 0x5980bcd914750418
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong17"
+				var ResourceId = 0x5980bcd914750420
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong18"
+				var ResourceId = 0x5980bcd914750427
+			}
+			Object
+			{
+				var Name = "BoatDragon_PaddleLong19"
+				var ResourceId = 0x5980bcd91475042f
+			}
+			Object
+			{
+				var Name = "BoatDragon_Barrel"
+				var ResourceId = 0x5980bcd914750437
+			}
+			Object
+			{
+				var Name = "BoatDragon_Barrel1"
+				var ResourceId = 0x5980bcd91475043e
+			}
+			Object
+			{
+				var Name = "BoatDragon_Barrel2"
+				var ResourceId = 0x5980bcd914750446
+			}
+			Object
+			{
+				var Name = "BoatDragon_Barrel3"
+				var ResourceId = 0x5980bcd91475044e
+			}
+			Object
+			{
+				var Name = "BoatDragon_Barrel4"
+				var ResourceId = 0x5980bcd914750456
+			}
+			Object
+			{
+				var Name = "BoatDragon_Barrel5"
+				var ResourceId = 0x5980bcd91475045d
+			}
+			Object
+			{
+				var Name = "BoatDragon_Barrel6"
+				var ResourceId = 0x5980bcd914750465
+			}
+			Object
+			{
+				var Name = "BoatDragon_Barrel7"
+				var ResourceId = 0x5980bcd91475046d
+			}
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 0.100000001
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x5980bcda1799acd7
+	}
+}

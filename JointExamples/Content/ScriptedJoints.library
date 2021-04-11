@@ -1,0 +1,8 @@
+[Version:1]
+ContentLibrary 
+{
+	var Name = "ScriptedJoints"
+	var LibraryId = 0x58dd71e662b86d83
+	var SourceControlType = ""
+	var ReadOnly = false
+}

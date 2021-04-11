@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "PlayerGrabber"
+		var ResourceId = 0x58c60415fa14883b
+	}
+}

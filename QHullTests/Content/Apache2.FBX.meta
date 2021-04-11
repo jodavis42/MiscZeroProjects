@@ -1,0 +1,85 @@
+[Version:1]
+GeometryContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "Apache2_DrawCall_0002"
+				var ResourceId = 0x59808873acd05616
+			}
+			Object
+			{
+				var Name = "Apache2_DrawCall_0003"
+				var ResourceId = 0x59808873acd0563a
+			}
+			Object
+			{
+				var Name = "Apache2_DrawCall_0004"
+				var ResourceId = 0x59808873acd05642
+			}
+			Object
+			{
+				var Name = "Apache2_DrawCall_0005"
+				var ResourceId = 0x59808873acd0564f
+			}
+			Object
+			{
+				var Name = "Apache2_DrawCall_0006"
+				var ResourceId = 0x59808873acd05658
+			}
+			Object
+			{
+				var Name = "Apache2_DrawCall_0007"
+				var ResourceId = 0x59808873acd05662
+			}
+			Object
+			{
+				var Name = "Apache2_DrawCall_0008"
+				var ResourceId = 0x59808873acd0566a
+			}
+			Object
+			{
+				var Name = "Apache2_DrawCall_0009"
+				var ResourceId = 0x59808873acd05674
+			}
+			Object
+			{
+				var Name = "Apache2_DrawCall_0045"
+				var ResourceId = 0x59808873acd0567c
+			}
+			Object
+			{
+				var Name = "Apache2_DrawCall_0051"
+				var ResourceId = 0x59808873acd05683
+			}
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 0.00999999978
+		var ChangeBasis = true
+		var XBasisTo = BasisType.NegativeX
+		var YBasisTo = BasisType.PositiveZ
+		var ZBasisTo = BasisType.PositiveY
+	}
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x59808873acc5c6db
+	}
+}

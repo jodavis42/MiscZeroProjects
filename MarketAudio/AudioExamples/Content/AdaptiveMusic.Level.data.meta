@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "AdaptiveMusic"
+		var ResourceId = 0x5944d5b61a4e8d1c
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

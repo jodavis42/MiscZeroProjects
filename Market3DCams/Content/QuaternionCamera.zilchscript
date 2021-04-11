@@ -1,0 +1,211 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Joshua Davis
+// Last update: 4/3/2018
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// First person camera that uses quaternions to build rotations. Rotates with right mouse.
+// Moves with WASD, also uses 'q' and 'e' to pan along the world's up/down vector.
+class QuaternionCamera : ZilchComponent
+{
+  [Dependency] var Transform : Transform;
+  [Dependency] var Camera : Camera;
+  
+  // The movement speed of the camera.
+  [Property] var MovementSpeed : Real = 8.0;
+
+  // The speed at which the camera can rotation. This has the units of radians per pixel.
+  [Property] var LookSpeed : Real = 0.005;
+
+  // If this camera will run when the space is paused.
+  // Used mostly to debug a paused game.
+  [Property] var RunWhilePaused : Boolean = true;
+
+  // If we want this camera to be able to rotate.
+  [Property] var AllowRotation : Boolean = true;
+
+  // If we want this camera to be able to translate.
+  [Property] var AllowTranslation : Boolean = true;
+
+  // Whether or not the mouse is hidden and trapped by the camera.
+  [Property] var MouseTrapped : Boolean = false;
+
+  // The polar angle from the y-axis (see spherical coordinates for the definition fo phi).
+  var Phi : Real = 0.0;
+  // The angle around the x-z plane
+  var Theta : Real = 0.0;
+
+  // If the camera should rotate when the mouse moves
+  // (currently triggered by right mouse up/down)
+  var MouseReady : Boolean = false;
+
+  function Initialize(initializer : CogInitializer)
+  {
+    // Get the viewport so we can listen to mouse events
+    var viewportCog = this.Camera.CameraViewportCog;
+    
+    Zero.Connect(viewportCog, Events.RightMouseDown, this.OnRightMouseDown);
+    Zero.Connect(viewportCog, Events.RightMouseUp, this.OnRightMouseUp);
+    Zero.Connect(viewportCog, Events.MouseMove, this.OnMouseMove);
+    
+    // If we run while paused then connect to frame update (happens every frame),
+    // otherwise only listen on logic update (won't happen if paused)
+    var updateEventName = Events.LogicUpdate;
+    if(this.RunWhilePaused)
+    {
+      updateEventName = Events.FrameUpdate;
+    }
+    Zero.Connect(this.Space, updateEventName, this.OnUpdate);
+    
+    // If we want to trap the mouse, then set the mouse to always be ready
+    // and tell the viewport to trap the mouse (hides the cursor)
+    if(this.MouseTrapped)
+    {
+      this.MouseReady = true;
+      Zero.Mouse.Trapped = true;
+    }
+    
+    // Initialize phi and theta from the camera's initial transform values
+    var sphericalCoords = this.ComputeCurrentSphericalCoordinates();
+    this.Phi = sphericalCoords.X;
+    this.Theta = sphericalCoords.Y;
+  }
+  
+  function ComputeSphericalCoordinates(xBasis : Real3, yBasis : Real3, zBasis : Real3, vector : Real3) : Real2
+  {
+    // Phi is the angle measured from the y-axis
+    // Compute the angle of the vector from the y-basis vector
+    var phi = Math.ACos(Math.Dot(yBasis, vector));
+    
+    // Theta is the angle around the x-z plane. To compute the current theta we
+    // need to project the current vector onto the x and z basis vectors and use those to with ATan2.
+    var xzProjection = Math.ProjectOnPlane(vector, yBasis);
+    var zProj = Math.Dot(zBasis, xzProjection);
+    var xProj = Math.Dot(xBasis, xzProjection);
+    var theta = Math.ATan2(zProj, xProj);
+    
+    return Real2(phi, theta);
+  }
+  
+  function ComputeCurrentSphericalCoordinates() : Real2
+  {
+    var xBasis = -Real3.ZAxis;
+    var yBasis = Real3.YAxis;
+    var zBasis = -Real3.XAxis;
+    
+    // Compute the camera's current forward vector
+    var forward = this.Transform.TransformNormal(xBasis);
+    // Compute the spherical coordinates of this vector given the proper basis.
+    // We construct this basis so that theta == 0 matches the camera's forward
+    // with no rotation and theta == 90 is equal to a 90 degree rotation about the y-axis.
+    return this.ComputeSphericalCoordinates(xBasis, yBasis, zBasis, forward);
+  }
+
+  function OnRightMouseDown(viewportMouseEvent : MouseEvent)
+  {
+    // If the mouse is trapped then we don't modify the mouse ready state
+    if(this.MouseTrapped == false)
+    {
+      this.MouseReady = true;
+    }
+  }
+
+  function OnRightMouseUp(viewportMouseEvent : MouseEvent)
+  {
+    if(this.MouseTrapped == false)
+    {
+      this.MouseReady = false;
+    }
+  }
+
+  function OnMouseMove(viewportMouseEvent : MouseEvent)
+  {
+    // If the mouse was ready (aka we're tracking mouse movement)
+    // then update the mouse deltas
+    if(this.MouseReady)
+    {
+      var movement = viewportMouseEvent.Movement;
+      var upDelta = movement.Y * this.LookSpeed;
+      var sideDelta = -movement.X * this.LookSpeed;
+      
+      // To prevent wrapping around at the top, compute and clamp the
+      // total phi angle (see spherical coordinates).
+      var phiClamp = Real2(0, Math.Pi);
+      this.Phi = Math.Clamp(this.Phi + upDelta, phiClamp.X, phiClamp.Y);
+      this.Theta += sideDelta;
+    }
+  }
+
+  function CameraMovement(updateEvent : UpdateEvent)
+  {
+    // Update translation and rotation independently
+    if(this.AllowTranslation)
+    {
+      this.MoveCamera(updateEvent);
+    }
+    if(this.AllowRotation)
+    {
+      this.RotateCamera(updateEvent);
+    }
+  }
+
+  function MoveCamera(updateEvent : UpdateEvent)
+  {
+    var movement = Real3.Zero;
+    
+    // Record keyboard movement to pan the camera
+    if(Zero.Keyboard.KeyIsDown(Keys.A))
+      movement.X -= 1.0;
+    if(Zero.Keyboard.KeyIsDown(Keys.D))
+      movement.X += 1.0;
+    if(Zero.Keyboard.KeyIsDown(Keys.W))
+      movement.Z -= 1.0;
+    if(Zero.Keyboard.KeyIsDown(Keys.S))
+      movement.Z += 1.0;
+    
+    // We computed the direction in local space, bring it to the camera's world space
+    var current = this.Transform.Translation;
+    movement = this.Transform.TransformNormal(movement);
+    
+    // Add panning along the y-axis because it is nice.
+    // Do this after the transform normal because we want the world up, not local up
+    if(Zero.Keyboard.KeyIsDown(Keys.Q))
+      movement.Y -= 1.0;
+    if(Zero.Keyboard.KeyIsDown(Keys.E))
+      movement.Y += 1.0; 
+    
+    // Update the translation
+    var speed = updateEvent.Dt * this.MovementSpeed;
+    current += movement * speed;
+    this.Transform.Translation = current;
+  }
+
+  function RotateCamera(updateEvent : UpdateEvent)
+  {
+    var transform = this.Transform;
+    var xBasis = Real3.XAxis;
+    var yBasis = Real3.YAxis;
+    
+    // Convert phi to an angle about the x-Basis (need to offset [0, 180] to [-90, 90])
+    var yAngle = this.Phi - Math.Pi / 2.0;
+    // Generate the quaternion from that axis and an angle
+    var upRotation = Math.ToQuaternion(xBasis, -yAngle);
+    
+    // Generate the side rotation (rotation about world y-Basis)
+    var sideRotation = Math.ToQuaternion(yBasis, this.Theta);
+    
+    // Make sure to multiply in the correct order, we have to look up then look to the side.
+    // If we look to the side first, we will invalidate the up rotation we generated
+    // (use local rotation incase we have a parent)
+    var endResult = Math.Multiply(sideRotation, upRotation);
+    // Also make sure to normalize
+    endResult = Math.Normalize(endResult);
+    transform.WorldRotation = endResult;
+  }
+
+  function OnUpdate(updateEvent : UpdateEvent)
+  {
+    this.CameraMovement(updateEvent);
+  }
+}

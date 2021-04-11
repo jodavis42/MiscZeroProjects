@@ -1,0 +1,100 @@
+//**********************************************************************************
+//
+// The AudioManager lets you control settings for music, sound effects, and dialog.
+//
+//**********************************************************************************
+class AudioManager : ZilchComponent
+{
+  // SoundTag to apply to all music
+  [Property] var TagForMusic : SoundTag;
+  // Volume modifier applied to all music
+  [Property] var MusicVolume : Real = 1.0;
+  // SoundTag to apply to all sound effects
+  [Property] var TagForEffects : SoundTag;
+  // Volume modifier applied to all sound effects
+  [Property] var EffectsVolume : Real = 1.0;
+  // SoundTag to apply to all dialog
+  [Property] var TagForDialog : SoundTag;
+  // Volume modifier applied to all dialog
+  [Property] var DialogVolume : Real = 1.0;
+  // The SoundTag that will reduce volume when dialog plays
+  [Property] var DuckedTag : SoundTag;
+  // The volume to reduce the DuckedTag to, in decibels
+  [Property] var DuckedVolumeDB : Integer = -40;
+  // The time, in milliseconds, to ramp on the volume reduction
+  [Property] var AttackTimeMS : Integer = 50;
+  // The time, in milliseconds, to ramp off the volume reduction
+  [Property] var ReleaseTimeMS : Integer = 500;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Set the volume on the music tag
+    this.TagForMusic.Volume = this.MusicVolume;
+    // Set the volume on the effects tag
+    this.TagForEffects.Volume = this.EffectsVolume;
+    // Set the volume on the dialog tag
+    this.TagForDialog.Volume = this.DialogVolume;
+    
+    // Set the ducking relationship between the SoundTags
+    this.DuckedTag.TagForDucking = this.TagForDialog;
+    // Tell the ducked tag to use the compressor settings
+    this.DuckedTag.UseCompressor = true;
+    // Set the reduced volume
+    this.DuckedTag.CompressorThreshold = this.DuckedVolumeDB;
+    // Set the ramp on time
+    this.DuckedTag.CompressorAttack = this.AttackTimeMS;
+    // Set the ramp off time
+    this.DuckedTag.CompressorRelease = this.ReleaseTimeMS;
+  }
+  
+  function PlayMusic(cue : SoundCue, paused : Boolean) : SoundInstance
+  {
+    // Created the paused SoundInstance
+    var instance = this.Space.SoundSpace.PlayCuePaused(cue);
+    // Add the instance to the music SoundTag
+    this.TagForMusic.TagSound(instance);
+    // If the instance is not supposed to be paused, resume it
+    if (paused == false)
+      instance.Paused = false;
+    
+    return instance;
+  }
+  
+  function PlayEffect(cue : SoundCue, emitter : SoundEmitter, paused : Boolean) : SoundInstance
+  {
+    // Create the variable for the SoundInstance
+    var instance : SoundInstance = null;
+    // If an emitter was passed in, play the SoundCue on the emitter
+    if (emitter != null)
+      instance = emitter.PlayCuePaused(cue);
+    // Otherwise, play it on the SoundSpace
+    else
+      instance = this.Space.SoundSpace.PlayCuePaused(cue);
+    // Add the instance to the effects SoundTag
+    this.TagForEffects.TagSound(instance);
+    // If the instance is not supposed to be paused, resume it
+    if (paused == false)
+      instance.Paused = false;
+      
+    return instance;
+  }
+  
+  function PlayDialog(cue : SoundCue, emitter : SoundEmitter, paused : Boolean) : SoundInstance
+  {
+    // Create the variable for the SoundInstance
+    var instance : SoundInstance = null;
+    // If an emitter was passed in, play the SoundCue on the emitter
+    if (emitter != null)
+      instance = emitter.PlayCuePaused(cue);
+    // Otherwise, play it on the SoundSpace
+    else
+      instance = this.Space.SoundSpace.PlayCuePaused(cue);
+    // Add the instance to the dialog SoundTag
+    this.TagForDialog.TagSound(instance);
+    // If the instance is not supposed to be paused, resume it
+    if (paused == false)
+      instance.Paused = false;
+      
+    return instance;
+  }
+}

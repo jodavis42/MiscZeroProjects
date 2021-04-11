@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "DynamicObject"
+		var ResourceId = 0x58c4c159c193b298
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

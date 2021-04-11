@@ -1,0 +1,60 @@
+class Projectile : ZilchComponent
+{
+    // The core that fired us. Used so we can not
+    // collide with anything that shares a core.
+    var CoreCog : Cog = null;
+    
+    // Each projectile can use this to compute damage or other level-up values.
+    var Level : Real = 0.0;
+    
+    // Used to let any other projectiles do setup logic once we have the level and core set.
+    sends ProjectileSetup : ZilchEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Setup(coreCog : Cog, level : Real)
+    {
+        this.CoreCog = coreCog;
+        this.Level = level;
+        
+        var toSend = new ZilchEvent();
+        this.Owner.DispatchEvent(Events.ProjectileSetup, toSend);
+    }
+    
+    // Can something with the given core cog damage this object?
+    [Static]
+    function CanDamage(obj : Cog, coreCog : Cog) : Boolean
+    {
+        // If we hit something that doesn't have health then don't do anything
+        var health = obj.Health;
+        if(health == null)
+        {
+            return false;
+        }
+        
+        // If the object has no health then it's dying and we can safely ignore it
+        if(health.IsZero())
+        {
+            return false;
+        }
+        
+        // Check to see if the other cog has a CoreLink (so we can avoid hitting ourself).
+        // If it doesn't have one then it's safe to damage (asteroids, etc...)
+        var coreLink = obj.FindRoot().CoreLink;
+        if(coreLink == null)
+        {
+            return true;
+        }
+        
+        // Now make sure we are hitting something that doesn't belong to us
+        if(coreCog == coreLink.CoreCog)
+        {
+            return false;
+        }
+        
+        // Otherwise this object doesn't belong to our core, so we hit it
+        return true;
+    }
+}

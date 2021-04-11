@@ -1,0 +1,23 @@
+ResourceTable = 
+{
+	string ResourceType = "Archetype",
+	Array EntryList = 
+	[
+		{
+			string Name = "SmallExperience",
+			string Value = "522d0a318a3d2edf:SmallExperience",
+			float Weight = 1,
+		},
+		{
+			string Name = "MediumExperience",
+			string Value = "522d0a148ca4407f:MediumExperience",
+			float Weight = 1,
+		},
+		{
+			string Name = "LargeExperience",
+			string Value = "522d0a2389c5ff62:LargeExperience",
+			float Weight = 1,
+		},
+	],
+	float MaxWeight = 1,
+},

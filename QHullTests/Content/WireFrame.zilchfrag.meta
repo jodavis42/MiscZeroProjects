@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchFragmentBuilder 
+	{
+		var Name = "WireFrame"
+		var ResourceId = 0x59809e5b5c9e616a
+	}
+}

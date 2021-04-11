@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "WeldJointExamples"
+		var ResourceId = 0x58d915c22f5a3a33
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

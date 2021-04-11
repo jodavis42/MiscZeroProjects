@@ -1,0 +1,44 @@
+class ProjectileBouncer : ZilchComponent
+{
+    // The max number of bounces we will do before we destroy ourself.
+    // (N bounces means N+1 collisions since we destroy ourself on the last hit)
+    [Property]
+    var MaxBounces : Integer = 2;
+    
+    [Dependency]
+    var ProjectileBasic : ProjectileBasic = null;
+    
+    // The current number of bounces we've done.
+    var CurrentBounces :Integer = 0;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.ApplyDamage, this.OnApplyDamage);
+    }
+
+    function OnApplyDamage(damageEvent : DamageEvent)
+    {
+        ++this.CurrentBounces;
+        
+        var normal = damageEvent.Normal;
+        var body = this.Owner.RigidBody;
+        
+        // Reflect our original velocity across the normal's plane
+        var origVel = body.Velocity;
+        var projVel = Math.ReflectAcrossPlane(origVel, normal);
+        body.Velocity = projVel;
+        
+        // Update the orientation to be aligned with the new velocity direction
+        this.Owner.Orientation.LookAtDirection(projVel);
+        
+        // If we've bounced too many times then destroy ourself
+        if(this.CurrentBounces > this.MaxBounces)
+        {
+            this.Owner.Destroy();
+        }
+    }
+}

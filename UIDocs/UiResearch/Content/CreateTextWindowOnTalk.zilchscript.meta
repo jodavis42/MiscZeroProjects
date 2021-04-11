@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "CreateTextWindowOnTalk"
+		var ResourceId = 0x5a5c3ad3d82c0f6d
+	}
+}

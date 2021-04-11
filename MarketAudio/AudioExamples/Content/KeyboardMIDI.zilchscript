@@ -1,0 +1,173 @@
+//**********************************************************************************
+//
+// Responds to note on and off events to play notes using a MIDI component.
+//
+//**********************************************************************************
+class KeyboardMIDI : ZilchComponent
+{
+  // Requires a MIDI component
+  [Dependency] var MIDI : MIDI;
+  
+  // The volume to play the notes at
+  [Property] var Volume : Real = 0.8;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to note on events sent by the keys
+    Zero.Connect(this.Space, Events.NoteOnEvent, this.OnNoteOn);
+    // Connect to note off events sent by the keys
+    Zero.Connect(this.Space, Events.NoteOffEvent, this.OnNoteOff);
+  }
+  
+  function OnNoteOn(event : NoteEvent)
+  {
+    // Play the specified note 
+    this.MIDI.Synthesizer.NoteOn(event.MIDINumber as Integer, this.Volume);
+  }
+  
+  function OnNoteOff(event : NoteEvent)
+  {
+    // Turn off the specified note
+    this.MIDI.Synthesizer.NoteOff(event.MIDINumber as Integer);
+  }
+}
+
+//**********************************************************************************
+//
+// Used for communication of when to turn notes on and off
+//
+//**********************************************************************************
+class NoteEvent : ZilchEvent
+{
+  var MIDINumber : Integer;
+}
+
+//**********************************************************************************
+//
+// Turns notes on and off in reaction to mouse clicks or keyboard keys,
+// and also responds visually to MIDI events
+//
+//**********************************************************************************
+class MIDIKey : ZilchComponent
+{
+  sends NoteOnEvent : NoteEvent;
+  sends NoteOffEvent : NoteEvent;
+  
+  // Requires a Reactive component
+  [Dependency] var Reactive : Reactive;
+  // Requires a Sprite component
+  [Dependency] var Sprite : Sprite;
+  
+  // Which keyboard key to respond to
+  [Property] var KeyToUse : Keys;
+  // The MIDI note value to play
+  [Property] var MIDINumber : Integer = 0;
+  
+  // The sprite color when not playing
+  var OriginalColor : Real4;
+  // The sprite color while playing
+  var PressedColor : Real4;
+  // Keeps track of whether the key is pressed
+  var Pressed : Boolean = false;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the key up and down events
+    Zero.Connect(Zero.Keyboard, Events.KeyDown, this.OnKeyDown);
+    Zero.Connect(Zero.Keyboard, Events.KeyUp, this.OnKeyUp);
+    
+    // Connect to the mouse up and down events
+    Zero.Connect(this.Reactive, Events.LeftMouseDown, this.OnMouseDown);
+    Zero.Connect(this.Space, Events.LeftMouseUp, this.OnMouseUp);
+    
+    // Conenct to the MIDI note on and note off events
+    Zero.Connect(this.Space.SoundSpace, Events.MIDINoteOn, this.OnNoteOn);
+    Zero.Connect(this.Space.SoundSpace, Events.MIDINoteOff, this.OnNoteOff);
+    
+    // Save the current sprite color
+    this.OriginalColor = this.Sprite.VertexColor;
+    // Set the color to use while playing
+    this.PressedColor = Real4(71.0 / 127.0, 0.0, 0.0, 1.0);
+  }
+  
+  function OnKeyDown(event : KeyboardEvent)
+  {
+    // Check if the key pressed matches our key
+    if (event.Key == this.KeyToUse)
+      // If so, play this note
+      this.PlayNote();
+    // Check if the Up arrow was pressed
+    else if (event.Key == Keys.Up)
+      // Move the note value up an octave
+      this.MIDINumber += 12;
+    // Check if the Down arrow was pressed
+    else if (event.Key == Keys.Down)
+      // Move the note value down an octave
+      this.MIDINumber -= 12;
+  }
+  
+  function OnKeyUp(event : KeyboardEvent)
+  {
+    // Check if the key pressed matches our key
+    if (event.Key == this.KeyToUse)
+      // If so, stop this note
+      this.StopNote();
+  }
+  
+  function OnMouseDown(event : ViewportMouseEvent)
+  {
+    // Play this note
+    this.PlayNote();
+    
+    this.Pressed = true;
+  }
+  
+  function OnMouseUp(event : ViewportMouseEvent)
+  {
+    if (this.Pressed)
+    {
+      // Stop this note
+      this.StopNote();
+      
+      this.Pressed = false;
+    }
+  }
+  
+  function PlayNote()
+  {
+    // Send an event to turn this note on
+    var eventToSend = NoteEvent();
+    eventToSend.MIDINumber = this.MIDINumber;
+    this.Space.DispatchEvent(Events.NoteOnEvent, eventToSend);
+    
+    // Change the sprite color
+    this.Sprite.VertexColor = this.PressedColor;
+  }
+  
+  function StopNote()
+  {
+    // Send an event to turn this note off
+    var eventToSend = NoteEvent();
+    eventToSend.MIDINumber = this.MIDINumber;
+    this.Space.DispatchEvent(Events.NoteOffEvent, eventToSend);
+    
+    // Change the sprite color
+    this.Sprite.VertexColor = this.OriginalColor;
+  }
+  
+  function OnNoteOn(event : MidiEvent)
+  {
+    // Check if the note played matches this note
+    if (event.MIDINumber == this.MIDINumber)
+      // Change the sprite color
+      this.Sprite.VertexColor = this.PressedColor;
+  }
+  
+  function OnNoteOff(event : MidiEvent)
+  {
+    // Check if the note stopped matches this note
+    if (event.MIDINumber == this.MIDINumber)
+      // Change the sprite color
+      this.Sprite.VertexColor = this.OriginalColor;
+  }
+}

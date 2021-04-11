@@ -1,0 +1,106 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// A simple example of using joints to control a player. The player moves along the world X and Y axes with keyboard input.
+// A rotational motor is used to make the player look towards the mouse.
+class TopDownPlayerJoint : ZilchComponent
+{
+  [Dependency]  var CustomJoint : CustomJoint;
+  
+  [Property] var Active : Boolean = true;
+  
+  // The target linear speed that the character will try to move with
+  [Property] var TargetLinearSpeed : Real = 5.0;
+  [Property] var MaxLinearAcceleration : Real = 10.5;
+  // The target angular speed (in degrees per second) for the player to rotate
+  [Property] var TargetAngularSpeed : Real = 180;
+  [Property] var MaxAngularAcceleration : Real = 1.1;
+  [Property] var SmoothingAngle : Real = 20;
+  
+  var LookPoint : Real3;
+  var ForwardAxisConstraint : CustomConstraintInfo;
+  var UpAxisConstraint : CustomConstraintInfo;
+  var RotationConstraint : CustomConstraintInfo;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.ComputeCustomJointInfo, this.OnComputeCustomJointInfo);
+    Zero.Connect(this.Space, Events.MouseUpdate, this.OnMouseUpdate);
+    
+    this.ForwardAxisConstraint = this.CustomJoint.CreateConstraint();
+    this.UpAxisConstraint = this.CustomJoint.CreateConstraint();
+    this.RotationConstraint = this.CustomJoint.CreateConstraint();
+  }
+
+  function OnMouseUpdate(event : ViewportMouseEvent)
+  {
+    // Update the look at point
+    this.LookPoint = event.ToWorldZPlane(0.0);
+  }
+  
+  function UpdateLinearMovement(playerCog : Cog)
+  {
+    // Build up keyboard input
+    var moveVector = Real2();
+    if(Zero.Keyboard.KeyIsDown(Keys.Left) || Zero.Keyboard.KeyIsDown(Keys.A))
+      moveVector.X = -1;
+    if(Zero.Keyboard.KeyIsDown(Keys.Right) || Zero.Keyboard.KeyIsDown(Keys.D))
+      moveVector.X = 1;
+    if(Zero.Keyboard.KeyIsDown(Keys.Up) || Zero.Keyboard.KeyIsDown(Keys.W))
+      moveVector.Y = 1;
+    if(Zero.Keyboard.KeyIsDown(Keys.Down) || Zero.Keyboard.KeyIsDown(Keys.S))
+      moveVector.Y = -1;
+    
+    // Normalize the speed
+    var maxMoveSpeed = this.TargetLinearSpeed;
+    moveVector = Math.Normalize(moveVector);
+    moveVector *= maxMoveSpeed;
+    
+    // Set the velocity constraints to by default zero out the velocity of the player's center along the x and y axes
+    var constrainedPoint = Real3.Zero;
+    this.CustomJoint.ConstrainLinearVelocity(this.ForwardAxisConstraint, null, playerCog, constrainedPoint, constrainedPoint, Real3.XAxis);
+    this.CustomJoint.ConstrainLinearVelocity(this.UpAxisConstraint, null, playerCog, constrainedPoint, constrainedPoint, Real3.YAxis);
+    
+    // Add motors to force acceleration / deceleration
+    var maxAccel = this.MaxLinearAcceleration;
+    this.ForwardAxisConstraint.ComputeMotor(moveVector.X, -maxAccel, maxAccel);
+    this.UpAxisConstraint.ComputeMotor(moveVector.Y, -maxAccel, maxAccel);
+  }
+  
+  function UpdateAngularMovement(playerCog : Cog)
+  {
+    var worldUp = Real3.ZAxis;
+    var worldForward = playerCog.Orientation.WorldForward;
+    // Compute the look at direction vector while making sure to project out the up vector's contributions
+    var lookAtDir = this.LookPoint - playerCog.Transform.WorldTranslation;
+    lookAtDir = Math.Normalize(Math.ProjectOnPlane(lookAtDir, worldUp));
+    
+    // Compute the angle error between the player and the look-at direction
+    var angle = playerCog.Orientation.ComputeSignedAngle(worldUp, worldForward, lookAtDir);
+    // We always rotate at a base fixed speed, but we need to determine the direction
+    var rotationalSpeed = Math.ToRadians(this.TargetAngularSpeed);
+    if(angle < 0)
+      rotationalSpeed *= -1;
+    
+    // To avoid jitter, compute a smoothingFactor to lessen the motor speed when near the target lookAtDir
+    var smoothingFactor = Math.SmoothStep(0.0, Math.ToRadians(this.SmoothingAngle), Math.Abs(angle));
+    rotationalSpeed *= smoothingFactor;
+    
+    this.CustomJoint.ConstrainAngularVelocity(this.RotationConstraint, null, playerCog, worldUp);
+    this.RotationConstraint.ComputeMotor(rotationalSpeed, -this.MaxAngularAcceleration, this.MaxAngularAcceleration);
+  }
+
+  function OnComputeCustomJointInfo(event : Event)
+  {
+    if(this.Active == false)
+      return;
+      
+    var playerCog = this.Owner;
+    this.UpdateLinearMovement(playerCog);
+    this.UpdateAngularMovement(playerCog);
+  }
+}

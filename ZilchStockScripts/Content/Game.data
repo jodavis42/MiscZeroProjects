@@ -1,0 +1,24 @@
+[Version:1]
+GameSession 
+{
+	var Name = ""
+	var LinkId = 1
+	Viewports 
+	{
+	}
+	DefaultGameSetup 
+	{
+		var StartingSpace = "532e2a5971d21139:Space"
+		var StartingLevel = "532e2a5971d1e24d:Level"
+		var LoadEditingLevel = true
+	}
+	CameraViewports 
+	{
+	}
+	ZilchState 
+	{
+	}
+	RunUnitTests 
+	{
+	}
+}

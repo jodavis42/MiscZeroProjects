@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	TextBuilder 
+	{
+		var Name = "Box3x3.vertices"
+		var ResourceId = 0x598231d3bc542882
+	}
+}

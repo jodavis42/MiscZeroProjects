@@ -1,0 +1,56 @@
+class Menu : ZilchComponent
+{
+  [Dependency]
+  var UiWidget : UiWidget;
+  [Dependency]
+  var UiLayout : UiLayout;
+  
+  
+  [Property]
+  var TitlePath : CogPath;
+  [Property]
+  var ItemsPath : CogPath;
+  
+  var TargetPaddingTop : Real;
+  var TargetSpacing : Real2;
+  var FlyInDuration : Real = 0.25;
+  
+  var Title : Cog { get { return this.TitlePath.Cog; }}
+  var Items : Cog { get { return this.ItemsPath.Cog; }}
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.TargetPaddingTop = this.Items.UiStackLayout.PaddingTop;
+    this.TargetSpacing = this.Items.UiStackLayout.Spacing;
+    
+    Zero.Connect(this.Owner, Events.MenuOpened, this.OnMenuOpened);
+  }
+  
+  
+  function OnMenuOpened(event : MenuEvent)
+  {
+    this.FlyItemsIn();
+  }
+  
+  
+  function FlyItemsIn()
+  {
+    var itemsHeight = this.Items.UiWidget.Size.Y;
+    this.Items.UiStackLayout.PaddingTop = itemsHeight;
+    this.Items.UiStackLayout.Spacing = Real2(0, itemsHeight);
+    
+    Action.Property(this.Owner.Actions, @this.Items.UiStackLayout.PaddingTop, this.TargetPaddingTop, this.FlyInDuration, Ease.QuadOut);
+    Action.Property(this.Owner.Actions, @this.Items.UiStackLayout.Spacing, this.TargetSpacing, this.FlyInDuration, Ease.QuadOut);
+  }
+}
+
+
+class MenuEvent : ZilchEvent
+{
+  var FromMenu : Cog;
+  var ToMenu : Cog;
+  var Name : String;
+  var Quantity : Integer;
+  var Type : ItemType;
+}

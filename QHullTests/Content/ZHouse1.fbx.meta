@@ -1,0 +1,99 @@
+[Version:1]
+GeometryContent 
+{
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "ZHouse1_Zhouse1roof"
+				var ResourceId = 0x598179b9c24ef71d
+			}
+			Object
+			{
+				var Name = "ZHouse1_house1Windows"
+				var ResourceId = 0x598179b9c24ef74d
+			}
+			Object
+			{
+				var Name = "ZHouse1_Zhouse1chimmneycap"
+				var ResourceId = 0x598179b9c24ef758
+			}
+			Object
+			{
+				var Name = "ZHouse1_Zhouse1Walls"
+				var ResourceId = 0x598179b9c24ef767
+			}
+			Object
+			{
+				var Name = "ZHouse1_roofzhouse1"
+				var ResourceId = 0x598179b9c24ef773
+			}
+			Object
+			{
+				var Name = "ZHouse1_Zhouse1StoneTile"
+				var ResourceId = 0x598179b9c24ef782
+			}
+			Object
+			{
+				var Name = "ZHouse1_Zhouse1StoneBace"
+				var ResourceId = 0x598179b9c24ef78a
+			}
+			Object
+			{
+				var Name = "ZHouse1_house1curtain"
+				var ResourceId = 0x598179b9c24ef798
+			}
+			Object
+			{
+				var Name = "ZHouse1_knockerGeneratedMeshNode0"
+				var ResourceId = 0x598179b9c24ef7a1
+			}
+			Object
+			{
+				var Name = "ZHouse1_knockerGeneratedMeshNode1"
+				var ResourceId = 0x598179b9c24ef7ab
+			}
+			Object
+			{
+				var Name = "ZHouse1_ZhouseMetalpartsGeneratedMeshNode2"
+				var ResourceId = 0x598179b9c24ef7bc
+			}
+			Object
+			{
+				var Name = "ZHouse1_ZhouseMetalpartsGeneratedMeshNode3"
+				var ResourceId = 0x598179b9c24ef7c5
+			}
+			Object
+			{
+				var Name = "ZHouse1_polySurface4228"
+				var ResourceId = 0x598179b9c24ef7cf
+			}
+			Object
+			{
+				var Name = "ZHouse1_polySurface4241"
+				var ResourceId = 0x598179b9c24ef7d7
+			}
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 1
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x598179b9c27bed7d
+	}
+}

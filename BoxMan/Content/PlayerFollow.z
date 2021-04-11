@@ -1,0 +1,41 @@
+class PlayerFollow : ZilchComponent
+{
+    [Property]
+    var PlayerObject : CogPath = null;
+    
+    [Property]
+    var MinX : Real = 0.0;
+    [Property]
+    var MaxX : Real = 0.0;
+    [Property]
+    var MinY : Real = 0.0;
+    [Property]
+    var MaxY : Real = 0.0;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.CameraUpdate, this.OnCameraUpdate);
+        //this.PlayerObject.Required = false;
+    }
+
+    function OnCameraUpdate(event : UpdateEvent)
+    {
+        var player = this.PlayerObject.Cog;
+        if (player == null)
+        {
+            return;
+        }
+        
+        var pos = player.Transform.Translation;
+        
+        pos.X = Math.Clamp(pos.X, this.MinX, this.MaxX);
+        pos.Y = Math.Clamp(pos.Y, this.MinY, this.MaxY);
+        pos.Z = this.Owner.Transform.Translation.Z;
+        
+        this.Owner.Transform.Translation = pos;
+    }
+}

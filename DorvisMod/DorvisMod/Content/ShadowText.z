@@ -1,0 +1,32 @@
+class ShadowText : ZilchComponent
+{
+    var ShadowSpriteText : SpriteText = null;
+    var NormalSpriteText : SpriteText = null;
+    
+    [Property]
+    var InitialText : String = "";
+    
+    var Text : String
+    {
+        get { return this.NormalSpriteText.Text; }
+        set
+        {
+            this.NormalSpriteText.Text = value;
+            this.ShadowSpriteText.Text = value;
+        }
+    }
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        this.NormalSpriteText = this.Owner.SpriteText;
+        
+        var shadowCog = this.Owner.FindChildByName("Shadow");
+        this.ShadowSpriteText = shadowCog.SpriteText;
+        
+        this.Text = this.InitialText;
+    }
+}

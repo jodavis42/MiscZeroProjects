@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "ShortAttenuation"
+		var ResourceId = 0x58b3eab73224cfd9
+		var LoaderType = "SoundAttenuator"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

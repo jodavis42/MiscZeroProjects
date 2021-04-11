@@ -1,0 +1,61 @@
+/************************************************************************************************************/
+/* Copyright 2016 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 1/3/2016                                                                                    */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Arend Danielek                                                                          */
+/* Class: HierarchyDisplay                                                                                  */
+/* Brief: This is a simple recusive debug component that prints the hierarchy of its object in cascading    */
+/* view followed by the total number of children. Often when working with hierarchies                       */
+/* (especially at runtime) it can be difficult to tell what is attached to what. Using this component       */
+/* you can print the hierarchy structure in the console window.                                             */
+/************************************************************************************************************/
+
+class HierarchyDisplay : ZilchComponent
+{
+  [Property]
+  var DisplayOnInit : Boolean = false;
+  
+  function Initialize(init : CogInitializer)
+  {
+    if(this.DisplayOnInit)
+    {
+      this.DisplayHierarchy();
+    }
+  }
+  
+  // Starts the recursive printing of the hierarchy
+  function DisplayHierarchy()
+  {
+    // Print the hierarchy tree then the number of children
+    var count = this.PrintChildren(this.Owner);
+  }
+  
+  function PrintChildren(obj : Cog) : Integer
+  {
+    return this.PrintChildren(obj, 0);
+  }
+  
+  function PrintChildren(obj : Cog, level : Integer) : Integer
+  {
+    // Indent the name of the current object to the level it is in the hierarchy tree
+    var line = StringBuilder();
+    for(var i = 0; i < level; i += 1)
+    {
+      line.Write("    ");
+    }
+    line.Write(obj.Name);
+    Console.WriteLine(line.ToString());
+    
+    // Add one to the childcount for this level of recursion
+    var childCount = 1;
+    foreach(var child in obj.Children.All)
+    {
+      // Print the sub hierarchy tree of the given child
+      // and record the number of its children
+      childCount += this.PrintChildren(child, level + 1);
+    }
+    
+    // Return the child count back up the recursive call tree
+    return childCount;
+  }
+}

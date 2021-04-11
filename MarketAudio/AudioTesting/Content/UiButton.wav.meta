@@ -1,0 +1,12 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "UiButton"
+		var ResourceId = 0x58a7a2ce636fcef4
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+	}
+}

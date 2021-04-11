@@ -1,0 +1,3 @@
+syntax: glob
+Content/__pycache__/
+EditorContent/

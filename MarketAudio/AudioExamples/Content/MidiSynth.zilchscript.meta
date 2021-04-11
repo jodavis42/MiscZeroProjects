@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "MidiSynth"
+		var ResourceId = 0x593bd34ab4db619a
+	}
+}

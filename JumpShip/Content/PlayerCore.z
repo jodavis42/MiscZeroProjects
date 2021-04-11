@@ -1,0 +1,148 @@
+// Translates the player input into movement/firing logic on the core.
+class PlayerCore : ZilchComponent
+{
+    [Dependency]
+    var Core : Core = null;
+    
+    var MoveRequests : Integer = 0;
+    var KeyMoveVector : Real3 = local Real3(0.0,0.0,0.0);
+    
+    sends CoreKeyDown : CoreKeyboardEvent;
+    sends CoreKeyUp : CoreKeyboardEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(initializer : CogInitializer)
+    {
+        Zero.Connect(Zero.Keyboard, Events.KeyDown, this.OnKeyDown);
+        Zero.Connect(Zero.Keyboard, Events.KeyUp, this.OnKeyUp);
+        
+        // Listen for all of the keyboard/mouse events
+        Zero.Connect(this.Space, Events.RightMouseDown, this.OnRightMouseDown);
+        Zero.Connect(this.Space, Events.RightMouseUp, this.OnRightMouseUp);
+        Zero.Connect(this.Space, Events.MouseUpdate, this.OnMouseUpdate);
+        Zero.Connect(this.Space, Events.MiddleMouseDown, this.OnMiddleMouseDown);
+    }
+    
+    function OnRightMouseDown(e : MouseEvent)
+    {
+        ++this.MoveRequests;
+    }
+    
+    function OnRightMouseUp(e : MouseEvent)
+    {
+        --this.MoveRequests;
+        if(this.MoveRequests < 0)
+        {
+            this.MoveRequests = 0;
+        }
+    }
+    
+    function OnMiddleMouseDown(e : ViewportMouseEvent)
+    {
+        var dummyEvent = new ZilchEvent();
+        this.Space.DispatchEvent("CloseUpgradeWindows", dummyEvent);
+        delete dummyEvent;
+    }
+    
+    function OnKeyDown(e : KeyboardEvent)
+    {
+        if(e.Key == Keys.A)
+        {
+            this.KeyMoveVector.X += -1.0;
+            ++this.MoveRequests;
+        }
+        else if(e.Key == Keys.D)
+        {
+            this.KeyMoveVector.X += 1.0;
+            ++this.MoveRequests;
+        }
+        else if(e.Key == Keys.W)
+        {
+            this.KeyMoveVector.Y += 1.0;
+            ++this.MoveRequests;
+        }
+        else if(e.Key == Keys.S)
+        {
+            this.KeyMoveVector.Y += -1.0;
+            ++this.MoveRequests;
+        }
+        
+        this.DispatchKeyEvent(key : e.Key, eventName : Events.CoreKeyDown);
+    }
+    
+    function OnKeyUp(e : KeyboardEvent)
+    {
+        if(e.Key == Keys.A)
+        {
+            this.KeyMoveVector.X -= -1.0;
+            --this.MoveRequests;
+        }
+        else if(e.Key == Keys.D)
+        {
+            this.KeyMoveVector.X -= 1.0;
+            --this.MoveRequests;
+        }
+        else if(e.Key == Keys.W)
+        {
+            this.KeyMoveVector.Y -= 1.0;
+            --this.MoveRequests;
+        }
+        else if(e.Key == Keys.S)
+        {
+            this.KeyMoveVector.Y -= -1.0;
+            --this.MoveRequests;
+        }
+        
+        if(this.MoveRequests < 0)
+        {
+            this.MoveRequests = 0;
+        }
+        
+        this.DispatchKeyEvent(key : e.Key, eventName : Events.CoreKeyUp);
+    }
+    
+    function DispatchKeyEvent(key : Integer, eventName : String)
+    {
+        var e = new CoreKeyboardEvent();
+        e.Key = key;
+        e.CoreCog = this.Owner;
+        this.Owner.DispatchEvent(eventName,e as Event);
+        delete e;
+    }
+    
+    function OnMouseUpdate(e : ViewportMouseEvent)
+    {
+        // Convert the mouse position to a target position on the 0 z-plane
+        var targetPos = e.ToWorldZPlane(0.0);
+        
+        // Always tell the core to aim at the mouse
+        this.Core.SetAimTarget(aimTarget : targetPos);
+        
+        // Only do movement logic if a key or the mouse was down
+        if(this.MoveRequests <= 0)
+        {
+            return;
+        }
+        
+        // Get our current position
+        var currPos = this.Owner.Transform.WorldTranslation;
+        var moveTarget = currPos;
+        
+        // Set our target position to be an offset from our current position if any
+        // key was pressed (hence our move vector was non-zero)
+        if(Math.Length(this.KeyMoveVector) != 0.0)
+        {
+            moveTarget += this.KeyMoveVector;
+        }
+        // Otherwise set our move target to be where the mouse is
+        else
+        {
+            moveTarget = e.ToWorldZPlane(0.0);
+        }
+        
+        this.Core.SetMoveTarget(moveTarget);
+    }
+}

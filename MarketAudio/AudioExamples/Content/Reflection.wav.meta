@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Reflection"
+		var ResourceId = 0x5940db66821653ae
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 68.352562
+		var AudioChannels = 2
+		var SampleRate = 44100
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

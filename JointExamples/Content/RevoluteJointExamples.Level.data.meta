@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "RevoluteJointExamples"
+		var ResourceId = 0x58d91b2c9de98e90
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

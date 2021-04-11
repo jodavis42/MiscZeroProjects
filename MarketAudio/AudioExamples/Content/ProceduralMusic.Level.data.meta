@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "ProceduralMusic"
+		var ResourceId = 0x58a7f4b73d3780bc
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

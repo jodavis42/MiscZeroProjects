@@ -1,0 +1,47 @@
+GameSession = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Archetyped = 
+	{
+		string Name = "519e634c69a66bf3:Game",
+	},
+	Viewports = 
+	{
+	},
+	CameraViewports = 
+	{
+	},
+	NetPeer = 
+	{
+	},
+	Konsole = 
+	{
+		bool ToggleCtrl = false,
+		bool ToggleShift = false,
+		string ToggleKey = "F1",
+		bool Visible = false,
+	},
+	WebRequester = 
+	{
+		string Url = "http://www.w3.org/",
+	},
+	KonsolePublicIpDiscovery = 
+	{
+		bool ImmediateDiscovery = true,
+		string DiscoveredIp = "",
+	},
+	GameStartup = 
+	{
+		string Level = "519e74c9087e821d:Environment",
+		string Player = "519e623f0e5efbef:Player",
+	},
+	RunUnitTests = 
+	{
+	},
+	KonsoleNetSetup = 
+	{
+	},
+},

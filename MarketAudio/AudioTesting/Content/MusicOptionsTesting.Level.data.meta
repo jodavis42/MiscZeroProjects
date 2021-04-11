@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "MusicOptionsTesting"
+		var ResourceId = 0x58b4d6a36ce6660a
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

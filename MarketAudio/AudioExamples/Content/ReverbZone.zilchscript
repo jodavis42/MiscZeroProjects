@@ -1,0 +1,87 @@
+//**********************************************************************************
+//
+// Applies a reverb effect inside a zone defined by the collision box of the object.
+// The reverb gets stronger as the SoundListener goes further into the object.
+// Only handles a single SoundListener.
+//
+//**********************************************************************************
+class ReverbZone : ZilchComponent
+{
+  // Requires a Transform component
+  [Dependency] var Transform : Transform;
+  
+  // The maximum value that the reverb wet percent will reach
+  [Property] var MaxWetPercent : Real = 80.0;
+  
+  // The reverb effect node to use
+  var Reverb : ReverbNode = Audio.ReverbNode();
+  // Keeps track of whether the reverb node has been added to the SoundListener
+  var AddedToListener : Boolean = false;
+  // Stores the SoundListener's Transform component
+  var ListenerTransform : Transform;
+  // Stores the position of the SoundListener on the previous frame
+  var LastListenerPosition : Real3;
+  // Keeps track of whether the reverb is currently turned on or not
+  var ReverbOn : Boolean = false;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the LogicUpdate event
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    // Connect to collision started events
+    Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollisionStart);
+    // Connect to collision ended events
+    Zero.Connect(this.Owner, Events.CollisionEnded, this.OnCollisionEnd);
+    
+    // Turn the reverb off
+    this.Reverb.WetPercent = 0;
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // Check if reverb is on and the SoundListener has moved
+    if (this.ReverbOn == true && this.ListenerTransform.WorldTranslation != this.LastListenerPosition)
+    {
+      // Get the distance between the SoundListener and this object
+      var distance = this.Transform.WorldTranslation - this.ListenerTransform.WorldTranslation;
+      // Set the ReverbNode's WetPercent based on the distance along the X axis
+      if (distance.X > 0)
+        this.Reverb.WetPercent = this.MaxWetPercent * (1.0 - (distance.X / this.Transform.Scale.X * 2));
+      // Store the SoundListener position
+      this.LastListenerPosition = this.ListenerTransform.WorldTranslation;
+    }
+  }
+    
+  function OnCollisionStart(event : CollisionEvent)
+  {
+    // Check if the other object has a SoundListener component
+    if (event.OtherObject.SoundListener != null)
+    {
+      // Check if we haven't added the ReverbNode to the SoundListener yet
+      if (this.AddedToListener == false)
+      {
+        // Insert the ReverbNode after the SoundListener's SoundNode
+        event.OtherObject.SoundListener.SoundNode.InsertNodeAfter(this.Reverb);
+        // Store the SoundListener object's Transform component
+        this.ListenerTransform = event.OtherObject.Transform;
+        // Mark that we've now added the ReverbNode
+        this.AddedToListener = true;
+      }
+      
+      // Store the SoundListener's position
+      this.LastListenerPosition = this.ListenerTransform.WorldTranslation;
+      // Turn reverb on
+      this.ReverbOn = true;
+    }
+  }
+  
+  function OnCollisionEnd(event : CollisionEvent)
+  {
+    // Check if the other object has a SoundListener component
+    if (event.OtherObject.SoundListener != null)
+    {
+      // Turn reverb off
+      this.ReverbOn = false;
+    }
+  }
+}

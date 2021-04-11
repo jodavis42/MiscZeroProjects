@@ -1,0 +1,433 @@
+[Version:1]
+Level 
+{
+	Cog 
+	{
+		var Name = "LevelSettings"
+		var LinkId = 1
+		GravityEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = false
+			var LocalSpaceDirection = true
+			var Strength = 10
+			var Direction = Real3{0, -1, 0}
+		}
+		DragEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = false
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.100000001
+			var LinearDrag = 0
+			var AngularDrag = 0
+		}
+		GridDraw 
+		{
+			var Active = false
+			var HalfCellOffset = false
+			var CellSize = 1
+			var Axis = AxisDirection.X
+			var Lines = 100
+			var DrawAxisOrigins = true
+			var AlwaysDrawInEditor = true
+			var DrawInGame = false
+			var GridColor = Real4{0.5, 0.5, 0.5, 0.400000006}
+			var GridHighlight = Real4{0, 0, 0, 0.400000006}
+			var HighlightInterval = 10
+			var FollowEditorCamera = false
+		}
+	}
+	Cog 
+	{
+		var Name = "EditorCamera"
+		var LinkId = 2
+		Transform 
+		{
+			var Translation = Real3{0, 0, 50}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0, -1.09278471e-08, 0, 1}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.5
+			var FarPlane = 500
+			var PerspectiveMode = PerspectiveMode.Orthographic
+			var FieldOfView = 45
+			var Size = 20
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.ZPlane
+			var Previous3DMode = ControlMode.Orbit
+			var LookDistance = 50
+			var VerticalAngle = 0
+			var HorizontalAngle = 0
+			var LookTarget = Real3{0, 0, 0}
+			var MoveSensitivity = 1
+		}
+	}
+	Cog 
+	{
+		var Name = "Camera"
+		var LinkId = 4
+		Transform 
+		{
+			var Translation = Real3{0, 0, 50}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = false
+			var RenderInGame = true
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 4
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1920, 1080}
+			var ViewportScaling = ViewportScaling.Letterbox
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+		Camera 
+		{
+			var NearPlane = 0.5
+			var FarPlane = 100
+			var PerspectiveMode = PerspectiveMode.Orthographic
+			var FieldOfView = 45
+			var Size = 20
+		}
+		SoundListener 
+		{
+			var Active = true
+		}
+	}
+	Cog 
+	{
+		var Name = "MusicObject"
+		var LinkId = 5
+		Transform 
+		{
+			var Translation = Real3{0, 0, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		RandomContext 
+		{
+			var RandomSeed = true
+			var Seed = 2097460006
+		}
+		NoteEffects 
+		{
+			var Volume1 = 0.75
+			var Volume2 = 0.25
+		}
+		SpawnCircle 
+		{
+		}
+		Hierarchy 
+		{
+		}
+	}
+	Cog [InheritId:"591f7cf75858f30b:Circle"]
+	{
+		Transform 
+		{
+			var Translation = Real3{0, 0, 0}
+			var Rotation = Quaternion{0, 0, 0, 1}
+			var Scale = Real3{1, 1, 1}
+		}
+	}
+	Cog 
+	{
+		var Name = "Renderer"
+		var LinkId = 3
+		DeferredRenderer 
+		{
+			var GeometryDebug = GeometryValue.None
+			var EditorDebugDraw = true
+			var GameDebugDraw = true
+			var RenderDiffuse = true
+			var RenderSpecular = true
+			var RenderSkybox = true
+			var Skybox = "5826e695131c0f51:Black"
+			var ClearColor = Real4{0.220000029, 0.220000029, 0.220000029, 1}
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+		}
+	}
+	Cog 
+	{
+		var Name = "SpriteText"
+		var LinkId = 6
+		Transform 
+		{
+			var Translation = Real3{0, 6.29399538, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		SpriteText 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{1, 1, 1, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var Text = "Click to place circles, which will be destroyed and play musical notes when they collide with each other"
+			var Font = "57343753bb4eaaec:NotoSans-Regular"
+			var FontSize = 48
+			var PixelsPerUnit = 128
+			var TextAlign = TextAlign.Center
+		}
+	}
+	Cog 
+	{
+		var Name = "BackgroundMusic"
+		var LinkId = 7
+		Transform 
+		{
+			var Translation = Real3{0, 0, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		RandomContext 
+		{
+			var RandomSeed = true
+			var Seed = 1630429990
+		}
+		Synthesizer 
+		{
+		}
+		Background 
+		{
+			var Volume = 0.25
+			var MinimumWait = 4.5
+			var MaximumWait = 5.5
+		}
+		Hierarchy 
+		{
+			Cog 
+			{
+				var Name = "Harmonic"
+				var LinkId = 8
+				Transform 
+				{
+					var Translation = Real3{0, 0, 0}
+					var Scale = Real3{1, 1, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
+				}
+				SynthHarmonic 
+				{
+					var FreqMultiplier = 1
+					var Volume = 0.5
+					var WaveType = SynthWaveType.TriangleWave
+					var AttackTime = 2
+					var DecayTime = 4
+					var SustainTime = 0.00999999978
+					var SustainLevel = 0.5
+					var ReleaseTime = 6
+				}
+			}
+			Cog 
+			{
+				var Name = "Harmonic"
+				var LinkId = 9
+				Transform 
+				{
+					var Translation = Real3{0, 0, 0}
+					var Scale = Real3{1, 1, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
+				}
+				SynthHarmonic 
+				{
+					var FreqMultiplier = 2
+					var Volume = 0.25
+					var WaveType = SynthWaveType.TriangleWave
+					var AttackTime = 0.5
+					var DecayTime = 0
+					var SustainTime = 0.00999999978
+					var SustainLevel = 1
+					var ReleaseTime = 8
+				}
+			}
+			Cog 
+			{
+				var Name = "Harmonic"
+				var LinkId = 10
+				Transform 
+				{
+					var Translation = Real3{0, 0, 0}
+					var Scale = Real3{1, 1, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
+				}
+				SynthHarmonic 
+				{
+					var FreqMultiplier = 3
+					var Volume = 0.200000003
+					var WaveType = SynthWaveType.TriangleWave
+					var AttackTime = 1
+					var DecayTime = 0.5
+					var SustainTime = 0.00999999978
+					var SustainLevel = 0.800000012
+					var ReleaseTime = 8
+				}
+			}
+		}
+	}
+	Cog 
+	{
+		var Name = "MelodyMusic"
+		var LinkId = 11
+		Transform 
+		{
+			var Translation = Real3{0, 0, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		RandomContext 
+		{
+			var RandomSeed = true
+			var Seed = 1688924463
+		}
+		Synthesizer 
+		{
+		}
+		Melody 
+		{
+			var MinimumVolume = 0.00999999978
+			var MaximumVolume = 0.100000001
+			var MinimumWait = 0.100000001
+			var MaximumWait = 2
+		}
+		Hierarchy 
+		{
+			Cog 
+			{
+				var Name = "Harmonic"
+				var LinkId = 12
+				Transform 
+				{
+					var Translation = Real3{0, 0, 0}
+					var Scale = Real3{1, 1, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
+				}
+				SynthHarmonic 
+				{
+					var FreqMultiplier = 1
+					var Volume = 0.5
+					var WaveType = SynthWaveType.TriangleWave
+					var AttackTime = 0.0900000036
+					var DecayTime = 0.5
+					var SustainTime = 0.0700000003
+					var SustainLevel = 0.5
+					var ReleaseTime = 1
+				}
+			}
+			Cog 
+			{
+				var Name = "Harmonic"
+				var LinkId = 13
+				Transform 
+				{
+					var Translation = Real3{0, 0, 0}
+					var Scale = Real3{1, 1, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
+				}
+				SynthHarmonic 
+				{
+					var FreqMultiplier = 3
+					var Volume = 0.25
+					var WaveType = SynthWaveType.TriangleWave
+					var AttackTime = 0.0199999996
+					var DecayTime = 0
+					var SustainTime = 0.0199999996
+					var SustainLevel = 1
+					var ReleaseTime = 0.5
+				}
+			}
+		}
+	}
+}

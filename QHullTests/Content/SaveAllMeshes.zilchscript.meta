@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "SaveAllMeshes"
+		var ResourceId = 0x59808f66d4c75d47
+	}
+}

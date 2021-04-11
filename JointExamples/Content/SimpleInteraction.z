@@ -1,0 +1,63 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Event sent to try and interact with an object
+class InteractEvent : ZilchEvent
+{
+  // If someone was interactable, then they should mark this as being handled
+  var Handled : Boolean = false;
+}
+
+// Toggles a JointMotor's Active property on interaction
+class JointMotorActiveInteraction : ZilchComponent
+{
+  [Property] var MotorCogPath : CogPath;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.Interact, this.OnInteract);
+  }
+
+  function OnInteract(event : InteractEvent)
+  {
+    var motorCog = this.MotorCogPath.Cog;
+    if(motorCog == null)
+      return;
+    
+    var jointMotor = motorCog.JointMotor;
+    if(jointMotor == null)
+      return;
+      
+    jointMotor.Active = !jointMotor.Active;
+    event.Handled = true;
+  }
+}
+
+// Toggles a JointMotor's Reverse property on interaction
+class JointMotorReverseInteraction : ZilchComponent
+{
+  [Property] var MotorCogPath : CogPath;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.Interact, this.OnInteract);
+  }
+
+  function OnInteract(event : InteractEvent)
+  {
+    var motorCog = this.MotorCogPath.Cog;
+    if(motorCog == null)
+      return;
+      
+    var jointMotor = motorCog.JointMotor;
+    if(jointMotor == null)
+      return;
+      
+    jointMotor.Reverse = !jointMotor.Reverse;
+    event.Handled = true;
+  }
+}

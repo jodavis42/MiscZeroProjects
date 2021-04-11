@@ -1,0 +1,52 @@
+class Print
+{
+  [Static] var TimeSpace : TimeSpace;
+  
+  var F : Integer
+  {
+    get
+    {
+      if (Print.TimeSpace == null)
+        return -1;
+      
+      return Print.TimeSpace.Frame;
+    }
+  }
+  
+  constructor() { this.P(); }
+  constructor(a0 : any) { this.P(a0); }
+  constructor(a0 : any, a1 : any) { this.P(a0, a1); }
+  constructor(a0 : any, a1 : any, a2 : any) { this.P(a0, a1, a2); }
+  constructor(a0 : any, a1 : any, a2 : any, a3 : any) { this.P(a0, a1, a2, a3); }
+  constructor(a0 : any, a1 : any, a2 : any, a3 : any, a4 : any) { this.P(a0, a1, a2, a3, a4); }
+  
+  function P()
+  {
+    Console.WriteLine(String.FormatC("%8d | ", this.F));
+  }
+  
+  function P(a0 : any)
+  {
+    Console.WriteLine(String.FormatC("%8d | `a0`", this.F));
+  }
+  
+  function P(a0 : any, a1 : any)
+  {
+    Console.WriteLine(String.FormatC("%8d | `a0`, `a1`", this.F));
+  }
+  
+  function P(a0 : any, a1 : any, a2 : any)
+  {
+    Console.WriteLine(String.FormatC("%8d | `a0`, `a1`, `a2`", this.F));
+  }
+  
+  function P(a0 : any, a1 : any, a2 : any, a3 : any)
+  {
+    Console.WriteLine(String.FormatC("%8d | `a0`, `a1`, `a2`, `a3`", this.F));
+  }
+  
+  function P(a0 : any, a1 : any, a2 : any, a3 : any, a4 : any)
+  {
+    Console.WriteLine(String.FormatC("%8d | `a0`, `a1`, `a2`, `a3`, `a4`", this.F));
+  }
+}

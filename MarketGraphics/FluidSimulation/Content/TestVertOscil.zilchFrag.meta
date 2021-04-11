@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchFragmentBuilder 
+	{
+		var Name = "TestVertOscil"
+		var ResourceId = 0x588d901f9f201ed1
+	}
+}

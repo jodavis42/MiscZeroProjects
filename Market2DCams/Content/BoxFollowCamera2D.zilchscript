@@ -1,0 +1,71 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Arend Danielek
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// The camera logic component implements a simple 2D follow camera that uses a box constraint. The
+// box constraint is centered on the camera object's position. When the target object reaches the edge
+// of the box constraint the camera will interpolate in order to keep the target object within the
+// constraints of the box.
+class BoxFollowCamera2D : ZilchComponent
+{
+  [Dependency] var Transform : Transform;
+  [Dependency] var Camera : Camera;
+  
+  // The object to be tracked
+  [Property] var TargetCogPath : CogPath = CogPath();
+  
+  // Scale of the bounding box
+  [Property] var BoxScale : Real2 = Real2(10.0,10.0);
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Confirm the target exists
+    var targetCog = this.TargetCogPath.Cog;
+    if(targetCog == null)
+      throw new Exception("Camera has no target.");
+    
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    var targetCog = this.TargetCogPath.Cog;
+    if(targetCog == null)
+      return;
+      
+    var targetPos = targetCog.Transform.WorldTranslation;
+    var cameraPos = this.Transform.WorldTranslation;
+    
+    var movement = Real3();
+    
+    var halfExtents = this.BoxScale / 2.0;
+    var boxMin = cameraPos.XY - halfExtents;
+    var boxMax = cameraPos.XY + halfExtents;
+    
+    // Target is past left box edge
+    if(targetPos.X < boxMin.X)
+      // Calculate the amount the target has gone over the left edge
+      movement.X = targetPos.X - boxMin.X;
+    // Target is past right box edge
+    else if(targetPos.X > boxMax.X)
+      // Calculate the amount the target has gone over the right edge
+      movement.X = targetPos.X - boxMax.X;
+    
+    
+    // Target is past bottom box edge
+    if(targetPos.Y < boxMin.Y)
+      // Calculate the amount the target has gone over the bottom edge
+      movement.Y = targetPos.Y - boxMin.Y;
+    // Target is past top box edge
+    else if(targetPos.Y > boxMax.Y)
+      // Calculate the amount the target has gone over the top edge
+      movement.Y = targetPos.Y - boxMax.Y;
+    
+    // Move the camera
+    cameraPos += movement;
+    this.Transform.WorldTranslation = cameraPos;
+  }
+}

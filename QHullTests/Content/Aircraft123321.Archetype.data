@@ -1,0 +1,159 @@
+[Version:1]
+Cog 
+{
+	var Name = "Aircraft123321"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59809261d086c006]
+		{
+			var Name = "pCube1"
+			Transform 
+			{
+				var Translation = Real3{0.059654206, 0, 0.00787868444}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59809261d086c00b]
+				{
+					var Name = "pCube1GeneratedMeshNode0"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "59809265d042facb:Aircraft123321_pCube1GeneratedMeshNode0"
+					}
+				}
+				Cog [Id:0x59809261d086c00e]
+				{
+					var Name = "pCube1GeneratedMeshNode1"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "59809265d042faf7:Aircraft123321_pCube1GeneratedMeshNode1"
+					}
+				}
+				Cog [Id:0x59809261d086c010]
+				{
+					var Name = "pCube1GeneratedMeshNode2"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "59809265d042fb01:Aircraft123321_pCube1GeneratedMeshNode2"
+					}
+				}
+				Cog [Id:0x59809261d086c012]
+				{
+					var Name = "pCube1GeneratedMeshNode3"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "59809265d042fb0e:Aircraft123321_pCube1GeneratedMeshNode3"
+					}
+				}
+				Cog [Id:0x59809261d086c014]
+				{
+					var Name = "pCube1GeneratedMeshNode4"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "59809265d042fb1a:Aircraft123321_pCube1GeneratedMeshNode4"
+					}
+				}
+				Cog [Id:0x59809261d086c015]
+				{
+					var Name = "pCube1GeneratedMeshNode5"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Model 
+					{
+						var Visible = true
+						var ViewCulling = true
+						var VisibilityEvents = true
+						var OverrideBoundingBox = false
+						var LocalAabbCenter = Real3{0, 0, 0}
+						var LocalAabbHalfExtents = Real3{1, 1, 1}
+						var GroupSortValue = 0
+						var Material = "583afb5e7bf75e18:ZeroMaterial"
+						var Mesh = "59809265d042fb2a:Aircraft123321_pCube1GeneratedMeshNode5"
+					}
+				}
+			}
+		}
+	}
+}

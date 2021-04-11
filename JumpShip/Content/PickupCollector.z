@@ -1,0 +1,89 @@
+class PickupEvent : ZilchEvent
+{
+    var Pickup : Pickup = null;
+    
+    constructor() : base()
+    {
+    }
+}
+
+// Manages the current resources of an object (the player) and updates a ui space to reflect this.
+class PickupCollector : ZilchComponent
+{
+    [Property]
+    var CreateUi : Boolean = true;
+    
+    // The level to load with our Ui
+    [Property]
+    var UiLevel : Level = Level.UiLevel;
+    
+    // The current amount of resources available to the core.
+    var Resources : HashMap[String, Real] = new HashMap[String, Real]();
+    
+    // The space where we display the current resource amounts to the user
+    var DisplaySpace : Space = null;
+    
+    sends CollectPickup : PickupEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(initializer : CogInitializer)
+    {
+        if(this.CreateUi == true)
+        {
+            // Create the display space and load the ui level
+            var displayCog = this.GameSession.CreateNamedSpace("UiSpace", Archetype.DefaultSpace);
+            this.DisplaySpace = displayCog.Space;
+            this.DisplaySpace.LoadLevel(this.UiLevel);
+        }
+        
+        Zero.Connect(this.Owner, Events.Death, this.OnDeath);
+    }
+    
+    function OnDeath(e : ZilchEvent)
+    {
+        // Currently this owns our ui space.
+        // If we die then the ui space needs to be destroyed too.
+        if(this.DisplaySpace != null)
+        {
+            this.DisplaySpace.Destroy();
+        }
+    }
+    
+    function CollectPickup(pickup : Pickup)
+    {
+        // Increase how much we have of the given resource
+        var value = pickup.Value + this.Resources.Get(pickup.ResourceType, 0.0);
+        this.Resources.AddOrOverwrite(pickup.ResourceType, value);
+        
+        if(this.DisplaySpace != null)
+        {
+            // And update the display text to reflect this
+            var displayText = this.DisplaySpace.FindObjectByName("`pickup.ResourceType`Text");
+            displayText.SpriteText.Text = "`value as Integer`";
+        }
+        
+        var toSend = new PickupEvent();
+        toSend.Pickup = pickup;
+        this.Owner.DispatchEvent(Events.CollectPickup, toSend);
+    }
+    
+    function UpdateUi()
+    {
+        if(this.DisplaySpace == null)
+        {
+            return;
+        }
+        
+        // For all resource types, update the text with the current amount of that resource
+        foreach(var resourceNames in this.Resources.Keys)
+        {
+            var value = this.Resources.Get(resourceNames);
+            
+            var displayText = this.DisplaySpace.FindObjectByName("`resourceNames`Text");
+            displayText.SpriteText.Text = "`value as Integer`";
+        }
+    }
+}

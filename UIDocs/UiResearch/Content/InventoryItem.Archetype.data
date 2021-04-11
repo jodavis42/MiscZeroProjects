@@ -1,0 +1,20 @@
+[Version:1]
+Cog 
+{
+	var Name = "InventoryItem"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	InventoryItemInterface 
+	{
+		var Item = InventoryItem
+		{
+			var Name = "[ Item Name ]"
+			var Quantity = 1
+			var Type = ItemType.Consumable
+		}
+	}
+}

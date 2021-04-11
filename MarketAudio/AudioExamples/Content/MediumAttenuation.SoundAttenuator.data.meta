@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "MediumAttenuation"
+		var ResourceId = 0x591ae38c4af1a45f
+		var LoaderType = "SoundAttenuator"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

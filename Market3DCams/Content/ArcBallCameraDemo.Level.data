@@ -1,0 +1,447 @@
+[Version:1]
+Level 
+{
+	Cog [ContextId:1]
+	{
+		var Name = "LevelSettings"
+		GravityEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = true
+			var LocalSpaceDirection = true
+			var Strength = 10
+			var Direction = Real3{0, -1, 0}
+		}
+		DragEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = true
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.100000001
+			var LinearDrag = 0
+			var AngularDrag = 0
+		}
+		GridDraw 
+		{
+			var Active = true
+			var HalfCellOffset = false
+			var CellSize = 1
+			var Axis = AxisDirection.Y
+			var Lines = 100
+			var DrawAxisOrigins = true
+			var AlwaysDrawInEditor = true
+			var DrawInGame = false
+			var GridColor = Real4{0.5, 0.5, 0.5, 0.400000006}
+			var GridHighlight = Real4{0, 0, 0, 0.400000006}
+			var HighlightInterval = 10
+			var FollowEditorCamera = false
+		}
+		SpaceCreator 
+		{
+			var SpaceArchetype = "576f215c0825de61:Space"
+			var NewSpaceName = "UiSpace"
+			var LevelToLoad = "581b3e0cab1f3e34:ArcBallCameraInstructions"
+		}
+	}
+	Cog [ContextId:2]
+	{
+		var Name = "EditorCamera"
+		Transform 
+		{
+			var Translation = Real3{-34.3921967, 15.6352081, -7.69517803}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.122774154, -0.762214184, -0.151613876, 0.617227077}
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderOrder = 0
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var Cog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var Cog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var ResolutionOrAspect = Integer2{1920, 1080}
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 200
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 60
+			var Size = 20
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.Orbit
+			var Previous3DMode = ControlMode.Orbit
+			var LookDistance = 40.5519485
+			var VerticalAngle = 0.392699182
+			var HorizontalAngle = 8.06342411
+			var LookTarget = Real3{2.25419188, 0.116645642, 0.0943655074}
+			var MoveSensitivity = 1
+		}
+	}
+	Cog [ContextId:4]
+	{
+		var Name = "GameCamera"
+		Transform 
+		{
+			var Translation = Real3{0, 50, 50}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.382683456, 0, 0, 0.923879504}
+		}
+		Orientation 
+		{
+			var GlobalUp = Real3{0, 1, 0}
+			var LocalOrientationBasis = Quaternion{0, 0, 0, 1}
+			var DefaultBases = OrientationBases.ForwardNegativeZUpY
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = true
+			var RenderOrder = -1
+			var CameraPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var Cog = 4
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var RendererPath = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var Cog = 4
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var ResolutionOrAspect = Integer2{1920, 1080}
+			var RenderToViewport = false
+			var ForwardViewportEvents = false
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+		}
+		Camera 
+		{
+			var NearPlane = 0.100000001
+			var FarPlane = 100
+			var PerspectiveMode = PerspectiveMode.Orthographic
+			var FieldOfView = 45
+			var Size = 64
+		}
+		Hierarchy 
+		{
+		}
+	}
+	Cog [ContextId:3]
+	{
+		var Name = "Renderer"
+		DeferredRenderer 
+		{
+			var GeometryDebug = GeometryValue.None
+			var EditorDebugDraw = true
+			var GameDebugDraw = true
+			var RenderDiffuse = true
+			var RenderSpecular = true
+			var RenderSkybox = true
+			var Skybox = "5822dec85e380cf1:SimpleSkybox"
+			var ClearColor = Real4{0, 0, 0, 1}
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+		}
+		Ssao 
+		{
+			var Active = true
+			var Radius = 1
+			var Intensity = 2.20000005
+			var BlurDepthThreshold = 0.0500000007
+			var DebugBuffer = false
+		}
+		Bloom 
+		{
+			var Active = true
+			var Intensity = 0.100000001
+			var Threshold = 1
+			var Bloom1 = true
+			var Bloom2 = true
+			var Bloom3 = true
+			var Bloom4 = true
+			var Bloom5 = true
+			var DebugBuffer = false
+		}
+	}
+	Cog [ContextId:5]
+	{
+		var Name = "Cube"
+		Transform 
+		{
+			var Translation = Real3{0, 0, 0}
+			var Scale = Real3{50, 1, 50}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b345ae:Cube"
+		}
+		BoxCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var HalfSize = Real3{0.5, 0.5, 0.5}
+		}
+	}
+	Cog [ContextId:6]
+	{
+		var Name = "Cylinder"
+		Transform 
+		{
+			var Translation = Real3{0, 1.03808498, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		Model 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var OverrideBoundingBox = false
+			var LocalAabbCenter = Real3{0, 0, 0}
+			var LocalAabbHalfExtents = Real3{1, 1, 1}
+			var GroupSortValue = 0
+			var Material = "583afb5e7bf75e18:ZeroMaterial"
+			var Mesh = "4de0354322b3572e:Cylinder"
+		}
+		RigidBody 
+		{
+			var Velocity = Real3{0, 0, 0}
+			var AngularVelocity = Real3{0, 0, 0}
+			var DynamicState = RigidBodyDynamicState.Dynamic
+			var AllowSleep = true
+			var Asleep = false
+			var RotationLocked = false
+			var Mode2D = Mode2DStates.InheritFromSpace
+		}
+		CylinderCollider 
+		{
+			var Ghost = false
+			var SendsEvents = true
+			var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+			var CollisionGroup = "4e740859314e5515:DefaultGroup"
+			var Offset = Real3{0, 0, 0}
+			var Radius = 0.5
+			var Height = 1
+			var Direction = AxisDirection.Y
+		}
+		SweptController 
+		{
+			var WorldUp = Real3{0, 1, 0}
+			var LockZAxis = false
+			var ForwardEvents = false
+			var Gravity = 10
+			var JumpSpeed = 5
+			var JumpCancelFactor = 0.5
+			var MaxMoveSpeed = 10
+			var MaxFallSpeed = 50
+			var GroundAcceleration = 50
+			var AirAcceleration = 10
+			var GroundDeceleration = 50
+			var AirDeceleration = 10
+			var MaxGroundSlope = 45
+			var MaxCeilingSlope = 45
+			var GroundSnapDistance = 0.100000001
+			var ControllerVelocity = Real3{0, 0, 0}
+			var Grounded = true
+			var Jumping = false
+			var GroundTraction = 1
+			var AirTraction = 1
+		}
+		Orientation 
+		{
+			var GlobalUp = Real3{0, 1, 0}
+			var LocalOrientationBasis = Quaternion{0, 1, 0, -0}
+			var DefaultBases = OrientationBases.ForwardZUpY
+		}
+		SimpleCharacterController 
+		{
+			var OrientSpeed = 80
+			var ForwardKey = Keys.W
+			var BackwardKey = Keys.S
+			var LeftKey = Keys.A
+			var RightKey = Keys.D
+			var JumpKey = Keys.Space
+		}
+		Hierarchy 
+		{
+			Cog [ContextId:7]
+			{
+				var Name = "Transform"
+				Transform 
+				{
+					var Translation = Real3{0, 0, 0}
+					var Scale = Real3{1, 1, 1}
+					var Rotation = Quaternion{0, 0, 0, 1}
+				}
+				Hierarchy 
+				{
+					Cog [ContextId:8]
+					{
+						var Name = "GameCamera"
+						Transform 
+						{
+							var Translation = Real3{0, 1.38189435, -3.56901026}
+							var Scale = Real3{1, 1, 1}
+							var Rotation = Quaternion{-6.14081364e-09, 0.990082741, 0.140485436, -4.32778897e-08}
+						}
+						CameraViewport 
+						{
+							var RenderInEditor = false
+							var RenderInGame = true
+							var RenderOrder = 0
+							var CameraPath = CogPath
+							{
+								var Path = "."
+								var ErrorOnResolveToNull = false
+								var ErrorOnPathCantCompute = false
+								var ErrorOnDirectLinkFail = false
+								var UpdateCogOnPathChange = true
+								var UpdatePathOnCogChange = true
+								var UpdateCogOnInitialize = true
+								var ResolvedNullErrorOccurred = false
+								var Cog = 8
+								var PathPreference0 = CogPathPreference.CogRelative
+								var PathPreference1 = CogPathPreference.SpaceRelative
+								var PathPreference2 = CogPathPreference.Absolute
+							}
+							var RendererPath = CogPath
+							{
+								var Path = ":/Renderer"
+								var ErrorOnResolveToNull = false
+								var ErrorOnPathCantCompute = false
+								var ErrorOnDirectLinkFail = false
+								var UpdateCogOnPathChange = true
+								var UpdatePathOnCogChange = true
+								var UpdateCogOnInitialize = true
+								var ResolvedNullErrorOccurred = false
+								var Cog = 3
+								var PathPreference0 = CogPathPreference.CogRelative
+								var PathPreference1 = CogPathPreference.SpaceRelative
+								var PathPreference2 = CogPathPreference.Absolute
+							}
+							var ResolutionOrAspect = Integer2{1920, 1080}
+							var RenderToViewport = true
+							var ForwardViewportEvents = false
+							var ViewportScaling = ViewportScaling.Letterbox
+							var MarginColor = Real4{0, 0, 0, 1}
+							var NormalizedSize = Real2{1, 1}
+							var NormalizedOffset = Real2{0, 0}
+						}
+						Camera 
+						{
+							var NearPlane = 0.100000001
+							var FarPlane = 200
+							var PerspectiveMode = PerspectiveMode.Perspective
+							var FieldOfView = 60
+							var Size = 20
+						}
+						SoundListener 
+						{
+							var Active = true
+						}
+						ArcBallCamera 
+						{
+							var RotationSpeed = Real3{30, 30, 30}
+							var MaxVerticalAngle = 60
+							var MinVerticalAngle = -30
+							var FocusObjPath = CogPath
+							{
+								var Path = ".."
+								var ErrorOnResolveToNull = false
+								var ErrorOnPathCantCompute = false
+								var ErrorOnDirectLinkFail = false
+								var UpdateCogOnPathChange = true
+								var UpdatePathOnCogChange = true
+								var UpdateCogOnInitialize = true
+								var ResolvedNullErrorOccurred = false
+								var Cog = 7
+								var PathPreference0 = CogPathPreference.CogRelative
+								var PathPreference1 = CogPathPreference.SpaceRelative
+								var PathPreference2 = CogPathPreference.Absolute
+							}
+							var MinPitch = -15
+							var MaxPitch = 45
+							var ZoomSpeed = 5
+							var MinZoom = 3
+							var MaxZoom = 10
+						}
+					}
+				}
+			}
+		}
+	}
+}

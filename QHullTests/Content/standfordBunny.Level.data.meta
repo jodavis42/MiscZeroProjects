@@ -1,0 +1,18 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "standfordBunny"
+		var ResourceId = 0x598917670c406827
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

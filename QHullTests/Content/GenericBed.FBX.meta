@@ -1,0 +1,54 @@
+[Version:1]
+GeometryContent 
+{
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x598142736b98f357
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 1
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "GenericBed_GenericMattress"
+				var ResourceId = 0x59814273686307ad
+			}
+			Object
+			{
+				var Name = "GenericBed_GenericBedFrame"
+				var ResourceId = 0x59814273686307fb
+			}
+			Object
+			{
+				var Name = "GenericBed_GenericBlanket"
+				var ResourceId = 0x5981427368630816
+			}
+			Object
+			{
+				var Name = "GenericBed_GenericPillow"
+				var ResourceId = 0x5981427368630832
+			}
+			Object
+			{
+				var Name = "GenericBed_GenericPillow0"
+				var ResourceId = 0x598142736863084e
+			}
+		}
+	}
+}

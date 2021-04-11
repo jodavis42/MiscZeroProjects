@@ -1,0 +1,30 @@
+class MenuSwitcher : ZilchComponent
+{
+  sends MenuOpened : MenuEvent;
+  sends RequestMenuSwitch : MenuEvent;
+  
+  
+  [Dependency]
+  var UiWidget : UiWidget;
+  
+  
+  [Property][Slider(0, 360, 1)] var SomeNumber : Real;
+  
+  
+  var CurrentMenu : Cog;
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.RequestMenuSwitch, this.OnRequestMenuSwitch);
+  }
+  
+  
+  function OnRequestMenuSwitch(event : MenuEvent)
+  {
+    event.FromMenu.UiWidget.Active = false;
+    event.ToMenu.UiWidget.Active = true;
+    this.CurrentMenu = event.ToMenu;
+    this.CurrentMenu.DispatchEvent(Events.MenuOpened, MenuEvent());
+  }
+}

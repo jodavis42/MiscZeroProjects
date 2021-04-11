@@ -1,0 +1,18 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "UnitTestLevels"
+		var ResourceId = 0x589c2766f20d3615
+		var LoaderType = "ResourceTable"
+		var Version = 0
+		var ShowInEditor = true
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+}

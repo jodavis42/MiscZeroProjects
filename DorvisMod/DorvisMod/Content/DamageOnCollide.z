@@ -1,0 +1,53 @@
+class DamageOnCollide : ZilchComponent
+{
+    [Property]
+    var Damage : Real = 10.0;
+    
+    [Property]
+    var Create : Archetype;
+    
+    [Property]
+    var DestroySelf : Boolean = true;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollisionStarted);
+    }
+
+    function OnCollisionStarted(e : CollisionEvent)
+    {
+        // Don't damage the person we were created from
+        if (Team.IsSameTeam(this.Owner, e.OtherObject))
+        {
+            return;
+        }
+        
+        var health = e.OtherObject.Health;
+        if (health != null)
+        {
+            // If the other object is already dead, then skip everything (supports shield like logic)
+            if (health.IsDead)
+            {
+                return;
+            }
+            
+            health.Change(-this.Damage);
+        }
+        
+        if (this.Create != null && this.Create != Archetype.DefaultArchetype)
+        {
+            var tx = this.Owner.Transform;
+            var created = this.Space.Create(this.Create);
+            var createdTx = created.Transform;
+            createdTx.WorldTranslation = tx.WorldTranslation;
+            createdTx.WorldRotation = tx.WorldRotation;
+        }
+        
+        if (this.DestroySelf)
+            this.Owner.Destroy();
+    }
+}

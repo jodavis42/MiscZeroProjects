@@ -1,0 +1,145 @@
+// Allows an item (mostly weapons) to be mounted onto this cog.
+class ItemMount : ZilchComponent
+{
+    // The archetype used to display to the user where the item can be mounted.
+    [Property]
+    var DisplayArchetype : Archetype = Archetype.GridCellSprite;
+    // Currently the same sprite is used for item mounts and grid attachment.
+    // Because of this the item mount sprite needs to be scaled down.
+    [Property]
+    var DisplayCogScale : Real3 = local Real3(0.5, 0.5, 1.0);
+    
+    // The item that we have mounted (if there is one).
+    var ItemCog : Cog = null;
+    
+    // The visuals we show when an item is being dragged so that the user can know where they can drag to.
+    var DisplayCog : Cog = null;
+    
+    //sends AttachToCore : AttachEvent;
+    //sends DetachFromCore : AttachEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.ItemDragBegin, this.OnItemDragBegin);
+        Zero.Connect(this.Space, Events.ItemDragEnd, this.OnItemDragEnd);
+        Zero.Connect(this.Space, Events.TestItemMount, this.OnTestItemMount);
+        Zero.Connect(this.Owner, Events.AttachToCore, this.OnAttachToCore);
+        Zero.Connect(this.Owner, Events.DetachFromCore, this.OnDetachFromCore);
+    }
+    
+    function AddItem(itemCog : Cog)
+    {
+        // An item was added but it was null...
+        if(this.ItemCog != null)
+        {
+            throw new Exception();
+        }
+        
+        this.ItemCog = itemCog;
+    }
+    
+    function RemoveItem(itemCog : Cog)
+    {
+        // The item removed wasn't what was mounted here...
+        if(this.ItemCog != itemCog)
+        {
+            throw new Exception();
+        }
+        
+        this.ItemCog = null;
+    }
+    
+    function OnItemDragBegin(e : ZilchEvent)
+    {
+        // If we already have a mounted item then this spot is not
+        // valid so don't display anything to the user
+        if(this.ItemCog != null)
+        {
+            return;
+        }
+        
+        // Create our display cog and attach it to ourself (up in the z a bit to avoid z fighting)
+        this.DisplayCog = this.Space.Create(this.DisplayArchetype);
+        this.DisplayCog.AttachToPreserveLocal(this.Owner.FindRoot());
+        this.DisplayCog.Transform.Translation = local Real3(0.0, 0.0, 0.5) + this.Owner.Transform.LocalTranslation;
+        // Currently scale it down because I don't have a different sprite
+        this.DisplayCog.Transform.Scale = this.DisplayCogScale;
+    }
+    
+    function OnItemDragEnd(e : ZilchEvent)
+    {
+        // If we already had a mount or our display cog was null then down do anything
+        if(this.ItemCog != null || this.DisplayCog == null)
+        {
+            return;
+        }
+        
+        // The drag ended, destroy the test visuals
+        this.DisplayCog.Destroy();
+    }
+    
+    function OnTestItemMount(e : GridAttachEvent)
+    {
+        // We already have a mounted item, don't do anything
+        if(this.ItemCog != null)
+        {
+            return;
+        }
+        
+        // We don't have a display cog for some reason, we can't do anything
+        // (I think this happened during immediate load up)
+        if(this.DisplayCog == null)
+        {
+            return;
+        }
+        
+        // Bing the test positions down to the XY plane to avoid having issues checking 
+        // distance along the z-axis since dragged items are brought forwards
+        var testPos = e.TestPos.XY;
+        var worldPos = this.Owner.Transform.WorldTranslation;
+        var myPos = worldPos.XY;
+        
+        // Figure out how close the test point is (arbitrary scale right now)
+        var dist = Math.Length(myPos - testPos);
+        if(dist < 0.5)
+        {
+            // If we're within the correct distance then change
+            // our sprite color for user feedback
+            this.DisplayCog.Sprite.VertexColor = local Real4(1.0, 1.0, 1.0, 1.0);
+            
+            // Add to the event the attachment info of this spot
+            var info = new GridAttachInfo();
+            info.CoreCog = this.Owner.FindRoot().CoreLink.CoreCog;
+            info.Root = this.Owner;
+            info.AttachPosition = worldPos;
+            e.PossibleAttachments.Add(info);
+        }
+        // Otherwise we're too far away, just set the color for user feedback
+        else
+        {
+            this.DisplayCog.Sprite.VertexColor = local Real4(1.0, 1.0, 1.0, 0.5);
+        }
+    }
+    
+    function OnAttachToCore(attachEvent : AttachEvent)
+    {
+        // If we have a cog, tell it that we've attached to a new core
+        if(this.ItemCog != null)
+        {
+            this.ItemCog.DispatchEvent(Events.AttachToCore, attachEvent);
+        }
+    }
+    
+    function OnDetachFromCore(attachEvent : AttachEvent)
+    {
+        // If we have a cog, tell it that we've detached from the core
+        if(this.ItemCog != null)
+        {
+            this.ItemCog.DispatchEvent(Events.DetachFromCore, attachEvent);
+        }
+    }
+}

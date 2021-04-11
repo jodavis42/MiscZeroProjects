@@ -1,0 +1,68 @@
+[Version:1]
+Cog [InheritId:"59808873acc5c6db:Apache2"]
+{
+	Transform 
+	{
+		var Translation = Real3{9, 0, 0}
+		var Rotation = Quaternion{0, 0, 0, 1}
+		var Scale = Real3{1, 1, 1}
+	}
+	QuickHullTest 
+	{
+		var Active = false
+	}
+	QuickHullRenderSettings [LocallyAdded]
+	{
+		var RenderGraphics = true
+		var RenderHullFilled = true
+		var RenderHullEdges = true
+		var RenderHullTriangleEdges = false
+		var RenderHullNormals = false
+	}
+	BaseCogResultRecorder [LocallyAdded]
+	{
+	}
+	QuickHullMeshSaver [LocallyAdded]
+	{
+		var Active = false
+	}
+	QuickHullUnitTest [LocallyAdded]
+	{
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59808872ac8555fd]
+		{
+			Transform 
+			{
+				var Translation = Real3{-0.0551235378, -0.00521604624, 0.0833575055}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+		Cog [Id:0x59817710b566e20f][InheritId:"59806fa92d4eddb3:ConvexHullFilled"][LocallyAdded]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+		Cog [Id:0x59817710b566f1b4][InheritId:"59806fb3123a38d8:ConvexHullWireFrame"][LocallyAdded]
+		{
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Rotation = Quaternion{0, 0, 0, 1}
+				var Scale = Real3{1, 1, 1}
+			}
+		}
+		Cog [Id:0x59814aa1ee9f8e6a][LocallyRemoved]
+		{
+		}
+		Cog [Id:0x59814aa1ee9f58f3][LocallyRemoved]
+		{
+		}
+	}
+}

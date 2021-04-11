@@ -1,0 +1,11 @@
+DataContent = 
+{
+	DataBuilder = 
+	{
+		string Name = "PieceTypes",
+		uint64 ResourceId = 52f1ab1f3b6cbf24,
+		string LoaderType = "ResourceTable",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

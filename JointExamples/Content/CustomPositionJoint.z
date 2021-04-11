@@ -1,0 +1,53 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// An example of creating a position joint.
+class CustomPositionJoint : ZilchComponent
+{
+  [Dependency]  var ObjectLink : ObjectLink;
+  [Dependency]  var CustomJoint : CustomJoint;
+  
+  var AxisXConstraint : CustomConstraintInfo;
+  var AxisYConstraint : CustomConstraintInfo;
+  var AxisZConstraint : CustomConstraintInfo;
+    
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.ComputeCustomJointInfo, this.OnComputeCustomJointInfo);
+    Zero.Connect(this.Space, Events.FrameUpdate, this.OnFrameUpdate);
+    
+    this.AxisXConstraint = this.CustomJoint.CreateConstraint();
+    this.AxisYConstraint = this.CustomJoint.CreateConstraint();
+    this.AxisZConstraint = this.CustomJoint.CreateConstraint();
+  }
+
+  function OnComputeCustomJointInfo(event : CustomJointEvent)
+  {
+    var cogA = this.ObjectLink.ObjectA;
+    var cogB = this.ObjectLink.ObjectB;
+    var localPointA = this.ObjectLink.LocalPointA;
+    var localPointB = this.ObjectLink.LocalPointB;
+    // Constrain the two local points to be equal on the x, y, and z axes (effectively locking the points together)
+    this.CustomJoint.ConstrainLinearPosition(this.AxisXConstraint, cogA, cogB, localPointA, localPointB, Real3.XAxis);
+    this.CustomJoint.ConstrainLinearPosition(this.AxisYConstraint, cogA, cogB, localPointA, localPointB, Real3.YAxis);
+    this.CustomJoint.ConstrainLinearPosition(this.AxisZConstraint, cogA, cogB, localPointA, localPointB, Real3.ZAxis);
+  }
+
+  function OnFrameUpdate(event : UpdateEvent)
+  {
+    this.DebugDraw();
+  }
+  
+  function DebugDraw()
+  {
+    var worldPointA = this.ObjectLink.WorldPointA;
+    var worldPointB = this.ObjectLink.WorldPointB;
+    
+    var line = DebugLine(worldPointA, worldPointB) {Color = Real4(1), OnTop = true};
+    DebugDraw.Add(line);
+  }
+}

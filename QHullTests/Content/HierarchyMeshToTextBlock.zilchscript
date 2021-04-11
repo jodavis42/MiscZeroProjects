@@ -1,0 +1,106 @@
+[RunInEditor]
+class HierarchyMeshToTextBlock : ToTextBlockBase
+{
+  [Property] var ApplyTransform : Boolean = false;
+  [Property] var FindUsedVertices : Boolean = false;
+  
+  [Property]
+  function Save()
+  {
+    var fileName = this.GenerateVertexFileName(this.Owner.Name);
+    this.SaveVertices(fileName, this.GetVertices());
+  }
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.QueryQuickHullVertices, this.OnQueryQuickHullVertices);
+    Zero.Connect(this.Space, Events.SaveVertices, this.OnSaveVertices);
+  }
+
+  function OnSaveVertices(event : ZilchEvent)
+  {
+    Console.WriteLine("Save");
+    this.Save();
+  }
+  
+  function OnQueryQuickHullVertices(event : QuickHullVertexQueryEvent)
+  {
+    event.Vertices = this.GetVertices();
+  }
+  
+  function GetVertices() : Array[Real3]
+  {
+    var output = Array[Real3]();
+    
+    var parentInverse = Real4x4();
+    parentInverse.SetIdentity();
+    if(!this.ApplyTransform)
+      parentInverse = Math.Invert(this.Owner.Transform.WorldMatrix);
+    
+    this.GetVertices(this.Owner, output, parentInverse);
+    return output;
+  }
+  
+  function GetVertices(cog : Cog, output : Array[Real3], parentInverse : Real4x4)
+  {
+    if(this.IsCogValid(cog))
+    {
+      var mesh = cog.Model.Mesh;
+      var worldMatrix = Math.Multiply(parentInverse, cog.Transform.WorldMatrix);
+      this.GetVertices(mesh, worldMatrix, output);
+    }
+    
+    foreach(var child in cog.Children)
+    {
+      this.GetVertices(child, output, parentInverse);
+    }
+  }
+  
+  function IsCogValid(cog : Cog) : Boolean
+  {
+    if(cog.Model == null)
+      return false;
+    if(cog.SkipMeshCollection != null)
+      return false;
+    return true;
+  }
+  
+  function GetVertices(mesh : Mesh, transform : Real4x4, output : Array[Real3])
+  {
+    if(this.FindUsedVertices)
+      this.GetUsedVertices(mesh, transform, output);
+    else
+      this.GetAllVertices(mesh, transform, output);
+  }
+  
+  function GetAllVertices(mesh : Mesh, transform : Real4x4, output : Array[Real3])
+  {
+    for(var i = 0; i < mesh.Vertices.VertexCount; ++i)
+    {
+      var pos = mesh.Vertices.GetVertexData(i, VertexSemantic.Position).XYZ;
+      pos = Math.MultiplyPoint(transform, pos);
+      output.Add(pos.XYZ);
+    }
+  }
+  
+  function GetUsedVertices(mesh : Mesh, transform : Real4x4, output : Array[Real3])
+  {
+    var map = HashMap[Integer, Integer]();
+    var points = Array[Real3]();
+    
+    for(var i = 0; i < mesh.Indices.Count; ++i)
+    {
+      var index = mesh.Indices[i];
+      if(map.Contains(index))
+        continue;
+      map[index] = index;
+      points.Add(mesh.Vertices.GetVertexData(index, VertexSemantic.Position).XYZ);
+    }
+    
+    foreach(var point in points)
+    {
+      var worldPoint = Math.MultiplyPoint(transform, point);
+      output.Add(worldPoint);
+    }
+  }
+}

@@ -1,0 +1,20 @@
+ImageContent = 
+{
+	SpriteSourceBuilder = 
+	{
+		string Name = "IceBlockDamaged",
+		uint64 ResourceId = 5376abd8c2832b11,
+		uint64 AtlasId = 5274cf95e4a661fd,
+		uint FrameSizeX = 32,
+		uint FrameSizeY = 128,
+		uint FrameCount = 1,
+		float FrameDelay = 0.0833333,
+		float OriginX = 16,
+		float OriginY = 64,
+		float PixelsPerUnit = 32,
+		bool Smoothing = true,
+		bool Looping = true,
+		Vec4 Slices = [0, 0, 0, 0],
+		SpriteFill Fill = Stretch,
+	},
+},

@@ -1,0 +1,287 @@
+//**********************************************************************************
+//
+// Plays slow, random synthesized notes for ambient background music.
+//
+//**********************************************************************************
+class Background : ZilchComponent
+{
+  // Requires a RandomContext component
+  [Dependency] var RandomValues : RandomContext;
+  // Requires a Synthesizer component
+  [Dependency] var Synthesizer : Synthesizer;
+  
+  // The volume to use when playing notes
+  [Property] var Volume : Real = 0.25;
+  // The minimum time to wait to play the next note
+  [Property] var MinimumWait : Real = 4.5;
+  // The maximum time to wait to play the next note
+  [Property] var MaximumWait : Real = 5.5;
+  
+  // The low pass filter to use on the notes
+  var LowPass : LowPassNode = Audio.LowPassNode();
+  // The high pass filter to use on the notes
+  var HighPass : HighPassNode = Audio.HighPassNode();
+  // The flanger filter to use on the notes
+  var Flanger : FlangerNode = Audio.FlangerNode();
+  // The reverb filter to use on the notes
+  var Reverb : ReverbNode = Audio.ReverbNode();
+  // The array of MIDI note values to use
+  var Notes : Array[Integer] = Array[Integer]();
+  // Keeps track of the which note was just played
+  var PreviousIndex : Integer = 0;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Set the low pass and high pass cutoff values
+    this.LowPass.CutoffFrequency = 3000.0;
+    this.HighPass.CutoffFrequency = 100.0;
+    
+    // Connect the synth to the flanger node
+    this.Flanger.AddInputNode(this.Synthesizer.SynthNode);
+    // Connect the flanger to the high pass node
+    this.HighPass.AddInputNode(this.Flanger);
+    // Connect the high pass to the low pass
+    this.LowPass.AddInputNode(this.HighPass);
+    // Connect the low pass to the reverb node
+    this.Reverb.AddInputNode(this.LowPass);
+    // Connect the reverb node to the SoundSpace
+    this.Space.SoundSpace.InputNode.AddInputNode(this.Reverb);
+    
+    // Add the possible notes to play to the array
+    this.Notes.Push(MidiNotes.C3 - 12);
+    this.Notes.Push(MidiNotes.E3 - 12);
+    this.Notes.Push(MidiNotes.F3 - 12);
+    this.Notes.Push(MidiNotes.G3 - 12);
+    this.Notes.Push(MidiNotes.A3 - 12);
+    this.Notes.Push(MidiNotes.A3 - 24);
+    this.Notes.Push(MidiNotes.G3 - 24);
+    
+    // Delay the first note so the harmonics are added
+    var sequence = Actions.Sequence(this.Owner.Actions);
+    Action.Delay(sequence, 0.05);
+    Action.Call(sequence, this.Play);
+  }
+  
+  function Play()
+  {
+    // Get a random note index
+    var index = this.RandomValues.RangeExclusiveMax(0, this.Notes.Count);
+    // If this is the same as the last note played, get a different index
+    while (index == this.PreviousIndex)
+      index = this.RandomValues.RangeExclusiveMax(0, this.Notes.Count);
+    // Set the previous index variable
+    this.PreviousIndex = index;
+    
+    // Play the note
+    this.Synthesizer.NoteOn(this.Notes[index], this.Volume);
+    
+    // Delay the next note by a random time
+    var sequence = Actions.Sequence(this.Owner.Actions);
+    Action.Delay(sequence, this.RandomValues.Range(this.MinimumWait, this.MaximumWait));
+    Action.Call(sequence, this.Play);
+  }
+}
+
+//**********************************************************************************
+//
+// Plays random melody notes for ambient background music.
+//
+//**********************************************************************************
+class Melody : ZilchComponent
+{
+  // Requires a RandomContext component
+  [Dependency] var RandomValues : RandomContext;
+  // Requires a Synthesizer component
+  [Dependency] var Synthesizer : Synthesizer;
+    
+  // The minimum volume to play notes at
+  [Property] var MinimumVolume : Real = 0.01;
+  // The maximum volume to play notes at
+  [Property] var MaximumVolume : Real = 0.1;
+  // The minimum time to wait to play the next note
+  [Property] var MinimumWait : Real = 0.1;
+  // The maximum time to wait to play the next note
+  [Property] var MaximumWait : Real = 2.0;
+  
+  // The array of MIDI note values to use
+  var Notes : Array[Integer] = Array[Integer]();
+  // Keeps track of the last note value played
+  var LastIndex : Integer = -1;
+  
+  var TimeToWait : Real = 0;
+  var LastTime : Real = 0;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Add the synth node to the SoundSpace
+    this.Space.SoundSpace.InputNode.AddInputNode(this.Synthesizer.SynthNode);
+    
+    // Add all the possible note values to the array
+    this.Notes.Push(MidiNotes.C3);
+    this.Notes.Push(MidiNotes.D3);
+    this.Notes.Push(MidiNotes.E3);
+    this.Notes.Push(MidiNotes.F3);
+    this.Notes.Push(MidiNotes.G3);
+    this.Notes.Push(MidiNotes.A3);
+    this.Notes.Push(MidiNotes.C3 + 12);
+    this.Notes.Push(MidiNotes.D3 + 12);
+    this.Notes.Push(MidiNotes.E3 + 12);
+    this.Notes.Push(MidiNotes.F3 + 12);
+    
+    // Play the first note
+    this.PlayNote();
+  }
+
+  function PlayNote()
+  {
+    // Get a random index for the note value
+    var index = this.RandomValues.RangeExclusiveMax(0, this.Notes.Count);
+    // If the index matches the last note played or is too far away from the last note played,
+    // get another one, but only run the loop 10 times
+    var count = 0;
+    while ((index == this.LastIndex || Math.Abs(index - this.LastIndex) > 4) && count < 10)
+      index = this.RandomValues.RangeExclusiveMax(0, this.Notes.Count);
+    // Set the variable for the last note played
+    this.LastIndex = index;
+    
+    // Play the note, using a random volume
+    this.Synthesizer.NoteOn(this.Notes[index], this.RandomValues.Range(this.MinimumVolume, this.MaximumVolume));
+    
+    // Delay the next note by a random time
+    var sequence = Actions.Sequence(this.Owner.Actions);
+    Action.Delay(sequence, this.RandomValues.Range(this.MinimumWait, this.MaximumWait));
+    Action.Call(sequence, this.PlayNote);
+  }
+}
+
+
+enum MidiNotes { C3 = 60, Cs3, D3, Ds3, E3, F3, Fs3, G3, Gs3, A3, As3, B3 }
+
+//**********************************************************************************
+//
+// Plays two types of musical notes for sound effects.
+//
+//**********************************************************************************
+class NoteEffects : ZilchComponent
+{
+  // Requires a RandomContext component
+  [Dependency] var RandomValues : RandomContext;
+  
+  // The volume to use for the first set of notes
+  [Property] var Volume1 : Real = 0.75;
+  // The volume to use for the second set of notes
+  [Property] var Volume2 : Real = 0.25;
+  
+  // The AdditiveSynthNode for the first set of notes
+  var Synth1 : AdditiveSynthNode = Audio.AdditiveSynthNode();
+  // The delay filter to apply to the first set of notes
+  var Delay : DelayNode = Audio.DelayNode();
+  // List of possible MIDI note values for the first set of notes
+  var Notes1 : Array[Integer] = Array[Integer]();
+  // Keeps track of the last note played for the first set of notes
+  var PreviousIndex1 : Integer = -1;
+  // The AdditiveSynthNode for the second set of notes
+  var Synth2 : AdditiveSynthNode = Audio.AdditiveSynthNode();
+  // The reverb filter to apply to the second set of notes
+  var Reverb : ReverbNode = Audio.ReverbNode();
+  // List of possible MIDI note values for the second set of notes
+  var Notes2 : Array[Integer] = Array[Integer]();
+  // Keeps track of the last note played for the second set of notes
+  var PreviousIndex2 : Integer = -1;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Create the AdsrEnvelope object and set the values for Synth1's first harmonic
+    var envelope = AdsrEnvelope();
+    envelope.AttackTime = 0.09;
+    envelope.DecayTime = 0.05;
+    envelope.SustainTime = 0.01;
+    envelope.SustainLevel = 0.3;
+    envelope.ReleaseTime = 1.5;
+    // Add the first harmonic to Synth1
+    this.Synth1.AddHarmonic(1.0, 0.5, envelope, SynthWaveType.SineWave);
+    
+    // Set the values for Synth1's second harmonic
+    envelope.AttackTime = 0.02;
+    envelope.DecayTime = 0;
+    envelope.SustainTime = 0.01;
+    envelope.SustainLevel = 1.0;
+    envelope.ReleaseTime = 1.0;
+    // Add the second harmonic to Synth1
+    this.Synth1.AddHarmonic(3.0, 0.25, envelope, SynthWaveType.SineWave);
+    
+    // Add the possible note values for Synth1 to the array
+    this.Notes1.Push(MidiNotes.C3);
+    this.Notes1.Push(MidiNotes.E3);
+    this.Notes1.Push(MidiNotes.A3 - 12);
+    this.Notes1.Push(MidiNotes.G3 - 12);
+    this.Notes1.Push(MidiNotes.E3 - 12);
+    
+    // Set the values on the delay filter
+    this.Delay.FeedbackPercent = 40;
+    this.Delay.Delay = 0.3;
+    // Connect the synth to the delay node
+    this.Delay.AddInputNode(this.Synth1);
+    // Connect the delay node to the SoundSpace
+    this.Space.SoundSpace.InputNode.AddInputNode(this.Delay);
+    
+    // Set the values for Synth2's first harmonic
+    envelope.AttackTime = 0.09;
+    envelope.DecayTime = 0.05;
+    envelope.SustainTime = 0.01;
+    envelope.SustainLevel = 0.3;
+    envelope.ReleaseTime = 1.0;
+    // Add the first harmonic to Synth2
+    this.Synth2.AddHarmonic(1.0, 0.5, envelope, SynthWaveType.SineWave);
+    
+    // Set the values for Synth2's second harmonic
+    envelope.AttackTime = 0.02;
+    envelope.DecayTime = 0;
+    envelope.SustainTime = 0.01;
+    envelope.SustainLevel = 1.0;
+    envelope.ReleaseTime = 0.5;
+    // Add the second harmonic to Synth2
+    this.Synth2.AddHarmonic(3.0, 0.25, envelope, SynthWaveType.SineWave);
+    
+    // Add the possible note values for Synth2 to the array
+    this.Notes2.Push(MidiNotes.C3 + 12);
+    this.Notes2.Push(MidiNotes.D3 + 12);
+    this.Notes2.Push(MidiNotes.E3 + 12);
+    this.Notes2.Push(MidiNotes.G3 + 12);
+    this.Notes2.Push(MidiNotes.F3 + 12);
+    this.Notes2.Push(MidiNotes.A3 + 12);
+    
+    // Connect Synth2 to the reverb node
+    this.Reverb.AddInputNode(this.Synth2);
+    // Connect the reverb node to the SoundSpace
+    this.Space.SoundSpace.InputNode.AddInputNode(this.Reverb);
+  }
+  
+  function PlayNote1()
+  {
+    // Get a random index for the note
+    var index = this.RandomValues.RangeExclusiveMax(0, this.Notes1.Count);
+    // If this is the same as the last note, get another index
+    while (index == this.PreviousIndex1)
+      index = this.RandomValues.RangeExclusiveMax(0, this.Notes1.Count);
+    // Set the previous index variable
+    this.PreviousIndex1 = index;
+    
+    // Play the note
+    this.Synth1.NoteOn(this.Notes1[index], this.Volume1);
+  }
+  
+  function PlayNote2()
+  {
+    // Get a random index for the note
+    var index = this.RandomValues.RangeExclusiveMax(0, this.Notes2.Count);
+    // If this is the same as the last note, get another index
+    while (index == this.PreviousIndex2)
+      index = this.RandomValues.RangeExclusiveMax(0, this.Notes2.Count);
+    // Set the previous index variable
+    this.PreviousIndex2 = index;
+    
+    // Play the note
+    this.Synth2.NoteOn(this.Notes2[index], this.Volume2);
+  }
+}

@@ -1,0 +1,42 @@
+[RunInEditor]
+class ModelVisibleToggle : ZilchComponent
+{
+  [Property] var Visible : Boolean
+  {
+    get {return this.VisibleInternal;}
+    set {this.SetVisible(value); }
+  }
+  
+  var VisibleInternal : Boolean = true;
+  
+  function SetVisible(value : Boolean)
+  {
+    this.VisibleInternal = value;
+    if(this.Owner != null)
+      this.SetVisible(this.Owner);
+  }
+  
+  function SetVisible(cog : Cog)
+  {
+    if(this.IsCogValid(cog))
+    {
+      var model = cog.Model;
+      if(model != null)
+        model.Visible = this.VisibleInternal;
+    }
+    foreach(var child in cog.Children)
+      this.SetVisible(child);
+  }
+  
+  function IsCogValid(cog : Cog) : Boolean
+  {
+    if(cog.SkipVisibleToggle != null)
+      return false;
+    return true;
+  }
+}
+
+[RunInEditor]
+class SkipVisibleToggle : ZilchComponent
+{
+}

@@ -1,0 +1,30 @@
+class UiTextDisabler : ZilchComponent
+{
+  [Dependency]
+  var UiWidget : UiWidget;
+  [Dependency]
+  var UiTextShadow : UiTextShadow;
+  
+  
+  var DefaultTextColor : Real4 = Colors.White;
+  var DisabledTextColor : Real4 = Real4(0.6, 0.6, 0.6, 1);
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.UiDisable, this.OnUiDisable);
+    Zero.Connect(this.Owner, Events.UiEnable, this.OnUiEnable);
+  }
+  
+  
+  function OnUiDisable(event : MenuEvent)
+  {
+    this.UiTextShadow.TextColor = this.DisabledTextColor;
+  }
+  
+  
+  function OnUiEnable(event : MenuEvent)
+  {
+    this.UiTextShadow.TextColor = this.DefaultTextColor;
+  }
+}

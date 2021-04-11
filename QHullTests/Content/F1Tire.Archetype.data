@@ -1,0 +1,101 @@
+[Version:1]
+Cog 
+{
+	var Name = "F1Tire"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x5980bec1bbee11c8]
+		{
+			var Name = "FrontTyre_LTranslation"
+			Transform 
+			{
+				var Translation = Real3{-0.0830568522, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x5980bec1bbee11cf]
+				{
+					var Name = "FrontTyre_LPreRotation"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x5980bec1bbee11d2]
+						{
+							var Name = "FrontTyre_LRotation"
+							Transform 
+							{
+								var Translation = Real3{0, 0, 0}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0.707106829, 0, 0, 0.707106769}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x5980bec1bbee11d5]
+								{
+									var Name = "FrontTyre_LScaling"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{39.370079, 39.370079, 39.370079}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x5980bec1bbee11d8]
+										{
+											var Name = "FrontTyre_LGeometricTranslation"
+											Transform 
+											{
+												var Translation = Real3{-0.0117943026, -0.00606773794, -0.0298471991}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Hierarchy 
+											{
+												Cog [Id:0x5980bec1bbee11db]
+												{
+													var Name = "FrontTyre_L"
+													Transform 
+													{
+														var Translation = Real3{0, 0, 0}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "5980bec1bb19fd10:F1Tire"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

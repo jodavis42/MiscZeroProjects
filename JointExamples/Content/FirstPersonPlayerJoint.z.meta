@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "FirstPersonPlayerJoint"
+		var ResourceId = 0x58d940aa35169a1b
+	}
+}

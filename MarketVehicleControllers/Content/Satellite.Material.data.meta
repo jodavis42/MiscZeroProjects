@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Satellite"
+		var ResourceId = 0x58869b3e522a3f5d
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

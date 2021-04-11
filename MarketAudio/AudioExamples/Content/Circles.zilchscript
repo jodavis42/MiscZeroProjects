@@ -1,0 +1,77 @@
+//**********************************************************************************
+//
+// Controls the behavior of the circle objects.
+//
+//**********************************************************************************
+class Circles : ZilchComponent
+{
+  // Requires a Transform component
+  [Dependency] var Transform : Transform;
+  // Requires a Sprite component
+  [Dependency] var Sprite : Sprite;
+  
+  // The increment that will be added to the Transform scale every frame
+  var ScaleIncrement : Real = 0.02;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the LogicUpdate event
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    // Connect to collision started events
+    Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollide);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // Change the scale with the current increment
+    var scale = this.Transform.Scale;
+    scale.X += this.ScaleIncrement;
+    scale.Y += this.ScaleIncrement;
+    this.Transform.Scale = scale;
+    
+    // Increase the transparency of the sprite
+    var color = this.Sprite.VertexColor;
+    color.W -= 0.002;
+    this.Sprite.VertexColor = color;
+    
+    // If the sprite is almost transparent or very small, destroy this object
+    if (color.W < 0.05 || scale.X < 0.05)
+      this.Owner.Destroy();
+  }
+  
+  function OnCollide(event : CollisionEvent)
+  {
+    // If the other object has already handled the collision, only need to change the increment
+    if (event.OtherObject.Circles.ScaleIncrement < 0)
+    {
+      this.ScaleIncrement = -0.1;
+      return;
+    }
+    
+    // Create the particles to mark the collision
+    var particles = this.Space.CreateAtPosition(Archetype.CircleCollisionParticles, event.FirstPoint.WorldPoint);
+    // Destroy the particle object after 2 seconds
+    var sequence = Actions.Sequence(this.Space.Actions);
+    Actions.Delay(sequence, 2.0);
+    Actions.Call(sequence, particles.Destroy);
+    
+    // Find the object to play notes
+    var noteObject = this.Space.FindObjectByName("MusicObject").NoteEffects;
+    // Get a random time value
+    var time = this.Owner.RandomContext.Range(0.07, 0.17);
+    // Get a random number of notes
+    var limit = this.Owner.RandomContext.RangeInclusiveMax(1,3);
+    // Play the first note
+    noteObject.PlayNote2();
+    // Play the rest of the notes, delayed by the time
+    var sequence2 = Action.Sequence(this.Space.Actions);
+    for (var i = 0; i < limit; ++i)
+    {
+      Action.Delay(sequence2, time);
+      Action.Call(sequence2, noteObject.PlayNote2);
+    }
+    
+    // Change the scale increment
+    this.ScaleIncrement = -0.1;
+  }
+}

@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "UIRenderer"
+		var ResourceId = 0x58980987e677b4b8
+	}
+}

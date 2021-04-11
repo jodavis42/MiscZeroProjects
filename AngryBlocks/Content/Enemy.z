@@ -1,0 +1,38 @@
+class Enemy : ZilchComponent
+{
+  [Property]
+  var NotFalling : SpriteSource = SpriteSource.Enemy;
+  
+  [Property]
+  var Falling : SpriteSource = SpriteSource.EnemyMoving;
+  
+  [Property]
+  var VelocityThreshold : Real = 0.8;
+  
+  [Dependency]
+  var RigidBody : RigidBody = null;
+  
+  [Dependency]
+  var Sprite : Sprite = null;
+  
+  constructor() : base()
+  {
+  }
+
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(updateEvent : UpdateEvent)
+  {
+    if (Math.Length(this.RigidBody.Velocity) > this.VelocityThreshold)
+    {
+      this.Sprite.SpriteSource = this.Falling;
+    }
+    else
+    {
+      this.Sprite.SpriteSource = this.NotFalling;
+    }
+  }
+}

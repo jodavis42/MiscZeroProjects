@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "BackgroundAmbience"
+		var ResourceId = 0x5944e7303c1b134b
+	}
+}

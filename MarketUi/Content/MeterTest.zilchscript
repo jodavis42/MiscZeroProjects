@@ -1,0 +1,41 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Arend Danielek
+// Last update: 7/24/2016
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class MeterTest : ZilchComponent
+{
+  [Property]
+  var IncrementVal : Real = 0.1;
+  
+  var Val : Real = 1.0;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    
+    this.SendMeterEvent(this.Val);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if(Zero.Keyboard.KeyIsPressed(Keys.Up))
+    {
+      this.SendMeterEvent(this.Val + this.IncrementVal);
+    }
+    if(Zero.Keyboard.KeyIsPressed(Keys.Down))
+    {
+      this.SendMeterEvent(this.Val - this.IncrementVal);
+    }
+  }
+  
+  function SendMeterEvent(val : Real)
+  {
+    var meterUpdate = MeterUpdate();
+    this.Val = val;
+    meterUpdate.Val = this.Val;
+    this.Owner.DispatchEvent(Events.MeterUpdate, meterUpdate);
+  }
+}

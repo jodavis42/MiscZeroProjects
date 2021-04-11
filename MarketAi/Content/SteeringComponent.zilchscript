@@ -1,0 +1,76 @@
+/************************************************************************************************************/
+/* Copyright 2016 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 1/3/2016                                                                                    */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Jordan Ellis                                                                            */
+/* Class: SteeringComponent                                                                                 */
+/* Brief: This is the base class for all AI steering behaviours (seek, wander, pursue, avoidance, etc).     */
+/*        Each behaviour has a movement and look direction weight, along with an active toggle.             */
+/* NOTE: You should NOT attach this component to any cog, it should only be inherited from to create        */
+/*       a steering behaviour. Behaviours can override the SteeringInitialize and SteeringUpdate functions, */
+/*       and use the Add[Local/World]Movement and AddLookDirection functions to add the behaviours results  */
+/*       to the system.                                                                                     */
+/************************************************************************************************************/
+
+class SteeringComponent : ZilchComponent
+{
+  [Dependency]
+  var SteeringAccumulator : SteeringAccumulator = null;
+  
+  [Property]
+  var MovementWeight : Real = 1.0;
+  
+  [Property]
+  var LookDirectionWeight : Real = 1.0;
+  
+  [Property]
+  var Active : Boolean = true;
+  
+  [Virtual]
+  function SteeringInitialize(init : CogInitializer)
+  {
+    // Implementation of initialization logic for steering
+  }
+  
+  [Virtual]
+  function SteeringUpdate(event : UpdateEvent)
+  {
+    // Implementation logic for steering
+    
+    // Give resulting movement and rotation to these functions
+    // this.AddLocalMovement(Real3.Zero);
+    // this.AddWorldMovement(Real3.Zero);
+    // this.AddLookDirection(Quaternion.Identity);
+  }
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the SteeringAccumulator's update (allows for multiple behaviours)
+    Zero.Connect(this.SteeringAccumulator.Owner, Events.LogicUpdate, this.OnLogicUpdate);
+    
+    this.SteeringInitialize(init);
+  }
+  
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if (this.Active)
+    {
+      this.SteeringUpdate(event);
+    }
+  }
+  
+  function AddLocalMovement(movement : Real3)
+  {
+    this.SteeringAccumulator.AddLocalMovement(movement, this.MovementWeight);
+  }
+  
+  function AddWorldMovement(movement : Real3)
+  {
+    this.SteeringAccumulator.AddWorldMovement(movement, this.MovementWeight);
+  }
+  
+  function AddLookDirection(direction : Real3)
+  {
+    this.SteeringAccumulator.AddLookDirection(direction, this.LookDirectionWeight);
+  }
+}

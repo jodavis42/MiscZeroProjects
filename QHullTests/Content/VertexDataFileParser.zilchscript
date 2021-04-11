@@ -1,0 +1,55 @@
+class VertexDataFileParser
+{
+  function Save(vertices : Array[Real3], filePath : String)
+  {
+    var file = FileStream(filePath, FileMode.Write);
+    
+    foreach(var vertex in vertices)
+    {
+      file.WriteText("`vertex`\n");
+    }
+    file.Close();
+  }
+  
+  function ParseReal3(text : StringRange) : Real3
+  {
+    var range = text.FindRangeExclusive("(", ")");
+    if(range.Empty)
+      throw Exception("Invalid Real3");
+    
+    var result = Real3();
+    var splitRange = range.Split(",");
+    var subStrs = Array[StringRange]();
+    foreach(var split in splitRange)
+      subStrs.Add(split);
+    
+    if(subStrs.Count != 3)
+      throw Exception("Invalid split");
+    
+    result.X = Real.Parse(subStrs[0]);
+    result.Y = Real.Parse(subStrs[1]);
+    result.Z = Real.Parse(subStrs[2]);
+    return result;
+  }
+  
+  function LoadText(vertices : Array[Real3], text : String)
+  {
+    var range = text.Split("\n");
+    
+    foreach(var line in range)
+    {
+      vertices.Add(this.ParseReal3(line));
+    }
+  }
+  
+  function LoadFile(vertices : Array[Real3], filePath : String)
+  {
+    var file = FileStream(filePath, FileMode.Read);
+    
+    while(file.Position != file.Count)
+    {
+      var line = file.ReadLine();
+      vertices.Add(this.ParseReal3(line));
+    }
+  }
+}

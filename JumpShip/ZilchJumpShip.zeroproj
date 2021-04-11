@@ -1,0 +1,36 @@
+[Version:1]
+Cog 
+{
+	var Name = ""
+	ProjectSettings 
+	{
+		var ProjectName = "ZilchJumpShip"
+		var ProjectOwner = ""
+		var DefaultLevel = "Level"
+		var ProjectSpace = "Space"
+		var ProjectEngineRevision = 81
+		var AutoTakeProjectScreenshot = true
+		var Guid = 0x57f23a4e30551e65
+	}
+	EditorSettings 
+	{
+		var ViewCube = true
+		var ViewCubeSize = 0.150000006
+		var ScriptReloadGame = ScriptReloadMethod.PatchObjects
+		var AutoUpdateContentChanges = true
+	}
+	ProjectConfig 
+	{
+		var EditorMode = EditorMode.Mode3D
+	}
+	LauncherProjectInfo 
+	{
+		var Tags = ""
+		var ExperimentalBranchName = "BraveCobra"
+		var MajorVersion = 0
+		var MinorVersion = 0
+		var PatchVersion = 0
+		var RevisionId = 17555
+		var ShortChangeSet = "ff1b9215ea56"
+	}
+}

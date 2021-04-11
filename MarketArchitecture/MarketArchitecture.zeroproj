@@ -1,0 +1,36 @@
+[Version:1]
+Cog 
+{
+	var Name = ""
+	ProjectSettings 
+	{
+		var ProjectName = "MarketArchitecture"
+		var ProjectOwner = ""
+		var DefaultLevel = "Level"
+		var ProjectSpace = "Space"
+		var ProjectEngineRevision = 16582
+		var AutoTakeProjectScreenshot = true
+		var Guid = 0x5802bf89332353ac
+	}
+	EditorSettings 
+	{
+		var ViewCube = true
+		var ViewCubeSize = 0.150000006
+		var ScriptReloadEditor = ScriptReloadMethod.ReInitializeObjects
+		var ScriptReloadGame = ScriptReloadMethod.PatchObjects
+		var AutoUpdateContentChanges = true
+	}
+	LauncherProjectInfo 
+	{
+		var Tags = ""
+		var ExperimentalBranchName = "BraveCobra"
+		var MajorVersion = 0
+		var MinorVersion = 0
+		var PatchVersion = 0
+		var RevisionId = 15450
+	}
+	ProjectConfig 
+	{
+		var EditorMode = EditorMode.Mode3D
+	}
+}

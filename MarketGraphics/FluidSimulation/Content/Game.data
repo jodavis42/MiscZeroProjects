@@ -1,0 +1,20 @@
+GameSession = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Archetyped = 
+	{
+		string Name = "576f215c0825a2d3:Game",
+		bool ModifiedFromArchetype = false,
+	},
+	DefaultGameSetup = 
+	{
+		string StartingSpace = "576f215c0825de61:Space",
+		string StartingLevel = "576f215c0825c3a8:Level",
+	},
+	ZilchState = 
+	{
+	},
+},

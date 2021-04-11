@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "AlbedoValueOverride"
+		var ResourceId = 0x58c4889a7d37cb9d
+	}
+}

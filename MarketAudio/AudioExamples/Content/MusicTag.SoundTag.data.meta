@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "MusicTag"
+		var ResourceId = 0x59086cdf04c60296
+		var LoaderType = "SoundTag"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

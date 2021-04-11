@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "GameplayExamples"
+		var ResourceId = 0x58c721e73bf2bf97
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

@@ -1,0 +1,70 @@
+class ProjectileBasic : ZilchComponent
+{
+    // Any object (mostly effects) that we'll create when we damage something.
+    [Property]
+    var CreateOnDamage : Archetype = null;
+    
+    // Do we destroy ourself whenever we damage anything?
+    [Property]
+    var DestroyOnDamage : Boolean = true;
+    
+    // The amount of damage we'll do based upon our current level.
+    [Property]
+    var DamageCurve : SampleCurve = SampleCurve.DamageCurve;
+    
+    [Dependency]
+    var Projectile : Projectile = null;
+    
+    [Property]
+    var DamageType : DamageTypes = DamageTypes.Energy;
+    
+    sends ApplyDamage : DamageEvent;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.CollisionStarted, this.OnCollisionStarted);
+    }
+    
+    function OnCollisionStarted(collisionEvent : CollisionEvent)
+    {
+        var otherCog = collisionEvent.OtherObject;
+        var firstPoint = collisionEvent.FirstPoint;
+        var normal = firstPoint.WorldNormalTowardsOther;
+        var worldPoint = firstPoint.WorldPoint;
+        
+        if(Projectile.CanDamage(otherCog, this.Projectile.CoreCog) == false)
+        {
+            return;
+        }
+        
+        this.HitObject(otherCog, normal, worldPoint);
+    }
+    
+    function HitObject(otherObj : Cog, normal : Real3, worldPoint : Real3)
+    {
+        var toSend = new DamageEvent();
+        toSend.Damage = this.DamageCurve.Sample(this.Projectile.Level);
+        toSend.Normal = normal;
+        toSend.WorldPoint = worldPoint;
+        toSend.DamageType = this.DamageType;
+        
+        // Tell the other object we dealt damage, also tell any of our other components
+        otherObj.DispatchEvent(Events.ApplyDamage, toSend);
+        this.Owner.DispatchEvent(Events.ApplyDamage, toSend);
+        
+        // Create any effects on damage
+        if(this.CreateOnDamage != null)
+        {
+            var effect = this.Space.CreateAtPosition(this.CreateOnDamage, this.Owner.Transform.WorldTranslation);
+        }
+        
+        if(this.DestroyOnDamage)
+        {
+            this.Owner.Destroy();
+        }
+    }
+}

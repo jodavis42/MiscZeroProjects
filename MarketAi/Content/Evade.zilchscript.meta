@@ -1,0 +1,17 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "Evade"
+		var ResourceId = 0x5610de8648c72279
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Steering_Example"
+			"Steering"
+		}
+	}
+}

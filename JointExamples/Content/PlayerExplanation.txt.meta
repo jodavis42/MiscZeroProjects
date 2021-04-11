@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	TextBuilder 
+	{
+		var Name = "PlayerExplanation"
+		var ResourceId = 0x58c491e8ea979ba0
+	}
+}

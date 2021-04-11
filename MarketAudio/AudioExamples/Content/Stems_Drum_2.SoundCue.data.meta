@@ -1,0 +1,19 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Music"
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "Stems_Drum_2"
+		var ResourceId = 0x5944d7cd75faff19
+		var LoaderType = "SoundCue"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

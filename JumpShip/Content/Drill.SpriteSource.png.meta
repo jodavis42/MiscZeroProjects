@@ -1,0 +1,21 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "Drill"
+		var ResourceId = 0x52026759d3313998
+		var AtlasId = 0x5274cf95e4a661fd
+		var FrameSizeX = 22
+		var FrameSizeY = 56
+		var FrameCount = 2
+		var FrameDelay = 0.0833332986
+		var OriginX = 11
+		var OriginY = 45
+		var PixelsPerUnit = 32
+		var Sampling = SpriteSampling.Nearest
+		var Looping = true
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+}

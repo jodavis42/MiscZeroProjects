@@ -1,0 +1,87 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Zero Engine Team
+// Last updated by: Arend Danielek
+// Last update: 7/24/2016
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// This component is intended to be attached to the LevelSetting
+// object of any level in which pause menu functionality is desired. It
+// depends on the the MenuSpaceData component being attached to the space
+// this component is loaded into.
+class PauseController : ZilchComponent
+{
+  // Dispatched when the game is paused
+  sends PauseGameEvent : ZilchEvent;
+  // Dispatched when the game is unpaused
+  sends UnpauseGameEvent : ZilchEvent;
+  
+  // Archetype to be used to create a space to load the pause menu into
+  [Property]
+  var PauseSpaceArchetype : Archetype;
+  
+  // Level to load into the PauseSpace as the pause menu
+  [Property]
+  var PauseMenuLevel : Level;
+  
+  // The space into which the pause menu level is loaded
+  var PauseSpace : Space;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // The GameRequestQuit event is dispatched when the escape key is pressed.
+    // In order to prevent the normal workflow functionality of escape closing the 
+    // game the event must be handled.
+    Zero.Connect(this.GameSession, Events.GameRequestQuit, this.OnGameRequestQuit);
+    // Since the timespace will be paused logic update will not always be dispatched
+    // each frame on the space this component exists in. Connecting to frameUpdate will
+    // serve as a consistent substitute.
+    Zero.Connect(this.Space, Events.FrameUpdate, this.OnFrameUpdate);
+    // Listen for pause/upause events dispatched in response to player input
+    Zero.Connect(this.Space, Events.UnpauseGameEvent, this.OnUnpauseGameEvent);
+    Zero.Connect(this.Space, Events.PauseGameEvent, this.OnPauseGameEvent);
+  }
+  
+  function OnGameRequestQuit(event : GameEvent)
+  {
+    // Handle the GameEvent
+    event.Handled = true;
+  }
+  
+  function OnFrameUpdate(event : UpdateEvent)
+  {
+    // If escape is pressed
+    if(Zero.Keyboard.KeyIsPressed(Keys.Escape))
+    {
+      // If the pause space does not exist
+      if(this.PauseSpace == null)
+        // Dispatch pause game event
+        this.Space.DispatchEvent(Events.PauseGameEvent, ZilchEvent());
+      else
+        // Dispatch the unpause game event
+        this.Space.DispatchEvent(Events.UnpauseGameEvent, ZilchEvent());
+    }
+  }
+
+  function OnPauseGameEvent(event : ZilchEvent)
+  {
+    // Pause TimeSpace
+    this.Space.TimeSpace.Paused = true;
+    
+    // Create PauseSpace and load the PauseMenuLevel
+    this.PauseSpace = this.GameSession.CreateNamedSpace("PauseSpace", this.PauseSpaceArchetype);
+    this.PauseSpace.LoadLevel(this.PauseMenuLevel);
+    
+    // Listen to the PauseSpace for the UnpauseGameEvent
+    Zero.Connect(this.PauseSpace, Events.UnpauseGameEvent, this.OnUnpauseGameEvent);
+  }
+
+  function OnUnpauseGameEvent(event : ZilchEvent)
+  {
+    // Destroy the PauseSpace
+    this.PauseSpace.Destroy();
+    
+    // Unpause the TimeSpace
+    this.Space.TimeSpace.Paused = false;
+  }
+}

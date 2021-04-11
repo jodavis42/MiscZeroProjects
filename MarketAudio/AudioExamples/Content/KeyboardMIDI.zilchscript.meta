@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "KeyboardMIDI"
+		var ResourceId = 0x591dd1eed0435c3b
+	}
+}

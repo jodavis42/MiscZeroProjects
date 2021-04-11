@@ -1,0 +1,13 @@
+[Version:1]
+BinaryContent 
+{
+	BinaryBuilder 
+	{
+		var Name = "Sector0103_TileMap00"
+		var ResourceId = 0x5374091a1dd90198
+		var LoaderType = "TileMapSource"
+		var Version = 0
+		var FilterTag = ""
+		var ResourceOwner = "53740c6c967d5632:Sector0103"
+	}
+}

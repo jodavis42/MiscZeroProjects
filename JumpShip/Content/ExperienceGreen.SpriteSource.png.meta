@@ -1,0 +1,21 @@
+[Version:1]
+ImageContent 
+{
+	SpriteSourceBuilder 
+	{
+		var Name = "ExperienceGreen"
+		var ResourceId = 0x522d3039be042f23
+		var AtlasId = 0x5274cf95e4a661fd
+		var FrameSizeX = 12
+		var FrameSizeY = 11
+		var FrameCount = 5
+		var FrameDelay = 0.0833332986
+		var OriginX = 6
+		var OriginY = 5
+		var PixelsPerUnit = 32
+		var Sampling = SpriteSampling.Nearest
+		var Looping = true
+		var Slices = Real4{0, 0, 0, 0}
+		var Fill = SpriteFill.Stretch
+	}
+}

@@ -1,0 +1,154 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2017 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 7/31/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// An example of creating a revolute joint.
+class CustomRevoluteJoint : ZilchComponent
+{
+  [Dependency]  var ObjectLink : ObjectLink;
+  [Dependency]  var CustomJoint : CustomJoint;
+  
+  [Property] var DebugDrawFrameA : Boolean = true;
+  [Property] var PrimaryFrameColor : Real4 = Real4(1, 0, 0, 1);
+  [Property] var SecondaryFrameColor : Real4 = Real4(0, 0, 1, 1);
+  
+  var AxisXConstraint : CustomConstraintInfo;
+  var AxisYConstraint : CustomConstraintInfo;
+  var AxisZConstraint : CustomConstraintInfo;
+  
+  var HingeConstraint : CustomConstraintInfo;
+  var Rotation0Constraint : CustomConstraintInfo;
+  var Rotation1Constraint : CustomConstraintInfo;
+    
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.ComputeCustomJointInfo, this.OnComputeCustomJointInfo);
+    Zero.Connect(this.Space, Events.FrameUpdate, this.OnFrameUpdate);
+    
+    this.AxisXConstraint = this.CustomJoint.CreateConstraint();
+    this.AxisYConstraint = this.CustomJoint.CreateConstraint();
+    this.AxisZConstraint = this.CustomJoint.CreateConstraint();
+    
+    this.HingeConstraint = this.CustomJoint.CreateConstraint();
+    this.Rotation0Constraint = this.CustomJoint.CreateConstraint();
+    this.Rotation1Constraint = this.CustomJoint.CreateConstraint();
+  }
+  
+  function ComputeRotationalConstraints(cogA : Cog, cogB : Cog)
+  {
+    // Get all of the world space axes
+    var cogAWorldAxis0 = cogA.Orientation.WorldForward;
+    var cogAWorldAxis1 = cogA.Orientation.WorldRight;
+    var cogAWorldHingeAxis = cogA.Orientation.WorldUp;
+    var cogBWorldAxis0 = cogB.Orientation.WorldForward;
+    var cogBWorldAxis1 = cogB.Orientation.WorldRight;
+    var cogBWorldHingeAxis = cogB.Orientation.WorldUp;
+    
+    // Lock the relative angular velocity on the two axes perpendicular to the hinge to be 0, 
+    // effectively allowing rotational freedom only on the hinge axis.
+    this.CustomJoint.ConstrainAngularVelocity(this.Rotation0Constraint, cogA, cogB, cogAWorldAxis0);
+    this.CustomJoint.ConstrainAngularVelocity(this.Rotation1Constraint, cogA, cogB, cogAWorldAxis1);
+    
+    // To compute the error on each axis we use a small trick to approximate the angle. Given the
+    // two world axes, we can compute a vector perpendicular to them with the cross product which has
+    // magnitude of |A||B|sin(theta). We can then approximate the error on each axis by using the small
+    // angle approximation of sin(theta) ~= theta. Each axis' individual error can then be 
+    // found by projecting this vector onto the axis in question.
+    var cross = Math.Cross(cogAWorldHingeAxis, cogBWorldHingeAxis);
+    var error0 = Math.Dot(cogAWorldAxis0, cross);
+    var error1 = Math.Dot(cogAWorldAxis1, cross);
+    this.Rotation0Constraint.SetErrorAndBias(error0);
+    this.Rotation1Constraint.SetErrorAndBias(error1);
+    
+    // Limit the hinge angle if we have a limit
+    var jointLimit = this.Owner.JointLimit;
+    if(jointLimit != null)
+    {
+      // The limit will set the angular velocity about the hinge to be zero under certain conditions (if the limit is violated)
+      this.CustomJoint.ConstrainAngularVelocity(this.HingeConstraint, cogA, cogB, cogAWorldHingeAxis);
+      // To determine if the limit is violated, we have to compute the current error.
+      // This error is measured as the angle between the two object's world forward vectors.
+      // This value must be limited between our lower and upper limit.
+      var angle = Math.SignedAngle(cogAWorldAxis0, cogBWorldAxis0, cogAWorldHingeAxis);
+      this.HingeConstraint.SetLimitedError(angle, jointLimit.LowerLimit, jointLimit.UpperLimit);
+    }
+  }
+
+  function OnComputeCustomJointInfo(event : CustomJointEvent)
+  {
+    var cogA = this.ObjectLink.ObjectA;
+    var cogB = this.ObjectLink.ObjectB;
+    var localPointA = this.ObjectLink.LocalPointA;
+    var localPointB = this.ObjectLink.LocalPointB;
+    // Constrain the two local points to be equal on the x, y, and z axes (effectively locking the points together)
+    this.CustomJoint.ConstrainLinearPosition(this.AxisXConstraint, cogA, cogB, localPointA, localPointB, Real3.XAxis);
+    this.CustomJoint.ConstrainLinearPosition(this.AxisYConstraint, cogA, cogB, localPointA, localPointB, Real3.YAxis);
+    this.CustomJoint.ConstrainLinearPosition(this.AxisZConstraint, cogA, cogB, localPointA, localPointB, Real3.ZAxis);
+    
+    this.ComputeRotationalConstraints(cogA, cogB);
+  }
+
+  function OnFrameUpdate(event : UpdateEvent)
+  {
+    this.DebugDraw();
+  }
+  
+  function DrawArc(worldPosition : Real3, worldAxis : Real3, arcStartDirection : Real3, startAngle : Real, endAngle : Real, radius : Real, color : Real4)
+  {
+    // Compute the start and end direction vectors from the angle limits
+    var startVector = Math.Multiply(Math.ToQuaternion(worldAxis, startAngle), arcStartDirection);
+    var endVector = Math.Multiply(Math.ToQuaternion(worldAxis, endAngle), arcStartDirection);
+    
+    // Construct the arc from the 3 points on the circle
+    var mid = worldPosition + radius * arcStartDirection;
+    var start = worldPosition + radius * startVector;
+    var end = worldPosition + radius * endVector;
+    var arc = DebugArc(start, mid, end);
+    arc.Color = color;
+    DebugDraw.Add(arc);
+    
+    // Close off the arc by drawing vectors from the center to ends of the arc
+    DebugDraw.Add(DebugLine(worldPosition, worldPosition + radius * startVector) {Color = color});
+    DebugDraw.Add(DebugLine(worldPosition, worldPosition + radius * endVector) {Color = color});
+  }
+  
+  function DebugDraw()
+  {
+    // Get the primary and secondary frames (so we know who draws the arc and who draws a forward)
+    var primaryCog = this.ObjectLink.ObjectA;
+    var secondaryCog = this.ObjectLink.ObjectB;
+    var worldPosition = this.ObjectLink.WorldPointA;
+    // Swap the primary and secondary if necessary
+    if(!this.DebugDrawFrameA)
+    {
+      primaryCog = this.ObjectLink.ObjectB;
+      secondaryCog = this.ObjectLink.ObjectA;
+      worldPosition = this.ObjectLink.WorldPointB;
+    }
+    
+    var arcRadius = 1;
+    var secondaryRadius = arcRadius * 1.5;
+    // Get the frame data we need to debug draw
+    var primaryForward = primaryCog.Orientation.WorldForward;
+    var primaryHingeAxis = primaryCog.Orientation.WorldUp;
+    var secondaryForward = secondaryCog.Orientation.WorldForward;
+    
+    // If there's an active limit then draw the arc for where the joint is valid
+    var jointLimit = this.Owner.JointLimit;
+    if(jointLimit != null && jointLimit.Active)
+    {
+      this.DrawArc(worldPosition, primaryHingeAxis, primaryForward, jointLimit.LowerLimit, jointLimit.UpperLimit, arcRadius, this.PrimaryFrameColor);
+    }
+    // Otherwise just draw a circle (all angles are valid)
+    else
+    {
+      var debugCircle = DebugCircle(worldPosition, primaryHingeAxis, arcRadius) {Color = this.PrimaryFrameColor};
+      DebugDraw.Add(debugCircle);
+    }
+    // Always draw where the secondary frame's world forward is so the user can visualize the arc error better
+    DebugDraw.Add(DebugLine(worldPosition, worldPosition + secondaryForward * secondaryRadius) {Color = this.SecondaryFrameColor});
+  }
+}

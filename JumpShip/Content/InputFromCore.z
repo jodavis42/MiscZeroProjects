@@ -1,0 +1,109 @@
+// Let a component know that this core has had a key down/up.
+class CoreKeyboardEvent : ZilchEvent
+{
+    var CoreCog : Cog = null;
+    var Key : Integer = 0;
+    
+    constructor() : base()
+    {
+    }
+}
+
+// Handles grabbing input from the core and performing certain actions
+// (sending certain events to start/end logic) on a user defined key.
+class InputFromCore : ZilchComponent
+{
+    // The base name of the event we are listening to.
+    // We send out the events Begin<EventName> and End<EventName>.
+    [Property]
+    var EventName : String = "";
+    // The key that we are listening for input on.
+    [Property]
+    var Key : Integer = 0;
+    
+    // The cog that contains the core we are listening to.
+    var CoreCog : Cog = null;
+    
+    sends BeginFire : CoreEvent;
+    sends EndFire : CoreEvent;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.AttachToCore,this.OnAttachToCore);
+        Zero.Connect(this.Owner, Events.DetachFromCore,this.OnDetachFromCore);
+    }
+    
+    function OnAttachToCore(e : AttachEvent)
+    {
+        this.CoreCog = e.CoreCog;
+        if(this.CoreCog != null)
+        {
+            Zero.Connect(this.CoreCog, Events.CoreKeyDown, this.OnCoreKeyDown);
+            Zero.Connect(this.CoreCog, Events.CoreKeyUp, this.OnCoreKeyUp);
+            Zero.Connect(this.CoreCog, "OverrideBegin", this.OnOverrideBegin);
+            Zero.Connect(this.CoreCog, "OverrideEnd", this.OnOverrideEnd);
+        }
+    }
+    
+    function OnDetachFromCore(e : AttachEvent)
+    {
+        if(this.CoreCog != null)
+        {
+            Zero.Disconnect(this.CoreCog, Events.CoreKeyDown, this as Component);
+            Zero.Disconnect(this.CoreCog, Events.CoreKeyUp, this as Component);
+            Zero.Disconnect(this.CoreCog, "OverrideBegin", this as Component);
+            Zero.Disconnect(this.CoreCog, "OverrideEnd", this as Component);
+        }
+        
+        this.CoreCog = null;
+    }
+    
+    function OnCoreKeyDown(e : CoreKeyboardEvent)
+    {
+        // If this is not the key we care about don't do anything
+        if(e.Key != this.Key)
+        {
+            return;
+        }
+        // Send our event with Begin pre-pended to it
+        this.SendEvent("Begin");
+    }
+    
+    function OnCoreKeyUp(e : CoreKeyboardEvent)
+    {
+        // If this is not the key we care about don't do anything
+        if(e.Key != this.Key)
+        {
+            return;
+        }
+        
+        // Send our event with End pre-pended to it
+        this.SendEvent("End");
+    }
+    
+    function OnOverrideBegin(e : ZilchEvent)
+    {
+        // Just forcibly send the Begin event (for ai)
+        this.SendEvent("Begin");
+    }
+    
+    function OnOverrideEnd(e : ZilchEvent)
+    {
+        // Just forcibly send the End event (for ai)
+        this.SendEvent("End");
+    }
+    
+    function SendEvent(eventPrefix : String)
+    {
+        // Build up the actual event name that we're sending
+        var eventString = "`eventPrefix``this.EventName`";
+        
+        var toSend = new CoreEvent();
+        toSend.CoreCog = this.CoreCog;
+        this.Owner.DispatchEvent(eventString, toSend);
+    }
+}

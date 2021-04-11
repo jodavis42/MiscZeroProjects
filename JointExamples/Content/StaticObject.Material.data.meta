@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "StaticObject"
+		var ResourceId = 0x58c4c179c8e95033
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

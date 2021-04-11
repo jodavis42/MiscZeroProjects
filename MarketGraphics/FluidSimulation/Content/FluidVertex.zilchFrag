@@ -1,0 +1,29 @@
+[Vertex]
+struct FluidVertex
+{
+  [Input] var HeightMap : Sampler2d;
+  [Input] var WaveHeight : Real = 1.0;
+  
+  [BuiltInInput] var LocalToPerspective : Real4x4;
+  [BuiltInInput] var LocalToViewNormal : Real3x3;
+  
+  [StageInput] var LocalPosition : Real3;
+  [StageInput] var LocalNormal : Real3;
+  [StageInput] var Uv : Real2;
+  [Output][StageInput] var Height : Real;
+
+  [Output] var PerspectivePosition : Real4;
+  [Output] var ViewNormal : Real3;
+
+  function Main()
+  {
+    var heightSample = this.HeightMap.Sample(this.Uv);
+    
+    this.Height = heightSample.W;
+    
+    var newPosition = this.LocalPosition + this.LocalNormal * this.Height * this.WaveHeight;
+    
+    this.PerspectivePosition = Math.Multiply(this.LocalToPerspective, Real4(newPosition, 1.0));
+    this.ViewNormal = Math.Multiply(this.LocalToViewNormal, heightSample.XYZ);
+  }
+}

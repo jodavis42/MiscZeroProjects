@@ -1,0 +1,15 @@
+TextContent = 
+{
+	ContentTags = 
+	{
+		object Tags = 
+		[
+			"Turbine",
+		],
+	},
+	ZilchScriptBuilder = 
+	{
+		string Name = "Turbine",
+		uint64 ResourceId = 522898d27bb6e6b6,
+	},
+},

@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "SolidWireFrame"
+		var ResourceId = 0x5afaf7e17cf9ded2
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

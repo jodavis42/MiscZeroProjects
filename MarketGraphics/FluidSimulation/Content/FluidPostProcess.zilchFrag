@@ -1,0 +1,62 @@
+// PostProcess fragments are intended to be constructed in script
+// and passed directly to the AddRenderTaskPostProcess method.
+[Pixel][PostProcess]
+struct FluidPostProcess
+{
+  [BuiltInInput] var FrameTime : Real;
+  
+  [StageInput] var Uv : Real2;
+  
+  [Input] var HeightPrev : Sampler2d;
+  [Input] var HeightCurr : Sampler2d;
+
+  [Output] var Target0 : Real4;
+
+  var C : Real = 0.065;
+  var Delta : Real2;
+  
+  function Main()
+  {
+    // Calculate the delta needed to move over one texel
+    var textureSize = this.HeightCurr.SampleSize(0);
+    this.Delta.X = 1.0 / textureSize.X;
+    this.Delta.Y = 1.0 / textureSize.Y;
+    
+    // Calculate r
+    var r = (this.C * 0.016) / this.Delta.X;
+    
+    // Clamp r to 1.0, if it's over it blows up the simulation
+    var greaterThanOne = (r > 1.0) as Real;
+    r = greaterThanOne * 1.0 + (1 - greaterThanOne) * r;
+    
+    // Sample 4 adjacent texels
+    var rightUv = Real2(this.Uv.X + this.Delta.X, this.Uv.Y);
+    var rightSample = this.HeightCurr.Sample(rightUv);
+    
+    var leftUv  = Real2(this.Uv.X - this.Delta.X, this.Uv.Y);
+    var leftSample = this.HeightCurr.Sample(leftUv);
+    
+    var upUv    = Real2(this.Uv.X, this.Uv.Y + this.Delta.Y);
+    var upSample = this.HeightCurr.Sample(upUv);
+    
+    var downUv  = Real2(this.Uv.X, this.Uv.Y - this.Delta.Y);
+    var downSample = this.HeightCurr.Sample(downUv);
+    
+    var sampleCurr = this.HeightCurr.Sample(this.Uv);
+    var samplePrev = this.HeightPrev.Sample(this.Uv);
+    
+    // Calculate height
+    var height = r * r * (rightSample.W + upSample.W + leftSample.W + downSample.W - 4.0 * sampleCurr.W) +
+                 2.0 * sampleCurr.W - samplePrev.W;
+    
+    // Calculate normal
+    var rightVec = Real3(-2.0 * this.Delta.X, rightSample.W - height, 0.0);
+    var upVec = Real3(0.0, upSample.W - height, 2.0 * this.Delta.Y);
+    var normal = Math.Cross(upVec, rightVec);
+    
+    normal = Math.Normalize(normal);
+    
+    // TODO: Fix calculating normals
+    this.Target0 = Real4(0, 1, 0, height);
+  }
+}

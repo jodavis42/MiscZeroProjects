@@ -1,0 +1,7 @@
+ContentLibrary = 
+{
+	string Name = "MarketUi",
+	uint64 LibraryId = 5806e352bbbff8e1,
+	string SourceControlType = "",
+	bool ReadOnly = false,
+},

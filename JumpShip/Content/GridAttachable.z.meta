@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "GridAttachable",
+		uint64 ResourceId = 525364ce5c2e23a5,
+	},
+},

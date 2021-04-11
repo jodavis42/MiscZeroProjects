@@ -1,0 +1,27 @@
+Cog = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Transform = 
+	{
+		Vec3 Translation = [-5.61335, -0.778931, 0],
+		Vec3 Scale = [1, 1, 1],
+		Quat Rotation = [0, 0, 0, 1],
+	},
+	Sprite = 
+	{
+		string SpriteSource = "5252e700c717cddb:Selection",
+		bool FlipX = false,
+		bool FlipY = false,
+		Vec4 Color = [1, 1, 1, 1],
+		bool Visible = true,
+		bool OnTop = false,
+		bool AnimationActive = true,
+		float AnimationSpeed = 1,
+		uint StartFrame = 0,
+		BlendMode BlendMode = Alpha,
+		SpriteGeometryMode GeometryMode = ZPlane,
+	},
+},

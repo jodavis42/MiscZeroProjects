@@ -1,0 +1,32 @@
+[RunInEditor]
+class ToTextBlockBase : ZilchComponent
+{
+  function GenerateVertexFileName(fileNameNoExt : String) : String
+  {
+    return "`fileNameNoExt`.vertices.txt";
+  }
+  
+  function GetFilePath(fileName : String) : String
+  {
+    var projectFolder = Zero.Editor.ProjectCog.ProjectSettings.ProjectFolder;
+    var levelName = Zero.Editor.EditLevel.Name;
+    var filePath = FilePath.CombineDirectoriesAndFile(projectFolder, "Content", fileName);
+    return filePath;
+  }
+  
+  function SaveVertices(fileName : String, vertices : Array[Real3])
+  {
+    var filePath = this.GetFilePath(fileName);
+    var parser = VertexDataFileParser();
+    parser.Save(vertices, filePath);
+  }
+  
+  function LoadVertices(fileName : String) : Array[Real3]
+  {
+    var vertices = Array[Real3]();
+    var filePath = this.GetFilePath(fileName);
+    var parser = VertexDataFileParser();
+    parser.LoadFile(vertices, filePath);
+    return vertices;
+  }
+}

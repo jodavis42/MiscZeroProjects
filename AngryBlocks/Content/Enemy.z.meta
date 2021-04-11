@@ -1,0 +1,14 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "Enemy",
+		uint64 ResourceId = 5376a419b441b0ac,
+	},
+	ContentTags = 
+	{
+		Array Tags = 
+		[
+		],
+	},
+},

@@ -1,0 +1,169 @@
+//**********************************************************************************
+//
+// Plays randomized wind ambience created from white noise
+//
+//**********************************************************************************
+class WindAmbience : ZilchComponent
+{
+  // The high volume for the generated wind, when the low pass filter is at its highest cutoff frequency
+  [Property] var VolumeDayNight : Real2 = Real2(0.4, 0.6);
+  // The minimum and maximum seconds for the wind to go from low volume to high volume
+  [Property] var AttackMinMax : Real2 = Real2(3.0, 10.0);
+  // The minimum and maximum seconds for the wind to go from high volume to low volume
+  [Property] var ReleaseMinMax : Real2 = Real2(3.0, 10.0);
+  // The minimum and maximum seconds used to pan the wind from left to right and vice versa
+  [Property] var PanTimeMinMax : Real2 = Real2(4.0, 8.0);
+  // The minimum and maximum volume for the quiet side (other side will be 1.0)
+  [Property] var PannedVolMinMax : Real2 = Real2(0.6, 0.9);
+  // Overall volume of the generated noise
+  [Property] var WhiteNoiseVolume : Real = 0.2;
+  
+  // The SoundNode used to generate white noise
+  var Noise : GeneratedWaveNode = Audio.GeneratedWaveNode();
+  // The SoundNode used to control the wind's volume
+  var Volume : VolumeNode = Audio.VolumeNode();
+  // The low pass filter used to create the wind
+  var LowPass : LowPassNode = Audio.LowPassNode();
+  // The panning filter used to move the wind from side to side
+  var Panning : PanningNode = Audio.PanningNode();
+  // The increment used to change the low pass filter's cutoff frequency 
+  // (start at less than 0 because starting from low point)
+  var Increment : Real = -50.0;
+  // The low volume for the generated wind, when the 
+  // low pass filter is at its lowest cutoff frequency
+  var LowVolume : Real = 0.2;
+  // The minimum and maximum (in Hz) for the randomized 
+  // cutoff frequncy when the wind is at its loudest point
+  var HighCutoffMinMax : Real2 = Real2(1500.0, 2000.0);
+  // The minimum and maximum (in Hz) for the randomized 
+  // cutoff frequncy when the wind is at its quietest point
+  var LowCutoffMinMax : Real2 = Real2(100.0, 1000.0);
+  // Whether to play the day or night SoundCues
+  var Day : Boolean = true;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect the LogicUpdate function
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    // Connect to the event to switch from day to night and vice versa
+    Zero.Connect(this.Space, Events.DayCycleEvent, this.SetDay);
+    
+    // Set the values on the generated noise SoundNode
+    this.Noise.WaveType = SynthWaveType.Noise;
+    this.Noise.Volume = this.WhiteNoiseVolume;
+    // Start playing the white noise
+    this.Noise.Play();
+    // Set the cutoff frequency on the low pass filter
+    this.LowPass.CutoffFrequency = this.LowCutoffMinMax.X;
+    // Attach the white noise to the low pass node
+    this.LowPass.AddInputNode(this.Noise);
+    // Set the volume on the VolumeNode
+    this.Volume.Volume = this.LowVolume;
+    // Attach the low pass node to the volume node
+    this.Volume.AddInputNode(this.LowPass);
+    // Set the volume on the panning node
+    this.Panning.LeftVolume = this.PannedVolMinMax.Y;
+    // Attach the volume node to the panning node
+    this.Panning.AddInputNode(this.Volume);
+    // Attach the panning node to the SoundSpace output node
+    this.Space.SoundSpace.InputNode.AddInputNode(this.Panning);
+    
+    // Start panning the wind
+    this.ChangePanning();
+    // Start interpolating the volume and low pass for the wind
+    this.ChangeWind();
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // Change the low pass filter's cutoff frequency every update
+    this.LowPass.CutoffFrequency = this.LowPass.CutoffFrequency + this.Increment;
+  }
+  
+  function SetDay(event : DayCycleEvent)
+  {
+    // If already set to this day value, don't do anything
+    if (this.Day == event.Day)
+      return;
+      
+    this.Day = event.Day;
+    // If it is now day, interpolate to the Day volume
+    if (this.Day == true)
+      this.Volume.InterpolateVolume(this.VolumeDayNight.X, 2.0);
+    // Otherwise interpolate to the Night volume
+    else
+      this.Volume.InterpolateVolume(this.VolumeDayNight.Y, 2.0);
+  }
+  
+  function ChangePanning()
+  {
+    // Get a random time for this panning interpolation
+    var time = this.LevelSettings.RandomContext.Range(this.PanTimeMinMax.X, this.PanTimeMinMax.Y);
+    
+    // Are we now panning from left to right?
+    if (this.Panning.LeftVolume < this.Panning.RightVolume)
+    {
+      // Interpolate the left volume back to 1.0 over the time
+      this.Panning.InterpolateLeftVolume(1.0, time);
+      // Interpolate the right volume to a random value over the time
+      this.Panning.InterpolateRightVolume(this.LevelSettings.RandomContext.Range
+        (this.PannedVolMinMax.X, this.PannedVolMinMax.Y), time);
+    }
+    // If not, we are panning from right to left
+    else
+    {
+      // Interpolate the right volume back to 1.0 over the time
+      this.Panning.InterpolateRightVolume(1.0, time);
+      // Interpolate the left volume to a random value over the time
+      this.Panning.InterpolateLeftVolume(this.LevelSettings.RandomContext.Range
+        (this.PannedVolMinMax.X, this.PannedVolMinMax.Y), time);
+    }
+    
+    // Delay the next call of this function by the time
+    var sequence = Actions.Sequence(this.Owner.Actions);
+    Actions.Delay(sequence, time);
+    Actions.Call(sequence, this.ChangePanning);
+  }
+  
+  function ChangeWind()
+  {
+    // Create variables for the frequency difference and the time
+    var frequencyDifference = 1.0;
+    var time = 1.0;
+    
+    // If the increment is negative, we were getting quieter and now need to get louder
+    if (this.Increment < 0.0)
+    {
+      // Get a random time for the interpolation using the attack values
+      time = this.LevelSettings.RandomContext.Range(this.AttackMinMax.X, this.AttackMinMax.Y);
+      // Interpolate the volume to the maximum over half the time
+      if (this.Day == true)
+        this.Volume.InterpolateVolume(this.VolumeDayNight.X, time * 0.5);
+      else
+        this.Volume.InterpolateVolume(this.VolumeDayNight.Y, time * 0.5);
+      // Pick a random high cutoff frequency and figure out 
+      // the difference between that and the current cutoff
+      frequencyDifference = this.LevelSettings.RandomContext.Range
+        (this.HighCutoffMinMax.X, this.HighCutoffMinMax.Y) - this.LowPass.CutoffFrequency;
+    }
+    else
+    {
+      // Get a random time for the interpolation using the release values
+      time = this.LevelSettings.RandomContext.Range(this.ReleaseMinMax.X, this.ReleaseMinMax.Y);
+      // Interpolate the volume to the minimum over half the time
+      this.Volume.InterpolateVolume(this.LowVolume, time * 0.5);
+      // Pick a random low cutoff frequency and figure out 
+      // the difference between that and the current cutoff
+      frequencyDifference = this.LevelSettings.RandomContext.Range
+        (this.LowCutoffMinMax.X, this.LowCutoffMinMax.Y) - this.LowPass.CutoffFrequency;
+    }
+    
+    // Set the amount the cutoff frequency should change on every update
+    this.Increment = frequencyDifference / time / 60;
+    
+    // Delay the next call of this function by the time
+    var sequence = Actions.Sequence(this.Owner.Actions);
+    Actions.Delay(sequence, time);
+    Actions.Call(sequence, this.ChangeWind);
+  }
+}

@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "SpaceShip"
+		var ResourceId = 0x588699fdf8a2d08c
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

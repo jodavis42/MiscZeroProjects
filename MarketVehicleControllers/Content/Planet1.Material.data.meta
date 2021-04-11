@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Planet1"
+		var ResourceId = 0x58875b87944535df
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

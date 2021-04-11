@@ -1,0 +1,68 @@
+class Health : ZilchComponent
+{
+    [Property]
+    var Total : Real = 100.0;
+    
+    [Property]
+    var Current : Real = 100.0;
+    
+    var Percent : Real
+    {
+        get { return this.Current / this.Total; }
+        set { this.Current = this.Total * value; }
+    }
+    
+    var IsDead : Boolean
+    {
+        get { return this.Current <= 0.0; }
+    }
+    
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+    }
+    
+    function Change(amount : Real)
+    {
+        // If we're already dead, ignore this
+        if (this.IsDead)
+        {
+            return;
+        }
+        
+        this.Current += amount;
+        
+        var toSend = new HealthEvent();
+        toSend.Amount = amount;
+        toSend.Health = this;
+        
+        var root = this.Owner.FindRoot();
+        var body = root.RigidBody;
+        if (body != null)
+            body.ForceAwake();
+        
+        // If we just died...
+        if (this.IsDead)
+        {
+            this.Owner.DispatchEvent("Death", toSend);
+        }
+        else
+        {
+            this.Owner.DispatchEvent("HealthChanged", toSend);
+        }
+    }
+}
+
+class HealthEvent : ZilchEvent
+{
+    var Health : Health = null;
+    var Amount : Real = 0.0;
+    
+    constructor() : base()
+    {
+    }
+}

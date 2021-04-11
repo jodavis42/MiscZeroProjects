@@ -1,0 +1,28 @@
+class AudioTesting : ZilchComponent
+{
+  [Dependency]
+  var SoundEmitter : SoundEmitter = null;
+
+  [Property]
+  var SoundCue : SoundCue = null;
+  
+  [Property]
+  var SoundCue2 : SoundCue = null;
+  
+  function Initialize(init : CogInitializer)
+  {
+    if (this.SoundCue != null)
+    {
+      this.SoundCue2.AddSoundEntry(Sound.ElectronicActionAngry, 1.0);
+      
+      //this.SoundEmitter.InterpolatePitch(2.0, 1.0);
+      this.SoundEmitter.PlayCue(this.SoundCue);
+      
+      this.Space.SoundSpace.InterpolatePitch(2.0, 1.0);
+      this.Space.SoundSpace.PlayCue(this.SoundCue2);
+      // Positional?
+    }
+    
+    // TODO: Create and test differnet nodes connected to eachother
+  }
+}

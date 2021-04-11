@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "InterpolationTesting"
+		var ResourceId = 0x58b526c630a8ca3a
+	}
+}

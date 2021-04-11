@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Heavy"
+		var ResourceId = 0x58c4d1c9fa2319a7
+		var LoaderType = "PhysicsMaterial"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

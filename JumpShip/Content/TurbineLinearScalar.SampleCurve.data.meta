@@ -1,0 +1,18 @@
+DataContent = 
+{
+	ContentTags = 
+	{
+		object Tags = 
+		[
+			"Turbine",
+		],
+	},
+	DataBuilder = 
+	{
+		string Name = "TurbineLinearScalar",
+		uint64 ResourceId = 52289a5c226aa4f8,
+		string LoaderType = "SampleCurve",
+		uint Version = 0,
+		bool ShowInEditor = true,
+	},
+},

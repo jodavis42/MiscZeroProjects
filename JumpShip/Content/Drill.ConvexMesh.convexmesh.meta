@@ -1,0 +1,11 @@
+BinaryContent = 
+{
+	BinaryBuilder = 
+	{
+		string Name = "Drill",
+		uint64 ResourceId = 52026601f8780c12,
+		string LoaderType = "ConvexMesh",
+		uint Version = 0,
+		string FilterTag = "",
+	},
+},

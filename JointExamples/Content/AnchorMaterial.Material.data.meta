@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "AnchorMaterial"
+		var ResourceId = 0x58c60ce585ca4e6a
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

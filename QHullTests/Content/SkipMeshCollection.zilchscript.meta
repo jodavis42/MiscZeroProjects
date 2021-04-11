@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "SkipMeshCollection"
+		var ResourceId = 0x598055a4bcf0e418
+	}
+}

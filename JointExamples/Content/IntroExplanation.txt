@@ -1,0 +1,1 @@
+This level shows off several gameplay examples of joints. Apart from simple player interactions and the player itself, everything in this level uses pre-existing joints and joint effects (motors, limits, etc...).

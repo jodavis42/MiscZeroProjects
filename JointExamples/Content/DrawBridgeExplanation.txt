@@ -1,0 +1,1 @@
+This drawbridge is made up of a two joints. A revolute is connected to the base to act as a hinge. Additionally, a stick joint with a limit and a motor is used to pull the bridge closed. To let the bridge down, the motor is simply turned off.

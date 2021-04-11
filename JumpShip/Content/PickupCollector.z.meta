@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "PickupCollector",
+		uint64 ResourceId = 522ffdd3dbd6787c,
+	},
+},

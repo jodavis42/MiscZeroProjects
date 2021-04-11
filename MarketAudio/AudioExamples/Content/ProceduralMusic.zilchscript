@@ -1,0 +1,463 @@
+//**********************************************************************************
+//
+// Chord names to be used by the instruments
+//
+//**********************************************************************************
+enum ChordNames 
+{
+    One_Major,
+    Two_Minor,
+    Four_Major,
+    Five_Major,
+    Five_Major_7,
+    Six_Minor
+}
+
+
+//**********************************************************************************
+//
+// An object to hold a sequence of four chords
+//
+//**********************************************************************************
+class ChordSequence
+{
+  var ChordList : Array[ChordNames] = Array[ChordNames](4);
+}
+
+
+//**********************************************************************************
+//
+// The note values that instrument notes can be played on
+//
+//**********************************************************************************
+enum NoteTypes { EighthNote, QuarterNote, HalfNote, WholeNote, Bar, Beat }
+
+
+//**********************************************************************************
+//
+// An octave of MIDI note values 
+// (commented out because already included elswhere in this project)
+//
+//**********************************************************************************
+// enum MidiNotes { C3 = 60, Cs3, D3, Ds3, E3, F3, Fs3, G3, Gs3, A3, As3, B3 }
+
+
+//**********************************************************************************
+//
+// An event to notify other objects of chord changes
+//
+//**********************************************************************************
+class ChordEvent : ZilchEvent
+{
+  var Chord : ChordNames;
+}
+
+
+//**********************************************************************************
+//
+// Creates music procedurally using the music events sent by a specified background
+// SoundCue. Keeps track of what chords to play and sends messages to any instrument 
+// components on this object to play notes. Can speed up and slow down the music.
+//
+//**********************************************************************************
+class MusicManager : ZilchComponent
+{
+  sends ChordEvent : ChordEvent;
+  
+  // Requires a RandomContext component
+  [Dependency] var RandomValues : RandomContext;
+  
+  // The SoundCue to play as background and use for music events.
+  // Should be drums or something else that sounds okay when pitch-shifted.
+  // Can have Volume of 0 if it should only send events and not be heard.
+  [Property] var BackgroundCue : SoundCue;
+  // Number of chord sequences to play in each group
+  [Property] var SequencesPerGroup : Integer = 2;
+  
+  // The SoundInstance created by playing the BackgroundCue
+  var BackgroundInstance : SoundInstance;
+  // Keeps track of when we are playing group one
+  var Group1 : Boolean = true;
+  // The index of the current chord sequence
+  var CurrentSequence : Integer = 0;
+  // How many measures we've played in the current sequence
+  var MeasureCount : Integer = 0;
+  // How many sequences have been played in this group
+  var SequenceCount : Integer = 0;
+  // List of chord sequences in group 1
+  var Sequences1 : Array[ChordSequence] = Array[ChordSequence]();
+  // List of chord sequences in group 2
+  var Sequences2 : Array[ChordSequence] = Array[ChordSequence]();
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Play the background SoundCue
+    this.BackgroundInstance = this.Space.SoundSpace.PlayCue(this.BackgroundCue);
+    
+    // Connect to the music events from the BackgroundInstance
+    Zero.Connect(this.BackgroundInstance, Events.MusicEighthNote, this.OnNote);
+    Zero.Connect(this.BackgroundInstance, Events.MusicQuarterNote, this.OnNote);
+    Zero.Connect(this.BackgroundInstance, Events.MusicHalfNote, this.OnNote);
+    Zero.Connect(this.BackgroundInstance, Events.MusicWholeNote, this.OnNote);
+    Zero.Connect(this.BackgroundInstance, Events.MusicBar, this.OnNote);
+    Zero.Connect(this.BackgroundInstance, Events.MusicBeat, this.OnNote);
+    
+    // Connect to the LogicUpdate event
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+  
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    // If the Up arrow key is pressed, raise the pitch of the BackgroundInstance,
+    // up to a maximum of half an octave
+    if (Zero.Keyboard.KeyIsDown(Keys.Up) && this.BackgroundInstance.Semitones < 6)
+      this.BackgroundInstance.Semitones = this.BackgroundInstance.Semitones + 0.1;
+    // If the Down arrow key is pressed, lower the pitch of the BackgroundInstance,
+    // up to a maximum of half an octave
+    else if (Zero.Keyboard.KeyIsDown(Keys.Down) && this.BackgroundInstance.Semitones > -6)
+      this.BackgroundInstance.Semitones = this.BackgroundInstance.Semitones - 0.1;
+  }
+  
+  function AddSequence(sequence : ChordSequence, group1 : Boolean)
+  {
+    // Add the chord sequence to the appropriate list of sequences
+    if (group1)
+      this.Sequences1.Push(sequence);
+    else
+      this.Sequences2.Push(sequence);
+  }
+  
+  function OnNote(event : SoundInstanceEvent)
+  {
+    // Send the event on to the instrument components
+    this.Space.DispatchEvent(event.EventId, event);
+    
+    // If this is a bar event, handle it
+    if (event.EventId == Events.MusicBar)
+      this.OnBar();
+  }
+  
+  function OnBar()
+  {
+    // Keep track of the chord we just played
+    var lastChord = this.GetCurrentChord();
+    // Increment the number of measures played
+    ++this.MeasureCount;
+    // Check if we've played the whole sequence
+    if (this.MeasureCount == this.Sequences1[0].ChordList.Count)
+    {
+      // Reset the measure count
+      this.MeasureCount = 0;
+      
+      // Increment the number of sequences played
+      ++this.SequenceCount;
+      // Check if we should switch to the other group
+      if (this.SequenceCount == this.SequencesPerGroup)
+      {
+        // Switch to the opposite group
+        this.Group1 = !this.Group1;
+        // Reset the sequence count
+        this.SequenceCount = 0;
+      }
+      
+      // Save variables for max index
+      var maxIndex = 0;
+      // Set the max and min index variables depending on which group we're in
+      if (this.Group1)
+        maxIndex = this.Sequences1.Count - 1;
+      else
+        maxIndex = this.Sequences2.Count - 1;
+      
+      // Get a sequence number
+      this.CurrentSequence = this.RandomValues.RangeInclusiveMax(0, maxIndex);
+      // If this would start on the same chord, get a different sequence
+      while (lastChord == this.GetCurrentChord())
+        this.CurrentSequence = this.RandomValues.RangeInclusiveMax(0, maxIndex);
+    }
+    
+    // Send an event to notify the instrument objects of the chord change
+    var eventToSend = ChordEvent();
+    if (this.Group1)
+      eventToSend.Chord = this.Sequences1[this.CurrentSequence].ChordList[this.MeasureCount];
+    else
+      eventToSend.Chord = this.Sequences2[this.CurrentSequence].ChordList[this.MeasureCount];
+    this.Space.DispatchEvent(Events.ChordEvent, eventToSend);
+  }
+  
+  function GetCurrentChord() : ChordNames
+  {
+    // Return the chord for the current measure in the current sequence
+    if (this.Group1)
+      return this.Sequences1[this.CurrentSequence].ChordList[this.MeasureCount];
+    else
+      return this.Sequences2[this.CurrentSequence].ChordList[this.MeasureCount];
+  }
+}
+
+
+//**********************************************************************************
+//
+// Creates a chord sequence for either group1 or group2
+//
+//**********************************************************************************
+class Chords : ZilchComponent
+{
+  // If true, this sequence will be added to the first group
+  [Property] var InGroup1 : Boolean = true;
+  // The first chord in the sequence
+  [Property] var Chord1 : ChordNames;
+  // The second chord in the sequence
+  [Property] var Chord2 : ChordNames;
+  // The third chord in the sequence
+  [Property] var Chord3 : ChordNames;
+  // The fourth chord in the sequence
+  [Property] var Chord4 : ChordNames;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Check if the MusicManager component exists
+    if (this.Owner.Parent == null || this.Owner.Parent.MusicManager == null)
+    {
+      Console.WriteLine("No MusicManager on parent for Chords");
+      return;
+    }
+    
+    // Create the ChordSequence
+    var sequence = ChordSequence();
+    sequence.ChordList[0] = this.Chord1;
+    sequence.ChordList[1] = this.Chord2;
+    sequence.ChordList[2] = this.Chord3;
+    sequence.ChordList[3] = this.Chord4;
+    // Add the sequence to the MusicManager
+    this.Owner.Parent.MusicManager.AddSequence(sequence, this.InGroup1);
+  }
+}
+
+
+//**********************************************************************************
+//
+// Object to hold a list of MIDI notes for a specific chord
+//
+//**********************************************************************************
+class NoteList
+{
+  // List of notes for this particular chord
+  var Notes : Array[Integer] = Array[Integer]();
+  
+  function AddNote(note : Integer)
+  {
+    // Add this note to the list
+    this.Notes.Push(note);
+  }
+  
+  // Pass in a RandomContext to get a randomly selected note
+  function GetNote(random : RandomContext) : Integer
+  {
+    // Get a random index
+    var index = random.RangeInclusiveMax(0, this.Notes.Count - 1);
+    // Return the MIDI note value at that index
+    return this.Notes[index];
+  }
+}
+
+
+//**********************************************************************************
+//
+// Object to hold a list of MIDI notes for a specific chord
+//
+//**********************************************************************************
+class Instrument : ZilchComponent
+{
+  // Requires a Synthesizer component
+  [Dependency] var Synthesizer : Synthesizer;
+  // Requires a RandomContext component
+  [Dependency] var RandomValues : RandomContext;
+  
+  // The type of note that this instrument should be played on
+  [Property] var PlayOnNoteType : NoteTypes = NoteTypes.EighthNote;
+  // The number of beats to wait until playing again will be randomly 
+  // chosen from between 1 and this value
+  [Property] var MaxBeatsToWait : Integer = 1;
+  // The minimum volume of notes (will be randomly chosen)
+  [Property] var MinVolume : Real = 0.15;
+  // The maximum volume of notes (will be randomly chosen)
+  [Property] var MaxVolume : Real = 0.25;
+  // If true, other effect SoundNodes will be added after the AdditiveSynthNode
+  [Property] var AddEffects : Boolean = false;
+  
+  // List of NoteList objects for each chord
+  var NotesPerChord : Array[NoteList] = Array[NoteList]();
+  // The last note which was played
+  var LastNote : Integer = -1;
+  // The number of beats to wait before playing another note
+  var WaitBeats : Integer = 1;
+  // The number of beats that have passed while waiting
+  var BeatCount : Integer = 0;
+  // The current chord that is playing
+  var CurrentChord : ChordNames = ChordNames.One_Major;
+  // The number of MIDI notes in an octave
+  var NotesPerOctave : Integer = 12;
+  // Reverb effect to add to the synth
+  var Reverb : ReverbNode = Audio.ReverbNode();
+  // Modulation effect to apply to the synth
+  var Modulator : ModulationNode = Audio.ModulationNode();
+  // Second modulation effect to apply to the synth
+  var Modulator2 : ModulationNode = Audio.ModulationNode();
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to the music events
+    if (this.PlayOnNoteType == NoteTypes.EighthNote)
+      Zero.Connect(this.Space, Events.MusicEighthNote, this.OnNote);
+    else if (this.PlayOnNoteType == NoteTypes.QuarterNote)
+      Zero.Connect(this.Space, Events.MusicQuarterNote, this.OnNote);
+    else if (this.PlayOnNoteType == NoteTypes.HalfNote)
+      Zero.Connect(this.Space, Events.MusicHalfNote, this.OnNote);
+    else if (this.PlayOnNoteType == NoteTypes.WholeNote)
+      Zero.Connect(this.Space, Events.MusicWholeNote, this.OnNote);
+    else if (this.PlayOnNoteType == NoteTypes.Bar)
+      Zero.Connect(this.Space, Events.MusicBar, this.OnNote);
+    else if (this.PlayOnNoteType == NoteTypes.Beat)
+      Zero.Connect(this.Space, Events.MusicBeat, this.OnNote);
+    
+    // Connect to the chord change event
+    Zero.Connect(this.Space, Events.ChordEvent, this.OnChordChange);
+    
+    var numberOfChords = 6;
+    for (var i = 0; i < numberOfChords; ++i)
+    {
+      this.NotesPerChord.Push(NoteList());
+    }
+    
+    this.Setup();
+  }
+  
+  function OnChordChange(event : ChordEvent)
+  {
+    this.CurrentChord = event.Chord;
+  }
+  
+  function OnNote(event : SoundInstanceEvent)
+  {
+    // Increment the number of beats
+    ++this.BeatCount;
+    // Check if we should play a note this time
+    if (this.BeatCount >= this.WaitBeats)
+    {
+      // Reset the beat counter
+      this.BeatCount = 0;
+      // Get a new number for how many beats to wait before playing again
+      if (this.MaxBeatsToWait == 1)
+        this.WaitBeats = 1;
+      else
+        this.WaitBeats = this.RandomValues.RangeInclusiveMax(1, this.MaxBeatsToWait);
+      
+      // Get a note number for that chord
+      var note = this.NotesPerChord[this.CurrentChord].GetNote(this.RandomValues);
+      // Check if we have a valid LastNote value
+      if (this.LastNote >= 0)
+      {
+        // If this note is the same as the last note or is too far away from the last note
+        // get another one, but only try 10 times
+        var count = 0;
+        while ((note == this.LastNote || Math.Abs(note - this.LastNote) > 6) && count < 10)
+        {
+          note = this.NotesPerChord[this.CurrentChord].GetNote(this.RandomValues);
+          ++count;
+        }
+      }
+      // Save the LastNote variable
+      this.LastNote = note;
+      
+      // Play the note on the AdditiveSynthNode
+      this.Synthesizer.NoteOn(note, this.RandomValues.Range(this.MinVolume, this.MaxVolume));
+    }
+  }
+  
+  function AddChordNote(chord : ChordNames, note : MidiNotes, octaveAdjust : Integer)
+  {
+    this.NotesPerChord[chord].AddNote(note + (octaveAdjust * this.NotesPerOctave));
+    
+  }
+  
+  function Setup()
+  {
+    if (this.AddEffects == false)
+    {
+      // Add the synth node to the SoundSpace
+      this.Space.SoundSpace.InputNode.AddInputNode(this.Synthesizer.SynthNode);
+    }
+    else
+    {
+      // Attach the synth to the first modulation effect
+      this.Modulator.AddInputNode(this.Synthesizer.SynthNode);
+      // Set the values for the modulation
+      this.Modulator.Frequency = 4.0;
+      this.Modulator.UseAmplitudeModulation = true;
+      
+      // Attach the first modulation node to the second
+      this.Modulator2.AddInputNode(this.Modulator);
+      // Set the values for the second modulation
+      this.Modulator2.Frequency = 2000.0;
+      this.Modulator2.WetPercent = 10.0;
+      
+      // Attach the second modulation node to the reverb node
+      this.Reverb.AddInputNode(this.Modulator2);
+      // Set the reverb wet percent
+      this.Reverb.WetPercent = 70;
+      
+      // Attach the reverb node to the SoundSpace
+      this.Space.SoundSpace.InputNode.AddInputNode(this.Reverb);
+    }
+  }
+}
+
+
+//**********************************************************************************
+//
+// Sets note data for an Instrument
+//
+//**********************************************************************************
+class InstrumentNote : ZilchComponent
+{
+  // Which note to use
+  [Property] var NoteName : MidiNotes;
+  // How many octaves away from the C3 octave should this note be
+  [Property] var OctaveAdjustment : Integer;
+  // If true, this note will be played for I chords
+  [Property] var OneMajor : Boolean;
+  // If true, this note will be played for ii chords
+  [Property] var TwoMinor : Boolean;
+  // If true, this note will be played for IV chords
+  [Property] var FourMajor : Boolean;
+  // If true, this note will be played for V chords
+  [Property] var FiveMajor : Boolean;
+  // If true, this note will be played for V7 chords
+  [Property] var FiveMajor7 : Boolean;
+  // If true, this note will be played for vi chords
+  [Property] var SixMinor : Boolean;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Check if the Instrument component exists
+    if (this.Owner.Parent == null || this.Owner.Parent.Instrument == null)
+    {
+      Console.WriteLine("No Instrument on parent for InstrumentNote");
+      return;
+    }
+    
+    // Add the note for the applicable chords
+    if (this.OneMajor)
+      this.Owner.Parent.Instrument.AddChordNote(ChordNames.One_Major, this.NoteName, this.OctaveAdjustment);
+    if (this.TwoMinor)
+      this.Owner.Parent.Instrument.AddChordNote(ChordNames.Two_Minor, this.NoteName, this.OctaveAdjustment);
+    if (this.FourMajor)
+      this.Owner.Parent.Instrument.AddChordNote(ChordNames.Four_Major, this.NoteName, this.OctaveAdjustment);
+    if (this.FiveMajor)
+      this.Owner.Parent.Instrument.AddChordNote(ChordNames.Five_Major, this.NoteName, this.OctaveAdjustment);
+    if (this.FiveMajor7)
+      this.Owner.Parent.Instrument.AddChordNote(ChordNames.Five_Major_7, this.NoteName, this.OctaveAdjustment);
+    if (this.SixMinor)
+      this.Owner.Parent.Instrument.AddChordNote(ChordNames.Six_Minor, this.NoteName, this.OctaveAdjustment);
+  }
+}

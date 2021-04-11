@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Orange"
+		var ResourceId = 0x591e89f0d5928e22
+		var LoaderType = "Material"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

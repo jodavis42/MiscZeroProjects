@@ -1,0 +1,33 @@
+ResourceTable = 
+{
+	string ResourceType = "Archetype",
+	Array EntryList = 
+	[
+		{
+			string Name = "Plasma",
+			string Value = "522ee5c5a10b9f53:PlasmaWeapon",
+			float Weight = 1,
+		},
+		{
+			string Name = "Beam",
+			string Value = "523c8e9054cadb11:BeamWeapon",
+			float Weight = 1,
+		},
+		{
+			string Name = "Lightning",
+			string Value = "52ede9fcf1afb3d4:LightningWeapon",
+			float Weight = 1,
+		},
+		{
+			string Name = "Missile",
+			string Value = "523a75c99faa64bd:MissileWeapon",
+			float Weight = 1,
+		},
+		{
+			string Name = "Sonic",
+			string Value = "522ee43aa74829c4:SonicWeapon",
+			float Weight = 1,
+		},
+	],
+	float MaxWeight = 1,
+},

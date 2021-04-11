@@ -1,0 +1,149 @@
+[Version:1]
+Cog 
+{
+	var Name = "Ztree1"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x598179a8df634c05]
+		{
+			var Name = "ZTree1RotationPivot"
+			Transform 
+			{
+				var Translation = Real3{0.0475312807, 1.60157096, -0.118887022}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x598179a8df634c0b]
+				{
+					var Name = "ZTree1RotationPivotInverse"
+					Transform 
+					{
+						var Translation = Real3{-0.0475312807, -1.60157096, 0.118887022}
+						var Scale = Real3{1, 1, 1}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x598179a8df634c0d]
+						{
+							var Name = "ZTree1ScalingOffset"
+							Transform 
+							{
+								var Translation = Real3{-4.70559692, -158.555527, 11.7698154}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x598179a8df634c0f]
+								{
+									var Name = "ZTree1ScalingPivot"
+									Transform 
+									{
+										var Translation = Real3{4.75312805, 160.157089, -11.8887024}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x598179a8df634c11]
+										{
+											var Name = "ZTree1Scaling"
+											Transform 
+											{
+												var Translation = Real3{0, 0, 0}
+												var Scale = Real3{0.00999999978, 0.00999999978, 0.00999999978}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Hierarchy 
+											{
+												Cog [Id:0x598179a8df634c13]
+												{
+													var Name = "ZTree1ScalingPivotInverse"
+													Transform 
+													{
+														var Translation = Real3{-4.75312805, -160.157089, 11.8887024}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Hierarchy 
+													{
+														Cog [Id:0x598179a8df634c15]
+														{
+															var Name = "ZTree1"
+															Transform 
+															{
+																var Translation = Real3{0, 0, 0}
+																var Scale = Real3{1, 1, 1}
+																var Rotation = Quaternion{0, 0, 0, 1}
+															}
+															Hierarchy 
+															{
+																Cog [Id:0x598179a8df634c17]
+																{
+																	var Name = "ZTree1GeneratedMeshNode0"
+																	Transform 
+																	{
+																		var Translation = Real3{0, 0, 0}
+																		var Scale = Real3{1, 1, 1}
+																		var Rotation = Quaternion{0, 0, 0, 1}
+																	}
+																	Model 
+																	{
+																		var Visible = true
+																		var ViewCulling = true
+																		var VisibilityEvents = true
+																		var OverrideBoundingBox = false
+																		var LocalAabbCenter = Real3{0, 0, 0}
+																		var LocalAabbHalfExtents = Real3{1, 1, 1}
+																		var GroupSortValue = 0
+																		var Material = "583afb5e7bf75e18:ZeroMaterial"
+																		var Mesh = "598179a9de93dd63:Ztree1_ZTree1GeneratedMeshNode0"
+																	}
+																}
+																Cog [Id:0x598179a8df634c19]
+																{
+																	var Name = "ZTree1GeneratedMeshNode1"
+																	Transform 
+																	{
+																		var Translation = Real3{0, 0, 0}
+																		var Scale = Real3{1, 1, 1}
+																		var Rotation = Quaternion{0, 0, 0, 1}
+																	}
+																	Model 
+																	{
+																		var Visible = true
+																		var ViewCulling = true
+																		var VisibilityEvents = true
+																		var OverrideBoundingBox = false
+																		var LocalAabbCenter = Real3{0, 0, 0}
+																		var LocalAabbHalfExtents = Real3{1, 1, 1}
+																		var GroupSortValue = 0
+																		var Material = "583afb5e7bf75e18:ZeroMaterial"
+																		var Mesh = "598179a9de93dd8a:Ztree1_ZTree1GeneratedMeshNode1"
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

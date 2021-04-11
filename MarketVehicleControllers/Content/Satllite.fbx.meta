@@ -1,0 +1,130 @@
+[Version:1]
+GeometryContent 
+{
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x58869b1656eb67e0
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Vec3{0, 0, 0}
+		var ScaleFactor = 1
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var PhysicsImport = PhysicsImport.NoMesh
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "Satllite.polySurface158"
+				var ResourceId = 0x58869b1656e0ca1b
+			}
+			Object
+			{
+				var Name = "Satllite.dish"
+				var ResourceId = 0x58869b1656e0ca3c
+			}
+			Object
+			{
+				var Name = "Satllite.Satellite"
+				var ResourceId = 0x58869b1656e0ca41
+			}
+			Object
+			{
+				var Name = "Satllite.solarPanels"
+				var ResourceId = 0x58869b1656e0ca46
+			}
+			Object
+			{
+				var Name = "Satllite.satellite"
+				var ResourceId = 0x5886b7d4b1047a32
+			}
+			Object
+			{
+				var Name = "Satllite.panels"
+				var ResourceId = 0x5886b7d4b1047a56
+			}
+			Object
+			{
+				var Name = "Satllite.satellite"
+				var ResourceId = 0x5886b78bb9fc2505
+			}
+			Object
+			{
+				var Name = "Satllite.panels"
+				var ResourceId = 0x5886b78bb9fc2524
+			}
+			Object
+			{
+				var Name = "Satllite.satellite"
+				var ResourceId = 0x5886b789b9b95382
+			}
+			Object
+			{
+				var Name = "Satllite.panels"
+				var ResourceId = 0x5886b789b9b953a3
+			}
+			Object
+			{
+				var Name = "Satllite.satellite"
+				var ResourceId = 0x5886b789b987d742
+			}
+			Object
+			{
+				var Name = "Satllite.panels"
+				var ResourceId = 0x5886b789b987d79d
+			}
+			Object
+			{
+				var Name = "Satllite.satellite"
+				var ResourceId = 0x5886b78eb96e24d3
+			}
+			Object
+			{
+				var Name = "Satllite.panels"
+				var ResourceId = 0x5886b78eb96e24f4
+			}
+			Object
+			{
+				var Name = "Satllite.satellite"
+				var ResourceId = 0x5886b78eb9765e69
+			}
+			Object
+			{
+				var Name = "Satllite.panels"
+				var ResourceId = 0x5886b78eb9765e8c
+			}
+			Object
+			{
+				var Name = "Satllite.satellite"
+				var ResourceId = 0x5886b78fb95c7c1b
+			}
+			Object
+			{
+				var Name = "Satllite.panels"
+				var ResourceId = 0x5886b78fb95c7c3e
+			}
+			Object
+			{
+				var Name = "Satllite.satellite"
+				var ResourceId = 0x5886b0c2e179a3d0
+			}
+			Object
+			{
+				var Name = "Satllite.panels"
+				var ResourceId = 0x5886b0c2e179a3f3
+			}
+		}
+	}
+}

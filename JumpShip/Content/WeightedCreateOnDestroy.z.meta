@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "WeightedCreateOnDestroy",
+		uint64 ResourceId = 522fcf1784711a50,
+	},
+},

@@ -1,0 +1,69 @@
+// A basic weapon that fires one shot in the fire direction at a given speed.
+class WeaponBasic : ZilchComponent
+{
+    // The projectile that we'll spawn when we fire.
+    [Property]
+    var ProjectileArchetype : Archetype = null;
+    
+    // The curve to represent how fast we'll fire the bullet based upon our current level.
+    [Property]
+    var FireSpeedCurve : SampleCurve = SampleCurve.WeaponSpeed;
+    
+    [Dependency]
+    var Upgradable : Upgradable = null;
+    
+    // Don't actually need the weapon (everything handled through events)
+    // but logically we depend on having it.
+    [Dependency]
+    var Weapon : Weapon = null;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.FireWeapon, this.OnFireWeapon);
+    }
+    
+    function OnFireWeapon(weaponFireEvent : WeaponFireEvent)
+    {
+        // If our archetype is bad then don't do anything
+        if(this.ProjectileArchetype == null)
+        {
+            return;
+        }
+        
+        var root = this.Owner.FindRoot();
+        
+        // Create the object we're going to fire
+        var obj = this.Space.CreateAtPosition(this.ProjectileArchetype, weaponFireEvent.FirePosW);
+        
+        // Tell this object that it can't collide with any piece in our current ship hierarchy
+        this.Space.PhysicsSpace.AddPairFilter(obj,root);
+        this.Space.PhysicsSpace.AddHierarchyPairFilter(obj,root);
+        
+        var level = this.Upgradable.Level;
+        
+        // Setup the projectile component so it knows who fired it and what level it should be at
+        var projectile = obj.Projectile;
+        if(projectile != null)
+        {
+            projectile.Setup(root.CoreLink.CoreCog, level);
+        }
+        
+        // If this object has a rigid body then give it the correct velocity
+        var body = obj.RigidBody;
+        if(body != null)
+        {
+            var speed = this.FireSpeedCurve.Sample(level);
+            
+            var vel = weaponFireEvent.FireDirW * speed;
+            vel += root.RigidBody.Velocity;
+            body.Velocity = vel;
+        }
+        
+        // Make sure the object is facing the correct direction.
+        obj.Transform.Rotation = weaponFireEvent.Rotation;
+    }
+}

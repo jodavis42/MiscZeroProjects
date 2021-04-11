@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	TextBuilder 
+	{
+		var Name = "InteractionExplanation"
+		var ResourceId = 0x58c4e2effb5daab2
+	}
+}

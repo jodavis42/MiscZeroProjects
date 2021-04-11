@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	TextBuilder 
+	{
+		var Name = "LiftExplanation"
+		var ResourceId = 0x58c4e933db54e0de
+	}
+}

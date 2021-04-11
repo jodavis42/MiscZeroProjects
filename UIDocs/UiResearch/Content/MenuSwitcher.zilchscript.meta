@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "MenuSwitcher"
+		var ResourceId = 0x5a7f0775fe789b00
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Ui"
+		}
+	}
+}

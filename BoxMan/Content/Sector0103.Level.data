@@ -1,0 +1,180 @@
+[Version:1]
+Level 
+{
+	Cog 
+	{
+		var Name = "LevelSettings"
+		var LinkId = 1
+		GravityEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = true
+			var LocalSpaceDirection = true
+			var Strength = 10
+			var Direction = Real3{0, -1, 0}
+		}
+		DragEffect 
+		{
+			var Active = true
+			var WakeUpOnChange = false
+			var DebugDrawEffect = true
+			var LinearDamping = 0.200000003
+			var AngularDamping = 0.100000001
+			var LinearDrag = 0
+			var AngularDrag = 0
+		}
+		PlayerSpawner 
+		{
+			var PlayerArchetype = "536dbf75abdc97ad:Player"
+			var DistanceOffset = 2
+		}
+		LogicFlow 
+		{
+		}
+		UnitTests 
+		{
+			var ScreenShotsToTake = 10
+		}
+	}
+	Cog 
+	{
+		var Name = "EditorCamera"
+		var LinkId = 2
+		Transform 
+		{
+			var Translation = Real3{-56.6419296, 11.3699656, 65.4472961}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{-0.0867031515, -0.101391926, -0.00887064729, 0.991021514}
+		}
+		Camera 
+		{
+			var NearPlane = 0.5
+			var FarPlane = 500
+			var PerspectiveMode = PerspectiveMode.Perspective
+			var FieldOfView = 45
+			var Size = 20
+		}
+		EditorCameraController 
+		{
+			var ControlMode = ControlMode.Orbit
+			var LookDistance = 67.2132263
+			var VerticalAngle = 0.17453292
+			var HorizontalAngle = 0.203911498
+			var LookTarget = Real3{-43.2379417, -0.301488698, 0.626567125}
+			var MoveSensitivity = 1
+		}
+		CameraViewport 
+		{
+			var RenderInEditor = true
+			var RenderInGame = false
+			var RenderToViewport = true
+			var ForwardViewportEvents = false
+			var RenderOrder = 0
+			var NormalizedSize = Real2{1, 1}
+			var NormalizedOffset = Real2{0, 0}
+			var Camera = CogPath
+			{
+				var Path = "."
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 2
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Renderer = CogPath
+			{
+				var Path = ":/Renderer"
+				var ErrorOnResolveToNull = false
+				var ErrorOnPathCantCompute = false
+				var ErrorOnDirectLinkFail = false
+				var UpdateCogOnPathChange = true
+				var UpdatePathOnCogChange = true
+				var UpdateCogOnInitialize = true
+				var ResolvedNullErrorOccurred = false
+				var ResolvedCog = 3
+				var PathPreference0 = CogPathPreference.CogRelative
+				var PathPreference1 = CogPathPreference.SpaceRelative
+				var PathPreference2 = CogPathPreference.Absolute
+			}
+			var Resolution = Real2{1280, 720}
+			var ViewportScaling = ViewportScaling.Fill
+			var MarginColor = Real4{0, 0, 0, 1}
+		}
+	}
+	Cog 
+	{
+		var Name = "Renderer"
+		var LinkId = 3
+		DeferredRenderer 
+		{
+			var DrawDebug = true
+			var GeometryDebug = GeometryValue.None
+			var ShowDiffuse = true
+			var ShowSpecular = true
+			var Skybox = "5822dec85e380cf1:SimpleSkybox"
+			var ClearColor = Real4{0, 0, 0, 1}
+			var DrawSkybox = true
+			var DirectLighting = true
+			var IndirectLighting = true
+			var IndirectIntensity = 1
+			var ToneMap = true
+		}
+	}
+	Cog [InheritId:"536dbc509dd96f58:PlayerCamera"]
+	{
+		Transform 
+		{
+			var Translation = Real3{0, 0, 14.5}
+		}
+		PlayerFollow 
+		{
+			var MinX = -63
+		}
+	}
+	Cog 
+	{
+		var Name = "TileMap"
+		var LinkId = 4
+		Transform 
+		{
+			var Translation = Real3{0, 0, 0}
+			var Scale = Real3{1, 1, 1}
+			var Rotation = Quaternion{0, 0, 0, 1}
+		}
+		MultiSprite 
+		{
+			var Visible = true
+			var ViewCulling = true
+			var VisibilityEvents = true
+			var Material = "582c575af53d18c9:AlphaSprite"
+			var VertexColor = Real4{0.24313727, 0.360784322, 0.247058839, 1}
+			var GeometryMode = SpriteGeometryMode.ZPlane
+			var AnimationActive = true
+			var AnimationSpeed = 1
+		}
+		TileMap 
+		{
+			var Source = "5374091a1dd90198:Sector0103_TileMap00"
+			var PaletteName = ""
+			var MeshThickness = 1.20000005
+		}
+	}
+	Cog [InheritId:"536db2bdd321a13a:Door"]
+	{
+		Transform 
+		{
+			var Translation = Real3{8.5, 0, 0}
+		}
+		Door 
+		{
+			var ToLevel = "536dbf66ae911f78:Sector0102"
+		}
+	}
+}

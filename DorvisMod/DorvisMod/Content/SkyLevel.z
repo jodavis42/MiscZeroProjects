@@ -1,0 +1,44 @@
+class SkyLevel : ZilchComponent
+{
+    [Property]
+    var SpaceToCreate : Archetype = Archetype.Find("Space");
+    [Property]
+    var Level : Level = Level.Find("Sky");
+    
+    var SkyCamera : Cog = null;
+    
+    var CreateSpace : Space = null;
+    
+    [Dependency]
+    var CameraViewport : CameraViewport = null;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        this.CreateSpace = this.GameSession.CreateSpace(this.SpaceToCreate);
+        this.CreateSpace.LoadLevel(this.Level);
+        
+        this.SkyCamera = this.CreateSpace.FindObjectByName("Camera");
+        
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnPreDraw);
+    }
+    
+    function OnPreDraw(e : Event)
+    {
+        var cameraCog = this.CameraViewport.Camera;
+        if (cameraCog != null)
+        {
+            
+            this.SkyCamera.Camera.FieldOfView = cameraCog.Camera.FieldOfView;
+            this.SkyCamera.Transform.WorldRotation = cameraCog.Transform.WorldRotation;
+        }
+    }
+    
+    function Destroyed()
+    {
+        this.CreateSpace.Destroy();
+    }
+}

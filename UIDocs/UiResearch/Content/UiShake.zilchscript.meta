@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "UiShake"
+		var ResourceId = 0x5a75bdb65db6299f
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Ui"
+		}
+	}
+}

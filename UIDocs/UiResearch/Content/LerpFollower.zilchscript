@@ -1,0 +1,29 @@
+class LerpFollower : ZilchComponent
+{
+  [Dependency] var Transform : Transform;
+  
+  
+  [Property] var Path : CogPath = CogPath();
+  [Property] var Snappiness : Real = 0.75;
+  [Property] var InitialAnimateDuration : Real = 2;
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    var snappiness = this.Snappiness;
+    this.Snappiness = 0;
+    Action.Property(this.Owner.Actions, @this.Snappiness, snappiness, this.InitialAnimateDuration, Ease.Linear);
+    
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+  
+  
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    var thisWorldPosition = this.Transform.WorldTranslation;
+    var thatWorldPosition = this.Path.Transform.WorldTranslation;
+    var difference = thatWorldPosition - thisWorldPosition;
+    var delta = difference * this.Snappiness;
+    this.Transform.WorldTranslation += delta;
+  }
+}

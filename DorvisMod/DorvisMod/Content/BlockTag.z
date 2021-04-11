@@ -1,0 +1,13 @@
+class BlockTag : ZilchComponent
+{
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        // This was put in place because sometimes putting things in the object store
+        // would revert them to their archetype form and not realize that properties had been modified
+        this.Owner.ModifiedFromArchetype();
+    }
+}

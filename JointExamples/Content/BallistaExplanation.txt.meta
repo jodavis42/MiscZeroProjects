@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	TextBuilder 
+	{
+		var Name = "BallistaExplanation"
+		var ResourceId = 0x58c4e5781d722f1c
+	}
+}

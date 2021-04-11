@@ -1,0 +1,33 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Copyright 2016 DigiPen USA Corporation, All Rights Reserved
+// Author: Joshua Davis
+// Last updated by: Joshua Davis
+// Last update: 8/9/2017
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Rotates the object so the object's LocalForward axis is aligned in
+// WorldSpace with the direction of the object's velocity.
+class OrientTowardsVelocity : ZilchComponent
+{
+  // The orientation component is used to align the object's forward with it's velocity.
+  [Dependency] var Orientation : Orientation = null;
+  [Dependency] var RigidBody : RigidBody;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+  
+  function OnLogicUpdate(updateEvent : UpdateEvent)
+  {
+    var vel = this.RigidBody.Velocity;
+    
+    // If we don't do this check and get a zero velocity
+    // vector then our object will snap to 0 degrees. This would cause a
+    // non moving object with a rotation of 90 degrees to snap to 0 degrees all of a sudden.
+    if(Math.LengthSq(vel) < 0.0001)
+      return;
+      
+    this.Orientation.LookAtDirection(vel);
+  }
+}

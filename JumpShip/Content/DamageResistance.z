@@ -1,0 +1,50 @@
+// The various kinds of damage we can currently deal.
+enum DamageTypes
+{
+    Energy,
+    Beam,
+    Drill,
+    Lightning,
+}
+
+// Measures how resistant this cog is to a certain type of damage.
+class DamageResistance : ZilchComponent
+{
+    [Property]
+    var EnergyResistance : Real = 1.0;
+    
+    [Property]
+    var BeamResistance : Real = 1.0;
+    
+    [Property]
+    var DrillResistance : Real = 1.0;
+    
+    [Property]
+    var LightningResistance : Real = 1.0;
+    
+    constructor() : base()
+    {
+    }
+    
+    function GetResistance(damageType : DamageTypes) : Real
+    {
+        if(damageType == DamageTypes.Energy)
+        {
+            return this.EnergyResistance;
+        }
+        else if(damageType == DamageTypes.Beam)
+        {
+            return this.BeamResistance;
+        }
+        else if(damageType == DamageTypes.Drill)
+        {
+            return this.DrillResistance;
+        }
+        else if(damageType == DamageTypes.Lightning)
+        {
+            return this.LightningResistance;
+        }
+        
+        throw new Exception();
+    }
+}

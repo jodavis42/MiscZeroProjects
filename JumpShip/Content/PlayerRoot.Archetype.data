@@ -1,0 +1,38 @@
+[Version:1]
+Cog 
+{
+	var Name = "PlayerRoot"
+	var LinkId = 1
+	Transform 
+	{
+		var Translation = Real3{-6.05064058, 4.83716059, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	RigidBody 
+	{
+		var Velocity = Real3{0, 0, 0}
+		var AngularVelocity = Real3{0, 0, 0}
+		var DynamicState = RigidBodyDynamicState.Dynamic
+		var AllowSleep = false
+		var Asleep = false
+		var RotationLocked = false
+		var Mode2D = Mode2DStates.Mode2D
+	}
+	ObjectGrid 
+	{
+		var DisplayArchetype = "5252e76acb5e3746:GridCellSprite"
+	}
+	CoreLink 
+	{
+	}
+	Attachable 
+	{
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x595a4d9c3dee22f1][InheritId:"5252cbcb47702c20:Player"]
+		{
+		}
+	}
+}

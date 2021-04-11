@@ -1,0 +1,41 @@
+/************************************************************************************************************/
+/* Copyright 2017 DigiPen, All Rights Reserved                                                              */
+/* Last Update: 1/4/2017                                                                                    */
+/* Author: Zero Engine Team                                                                                 */
+/* Last updated by: Arend Danielek                                                                          */
+/* Class: CustomGameSetup                                                                                   */
+/* Brief: When added to the GameSession Archetype, this sets up the initial space and level.                */
+/************************************************************************************************************/
+
+class CustomGameSetup : ZilchComponent
+{
+  //Archetype to be used to create the initial space for the game
+  [Property]
+  var DefaultSpaceArchetype : Archetype;
+  
+  //Level to load into DefaultSpace
+  [Property]
+  var DefaultLevel : Level;
+  
+  //The initial space created by this component
+  var DefaultSpace : Space;
+  
+  function Initialize(init : CogInitializer)
+  {
+    //Connect to GameSetup
+    //This is what allows us to hijack the creation of the initial space.
+    Zero.Connect(this.Owner, Events.GameSetup, this.OnGameSetup);
+  }
+
+  function OnGameSetup(event : GameEvent)
+  {
+    //Handle the event so no other components use it
+    event.Handled = true;
+    
+    //Create the initial space for the application
+    this.DefaultSpace = event.Game.CreateNamedSpace(this.DefaultSpaceArchetype.Name, this.DefaultSpaceArchetype);
+    
+    //Load the default level
+    this.DefaultSpace.LoadLevel(this.DefaultLevel);
+  }
+}

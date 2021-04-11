@@ -1,0 +1,41 @@
+//**********************************************************************************
+//
+// Plays a dialog SoundCue when clicked on and reduces the volume of a SoundTag.
+//
+//**********************************************************************************
+class PlayDialogButton : ZilchComponent
+{
+  // Requires a Reactive component
+  [Dependency] var Reactive : Reactive;
+  // Requires the AudioManager component
+  [Dependency] var Manager : AudioManager;
+  // Requires a Sprite component
+  [Dependency] var Sprite : Sprite;
+  
+  // The dialog SoundCue to play
+  [Property] var DialogCue : SoundCue;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Connect to mouse click events
+    Zero.Connect(this.Reactive, Events.LeftMouseDown, this.OnMouseDown);
+    
+    // Play music
+    this.Manager.PlayMusic(SoundCue.Music_Run, false);
+    // Play a looping sound effect
+    var instance = this.Manager.PlayEffect(SoundCue.FootstepWoodRun, null, false);
+    instance.Looping = true;
+    
+  }
+  
+  function OnMouseDown(event : ViewportMouseEvent)
+  {
+    // Play the dialog SoundCue when clicked on
+    this.Manager.PlayDialog(this.DialogCue, null, false);
+    
+    // Change the button color
+    this.Sprite.VertexColor = Real4(1.0, 1.0, 1.0, 0.3);
+    // Slowly change it back
+    Actions.Property(this.Owner.Actions, @this.Sprite.VertexColor, Real4(1.0,1.0,1.0,1.0), 0.3, Ease.SinIn);
+  }
+}

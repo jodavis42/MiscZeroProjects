@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "FadeOut"
+		var ResourceId = 0x5376b2e21a24b4c1
+		var LoaderType = "ColorGradient"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

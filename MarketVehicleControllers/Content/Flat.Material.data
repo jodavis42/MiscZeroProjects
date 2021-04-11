@@ -1,0 +1,12 @@
+Material = 
+{
+	TextureColor = 
+	{
+		Vec2 Uv = [0, 0],
+		string Texture = "4df5d3b6b7338274:Stripes",
+	},
+	ModulateModelColor = 
+	{
+		Vec4 InColor = [1, 0, 0, 0],
+	},
+},

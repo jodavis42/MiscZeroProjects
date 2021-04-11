@@ -1,0 +1,34 @@
+//**********************************************************************************
+//
+// Receives music events from a SoundInstance and re-dispatches 
+// the event on the Space.
+//
+//**********************************************************************************
+class RelayMusicEvents : ZilchComponent
+{
+  // Requires a SimpleSound component. StartPlaying should not be checked.
+  [Dependency] var SimpleSound : SimpleSound;
+  
+  // The SoundInstance created by playing the SimpleSound
+  var Instance : SoundInstance;
+  
+  function Initialize(init : CogInitializer)
+  {
+    // Play the SimpleSound component and save the SoundInstance
+    this.Instance = this.SimpleSound.Play();
+    
+    // Connect to the music events sent by the SoundInstance
+    Zero.Connect(this.Instance, Events.MusicEighthNote, this.OnNote);
+    Zero.Connect(this.Instance, Events.MusicQuarterNote, this.OnNote);
+    Zero.Connect(this.Instance, Events.MusicHalfNote, this.OnNote);
+    Zero.Connect(this.Instance, Events.MusicWholeNote, this.OnNote);
+    Zero.Connect(this.Instance, Events.MusicBar, this.OnNote);
+    Zero.Connect(this.Instance, Events.MusicBeat, this.OnNote);
+  }
+  
+  function OnNote(event : SoundInstanceEvent)
+  {
+    // Send the event on the Space
+    this.Space.DispatchEvent(event.EventId, event);
+  }
+}

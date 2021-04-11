@@ -1,0 +1,234 @@
+[Version:1]
+Cog 
+{
+	var Name = "Apache2"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59808872ac8555fd]
+		{
+			var Name = "DrawCall_0002"
+			Transform 
+			{
+				var Translation = Real3{-0.0551235378, -0.00521604624, 0.0833575055}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808873acd05616:Apache2_DrawCall_0002"
+			}
+		}
+		Cog [Id:0x59808872ac855603]
+		{
+			var Name = "DrawCall_0003"
+			Transform 
+			{
+				var Translation = Real3{-0.0551235378, -0.00521604624, 0.0833575055}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808873acd0563a:Apache2_DrawCall_0003"
+			}
+		}
+		Cog [Id:0x59808872ac855606]
+		{
+			var Name = "DrawCall_0004"
+			Transform 
+			{
+				var Translation = Real3{-0.0551235378, -0.00521604624, 0.0833575055}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808873acd05642:Apache2_DrawCall_0004"
+			}
+		}
+		Cog [Id:0x59808872ac855608]
+		{
+			var Name = "DrawCall_0005"
+			Transform 
+			{
+				var Translation = Real3{-0.0551235378, -0.00521604624, 0.0833575055}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808873acd0564f:Apache2_DrawCall_0005"
+			}
+		}
+		Cog [Id:0x59808872ac85560a]
+		{
+			var Name = "DrawCall_0006"
+			Transform 
+			{
+				var Translation = Real3{-0.0551235378, -0.00521604624, 0.0833575055}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808873acd05658:Apache2_DrawCall_0006"
+			}
+		}
+		Cog [Id:0x59808872ac85560c]
+		{
+			var Name = "DrawCall_0007"
+			Transform 
+			{
+				var Translation = Real3{-0.0551235378, -0.00521604624, 0.0833575055}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808873acd05662:Apache2_DrawCall_0007"
+			}
+		}
+		Cog [Id:0x59808872ac85560e]
+		{
+			var Name = "DrawCall_0008"
+			Transform 
+			{
+				var Translation = Real3{-0.0551235378, -0.00521604624, 0.0833575055}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808873acd0566a:Apache2_DrawCall_0008"
+			}
+		}
+		Cog [Id:0x59808872ac855610]
+		{
+			var Name = "DrawCall_0009"
+			Transform 
+			{
+				var Translation = Real3{-0.0551235378, -0.00521604624, 0.0833575055}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808873acd05674:Apache2_DrawCall_0009"
+			}
+		}
+		Cog [Id:0x59808872ac855612]
+		{
+			var Name = "DrawCall_0045"
+			Transform 
+			{
+				var Translation = Real3{-0.0551235378, -0.00521604624, 0.0833575055}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808873acd0567c:Apache2_DrawCall_0045"
+			}
+		}
+		Cog [Id:0x59808872ac855614]
+		{
+			var Name = "DrawCall_0051"
+			Transform 
+			{
+				var Translation = Real3{-0.0551235378, -0.00521604624, 0.0833575055}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "583afb5e7bf75e18:ZeroMaterial"
+				var Mesh = "59808873acd05683:Apache2_DrawCall_0051"
+			}
+		}
+	}
+}

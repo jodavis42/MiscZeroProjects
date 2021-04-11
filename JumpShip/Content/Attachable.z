@@ -1,0 +1,68 @@
+// Manages mouse drag logic for moving a piece.
+// The current design is for this to be on the root of any hierarchy, not on a piece itself.
+class Attachable : ZilchComponent
+{
+    // The point in local space that should be where the mouse is.
+    var LocalPoint : Real3 = local Real3();
+    // Whether or not the mouse was "clicked" on us and we should do dragging logic.
+    var IsMoving : Boolean = false;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+    }
+    
+    function OnLeftMouseDown(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // start tracking the mouse during mouse move now
+        this.IsMoving = true;
+        
+        // bring the point back into local space
+        var transform = this.Owner.Transform;
+        this.LocalPoint = transform.TransformPointInverse(viewportMouseEvent.HitPosition);
+        
+        // bring the piece forward so it displays on top and can't collide with anything
+        transform.WorldTranslation = local Real3(transform.WorldTranslation.XY, 10.0);
+        
+        // make the rigid body static so we can properly drag it around
+        var body = this.Owner.RigidBody;
+        if(body != null)
+        {
+            body.DynamicState = RigidBodyDynamicState.Static;
+        }
+    }
+    
+    function OnMouseMove(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // if we aren't tracking movement then don't do anything
+        if(this.IsMoving == false)
+        {
+            return;
+        }
+        
+        // recompute the world offset from the mouse and position ourself there
+        var worldPoint = this.Owner.Transform.TransformNormal(this.LocalPoint);
+        var worldOffset = viewportMouseEvent.ToWorldZPlane(10.0) - worldPoint;
+        this.Owner.Transform.Translation = worldOffset;
+    }
+    
+    function OnLeftMouseUp(viewportMouseEvent : ViewportMouseEvent)
+    {
+        // we're no longer tracking the mouse
+        this.IsMoving = false;
+        
+        // update our transform to be back on the 0 z-plane for gameplay
+        var transform = this.Owner.Transform;
+        transform.WorldTranslation = local Real3(transform.WorldTranslation.XY, 0.0);
+        
+        // make the body dynamic again
+        var body = this.Owner.RigidBody;
+        if(body != null)
+        {
+            body.DynamicState = RigidBodyDynamicState.Dynamic;
+        }
+    }
+}

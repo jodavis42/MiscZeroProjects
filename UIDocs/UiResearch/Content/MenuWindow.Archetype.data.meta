@@ -1,0 +1,20 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "MenuWindow"
+		var ResourceId = 0x5a7c68d26e9be5ab
+		var LoaderType = "Cog"
+		var Version = 0
+		var ShowInEditor = true
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Ui"
+			"UiStuff"
+		}
+	}
+}

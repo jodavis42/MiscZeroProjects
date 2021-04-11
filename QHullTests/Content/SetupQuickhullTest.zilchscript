@@ -1,0 +1,63 @@
+[Command(autoRegister:true)][RunInEditor]
+class SetupQuickhullTest : ZilchComponent
+{
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.CommandExecute, this.OnCommandExecute);
+  }
+
+  function OnCommandExecute(event : CommandEvent)
+  {
+    var queue = Zero.Editor.OperationQueue;
+    queue.BeginBatch();
+    
+    var selection = Zero.Editor.Selection;
+    foreach(var object in selection.All)
+    {
+      this.Run(object as Cog, queue, event.Space);
+    }
+    queue.EndBatch();
+    Console.WriteLine("SetupQuickhullTest Command Executed");
+  }
+  
+  function Run(cog : Cog, queue : OperationQueue, space : Space)
+  {
+    if(cog == null)
+      return;
+     
+    queue.SaveObjectState(cog);
+     
+    if(cog.HierarchyMeshToTextBlock == null)
+    {
+      cog.AddComponentByType(typeid(HierarchyMeshToTextBlock));
+    }
+    if(cog.QuickHullTest == null)
+    {
+      cog.AddComponentByType(typeid(QuickHullTest));
+    }
+    if(cog.QuickHullRenderSettings == null)
+    {
+      cog.AddComponentByType(typeid(QuickHullRenderSettings));
+    }
+    if(cog.BaseCogResultRecorder == null)
+    {
+      cog.AddComponentByType(typeid(BaseCogResultRecorder));
+    }
+    if(cog.QuickHullMeshSaver == null)
+    {
+      cog.AddComponentByType(typeid(QuickHullMeshSaver));
+    }
+    if(cog.QuickHullUnitTest == null)
+    {
+      cog.AddComponentByType(typeid(QuickHullUnitTest));
+    }
+    
+    var hullFilledCog = space.CreateAtPosition(Archetype.ConvexHullFilled, Real3.Zero);
+    hullFilledCog.AttachToPreserveLocal(cog);
+    queue.ObjectCreated(hullFilledCog);
+    
+    var hullWireFrameCog = space.CreateAtPosition(Archetype.ConvexHullWireFrame, Real3.Zero);
+    hullWireFrameCog.AttachToPreserveLocal(cog);
+    queue.ObjectCreated(hullWireFrameCog);
+  }
+}

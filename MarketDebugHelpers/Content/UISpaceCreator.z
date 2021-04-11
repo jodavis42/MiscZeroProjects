@@ -1,0 +1,25 @@
+class UISpaceCreator : ZilchComponent
+{
+  [Property]
+  var UILevel : Level = null;
+  
+  [Property]
+  var UISpace : Archetype = Archetype.Space;
+  
+  var CreatedSpace : Space = null;
+  
+  function Initialize(init : CogInitializer)
+  {
+    this.CreatedSpace = this.GameSession.CreateNamedSpace("UISpace", this.UISpace);
+    
+    this.CreatedSpace.LoadLevel(this.UILevel);
+  }
+
+  function Destroyed()
+  {
+    if (this.CreatedSpace != null)
+    {
+      this.CreatedSpace.Destroy();
+    }
+  }
+}

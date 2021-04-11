@@ -1,0 +1,8 @@
+[Version:1]
+ContentLibrary 
+{
+	var Name = "QuickHull3DTests"
+	var LibraryId = 0x59823fc0b06581b8
+	var SourceControlType = ""
+	var ReadOnly = false
+}

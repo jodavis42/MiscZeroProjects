@@ -1,0 +1,19 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Music"
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "Drums_1"
+		var ResourceId = 0x58a78ad88064b24e
+		var LoaderType = "SoundCue"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

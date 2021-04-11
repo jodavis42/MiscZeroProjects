@@ -1,0 +1,23 @@
+class SparseUpdateToggle : ZilchComponent
+{
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    if (Zero.Keyboard.KeyIsReleased(Keys.Tab))
+    {
+      foreach (var cog in this.Space.AllObjects)
+      {
+        var sensing = cog.Sensor;
+        
+        if (sensing != null)
+        {
+          sensing.SparseUpdate = !sensing.SparseUpdate;
+        }
+      }
+    }
+  }
+}

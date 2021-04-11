@@ -1,0 +1,19 @@
+class QuickHullVertexQueryEvent : ZilchEvent
+{
+  var Vertices : Array[Real3] = null;
+  var TestName : String = "Test";
+  sends QueryQuickHullVertices : QuickHullVertexQueryEvent;
+}
+
+class QEdge
+{
+  var Vertex : Integer;
+  var Twin : Integer;
+  var Face : Integer;
+}
+
+class QFace
+{
+  var Edges = Array[Integer]();
+}
+

@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"QuickHull"
+		}
+	}
+	ZilchScriptBuilder 
+	{
+		var Name = "ConvexMeshToTextBlock"
+		var ResourceId = 0x5982389b75f65df7
+	}
+}

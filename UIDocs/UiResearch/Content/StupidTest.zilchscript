@@ -1,0 +1,16 @@
+class StupidTest : ZilchComponent
+{
+  var InitialPos : Real3;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    this.InitialPos = this.Owner.Transform.LocalTranslation;
+  }
+
+  function OnLogicUpdate(event : UpdateEvent)
+  {
+    this.Owner.Transform.LocalTranslation = this.InitialPos + Real3(0, Math.Sin(event.TimePassed * 3.0) * 20, 0);
+    this.Owner.Transform.LocalTranslation = Math.Floor(this.Owner.Transform.LocalTranslation);
+  }
+}

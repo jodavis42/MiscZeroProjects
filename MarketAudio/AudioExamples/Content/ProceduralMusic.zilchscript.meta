@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "ProceduralMusic"
+		var ResourceId = 0x58a7f66370245c84
+	}
+}

@@ -1,0 +1,46 @@
+[Version:1]
+SoundCue 
+{
+	var PlayMode = SoundPlayMode.Single
+	var Volume = 0.251188636
+	var UseDecibelVariation = true
+	var VolumeVariation = 0
+	var DecibelVariation = 8
+	var Pitch = 0
+	var UseSemitoneVariation = true
+	var PitchVariation = 0
+	var SemitoneVariation = 1
+	var ShowMusicOptions = false
+	var BeatsPerMinute = 0
+	var TimeSigBeats = 0
+	var TimeSigValue = 0
+	var Sounds = Array
+	{
+		Object
+		{
+			var Sound = "5944f09038eca453:Starling_2"
+			var Weight = 1
+			var StartTime = 0
+			var EndTime = 1.28167796
+			var LoopEndTime = 1.28167796
+			var LoopStartTime = 0
+			var LoopTailLength = 0
+			var CrossFadeLoopTail = false
+		}
+		Object
+		{
+			var Sound = "5944f09038ed19dc:Starling_1"
+			var Weight = 1
+			var StartTime = 0
+			var EndTime = 1.14435375
+			var LoopEndTime = 1.14435375
+			var LoopStartTime = 0
+			var LoopTailLength = 0
+			var CrossFadeLoopTail = false
+		}
+	}
+	var SoundTags = Array
+	{
+	}
+	var Attenuator = "594490aac3ee94d2:AmbienceAttenuation"
+}

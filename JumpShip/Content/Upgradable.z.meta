@@ -1,0 +1,8 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "Upgradable",
+		uint64 ResourceId = 522d5b0d29f1cc4d,
+	},
+},

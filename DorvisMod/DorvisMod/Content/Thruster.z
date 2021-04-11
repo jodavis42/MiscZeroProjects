@@ -1,0 +1,54 @@
+class Thruster : ZilchComponent
+{
+    var IdleParticles : Cog = null;
+    var OnParticles : Cog = null;
+    var OnParticles2 : Cog = null;
+    
+    var VolumeAction : Action = null;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, "Activate", this.OnActivate);
+        Zero.Connect(this.Owner, "Deactivate", this.OnDeactivate);
+        this.IdleParticles = this.Owner.FindChildByName("IdleParticles");
+        this.OnParticles = this.Owner.FindChildByName("OnParticles");
+        this.OnParticles2 = this.Owner.FindChildByName("OnParticles2");
+        
+        //this.Owner.SoundEmitter.Volume = 0.0;
+        
+        // SUPER GHETTO, MAKES IT SO WE DON'T NEED TO CHECK FOR NULL!
+        //this.VolumeAction = Action.Delay(this.Owner.Actions, 0.0);
+    }
+
+    function OnActivate(e : PlayerEvent)
+    {
+        this.Owner.ThrustEffect.Active = true;
+        this.Owner.SimpleSound.Play();
+        
+        //this.VolumeAction.Cancel();
+        //this.VolumeAction = Action.Property(this.Owner.Actions, @this.Owner.SoundEmitter.Volume, 1.0, 1.0, Ease.SinInOut);
+        
+        this.SetParticlesActive(true);
+    }
+
+    function OnDeactivate(e : PlayerEvent)
+    {
+        this.Owner.ThrustEffect.Active = false;
+        this.Owner.SoundEmitter.Stop();
+        this.SetParticlesActive(false);
+        
+        //this.VolumeAction.Cancel();
+        //this.VolumeAction = Action.Property(this.Owner.Actions, @this.Owner.SoundEmitter.Volume, 0.0, 1.0, Ease.SinInOut);
+    }
+    
+    function SetParticlesActive(state : Boolean)
+    {
+        this.IdleParticles.SphericalParticleEmitter.Active = !state;
+        this.OnParticles.SphericalParticleEmitter.Active = state;
+        this.OnParticles2.SphericalParticleEmitter.Active = state;
+    }
+}

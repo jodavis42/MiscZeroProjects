@@ -1,0 +1,402 @@
+/*
+class SpawnTool : ZilchComponent
+{
+    var Index : Integer = 0;
+    var PlayerCog : Cog = null;
+    var Player : Player = null;
+    var HudText : ShadowText = null;
+    var Ghost : DebugObb = new DebugObb();
+    var IsOverBlock : Boolean = false;
+    var DestroyMode : Boolean = false;
+    
+    var HudElement : Cog = null;
+    
+    var ObjToSpawn : Archetype = null;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, "ActivateTool", this.OnActivateTool);
+        Zero.Connect(this.Owner, "DeactivateTool", this.OnDeativateTool);
+    }
+    
+    function OnActivateTool(e : PlayerEvent)
+    {
+        this.PlayerCog = e.PlayerCog;
+        this.Player = e.Player;
+        this.HudText = e.HudText;
+        this.HudElement = e.Hud.FindObjectByName("SpawnToolHud");
+        Zero.Connect(e.PlayerCog, "PlayerKeyDown", this.OnPlayerKeyDown);
+        Zero.Connect(e.PlayerCog, "PlayerKeyUp", this.OnPlayerKeyUp);
+        Zero.Connect(e.PlayerCog, "PlayerMouseDown", this.OnPlayerMouseDown);
+        Zero.Connect(e.PlayerCog, "PlayerMouseScroll", this.OnPlayerMouseScroll);
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        
+        this.HudElement.SpawnToolHud.Activate();
+        this.UpdateObjectToSpawn();
+    }
+    
+    function OnDeativateTool(e : PlayerEvent)
+    {
+        this.HudElement.SpawnToolHud.Deactivate();
+        
+        this.PlayerCog = null;
+        this.Player = null;
+        this.HudText = null;
+        this.HudElement = null;
+        this.DestroyMode = false;
+        Zero.Disconnect(e.PlayerCog, "PlayerKeyDown", this);
+        Zero.Disconnect(e.PlayerCog, "PlayerKeyUp", this);
+        Zero.Disconnect(e.PlayerCog, "PlayerMouseDown", this);
+        Zero.Disconnect(e.PlayerCog, "PlayerMouseScroll", this);
+        Zero.Disconnect(this.Space, Events.LogicUpdate, this);
+    }
+    
+    function OnLogicUpdate(e : UpdateEvent)
+    {
+        this.IsOverBlock = false;
+        var result = this.Player.RayCast(this.BlockFilter);
+        
+        if (result == null)
+        {
+            if (this.DestroyMode == false)
+                this.HudText.Text = "Press [Left Mouse] to spawn a `this.ObjToSpawn.Name`";
+            else
+                this.HudText.Text = "";
+            return;
+        }
+        
+        this.IsOverBlock = true;
+        var pos = result.Object.Transform.WorldTranslation;
+        var color = Real4(1.0, 0.0, 0.0, 1.0);
+        
+        
+        if (this.DestroyMode == false)
+        {
+            this.HudText.Text = String.Concatenate("Press [Left Mouse] to attach a ", this.ObjToSpawn.Name);
+            pos  += result.WorldNormal;
+            color = Real4(1.0);
+        }
+        else
+        {
+            this.HudText.Text = "Press [Left Mouse] to destroy";
+        }
+        
+        this.Ghost.SpaceId(this.Space.RuntimeId);
+        this.Ghost.Float4Color(color);
+        this.Ghost.Extents(local Real3(0.5));
+        this.Ghost.Rotation(result.Object.Transform.WorldRotation);
+        this.Ghost.Position(pos);
+        this.Ghost.BackShade(true);
+        this.Ghost.Draw();
+    }
+    
+    function UpdateObjectToSpawn()
+    {
+        var spawnToolHud = this.HudElement.SpawnToolHud;
+        var icons = spawnToolHud.Icons;
+        var iconCog = icons.Get(spawnToolHud.SelectedIndex);
+        
+        this.ObjToSpawn = Archetype.Find(iconCog.ArchetypeName);
+    }
+    
+    function OnPlayerMouseScroll(e : PlayerMouseEvent)
+    {
+        this.HudElement.SpawnToolHud.ChangeSelection(e.ScrollDelta.Y as Integer);
+        this.UpdateObjectToSpawn();
+    }
+    
+    function OnPlayerKeyDown(e : PlayerKeyEvent)
+    {
+        if (e.Key == Keys.Shift)
+        {
+            this.DestroyMode = true;
+        }
+        else if (e.Key == Keys.Left)
+        {
+            this.HudElement.SpawnToolHud.ChangeSelection(-1);
+            this.UpdateObjectToSpawn();
+        }
+        else if (e.Key == Keys.Right)
+        {
+            this.HudElement.SpawnToolHud.ChangeSelection(1);
+            this.UpdateObjectToSpawn();
+        }
+    }
+    
+    function OnPlayerKeyUp(e : PlayerKeyEvent)
+    {
+        if (e.Key == Keys.Shift)
+        {
+            this.DestroyMode = false;
+        }
+    }
+    
+    function OnPlayerMouseDown(e : PlayerMouseEvent)
+    {
+        if (this.DestroyMode)
+        {
+            this.DestroyObj(e);
+        }
+        else
+        {
+            this.SpawnObj(e, this.ObjToSpawn);
+        }
+    }
+    
+    function BlockFilter(hit : Cog) : Boolean
+    {
+        return hit.BlockTag != null;
+    }
+    
+    function AnyFilter(hit : Cog) : Boolean
+    {
+        return true;
+    }
+    
+    [Static]
+    function Sign(input : Real) : Real
+    {
+        if (input > 0.0)
+        {
+            return 1.0;
+        }
+        else if (input < 0.0)
+        {
+            return -1.0;
+        }
+        
+        return 0.0;
+    }
+    
+    [Static]
+    function SnapToCardinalDirection(input : Real3) : Real3
+    {
+        // I really have no idea what's the best way to go about this
+        var dx = Math.Abs(input.X);
+        var dy = Math.Abs(input.Y);
+        var dz = Math.Abs(input.Z);
+        
+        if (dx > dy)
+        {
+            // X is greater than Y... so lets check against Z
+            if (dx > dz)
+            {
+                // X is the greatest
+                return local Real3(SpawnTool.Sign(input.X), 0.0, 0.0);
+            }
+            else
+            {
+                // Z is the greatest
+                return local Real3(0.0, 0.0, SpawnTool.Sign(input.Z));
+            }
+        }
+        else
+        {
+            // Y is greater than X... so lets check against Z
+            if (dy > dz)
+            {
+                // Y is the greatest
+                return local Real3(0.0, SpawnTool.Sign(input.Y), 0.0);
+            }
+            else
+            {
+                // Z is the greatest
+                return local Real3(0.0, 0.0, SpawnTool.Sign(input.Z));
+            }
+        }
+    }
+    
+    [Static]
+    function SnapToCardinalDirectionOrZ(input : Real3) : Real3
+    {
+        var result = SpawnTool.SnapToCardinalDirection(input);
+        
+        if (Math.LengthSq(result) < 0.5)
+        {
+            result = local Real3(0.0, 0.0, 1.0);
+        }
+        
+        return result;
+    }
+    
+    function SpawnObj(e : PlayerMouseEvent, objToSpawn : Archetype)
+    {
+        var attach = true;
+        var result = this.Player.RayCast(this.BlockFilter);
+        
+        if (result == null)
+        {
+            result = this.Player.RayCast(this.AnyFilter);
+            attach = false;
+            
+            if (result == null)
+                return;
+        }
+        
+        var newObj = this.Space.Create(objToSpawn);
+        var newTx = newObj.Transform;
+        
+        if (newObj.RigidBody != null)
+            newObj.RigidBody.Static = true;
+        
+        if (attach)
+        {
+            var root = result.Object.FindRoot();
+            var rootTx = root.Transform;
+            
+            var localNormal = rootTx.TransformNormalInverse(result.WorldNormal);
+            
+            localNormal = SpawnTool.SnapToCardinalDirection(localNormal);
+            
+            if (Math.LengthSq(localNormal) < 0.5)
+                return;
+            
+            var worldForward = this.Player.WorldLookForward;
+            var localForward = rootTx.TransformNormalInverse(worldForward);
+            
+            // Project the forward vector onto the plane made by the normal
+            localForward -= Math.Project(localForward, localNormal);
+            localForward = SpawnTool.SnapToCardinalDirectionOrZ(localForward);
+            
+            // Cross the forward and up to get the right vector
+            var localRight = Math.Cross(localForward, localNormal);
+            
+            // We flip the bases because we want to to do a 180 and face away from us
+            localRight = localRight * local Real3(-1.0);
+            localForward = localForward * local Real3(-1.0);
+            
+            newTx.SetRotationBases(localForward, localNormal, localRight);
+            //newObj.Transform.Rotation = Math.RotationQuaternionBetween(local Real3(0.0, 1.0, 0.0), localNormal);
+            
+            newObj.AttachTo(root);
+            newObj.Transform.LocalTranslation = localNormal + result.Object.Transform.LocalTranslation;
+        }
+        else
+        {
+            var root = this.Space.Create(Archetype.HierarchyRoot);
+            root.ModifiedFromArchetype();
+            var rootTx = root.Transform;
+            
+            rootTx.WorldTranslation = result.WorldPosition + result.WorldNormal * local Real3(0.5);
+            rootTx.WorldRotation = this.PlayerCog.Transform.WorldRotation;
+            
+            newObj.AttachTo(root);
+            newTx.LocalTranslation = Real3.Zero;
+            newTx.LocalRotation = Quaternion.Identity;
+        }
+        
+        this.Space.CreateAtPosition(Archetype.SpawnEffect, newObj.Transform.WorldTranslation);
+        
+        var undoName = String.Concatenate("spawning a ", this.ObjToSpawn.Name);
+        var undo = new SpawnUndo();
+        undo.Object = newObj;
+        this.Player.Server_QueueUndo(undoName, undo.Action);
+        
+        if (newObj.Swivel != null)
+        {
+            newObj.Swivel.Setup();
+        }
+    }
+    
+    function DestroyObj(e : PlayerMouseEvent)
+    {
+        var result = this.Player.RayCast(this.BlockFilter);
+        
+        if (result == null)
+        {
+            return;
+        }
+        
+        var undoName = String.Concatenate("destroying a ", this.ObjToSpawn.Name);
+        var undoInfo = this.Player.Server_QueueUndo(undoName);
+        
+        // Store it in the object store for undo purposes
+        Zero.ObjectStore.Store(undoInfo.UniqueName, result.Object);
+        
+        var worldPosition = result.Object.Transform.WorldTranslation;
+        
+        var undo = new DestroyUndo();
+        undo.Space = this.Space;
+        undo.Parent = result.Object.Parent;
+        undo.WorldPosition = worldPosition;
+        undo.WorldRotation = result.Object.Transform.WorldRotation;
+        undoInfo.Action = undo.Action;
+        
+        this.Space.CreateAtPosition(Archetype.DestroyEffect, worldPosition);
+        result.Object.Destroy();
+    }
+}
+
+class SpawnUndo
+{
+    var Object : Cog = null;
+    
+    var DestroyEffect : Archetype = Archetype.Find("DestroyEffect");
+    
+    constructor()
+    {
+    }
+    
+    function Action(undo : Undo) : Boolean
+    {
+        if (this.Object != null)
+        {
+            var worldPosition = this.Object.Transform.WorldTranslation;
+            this.Object.Space.CreateAtPosition(this.DestroyEffect, worldPosition);
+            this.Object.Destroy();
+            return true;
+        }
+        
+        return false;
+    }
+}
+
+class DestroyUndo
+{
+    var Space : Space = null;
+    var Parent : Cog = null;
+    var WorldPosition : Real3 = local Real3();
+    var WorldRotation : Quaternion = local Quaternion();
+    
+    var SpawnEffect : Archetype = Archetype.Find("SpawnEffect");
+    
+    constructor()
+    {
+    }
+    
+    function Action(undo : Undo) : Boolean
+    {
+        if (this.Space != null)
+        {
+            var cog = Zero.ObjectStore.Restore(undo.UniqueName, this.Space);
+            
+            if (cog != null)
+            {
+                if (this.Parent != null)
+                {
+                    cog.AttachTo(this.Parent);
+                }
+                else
+                {
+                    cog.Transform.WorldTranslation = this.WorldPosition;
+                    cog.Transform.WorldRotation = this.WorldRotation;
+                    
+                    if (cog.RigidBody != null)
+                    {
+                        cog.RigidBody.Static = false;
+                    }
+                }
+                
+                this.Space.CreateAtPosition(this.SpawnEffect, cog.Transform.WorldTranslation);
+                return true;
+            }
+        }
+        
+        return false;
+    }
+}
+*/

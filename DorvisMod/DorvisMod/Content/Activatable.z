@@ -1,0 +1,59 @@
+class Activatable : ZilchComponent
+{
+    // The default key is spacebar
+    [Property]
+    var Key : Integer = 87;
+    
+    var Root : Cog = null;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, Events.Attached, this.OnAttached);
+        this.Setup();
+    }
+    
+    function OnAttached(e : HierarchyEvent)
+    {
+        this.Setup();
+    }
+    
+    // Setup can be called multiple times, but it MUST be called any time our hierarchy is changed
+    function Setup()
+    {
+        var root = this.Owner.FindRoot();
+        
+        if (this.Root != null)
+        {
+            Zero.Disconnect(this.Root, "PlayerKeyDown", this);
+            Zero.Disconnect(this.Root, "PlayerKeyUp", this);
+        }
+        
+        Zero.Connect(root, "PlayerKeyDown", this.OnKeyDown);
+        Zero.Connect(root, "PlayerKeyUp", this.OnKeyUp);
+        
+        this.Root = root;
+    }
+    
+    function OnKeyDown(e : PlayerKeyEvent)
+    {
+        if (e.Key == this.Key)
+        {
+            this.Owner.DispatchEvent("Activate", e);
+        }
+    }
+    
+    function OnKeyUp(e : PlayerKeyEvent)
+    {
+        if (e.Key == this.Key)
+        {
+            this.Owner.DispatchEvent("Deactivate", e);
+        }
+    }
+}
+
+
+

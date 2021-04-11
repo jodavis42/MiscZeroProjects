@@ -1,0 +1,55 @@
+class RightClickToOpenUiWindow : ZilchComponent
+{
+  sends UiWindowSetup : UiWindowEvent;
+  sends UiWindowDestroyed : UiWindowEvent;
+  
+  
+  [Dependency]
+  var UiWidget : UiWidget;
+  
+  
+  [Property][ResourceProperty(filterTag:"Ui", allowNone:true, allowAdd:false)]
+  var WindowArchetype : Archetype;
+  
+  var CurrentWindow : Cog;
+  
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Space, Events.RightClick, this.OnRightClick);
+  }
+  
+  
+  function OnRightClick(event : ViewportMouseEvent)
+  {
+    if (this.CurrentWindow == null)
+    {
+      this.OpenWindow(event.ToWorldZPlane(0).XY);
+    }
+    else
+    {
+      this.CloseCurrentWindow();
+    }
+  }
+  
+  
+  function OpenWindow(worldCenter : Real2)
+  {
+    this.CurrentWindow = this.Space.Create(this.WindowArchetype);
+    this.CurrentWindow.AttachToPreserveLocal(this.Owner);
+    
+    var uwe = UiWindowEvent();
+    uwe.WorldCenter = worldCenter;
+    this.CurrentWindow.DispatchEvent(Events.UiWindowSetup, uwe);
+  }
+  
+  
+  function CloseCurrentWindow()
+  {
+    var uwe = UiWindowEvent();
+    this.CurrentWindow.DispatchEvent(Events.UiWindowDestroyed, uwe);
+    
+    if (!uwe.Handled)
+      this.CurrentWindow.Destroy();
+  }
+}

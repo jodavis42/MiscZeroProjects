@@ -1,0 +1,119 @@
+[Version:1]
+Cog 
+{
+	var Name = "NPC"
+	Transform 
+	{
+		var Translation = Real3{6.5, 0, 6.5}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	CapsuleCollider 
+	{
+		var Ghost = false
+		var SendsEvents = true
+		var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+		var CollisionGroup = "4e740859314e5515:DefaultGroup"
+		var Offset = Real3{0, 0.875, 0}
+		var Radius = 0.5
+		var Height = 0.75
+		var Direction = AxisDirection.Y
+		var ScalingMode = CapsuleScalingMode.PreserveHeight
+	}
+	RigidBody 
+	{
+		var Velocity = Real3{312.499969, 0, 312.499969}
+		var AngularVelocity = Real3{0, 0, 0}
+		var DynamicState = RigidBodyDynamicState.Kinematic
+		var AllowSleep = true
+		var Asleep = false
+		var RotationLocked = false
+		var Mode2D = Mode2DStates.InheritFromSpace
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x5a5c190c7351ad43]
+		{
+			var Name = "Sphere"
+			Transform 
+			{
+				var Translation = Real3{0, 1.25, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "5828b036bd65b5d8:OpaqueFlat"
+				var Mesh = "4de0354322b376ae:Sphere"
+			}
+			MaterialInputs 
+			{
+				var AlbedoValue = Real4{0.600000024, 0.50999999, 0.24000001, 1}
+				var MetallicValue = 0
+				var RoughnessValue = 0
+				var SpecularValue = 0
+			}
+		}
+		Cog [Id:0x5a5c190f72e2e1fe]
+		{
+			var Name = "Cylinder"
+			Transform 
+			{
+				var Translation = Real3{0, 0.5, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			Model 
+			{
+				var Visible = true
+				var ViewCulling = true
+				var VisibilityEvents = true
+				var OverrideBoundingBox = false
+				var LocalAabbCenter = Real3{0, 0, 0}
+				var LocalAabbHalfExtents = Real3{1, 1, 1}
+				var GroupSortValue = 0
+				var Material = "5828b036bd65b5d8:OpaqueFlat"
+				var Mesh = "4de0354322b3572e:Cylinder"
+			}
+			MaterialInputs 
+			{
+				var AlbedoValue = Real4{0.400000006, 0.340000004, 0.159999996, 1}
+				var MetallicValue = 0
+				var RoughnessValue = 0
+				var SpecularValue = 0
+			}
+		}
+		Cog [Id:0x5a5c21afaa359fd3]
+		{
+			var Name = "Dialogue"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{0, 0, 0, 1}
+			}
+			CylinderCollider 
+			{
+				var Ghost = true
+				var SendsEvents = true
+				var Material = "4de020863e872da8:DefaultPhysicsMaterial"
+				var CollisionGroup = "4e740859314e5515:DefaultGroup"
+				var Offset = Real3{0, 1, 0}
+				var Radius = 1.25
+				var Height = 2
+				var Direction = AxisDirection.Y
+			}
+			Dialogue 
+			{
+				var Text = "Hello!"
+			}
+		}
+	}
+}

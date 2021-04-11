@@ -1,0 +1,106 @@
+class BooleanEvent : ZilchEvent
+{
+  var State : Boolean = true;
+  
+  constructor(state : Boolean) : base()
+  {
+    this.State = state;
+  }
+}
+
+[RunInEditor]
+class QuickHullRenderSettings : ZilchComponent
+{
+  sends UpdateHullFilledStatus : BooleanEvent;
+  sends UpdateHullEdgeStatus : BooleanEvent;
+  sends UpdateHullTriangleEdgeStatus : BooleanEvent;
+  sends UpdateHullNormalStatus : BooleanEvent;
+  
+  // Properties to forward the states of each render flag to child objects
+  [Property] var RenderGraphics : Boolean
+  {
+    get {return this.RenderGraphicsInternal;}
+    set {this.SetRenderGraphics(value); }
+  }
+  [Property] var RenderHullFilled : Boolean
+  {
+    get {return this.RenderHullFilledInternal;}
+    set {this.SetRenderHullFilled(value); }
+  }
+  [Property] var RenderHullEdges : Boolean
+  {
+    get {return this.RenderHullEdgesInternal;}
+    set {this.SetRenderHullEdges(value); }
+  }
+  [Property] var RenderHullTriangleEdges : Boolean
+  {
+    get {return this.RenderHullTriangleEdgesInternal;}
+    set {this.SetRenderHullTriangleEdges(value); }
+  }
+  [Property] var RenderHullNormals : Boolean
+  {
+    get {return this.RenderHullNormalsInternal;}
+    set {this.SetRenderHullNormals(value); }
+  }
+  
+  var RenderGraphicsInternal : Boolean = true;
+  var RenderHullFilledInternal : Boolean = true;
+  var RenderHullEdgesInternal : Boolean = true;
+  var RenderHullTriangleEdgesInternal : Boolean = false;
+  var RenderHullNormalsInternal : Boolean = false;
+  
+  function SetRenderGraphics(value : Boolean)
+  {
+    if(this.Owner == null)
+      return;
+    this.RenderGraphicsInternal = value;
+    this.SetGraphicsVisibleRecursive(this.Owner);
+  }
+  function SetRenderHullFilled(value : Boolean)
+  {
+    this.RenderHullFilledInternal = value;
+    this.SendEvent(Events.UpdateHullFilledStatus, BooleanEvent(value));
+  }
+  function SetRenderHullEdges(value : Boolean)
+  {
+    this.RenderHullEdgesInternal = value;
+    this.SendEvent(Events.UpdateHullEdgeStatus, BooleanEvent(value));
+  }
+  function SetRenderHullTriangleEdges(value : Boolean)
+  {
+    this.RenderHullTriangleEdgesInternal = value;
+    this.SendEvent(Events.UpdateHullTriangleEdgeStatus, BooleanEvent(value));
+  }
+  function SetRenderHullNormals(value : Boolean)
+  {
+    this.RenderHullNormalsInternal = value;
+    this.SendEvent(Events.UpdateHullNormalStatus, BooleanEvent(value));
+  }
+  
+  function SendEvent(eventName : String, event : ZilchEvent)
+  {
+    if(this.Owner == null)
+      return;
+    this.Owner.DispatchEvent(eventName, event);
+    this.Owner.DispatchDown(eventName, event);
+  }
+  
+  function SetGraphicsVisibleRecursive(cog : Cog)
+  {
+    if(this.IsCogValid(cog))
+    {
+      var model = cog.Model;
+      if(model != null)
+        model.Visible = this.RenderGraphicsInternal;
+    }
+    foreach(var child in cog.Children)
+      this.SetGraphicsVisibleRecursive(child);
+  }
+  
+  function IsCogValid(cog : Cog) : Boolean
+  {
+    if(cog.SkipVisibleToggle != null)
+      return false;
+    return true;
+  }
+}

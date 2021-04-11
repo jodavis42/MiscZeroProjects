@@ -1,0 +1,19 @@
+[Version:1]
+DataContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"SoundEffects"
+		}
+	}
+	DataBuilder 
+	{
+		var Name = "OwlScreech"
+		var ResourceId = 0x5944f0ce2e7e81f4
+		var LoaderType = "SoundCue"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

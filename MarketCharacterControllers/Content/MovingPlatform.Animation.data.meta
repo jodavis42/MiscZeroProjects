@@ -1,0 +1,10 @@
+[Version:1]
+DataContent 
+{
+	RichAnimationBuilder 
+	{
+		var Name = "MovingPlatform"
+		var ResourceId = 0x58c458e4791eb0ae
+		var PreviewArchetype = ""
+	}
+}

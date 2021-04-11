@@ -1,0 +1,23 @@
+class LogicFlow : ZilchComponent
+{
+    sends KinematicUpdate : UpdateEvent;
+    sends CharacterUpdate : UpdateEvent;
+    sends CameraUpdate : UpdateEvent;
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+    }
+
+    function OnLogicUpdate(event : UpdateEvent)
+    {
+        this.Space.DispatchEvent(Events.KinematicUpdate, event);
+        this.Space.PhysicsSpace.FlushPhysicsQueue();
+        this.Space.DispatchEvent(Events.CharacterUpdate, event);
+        this.Space.DispatchEvent(Events.CameraUpdate, event);
+    }
+}

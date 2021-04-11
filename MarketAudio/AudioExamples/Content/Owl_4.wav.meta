@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Owl_4"
+		var ResourceId = 0x5944f0162650d2c0
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 3.45816326
+		var AudioChannels = 1
+		var SampleRate = 44100
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

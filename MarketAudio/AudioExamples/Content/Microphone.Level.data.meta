@@ -1,0 +1,12 @@
+[Version:1]
+DataContent 
+{
+	DataBuilder 
+	{
+		var Name = "Microphone"
+		var ResourceId = 0x595a22228c6c8a8b
+		var LoaderType = "Level"
+		var Version = 0
+		var ShowInEditor = true
+	}
+}

@@ -1,0 +1,15 @@
+TextContent = 
+{
+	ZilchScriptBuilder = 
+	{
+		string Name = "HierarchyDisplay",
+		uint64 ResourceId = 5300529b1ce37cd9,
+	},
+	ContentTags = 
+	{
+		Array Tags = 
+		[
+			"DebugScripts",
+		],
+	},
+},

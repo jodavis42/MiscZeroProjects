@@ -1,0 +1,50 @@
+[Version:1]
+GeometryContent 
+{
+	ContentTags 
+	{
+		var Tags = Array
+		{
+		}
+	}
+	GeometryImport 
+	{
+		var OriginOffset = Real3{0, 0, 0}
+		var ScaleFactor = 0.100000001
+		var ChangeBasis = false
+		var XBasisTo = BasisType.PositiveX
+		var YBasisTo = BasisType.PositiveY
+		var ZBasisTo = BasisType.PositiveZ
+	}
+	GeneratedArchetype 
+	{
+		var ResourceId = 0x59817e2086bf3f0c
+	}
+	MeshBuilder 
+	{
+		var GenerateSmoothNormals = false
+		var SmoothingAngleDegreesThreshold = 30
+		var GenerateTangentSpace = true
+		var InvertUvYAxis = false
+		var FlipWindingOrder = false
+		var FlipNormals = false
+		var Meshes = Array
+		{
+			Object
+			{
+				var Name = "LifeBoat_BOAT10GeneratedMeshNode0"
+				var ResourceId = 0x59817e208681dcd3
+			}
+			Object
+			{
+				var Name = "LifeBoat_BOAT10GeneratedMeshNode1"
+				var ResourceId = 0x59817e208681dd00
+			}
+			Object
+			{
+				var Name = "LifeBoat_BOAT10GeneratedMeshNode2"
+				var ResourceId = 0x59817e208681dd0a
+			}
+		}
+	}
+}

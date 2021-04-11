@@ -1,0 +1,66 @@
+Space = 
+{
+	LinkId = 
+	{
+		uint Id = 1,
+	},
+	Archetyped = 
+	{
+		string Name = "56dc1ab557b4f11a:NetSpace",
+	},
+	TimeSpace = 
+	{
+		float MaxDt = 0.300000012,
+		float MinDt = 9.99999997e-007,
+		float TimeScale = 1,
+		uint TimeMode = 0,
+		uint StepCount = 1,
+	},
+	GraphicsSpace = 
+	{
+		TransparentSort TransparentSort = ViewDepth,
+		string SpriteLayerOrder = "52b23ad3c402d436:DefaultSpriteLayerOrder",
+		bool UseRandomSeed = false,
+		uint RandomSeed = 0,
+	},
+	ActionSpace = 
+	{
+	},
+	PhysicsSpace = 
+	{
+		bool AllowSleep = true,
+		bool Mode2D = false,
+		bool Deterministic = true,
+		uint SubStepCount = 1,
+		string CollisionFilterName = "4e66a5c0b9dc59b9:DefaultCollisionTable",
+		string PhysicsSolverConfigName = "52a967fb4cda91cb:Baumgarte",
+		string DynamicBroadphaseType = "DynamicAabbTree",
+		string StaticBroadphaseType = "StaticAabbTree",
+	},
+	SoundSpace = 
+	{
+	},
+	ReactiveSpace = 
+	{
+	},
+	NetObject = 
+	{
+		string AutomaticChannelName = "56f22bdc94800e65:DefaultChannel",
+		Array NetPropertyConfigs = 
+		[
+			{
+				string ComponentName = "Transform",
+				string PropertyName = "Translation",
+				string NetChannelConfigName = "56f22bdc957a8572:TransformChannel",
+			},
+			{
+				string ComponentName = "Transform",
+				string PropertyName = "Rotation",
+				string NetChannelConfigName = "56f22bdc957a8572:TransformChannel",
+			},
+		],
+	},
+	NetSpace = 
+	{
+	},
+},

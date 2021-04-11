@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchFragmentBuilder 
+	{
+		var Name = "FluidVertex"
+		var ResourceId = 0x588d9161f8f1e5c3
+	}
+}

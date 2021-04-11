@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "AudioManager"
+		var ResourceId = 0x591b93f6ca64277d
+	}
+}

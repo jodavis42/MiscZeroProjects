@@ -1,0 +1,33 @@
+[Version:1]
+Cog 
+{
+	var Name = "ConvexHullWireFrame"
+	Transform 
+	{
+		var Translation = Real3{-5.96046448e-08, -1.1920929e-07, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Model 
+	{
+		var Visible = false
+		var ViewCulling = true
+		var VisibilityEvents = true
+		var OverrideBoundingBox = false
+		var LocalAabbCenter = Real3{0, 0, 0}
+		var LocalAabbHalfExtents = Real3{1, 1, 1}
+		var GroupSortValue = 0
+		var Material = "59809e104945adac:WireFrame"
+		var Mesh = "4de0354322b345ae:Cube"
+	}
+	SkipMeshCollection 
+	{
+	}
+	SkipVisibleToggle 
+	{
+	}
+	QuickHullEdgeRenderer 
+	{
+		var Active = true
+	}
+}

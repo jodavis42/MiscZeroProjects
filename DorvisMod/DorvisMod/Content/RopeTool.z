@@ -1,0 +1,87 @@
+/*
+class RopeTool : ZilchComponent
+{
+    var Player : Player = null;
+    var HudText : ShadowText = null;
+    var PrevCog : Cog = null;
+    
+    [Property]
+    var SpawnEffect : Archetype = Archetype.Find("SpawnEffect");
+    
+    constructor() : base()
+    {
+    }
+
+    function Initialize(init : CogInitializer)
+    {
+        Zero.Connect(this.Owner, "ActivateTool", this.OnActivateTool);
+        Zero.Connect(this.Owner, "DeactivateTool", this.OnDeactivateTool);
+    }
+    
+    function OnActivateTool(e : PlayerEvent)
+    {
+        this.Player = e.Player;
+        this.HudText = e.HudText;
+        Zero.Connect(this.Space, Events.LogicUpdate, this.OnLogicUpdate);
+        Zero.Connect(e.PlayerCog, "PlayerMouseDown", this.OnPlayerMouseDown);
+    }
+    
+    function OnDeactivateTool(e : PlayerEvent)
+    {
+        this.Player = null;
+        this.HudText = null;
+        this.PrevCog = null;
+        Zero.Disconnect(this.Space, Events.LogicUpdate, this);
+        Zero.Disconnect(e.PlayerCog, "PlayerMouseDown", this);
+    }
+    
+    function OnLogicUpdate(e : UpdateEvent)
+    {
+        if (this.PrevCog == null)
+        {
+            this.HudText.Text = "Click a block to start connecting a rope";
+        }
+        else
+        {
+            this.HudText.Text = "Click a block to end connecting a rope";
+        }
+    }
+    
+    function BlockFilter(hit : Cog) : Boolean
+    {
+        return hit.BlockTag != null;
+    }
+    
+    function OnPlayerMouseDown(e : PlayerMouseEvent)
+    {
+        var result = this.Player.RayCast(this.BlockFilter);
+        if (result == null)
+        {
+            return;
+        }
+        
+        this.Space.CreateAtPosition(this.SpawnEffect, result.Object.Transform.WorldTranslation);
+        
+        if (this.PrevCog == null)
+        {
+            this.PrevCog = result.Object;
+            return;
+        }
+        
+        var jointCreator = Zero.JointBuilder.CreateInstance();
+        var joint = jointCreator.AttachWorld(this.PrevCog, result.Object, local Real3(0.0, 0.0, 0.0), "StickJoint");
+        
+        var p0 = this.PrevCog.Transform.WorldTranslation;
+        var p1 = result.Object.Transform.WorldTranslation;
+        joint.StickJoint.Length = Math.Length(p0 - p1);
+        joint.StickJoint.LocalPointA = local Real3(0.0, 0.0, 0.0);
+        joint.StickJoint.LocalPointB = local Real3(0.0, 0.0, 0.0);
+        
+        joint.AddComponentByName("JointLimit");
+        joint.AddComponentByName("RopeRenderer");
+        
+        this.PrevCog = null;
+        
+    }
+}
+*/

@@ -1,0 +1,18 @@
+class QuickHullUnitTest : ZilchComponent
+{
+  [Dependency] var QuickHullTest : QuickHullTest;
+  [Dependency] var QuickHullMeshSaver : QuickHullMeshSaver;
+  
+  function Initialize(init : CogInitializer)
+  {
+    Zero.Connect(this.Owner, Events.RecordInitialization, this.OnRecordInitialization);
+  }
+
+  function OnRecordInitialization(event : CogFrameRecordEvent)
+  {
+    var stream = event.Stream;
+    
+    this.QuickHullTest.RunQuickHull();
+    this.QuickHullMeshSaver.Save(this.QuickHullTest.TestName, stream);
+  }
+}

@@ -1,0 +1,9 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "ChangeTagVolume"
+		var ResourceId = 0x59086a6620f30ca4
+	}
+}

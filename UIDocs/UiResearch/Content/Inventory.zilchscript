@@ -1,0 +1,22 @@
+class Inventory : ZilchComponent
+{
+  [Property]
+  var Items : Array[InventoryItem];
+}
+
+
+class InventoryItemInterface : ZilchComponent
+{
+  //[Property] var Item : InventoryItem;
+  [Property] var Name : String = "[ Item Name ]";
+  [Property] var Quantity : Integer = 1;
+  [Property] var Type : ItemType = ItemType.Consumable;
+}
+
+
+class InventoryItem
+{
+  [Property] var Name : String = "[ Item Name ]";
+  [Property] var Quantity : Integer = 1;
+  [Property] var Type : ItemType = ItemType.Consumable;
+}

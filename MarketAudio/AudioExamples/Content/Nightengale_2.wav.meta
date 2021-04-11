@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Nightengale_2"
+		var ResourceId = 0x5944f06d1d73fb29
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 2.15065765
+		var AudioChannels = 1
+		var SampleRate = 44100
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

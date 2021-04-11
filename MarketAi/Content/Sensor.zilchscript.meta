@@ -1,0 +1,16 @@
+[Version:1]
+TextContent 
+{
+	ZilchScriptBuilder 
+	{
+		var Name = "Sensor"
+		var ResourceId = 0x5610de8648c0e376
+	}
+	ContentTags 
+	{
+		var Tags = Array
+		{
+			"Sensing"
+		}
+	}
+}

@@ -1,0 +1,1 @@
+This prismatic has a max force that when exceeded will break. When the joint is broken the door will fall open.

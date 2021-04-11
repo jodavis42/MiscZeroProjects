@@ -1,0 +1,34 @@
+[Version:1]
+Cog 
+{
+	var Name = ""
+	ProjectSettings 
+	{
+		var ProjectName = "QuickHull3DTests"
+		var ProjectOwner = ""
+		var DefaultLevel = ""
+		var ProjectSpace = "Space"
+		var AutoTakeProjectScreenshot = true
+		var Guid = 0x9787713227522064
+	}
+	EditorSettings 
+	{
+		var ViewCube = true
+		var ViewCubeSize = 0.150000006
+		var AutoUpdateContentChanges = true
+	}
+	ProjectConfig 
+	{
+		var EditorMode = EditorMode.Mode3D
+	}
+	LauncherProjectInfo 
+	{
+		var Tags = ""
+		var ExperimentalBranchName = ""
+		var MajorVersion = 1
+		var MinorVersion = 1
+		var PatchVersion = 0
+		var RevisionId = 406
+		var ShortChangeSet = "a461d49c2231"
+	}
+}

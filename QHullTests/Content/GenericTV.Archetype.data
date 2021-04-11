@@ -1,0 +1,167 @@
+[Version:1]
+Cog 
+{
+	var Name = "GenericTV"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x59817ca4d7b016ce]
+		{
+			var Name = "GenericTVPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x59817ca4d7b016d4]
+				{
+					var Name = "GenericTVScaling"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{0.0253999997, 0.0253999997, 0.0253999997}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x59817ca4d7b016d6]
+						{
+							var Name = "GenericTVGeometricTranslation"
+							Transform 
+							{
+								var Translation = Real3{0, 6.86110434e-06, 17.5764351}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x59817ca4d7b016d9]
+								{
+									var Name = "GenericTV"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x59817ca4d7b016db]
+										{
+											var Name = "GenericTVBase"
+											Transform 
+											{
+												var Translation = Real3{0, 6.88976192, 0.962368906}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{0.5, -0.5, 0.50000006, 0.5}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "59817ca5d7a8c1f8:GenericTV_GenericTVBase"
+											}
+										}
+										Cog [Id:0x59817ca4d7b016dd]
+										{
+											var Name = "GenericTVStand"
+											Transform 
+											{
+												var Translation = Real3{-2.29494859e-08, 2.3786552, 1.3838892}
+												var Scale = Real3{1, 1, 0.548840761}
+												var Rotation = Quaternion{0, 0, 0.707106829, 0.707106829}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "59817ca5d7a8c235:GenericTV_GenericTVStand"
+											}
+										}
+										Cog [Id:0x59817ca4d7b016e0]
+										{
+											var Name = "GenericTVScreen"
+											Transform 
+											{
+												var Translation = Real3{0, -1.55915141, 5.64719868}
+												var Scale = Real3{1, 1, 1}
+												var Rotation = Quaternion{0, 0, 0.707106829, 0.707106829}
+											}
+											Hierarchy 
+											{
+												Cog [Id:0x59817ca4d7b016e2]
+												{
+													var Name = "GenericTVScreenGeneratedMeshNode0"
+													Transform 
+													{
+														var Translation = Real3{0, 0, 0}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "59817ca5d7a8c24a:GenericTV_GenericTVScreenGeneratedMeshNode0"
+													}
+												}
+												Cog [Id:0x59817ca4d7b016e4]
+												{
+													var Name = "GenericTVScreenGeneratedMeshNode1"
+													Transform 
+													{
+														var Translation = Real3{0, 0, 0}
+														var Scale = Real3{1, 1, 1}
+														var Rotation = Quaternion{0, 0, 0, 1}
+													}
+													Model 
+													{
+														var Visible = true
+														var ViewCulling = true
+														var VisibilityEvents = true
+														var OverrideBoundingBox = false
+														var LocalAabbCenter = Real3{0, 0, 0}
+														var LocalAabbHalfExtents = Real3{1, 1, 1}
+														var GroupSortValue = 0
+														var Material = "583afb5e7bf75e18:ZeroMaterial"
+														var Mesh = "59817ca5d7a8c261:GenericTV_GenericTVScreenGeneratedMeshNode1"
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

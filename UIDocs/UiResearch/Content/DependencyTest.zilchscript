@@ -1,0 +1,7 @@
+class DependencyTest : ZilchComponent
+{
+  [Dependency] var A : Area;
+  [Dependency] var B : Sprite;
+  [Dependency] var C : UiWidget;
+  [Dependency] var D : UiLayout;
+}

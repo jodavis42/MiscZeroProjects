@@ -1,0 +1,16 @@
+[Version:1]
+AudioContent 
+{
+	SoundBuilder 
+	{
+		var Name = "Stems_Drum_2"
+		var ResourceId = 0x5944d7cc75daaa58
+		var Compressed = false
+		var Streamed = false
+		var CompressionQuality = 3
+		var FileLength = 26.6653976
+		var AudioChannels = 2
+		var SampleRate = 44100
+		var SavedFormat = AudioFileFormats.WAV
+	}
+}

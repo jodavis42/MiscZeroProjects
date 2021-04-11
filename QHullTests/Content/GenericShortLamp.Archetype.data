@@ -1,0 +1,132 @@
+[Version:1]
+Cog 
+{
+	var Name = "GenericShortLamp"
+	Transform 
+	{
+		var Translation = Real3{0, 0, 0}
+		var Scale = Real3{1, 1, 1}
+		var Rotation = Quaternion{0, 0, 0, 1}
+	}
+	Hierarchy 
+	{
+		Cog [Id:0x598143971fafeeb7]
+		{
+			var Name = "GenericTablesideLampPreRotation"
+			Transform 
+			{
+				var Translation = Real3{0, 0, 0}
+				var Scale = Real3{1, 1, 1}
+				var Rotation = Quaternion{-0.707106829, 0, 0, 0.707106769}
+			}
+			Hierarchy 
+			{
+				Cog [Id:0x598143971fafeebe]
+				{
+					var Name = "GenericTablesideLampScaling"
+					Transform 
+					{
+						var Translation = Real3{0, 0, 0}
+						var Scale = Real3{0.0209424086, 0.0209424086, 0.0209424086}
+						var Rotation = Quaternion{0, 0, 0, 1}
+					}
+					Hierarchy 
+					{
+						Cog [Id:0x598143971fafeec0]
+						{
+							var Name = "GenericTablesideLampGeometricTranslation"
+							Transform 
+							{
+								var Translation = Real3{4.76837215e-07, -5.39842119e-07, 33.2678566}
+								var Scale = Real3{1, 1, 1}
+								var Rotation = Quaternion{0, 0, 0, 1}
+							}
+							Hierarchy 
+							{
+								Cog [Id:0x598143971fafeec2]
+								{
+									var Name = "GenericTablesideLamp"
+									Transform 
+									{
+										var Translation = Real3{0, 0, 0}
+										var Scale = Real3{1, 1, 1}
+										var Rotation = Quaternion{0, 0, 0, 1}
+									}
+									Hierarchy 
+									{
+										Cog [Id:0x598143971fafeec4]
+										{
+											var Name = "GenericSmallLampShade"
+											Transform 
+											{
+												var Translation = Real3{4.76837272e-07, -5.39842119e-07, 12.8236341}
+												var Scale = Real3{0.83787185, 0.83787185, 0.863192499}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "598143881fa0c5a9:GenericShortLamp_GenericSmallLampShade"
+											}
+										}
+										Cog [Id:0x598143971fafeec7]
+										{
+											var Name = "GenericSmallLampStand"
+											Transform 
+											{
+												var Translation = Real3{4.76837272e-07, -4.17572573e-06, 1.04771423}
+												var Scale = Real3{1.00000024, 1.00000024, 1.73134959}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "598143881fa0c5d1:GenericShortLamp_GenericSmallLampStand"
+											}
+										}
+										Cog [Id:0x598143971fafeec9]
+										{
+											var Name = "GenericSmallLampBase"
+											Transform 
+											{
+												var Translation = Real3{4.76837272e-07, -5.39842119e-07, 0.0691126958}
+												var Scale = Real3{1.00000012, 1.00000012, 1.00000012}
+												var Rotation = Quaternion{0, 0, 0, 1}
+											}
+											Model 
+											{
+												var Visible = true
+												var ViewCulling = true
+												var VisibilityEvents = true
+												var OverrideBoundingBox = false
+												var LocalAabbCenter = Real3{0, 0, 0}
+												var LocalAabbHalfExtents = Real3{1, 1, 1}
+												var GroupSortValue = 0
+												var Material = "583afb5e7bf75e18:ZeroMaterial"
+												var Mesh = "598143881fa0c5dc:GenericShortLamp_GenericSmallLampBase"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

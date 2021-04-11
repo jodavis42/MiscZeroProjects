@@ -1,0 +1,434 @@
+// Base class for all ai behaviors. This is mostly just an interface
+// (currently using delegates since there are no virtuals yet).
+// Also contains some basic functionality for inherited classes to use.
+class AiBehaviorBase : ZilchComponent
+{
+    // What kind of archetype our context menu should be when clicked.
+    // This is generally just some clickable text, in some cases this can be more complicated (such as paths).
+    [Property]
+    var ContextMenu : Archetype = Archetype.ClickableText;
+    
+    var CompositeAiCore : CompositeAiCore = null;
+    
+    // Virtual interface
+    var GetName : delegate() : String = AiBehaviorBase.DummyGetName;
+    var Update : delegate(dt : Real) = AiBehaviorBase.DummyUpdate;
+    var Activate : delegate() = AiBehaviorBase.DummyActivate;
+    var Deactivate : delegate() = AiBehaviorBase.DummyDeactivate;
+    
+    constructor() : base()
+    {
+    }
+    
+    function Initialize(init : CogInitializer)
+    {
+        this.AddToComposite();
+    }
+    
+    function AddToComposite()
+    {
+        this.CompositeAiCore = this.Owner.CompositeAiCore;
+        this.CompositeAiCore.AddBehavior(this);
+    }
+    
+    [Static]
+    function DummyGetName() : String
+    {
+        return "Unknown";
+    }
+    
+    [Static]
+    function DummyUpdate(dt : Real)
+    {
+    }
+    
+    [Static]
+    function DummyActivate()
+    {
+    }
+    
+    [Static]
+    function DummyDeactivate()
+    {
+    }
+}
+
+// Simple behavior of not doing anything.
+class WaitBehavior : AiBehaviorBase
+{
+    constructor() : base()
+    {
+        // Setup our v-table
+        this.GetName = this.OnGetName;
+    }
+    
+    function OnGetName() : String
+    {
+        return "Wait";
+    }
+}
+
+// Simple behavior of following the composite's owning cog.
+class FollowBehavior : AiBehaviorBase
+{
+    constructor() : base()
+    {
+        // Setup our v-table
+        this.GetName = this.OnGetName;
+        this.Update = this.OnUpdate;
+    }
+    
+    function OnGetName() : String
+    {
+        return "Follow";
+    }
+    
+    function OnUpdate(dt : Real)
+    {
+        // Get my position and our owner's position
+        var myPos = this.CompositeAiCore.Owner.Transform.WorldTranslation;
+        var playerPos = this.CompositeAiCore.OwningCoreCog.Transform.WorldTranslation;
+        // If we're already really close to the player stop following
+        if(Math.Length(myPos - playerPos) < 3.0)
+        {
+            return;
+        }
+        
+        // Otherwise move towards the player
+        this.CompositeAiCore.Core.SetMoveTarget(playerPos);
+    }
+}
+
+// A slightly more complicated behavior that attempts to auto-mine and collect resources.
+class MiningBehavior : AiBehaviorBase
+{
+    var IsFiring : Boolean = false;
+    var PreviousDirection : Real3 = local Real3(0.0, 0.0, 0.0);
+    var HadTarget : Boolean = false;
+    
+    constructor() : base()
+    {
+        // Setup our v-table
+        this.GetName = this.OnGetName;
+        this.Update = this.OnUpdate;
+        this.Deactivate = this.OnDeactivate;
+    }
+    
+    function OnGetName() : String
+    {
+        return "Mine";
+    }
+    
+    function OnDeactivate()
+    {
+        this.IsFiring = false;
+    }
+    
+    function OnUpdate(dt : Real)
+    {
+        // If we don't have a target cog to move towards then try to find one
+        if(this.CompositeAiCore.TargetCog == null)
+        {
+            this.CompositeAiCore.TargetCog = this.FindTarget();
+        }
+        var target = this.CompositeAiCore.TargetCog;
+        
+        var myPos = this.Owner.Transform.WorldTranslation;
+        var direction = this.PreviousDirection;
+        // If we now have a target keep track that we had one
+        // (have to do this since cog references die as soon as the object dies)
+        if(target != null)
+        {
+            this.HadTarget = true;
+            // Compute the target movement direction (towards our target)
+            var targetPos = target.Transform.WorldTranslation;
+            direction = targetPos - myPos;
+        }
+        // Otherwise there's no target within range so just pick a random direction
+        // and move that way (only for the 1st frame that we didn't have a target)
+        else if(this.HadTarget == true)
+        {
+            this.HadTarget = false;
+            
+            // Sample a random direction to move in
+            var levelSettings = this.Space.FindObjectByName("LevelSettings");
+            this.PreviousDirection = levelSettings.RandomContext.UnitVector3();
+            direction = this.PreviousDirection;
+        }
+        
+        var targetPos = myPos + direction;
+        this.CompositeAiCore.Core.SetMoveTarget(targetPos);
+        this.CompositeAiCore.Core.SetAimTarget(targetPos);
+        
+        // Now handle firing logic
+        
+        // If we have a target and we weren't firing and the target is not a pickup, start firing
+        if(target != null && this.IsFiring == false)
+        {
+            if(target.Pickup == null)
+            {
+                this.IsFiring = true;
+                var toSend = new ZilchEvent();
+                this.CompositeAiCore.Owner.DispatchEvent("OverrideBegin", toSend);
+            }
+        }
+        
+        // If we have a target and we are firing and the target is a pickup, stop firing
+        if(target != null && this.IsFiring == true)
+        {
+            if(target.Pickup != null)
+            {
+                this.IsFiring = false;
+                var toSend = new ZilchEvent();
+                this.CompositeAiCore.Owner.DispatchEvent("OverrideEnd",toSend);
+            }
+        }
+        
+        // If we don't have a target and we were firing then stop firing
+        if(target == null && this.IsFiring == true)
+        {
+            this.IsFiring = false;
+            var toSend = new ZilchEvent();
+            this.CompositeAiCore.Owner.DispatchEvent("OverrideEnd",toSend);
+        }
+    }
+    
+    function FindTarget() : Cog
+    {
+        //var myPos = this.Owner.Transform.WorldTranslation;
+        //var castRadius = 10.0;
+        //var castSphere = new Sphere();
+        //castSphere.Center = myPos;
+        //castSphere.Radius = castRadius;
+        ////var filter = this.Space.PhysicsSpace.CreateDefaultCastFilter();
+        ////var results = this.Space.PhysicsSpace.CastSphereResults(myPos, castRadius, 30, filter);
+        //
+        //var results = this.Space.PhysicsSpace.CastSphereWithCallback(castSphere, 5, this.CastCallback);
+        //
+        //// We want to find the closest pickup if there is one,
+        //// otherwise we want the closest asteroid
+        //var closestAsteroid : Cog = null;
+        //var closestPickup : Cog = null;
+        //var closestAsteroidDistance = 9999999.0;
+        //var closestPickupDistance = 9999999.0;
+        //
+        //foreach(var result in results)
+        //{
+        //    var cog = result.ObjectHit;
+        //    
+        //    // If this cog is an asteroid
+        //    if(cog.AsteroidTag != null)
+        //    {
+        //        // If this asteroid is closest than the previous asteroid then save it (and its distance)
+        //        var asteroidPos = cog.Transform.WorldTranslation;
+        //        var asteroidDistance = Math.Length(asteroidPos - myPos);
+        //        if(asteroidDistance < closestAsteroidDistance)
+        //        {
+        //            closestAsteroidDistance = asteroidDistance;
+        //            closestAsteroid = cog;
+        //        }
+        //        continue;
+        //    }
+        //    
+        //    // If this cog is a pickup
+        //    if(cog.Pickup != null)
+        //    {
+        //        // If this pickup is closest than the previous asteroid then save it (and its distance)
+        //        var pickupPos = cog.Transform.WorldTranslation;
+        //        var pickupDistance = Math.Length(pickupPos - myPos);
+        //        if(pickupDistance < closestPickupDistance)
+        //        {
+        //            closestPickupDistance = pickupDistance;
+        //            closestPickup = cog;
+        //        }
+        //        continue;
+        //    }
+        //}
+        //
+        //// If we had a pickup then return the closest pickup
+        //if(closestPickup != null)
+        //{
+        //    return closestPickup;
+        //}
+        //
+        //// Otherwise return the closest asteroid
+        //return closestAsteroid;
+        return null;
+    }
+    
+    //function CastCallback(physicsCastEvent : PhysicsCastEvent)
+    //{
+    //    var obj = physicsCastEvent.Object;
+    //    if(obj.AsteroidTag != null)
+    //    {
+    //        physicsCastEvent.IsValid = true;
+    //    }
+    //    else if(obj.Pickup != null)
+    //    {
+    //        physicsCastEvent.IsValid = true;
+    //    }
+    //    else
+    //    {
+    //        physicsCastEvent.IsValid = false;
+    //    }
+    //}
+}
+
+class WanderBehavior : AiBehaviorBase
+{
+    var WanderDirection : Real3 = local Real3(0.0, 0.0, 0.0);
+    var WanderScale : Real = 1.0;
+    var Timer : Real = 0.0;
+    
+    constructor() : base()
+    {
+        // Setup our v-table
+        this.GetName = this.OnGetName;
+        this.Update = this.OnUpdate;
+    }
+    
+    function OnGetName() : String
+    {
+        return "Wander";
+    }
+    
+    function OnUpdate(dt : Real)
+    {
+        this.Timer += dt;
+        if(this.Timer > 1.0)
+        {
+            var levelSettings = this.Space.FindObjectByName("LevelSettings");
+            this.WanderDirection += local Real3(levelSettings.RandomContext.UnitVector2() * this.WanderScale, 0.0);
+            this.WanderDirection = Math.Normalize(this.WanderDirection);
+            this.Timer -= 1.0;
+        }
+        
+        var pos = this.Owner.Transform.WorldTranslation;
+        var targetPos = pos + this.Owner.Orientation.WorldForward + this.WanderDirection;
+        this.CompositeAiCore.Core.SetMoveTarget(targetPos);
+    }
+}
+
+// A behavior where the ai will follow waypoints.
+// The path can be looped or reverse when it reaches then end by setting PathClosed.
+class PathBehavior : AiBehaviorBase
+{
+    var WayPoints : Array[Real3] = null;
+    // The current waypoint to follow.
+    var FollowIndex : Integer = 0;
+    // Are we traveling forward or backwards in the waypoint list.
+    var Direction : Integer = 1;
+    // Do we loop back to the beginning or reverse when we reach the last waypoint.
+    var PathClosed : Boolean = true;
+    
+    constructor() : base()
+    {
+        // Setup our v-table
+        this.GetName = this.OnGetName;
+        this.Update = this.OnUpdate;
+        this.Activate = this.OnActivate;
+    }
+    
+    function OnGetName() : String
+    {
+        return "Path";
+    }
+    
+    function OnActivate()
+    {
+        // Find the closest waypoint and start following from there
+        var pos = this.Owner.Transform.WorldTranslation;
+        var minDistance = 99999999.0;
+        var bestIndex = 0;
+        
+        for(var i = 0; i < this.WayPoints.Count; ++i)
+        {
+            var distance = Math.Length(this.WayPoints.Get(i) - pos);
+            if(distance < minDistance)
+            {
+                minDistance = distance;
+                bestIndex = i;
+            }
+        }
+        
+        this.FollowIndex = bestIndex;
+    }
+    
+    function GetNextWayPoint()
+    {
+        var nextIndex = this.FollowIndex + this.Direction;
+        // If the path is closed, just mod to get the next index (so we loop)
+        if(this.PathClosed)
+        {
+            // Deal with negative numbers...
+            if(nextIndex < 0)
+            {
+                nextIndex += this.WayPoints.Count;
+            }
+            nextIndex = nextIndex % this.WayPoints.Count;
+        }
+        // Otherwise if our next index is outside of bounds then reverse 
+        // our direction and get the next index to follow
+        else if(nextIndex < 0 || nextIndex >= this.WayPoints.Count)
+        {
+            this.Direction *= -1;
+            nextIndex = this.FollowIndex + this.Direction;
+        }
+        
+        this.FollowIndex = nextIndex;
+    }
+    
+    function DebugDrawPath()
+    {
+        for(var i = 0; i < this.WayPoints.Count; ++i)
+        {
+            // Draw the waypoint
+            var pos = this.WayPoints.Get(i);
+            var sphere = DebugSphere(pos, 0.1) {Color = Real4(0.9)};
+            // If this is the point we're currently following draw the point blue
+            if(i == this.FollowIndex)
+            {
+                sphere.Color = local Real4(0.0, 0.0, 1.0, 1.0);
+            }
+            DebugDraw.Add(sphere);
+            
+            var prevIndex = i - 1;
+            // If the path is closed, make sure to wrap the previous point
+            // index (dealing properly with negative numbers).
+            if(this.PathClosed == true)
+            {
+                if(prevIndex < 0)
+                {
+                    prevIndex += this.WayPoints.Count;
+                }
+                
+                prevIndex = prevIndex % this.WayPoints.Count;
+            }
+            
+            // Draw a line from the previous point to the current point
+            if(prevIndex >= 0)
+            {
+                var prevPos = this.WayPoints.Get(prevIndex);
+                var line = DebugLine(prevPos, pos) {Color = Real4(0.9)};
+                DebugDraw.Add(line);
+            }
+        }
+    }
+    
+    function OnUpdate(dt : Real)
+    {
+        this.DebugDrawPath();
+        
+        var wayPoint = this.WayPoints.Get(this.FollowIndex);
+        var myPos = this.CompositeAiCore.Owner.Transform.WorldTranslation;
+        
+        // If we're close enough to the waypoint then get the next point
+        if(Math.Length(myPos - wayPoint) < 1.0)
+        {
+            this.GetNextWayPoint();
+            this.WayPoints.Get(this.FollowIndex);
+        }
+        
+        this.CompositeAiCore.Core.SetMoveTarget(wayPoint);
+    }
+}
